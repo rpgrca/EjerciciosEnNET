@@ -35,17 +35,12 @@ namespace Palindromo.UnitTests
             Assert.False(sut.EsUn());
         }
 
-        [Fact]
-        public void RetornarTrue_CuandoEsUnPalindromo()
+        [Theory]
+        [InlineData("neuquen")]
+        [InlineData("Neuquen")]
+        public void RetornarTrue_CuandoEsUnPalindromo(string palindromo)
         {
-            var sut = new Palindromo("neuquen");
-            Assert.True(sut.EsUn());
-        }
-
-        [Fact]
-        public void RetornarTrue_CuandoEsUnPalindromoSinImportarMayusculas()
-        {
-            var sut = new Palindromo("Neuquen");
+            var sut = new Palindromo(palindromo);
             Assert.True(sut.EsUn());
         }
     }
