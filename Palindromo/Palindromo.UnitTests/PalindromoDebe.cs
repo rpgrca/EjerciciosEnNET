@@ -7,16 +7,15 @@ namespace Palindromo.UnitTests
     {
         private readonly string _aVerificar;
 
-        public Palindromo(string aVerificar)
-        {
-            this._aVerificar = aVerificar;
-        }
+        public Palindromo(string aVerificar) => _aVerificar = aVerificar;
 
-        public bool EsUn()
+        public bool EsUn() => VerificarLetraPorLetra(_aVerificar.ToUpper());
+
+        private bool VerificarLetraPorLetra(string palabra)
         {
-            for (var index = 0; index < _aVerificar.Length / 2; index++)
+            for (var index = 0; index < palabra.Length / 2; index++)
             {
-                if (_aVerificar[index].ToString().ToUpper() != _aVerificar[_aVerificar.Length - 1 - index].ToString().ToUpper())
+                if (palabra[index] != palabra[palabra.Length - 1 - index])
                 {
                     return false;
                 }
@@ -25,19 +24,7 @@ namespace Palindromo.UnitTests
             return true;
         }
 
-        public bool SinEspaciosEsUn()
-        {
-            var palabraSinEspacios = _aVerificar.Replace(" ", string.Empty);
-            for (var index = 0; index < palabraSinEspacios.Length / 2; index++)
-            {
-                if (palabraSinEspacios[index].ToString().ToUpper() != palabraSinEspacios[palabraSinEspacios.Length - 1 - index].ToString().ToUpper())
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
+        public bool SinEspaciosEsUn() => VerificarLetraPorLetra(_aVerificar.Replace(" ", string.Empty).ToUpper());
     }
 
     public class PalindromoDebe
