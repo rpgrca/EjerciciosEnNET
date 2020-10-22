@@ -67,5 +67,15 @@ namespace Palindromo.UnitTests
             var sut = new Palindromo(palindromoConEspacios);
             Assert.True(sut.SinEspaciosEsUn());
         }
+
+        [Theory]
+        [InlineData("Sometamos o Matemos")]
+        [InlineData("Isaac no ronca asi")]
+        public void RetornarFalse_CuandoEsUnPalindromoConEspaciosSinEliminarlos(string palindromoConEspacios)
+        {
+            var sut = new Palindromo(palindromoConEspacios);
+            Assert.False(sut.EsUn());
+        }
+
     }
 }
