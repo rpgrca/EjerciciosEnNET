@@ -14,7 +14,15 @@ namespace Palindromo.UnitTests
 
         public bool EsUn()
         {
-            return false;
+            for (var index = 0; index < _aVerificar.Length / 2; index++)
+            {
+                if (_aVerificar[index] != _aVerificar[_aVerificar.Length - 1 - index])
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 
@@ -25,6 +33,13 @@ namespace Palindromo.UnitTests
         {
             var sut = new Palindromo("esto no es un palindromo");
             Assert.False(sut.EsUn());
+        }
+
+        [Fact]
+        public void Test2()
+        {
+            var sut = new Palindromo("neuquen");
+            Assert.True(sut.EsUn());
         }
     }
 }
