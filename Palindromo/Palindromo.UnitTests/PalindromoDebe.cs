@@ -13,9 +13,9 @@ namespace Palindromo.UnitTests
 
         private bool VerificarLetraPorLetra(string palabra)
         {
-            for (var index = 0; index < palabra.Length / 2; index++)
+            for (var (head, tail) = (0, palabra.Length - 1); head < tail; head++, tail--)
             {
-                if (palabra[index] != palabra[palabra.Length - 1 - index])
+                if (palabra[head] != palabra[tail])
                 {
                     return false;
                 }
