@@ -24,6 +24,20 @@ namespace Palindromo.UnitTests
 
             return true;
         }
+
+        public bool SinEspaciosEsUn()
+        {
+            var palabraSinEspacios = _aVerificar.Replace(" ", string.Empty);
+            for (var index = 0; index < palabraSinEspacios.Length / 2; index++)
+            {
+                if (palabraSinEspacios[index].ToString().ToUpper() != palabraSinEspacios[palabraSinEspacios.Length - 1 - index].ToString().ToUpper())
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 
     public class PalindromoDebe
@@ -38,10 +52,20 @@ namespace Palindromo.UnitTests
         [Theory]
         [InlineData("neuquen")]
         [InlineData("Neuquen")]
+        [InlineData("43334")]
         public void RetornarTrue_CuandoEsUnPalindromo(string palindromo)
         {
             var sut = new Palindromo(palindromo);
             Assert.True(sut.EsUn());
+        }
+
+        [Theory]
+        [InlineData("Sometamos o Matemos")]
+        [InlineData("Isaac no ronca asi")]
+        public void RetornarTrue_CuandoEsUnPalindromoEliminandoEspacios(string palindromoConEspacios)
+        {
+            var sut = new Palindromo(palindromoConEspacios);
+            Assert.True(sut.SinEspaciosEsUn());
         }
     }
 }
