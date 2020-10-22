@@ -16,7 +16,7 @@ namespace Palindromo.UnitTests
         {
             for (var index = 0; index < _aVerificar.Length / 2; index++)
             {
-                if (_aVerificar[index] != _aVerificar[_aVerificar.Length - 1 - index])
+                if (_aVerificar[index].ToString().ToUpper() != _aVerificar[_aVerificar.Length - 1 - index].ToString().ToUpper())
                 {
                     return false;
                 }
@@ -39,6 +39,13 @@ namespace Palindromo.UnitTests
         public void RetornarTrue_CuandoEsUnPalindromo()
         {
             var sut = new Palindromo("neuquen");
+            Assert.True(sut.EsUn());
+        }
+
+        [Fact]
+        public void RetornarTrue_CuandoEsUnPalindromoSinImportarMayusculas()
+        {
+            var sut = new Palindromo("Neuquen");
             Assert.True(sut.EsUn());
         }
     }
