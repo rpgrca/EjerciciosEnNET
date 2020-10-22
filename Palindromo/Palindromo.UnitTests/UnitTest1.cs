@@ -26,17 +26,17 @@ namespace Palindromo.UnitTests
         }
     }
 
-    public class UnitTest1
+    public class PalindromoDebe
     {
         [Fact]
-        public void Test1()
+        public void RetornarFalse_CuandoNoEsUnPalindromo()
         {
             var sut = new Palindromo("esto no es un palindromo");
             Assert.False(sut.EsUn());
         }
 
         [Fact]
-        public void Test2()
+        public void RetornarTrue_CuandoEsUnPalindromo()
         {
             var sut = new Palindromo("neuquen");
             Assert.True(sut.EsUn());
