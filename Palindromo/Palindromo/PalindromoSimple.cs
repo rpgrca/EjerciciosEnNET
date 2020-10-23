@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace Palindromo.UnitTests
+namespace Palindromo
 {
     public class PalindromoSimple
     {

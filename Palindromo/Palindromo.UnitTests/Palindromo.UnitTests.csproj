@@ -13,4 +13,13 @@
     <PackageReference Include="coverlet.collector" Version="1.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Palindromo\Palindromo.csproj" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)' == 'Coverage' ">
+    <Exec Command="dotnet tool restore" />
+    <Exec Command="dotnet coverlet bin/Debug/netcoreapp3.0/Palindromo.UnitTests.dll --target &quot;dotnet&quot; --targetargs &quot;test Palindromo.UnitTests.csproj --no-build --verbosity quiet&quot; --format cobertura --output reports/coverage/coverage.cobertura.xml" />
+    <Exec Command="dotnet reportgenerator &quot;-reports:reports/coverage/coverage.cobertura.xml&quot; &quot;-targetdir:reports/html&quot; &quot;-historydir:reports/coverage/history&quot;" />
+  </Target>
 </Project>

@@ -1,6 +1,6 @@
 using System;
 
-namespace Palindromo.UnitTests
+namespace Palindromo
 {
     public class Palindromo
     {
