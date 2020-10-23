@@ -2,7 +2,6 @@ using Xunit;
 
 namespace Anaconda.UnitTests
 {
-
     public class FiltroDeCaracteresRepetidosConLinqDebe
     {
         [Theory]
