@@ -2,4 +2,4 @@ codecov:
   disable_default_path_fixes: false
 
 fixes:
-  - "/home/runner/work/::"
+  - "/home/runner/work/EjerciciosEnNET/::"
