@@ -1,28 +1,26 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
 namespace Anaconda.UnitTests
 {
-    public class AnacondaDebe
+    public class FiltroDeCaracteresRepetidosConSetDebe
     {
-        [Fact]
-        public void RemoverLetrasRepetidas_CuandoSeLee()
+        [Theory]
+        [InlineData("anaconda", "ancod")]
+        [InlineData("murcielago", "murcielago")]
+        public void RemoverLetrasRepetidas_CuandoSeFiltra(string palabraOriginal, string palabraFiltrada)
         {
-            var sut = new FiltroDeCaracteresRepetidos("anaconda");
-            Assert.Equal("ancod", sut.Filtrado);
+            var sut = new FiltroDeCaracteresRepetidosConSet(palabraOriginal);
+            Assert.Equal(palabraFiltrada, sut.Filtrado);
         }
     }
 
-    public class FiltroDeCaracteresRepetidos
+    public class FiltroDeCaracteresRepetidosConSet
     {
         private readonly string _palabraAlimpiar;
 
-        public FiltroDeCaracteresRepetidos(string palabraAlimpiar)
-        {
-            _palabraAlimpiar = palabraAlimpiar;
-        }
+        public FiltroDeCaracteresRepetidosConSet(string palabraAlimpiar) => _palabraAlimpiar = palabraAlimpiar;
 
         public string Filtrado
         {
@@ -36,6 +34,33 @@ namespace Anaconda.UnitTests
                 }
 
                 return string.Join(string.Empty, set);
+            }
+        }
+    }
+
+    public class FiltroDeCaracteresRepetidosConLinqDebe
+    {
+        [Theory]
+        [InlineData("anaconda", "ancod")]
+        [InlineData("murcielago", "murcielago")]
+        public void RemoverLetrasRepetidas_CuandoSeFiltra(string palabraOriginal, string palabraFiltrada)
+        {
+            var sut = new FiltroDeCaracteresRepetidosConLinq(palabraOriginal);
+            Assert.Equal(palabraFiltrada, sut.Filtrado);
+        }
+    }
+
+    public class FiltroDeCaracteresRepetidosConLinq
+    {
+        private readonly string _palabraAlimpiar;
+
+        public FiltroDeCaracteresRepetidosConLinq(string palabraAlimpiar) => _palabraAlimpiar = palabraAlimpiar;
+
+        public string Filtrado
+        {
+            get
+            {
+                return new string(_palabraAlimpiar.Distinct().ToArray());
             }
         }
     }
