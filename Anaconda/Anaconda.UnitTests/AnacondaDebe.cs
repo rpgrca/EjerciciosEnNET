@@ -56,12 +56,6 @@ namespace Anaconda.UnitTests
 
         public FiltroDeCaracteresRepetidosConLinq(string palabraAlimpiar) => _palabraAlimpiar = palabraAlimpiar;
 
-        public string Filtrado
-        {
-            get
-            {
-                return new string(_palabraAlimpiar.Distinct().ToArray());
-            }
-        }
+        public string Filtrado => new string(_palabraAlimpiar.Distinct().ToArray());
     }
 }
