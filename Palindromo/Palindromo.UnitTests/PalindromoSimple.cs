@@ -5,10 +5,23 @@ namespace Palindromo.UnitTests
 {
     public class PalindromoSimple
     {
+        public const string INVALID_WORD_EXCEPTION = "La palabra a convertir es invalida";
+
         private readonly string _aVerificar;
 
-        public PalindromoSimple(string aVerificar) =>
+        public PalindromoSimple(string aVerificar)
+        {
+            VerificarPalabraValida(aVerificar);
             _aVerificar = aVerificar;
+        }
+
+        private void VerificarPalabraValida(string aValidar)
+        {
+            if (string.IsNullOrWhiteSpace(aValidar))
+            {
+                throw new ArgumentException(INVALID_WORD_EXCEPTION);
+            }
+        }
 
         public bool EsUn() =>
             CompararPalabraConSuReverso(_aVerificar);

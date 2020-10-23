@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace Palindromo.UnitTests
@@ -9,6 +10,16 @@ namespace Palindromo.UnitTests
         {
             var sut = new Palindromo("esto no es un palindromo");
             Assert.False(sut.EsUn());
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        [InlineData("   ")]
+        public void LanzarUnaExcepcion_CuandoLaPalabraAVerificarEsVacioONull(string palabraInvalida)
+        {
+            var exception = Assert.Throws<ArgumentException>(() => new Palindromo(palabraInvalida));
+            Assert.Equal(Palindromo.INVALID_WORD_EXCEPTION, exception.Message);
         }
 
         [Theory]
@@ -24,6 +35,7 @@ namespace Palindromo.UnitTests
         [Theory]
         [InlineData("Sometamos o Matemos")]
         [InlineData("Isaac no ronca asi")]
+        [InlineData("     Dabale arroz a la zorra el abad")]
         public void RetornarTrue_CuandoEsUnPalindromoEliminandoEspacios(string palindromoConEspacios)
         {
             var sut = new Palindromo(palindromoConEspacios);
