@@ -40,7 +40,7 @@ Public Class AgendaDebe
         sut = New Agenda()
 
         exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Agregar(nombreInvalido))
-        Assert.Contains(Agenda.NAME_IS_INVALID_EXCEPTION, exception.Message)
+        Assert.Contains(Cliente.NAME_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
     <Theory>

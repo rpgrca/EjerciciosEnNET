@@ -1,11 +1,9 @@
 ﻿Public Class Agenda
 
-    Public Const NAME_IS_INVALID_EXCEPTION As String = "El nombre del cliente es invalido"
-
-    Private ReadOnly _contactos As List(Of Object)
+    Private ReadOnly _contactos As List(Of Cliente)
 
     Public Sub New()
-        _contactos = New List(Of Object)
+        _contactos = New List(Of Cliente)
     End Sub
 
     Public ReadOnly Property Total As Integer
@@ -15,19 +13,12 @@
     End Property
 
     Public Sub Agregar(nombre As String)
-        If nombre = String.Empty Then Throw New ArgumentException(NAME_IS_INVALID_EXCEPTION)
+        Dim cliente As New Cliente(nombre)
 
-        _contactos.Add(nombre)
+        _contactos.Add(cliente)
     End Sub
 
     Public Function Buscar(nombre As String) As Cliente
-        Dim clienteEncontrado As String
-
-        clienteEncontrado = _contactos.SingleOrDefault(Function(o) o = nombre)
-        If Not clienteEncontrado Is Nothing Then
-            Return New Cliente(clienteEncontrado)
-        End If
-
-        Return Nothing
+        Return _contactos.SingleOrDefault(Function(o) o.Nombre = nombre)
     End Function
 End Class
