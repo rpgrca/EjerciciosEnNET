@@ -1,6 +1,8 @@
 ﻿Imports Xunit
+Imports ABM.Core.UnitTests.Constantes
 
 Public Class AgregarEnAgendaDebe
+
     <Theory>
     <InlineData("")>
     <InlineData(Nothing)>
@@ -17,12 +19,21 @@ Public Class AgregarEnAgendaDebe
         Dim sut As New Agenda()
         Dim cliente As Cliente
 
-        cliente = sut.Agregar(Constantes.CLIENTE_JUAN_PEREZ, Constantes.TELEFONO_DE_JUAN_PEREZ, Constantes.CORREO_DE_JUAN_PEREZ)
+        cliente = sut.Agregar(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ)
 
         Assert.NotNull(cliente)
-        Assert.True(cliente.ConocidoComo(Constantes.CLIENTE_JUAN_PEREZ))
-        Assert.True(cliente.LlamadoAl(Constantes.TELEFONO_DE_JUAN_PEREZ))
-        Assert.True(cliente.MensajeadoAl(Constantes.CORREO_DE_JUAN_PEREZ))
+        Assert.True(cliente.ConocidoComo(CLIENTE_JUAN_PEREZ))
+        Assert.True(cliente.LlamadoAl(TELEFONO_DE_JUAN_PEREZ))
+        Assert.True(cliente.MensajeadoAl(CORREO_DE_JUAN_PEREZ))
+    End Sub
+
+    <Fact> Public Sub AceptarDosClientesIguales_CuandoSeAgregaUnClienteSimilar()
+        Dim sut As New Agenda()
+
+        sut.Agregar(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ)
+        sut.Agregar(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ)
+
+        Assert.Equal(2, sut.Total)
     End Sub
 
 End Class
