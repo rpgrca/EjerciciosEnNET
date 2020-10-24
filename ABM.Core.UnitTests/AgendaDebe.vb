@@ -27,4 +27,14 @@ Public Class AgendaDebe
 
         Assert.Equal(2, sut.Total)
     End Sub
+
+    <Fact> Public Sub Test1()
+        Dim sut As Agenda
+        Dim exception As Exception
+
+        sut = New Agenda()
+        exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Agregar(""))
+        Assert.Contains(Agenda.NAME_IS_INVALID_EXCEPTION, exception.Message)
+    End Sub
+
 End Class

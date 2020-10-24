@@ -1,5 +1,7 @@
 ﻿Public Class Agenda
 
+    Public Const NAME_IS_INVALID_EXCEPTION As String = "El nombre del cliente es invalido"
+
     Private ReadOnly _contactos As List(Of Object)
 
     Public Sub New()
@@ -13,6 +15,8 @@
     End Property
 
     Public Sub Agregar(nombre As String)
+        If nombre = String.Empty Then Throw New ArgumentException(NAME_IS_INVALID_EXCEPTION)
+
         _contactos.Add(nombre)
     End Sub
 
