@@ -38,6 +38,6 @@
     End Sub
 
     Public Function Buscar(nombre As String) As List(Of Producto)
-        Return New List(Of Producto)
+        Return _productos
     End Function
 End Class
