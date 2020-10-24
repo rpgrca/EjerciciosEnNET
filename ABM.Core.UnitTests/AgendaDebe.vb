@@ -1,10 +1,7 @@
 ﻿Imports Xunit
+Imports ABM.Core.UnitTests.Constantes
 
-Public Class AgendaDebe
-    Private Const CLIENTE_JUAN_PEREZ As String = "Juan Perez"
-    Private Const TELEFONO As String = "4444-4444"
-    Private Const CORREO As String = "juan.perez@hotmail.com"
-    Private Const CLIENTE_EDUARDO_PEREZ As String = "Eduardo Perez"
+Public Class TotalEnAgendaDebe
 
     <Fact> Public Sub DevolverCero_CuandoSePideElTotalDeContactosDeUnaAgendaVacia()
         Dim sut As Agenda
@@ -30,61 +27,5 @@ Public Class AgendaDebe
         sut.Agregar(CLIENTE_EDUARDO_PEREZ)
 
         Assert.Equal(2, sut.Total)
-    End Sub
-
-    <Theory>
-    <InlineData("")>
-    <InlineData(Nothing)>
-    Public Sub LanzarExcepcion_CuandoSeIntentaAgregarUnClienteConNombreInvalido(nombreInvalido As String)
-        Dim sut As Agenda
-        Dim exception As Exception
-
-        sut = New Agenda()
-
-        exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Agregar(nombreInvalido))
-        Assert.Contains(Cliente.NAME_IS_INVALID_EXCEPTION, exception.Message)
-    End Sub
-
-    <Theory>
-    <InlineData("")>
-    <InlineData(Nothing)>
-    <InlineData(CLIENTE_JUAN_PEREZ)>
-    Public Sub DevolverNothing_CuandoSeBuscaNombreEnAgendaVacia(cualquierNombre As String)
-        Dim sut As New Agenda()
-        Dim cliente As Object
-
-        cliente = sut.Buscar(cualquierNombre)
-        Assert.Null(cliente)
-    End Sub
-
-    <Fact> Public Sub DevolverClienteBuscado_CuandoSeBuscaClienteExistente()
-        Dim sut As New Agenda()
-        Dim cliente As Cliente
-
-        sut.Agregar(CLIENTE_JUAN_PEREZ)
-        cliente = sut.Buscar(CLIENTE_JUAN_PEREZ)
-        Assert.NotNull(cliente)
-        Assert.Equal(CLIENTE_JUAN_PEREZ, cliente.Nombre)
-    End Sub
-
-    <Fact> Public Sub DevolverNothing_CuandoSeBuscaClienteInexistenteEnAgendaConContactos()
-        Dim sut As New Agenda()
-        Dim cliente As Cliente
-
-        sut.Agregar(CLIENTE_JUAN_PEREZ)
-        cliente = sut.Buscar(CLIENTE_EDUARDO_PEREZ)
-        Assert.Null(cliente)
-    End Sub
-
-    <Fact> Public Sub DevolverClienteAgregado_CuandoSeAgregaCliente()
-        Dim sut As New Agenda()
-        Dim cliente As Cliente
-
-        cliente = sut.Agregar(CLIENTE_JUAN_PEREZ, TELEFONO, CORREO)
-
-        Assert.NotNull(cliente)
-        Assert.Equal(CLIENTE_JUAN_PEREZ, cliente.Nombre)
-        Assert.Equal(TELEFONO, cliente.Telefono)
-        Assert.Equal(CORREO, cliente.Correo)
     End Sub
 End Class
