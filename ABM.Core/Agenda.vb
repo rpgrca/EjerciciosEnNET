@@ -12,13 +12,16 @@
         End Get
     End Property
 
-    Public Sub Agregar(nombre As String)
-        Dim cliente As New Cliente(nombre)
+    Public Function Agregar(nombre As String, Optional telefono As String = "", Optional correo As String = "") As Cliente
+        Dim cliente As New Cliente(nombre, telefono, correo)
 
         _contactos.Add(cliente)
-    End Sub
+
+        Return cliente
+    End Function
 
     Public Function Buscar(nombre As String) As Cliente
         Return _contactos.SingleOrDefault(Function(o) o.Nombre = nombre)
     End Function
+
 End Class
