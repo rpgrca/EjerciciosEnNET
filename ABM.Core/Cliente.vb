@@ -33,4 +33,8 @@
     Public Function CambiarTelefono(nuevoTelefono As String) As Cliente
         Return New Cliente(Nombre, nuevoTelefono, Correo)
     End Function
+
+    Public Function CambiarCorreo(nuevoCorreo As String) As Cliente
+        Return New Cliente(Nombre, Telefono, nuevoCorreo)
+    End Function
 End Class
