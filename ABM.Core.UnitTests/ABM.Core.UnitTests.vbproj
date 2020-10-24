@@ -87,6 +87,7 @@
     <Compile Include="AgregarEnAgendaDebe.vb" />
     <Compile Include="BorrarEnAgendaDebe.vb" />
     <Compile Include="BuscarEnAgendaDebe.vb" />
+    <Compile Include="ClienteDebe.vb" />
     <Compile Include="Constantes.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

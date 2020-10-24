@@ -1,4 +1,5 @@
 ﻿Public Class Cliente
+
     Public Const NAME_IS_INVALID_EXCEPTION As String = "El nombre del cliente es invalido"
 
     Private ReadOnly Property Nombre As String
@@ -24,4 +25,9 @@
     Public Function MensajeadoAl(correo As String) As Boolean
         Return Me.Correo = correo
     End Function
+
+    Public Function CambiarNombre(nuevoNombre As String) As Cliente
+        Return New Cliente(nuevoNombre, Telefono, Correo)
+    End Function
+
 End Class

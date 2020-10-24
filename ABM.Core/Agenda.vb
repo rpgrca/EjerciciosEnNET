@@ -32,4 +32,5 @@
 
         _contactos.Remove(cliente)
     End Sub
+
 End Class
