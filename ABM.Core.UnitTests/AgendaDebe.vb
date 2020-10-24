@@ -1,6 +1,8 @@
 ﻿Imports Xunit
 
 Public Class AgendaDebe
+    Private Const CLIENTE_JUAN_PEREZ As String = "Juan Perez"
+    Private Const CLIENTE_EDUARDO_PEREZ As String = "Eduardo Perez"
 
     <Fact> Public Sub DevolverCero_CuandoSePideElTotalDeContactosDeUnaAgendaVacia()
         Dim sut As Agenda
@@ -13,7 +15,7 @@ Public Class AgendaDebe
         Dim sut As Agenda
 
         sut = New Agenda()
-        sut.Agregar("Juan Perez")
+        sut.Agregar(CLIENTE_JUAN_PEREZ)
 
         Assert.Equal(1, sut.Total)
     End Sub
@@ -22,8 +24,8 @@ Public Class AgendaDebe
         Dim sut As Agenda
 
         sut = New Agenda()
-        sut.Agregar("Juan Perez")
-        sut.Agregar("Eduardo Perez")
+        sut.Agregar(CLIENTE_JUAN_PEREZ)
+        sut.Agregar(CLIENTE_EDUARDO_PEREZ)
 
         Assert.Equal(2, sut.Total)
     End Sub
@@ -44,7 +46,7 @@ Public Class AgendaDebe
     <Theory>
     <InlineData("")>
     <InlineData(Nothing)>
-    <InlineData("Juan Perez")>
+    <InlineData(CLIENTE_JUAN_PEREZ)>
     Public Sub DevolverNothing_CuandoSeBuscaNombreEnAgendaVacia(cualquierNombre As String)
         Dim sut As Agenda
         Dim cliente As Object
@@ -55,16 +57,26 @@ Public Class AgendaDebe
         Assert.Null(cliente)
     End Sub
 
-    <Fact> Public Sub Test1()
+    <Fact> Public Sub DevolverClienteBuscado_CuandoSeBuscaClienteExistente()
         Dim sut As Agenda
         Dim cliente As Cliente
 
         sut = New Agenda()
 
-        sut.Agregar("Juan Perez")
-        cliente = sut.Buscar("Juan Perez")
+        sut.Agregar(CLIENTE_JUAN_PEREZ)
+        cliente = sut.Buscar(CLIENTE_JUAN_PEREZ)
         Assert.NotNull(cliente)
-        Assert.Equal("Juan Perez", cliente.Nombre)
+        Assert.Equal(CLIENTE_JUAN_PEREZ, cliente.Nombre)
     End Sub
 
+    <Fact> Public Sub DevolverNothing_CuandoSeBuscaClienteInexistenteEnAgendaConContactos()
+        Dim sut As Agenda
+        Dim cliente As Cliente
+
+        sut = New Agenda()
+
+        sut.Agregar(CLIENTE_JUAN_PEREZ)
+        cliente = sut.Buscar(CLIENTE_EDUARDO_PEREZ)
+        Assert.Null(cliente)
+    End Sub
 End Class

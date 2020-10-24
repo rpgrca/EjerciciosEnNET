@@ -21,8 +21,11 @@
     End Sub
 
     Public Function Buscar(nombre As String) As Cliente
-        If _contactos.Count > 0 Then
-            Return New Cliente(nombre)
+        Dim clienteEncontrado As String
+
+        clienteEncontrado = _contactos.SingleOrDefault(Function(o) o = nombre)
+        If Not clienteEncontrado Is Nothing Then
+            Return New Cliente(clienteEncontrado)
         End If
 
         Return Nothing
