@@ -22,4 +22,7 @@
         Return Me.Codigo = codigo
     End Function
 
+    Public Function ConMismoIdQue(otroProducto As Producto) As Boolean
+        Return True
+    End Function
 End Class
