@@ -36,4 +36,8 @@
 
         _productos.RemoveAll(Function(p) p.ConMismoIdQue(producto))
     End Sub
+
+    Public Function Buscar(nombre As String) As List(Of Producto)
+        Return New List(Of Producto)
+    End Function
 End Class
