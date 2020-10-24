@@ -17,7 +17,7 @@ Public Class BorrarEnAgendaDebe
         Dim sut As New Agenda()
         Dim cliente As Cliente
 
-        cliente = sut.Agregar(CLIENTE_JUAN_PEREZ, TELEFONO, CORREO)
+        cliente = sut.Agregar(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ)
 
         sut.Borrar(cliente)
         Assert.Equal(0, sut.Total)

@@ -30,4 +30,7 @@
         Return New Cliente(nuevoNombre, Telefono, Correo)
     End Function
 
+    Public Function CambiarTelefono(nuevoTelefono As String) As Cliente
+        Return New Cliente(Nombre, nuevoTelefono, Correo)
+    End Function
 End Class

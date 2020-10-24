@@ -17,12 +17,12 @@ Public Class AgregarEnAgendaDebe
         Dim sut As New Agenda()
         Dim cliente As Cliente
 
-        cliente = sut.Agregar(Constantes.CLIENTE_JUAN_PEREZ, Constantes.TELEFONO, Constantes.CORREO)
+        cliente = sut.Agregar(Constantes.CLIENTE_JUAN_PEREZ, Constantes.TELEFONO_DE_JUAN_PEREZ, Constantes.CORREO_DE_JUAN_PEREZ)
 
         Assert.NotNull(cliente)
         Assert.True(cliente.ConocidoComo(Constantes.CLIENTE_JUAN_PEREZ))
-        Assert.True(cliente.LlamadoAl(Constantes.TELEFONO))
-        Assert.True(cliente.MensajeadoAl(Constantes.CORREO))
+        Assert.True(cliente.LlamadoAl(Constantes.TELEFONO_DE_JUAN_PEREZ))
+        Assert.True(cliente.MensajeadoAl(Constantes.CORREO_DE_JUAN_PEREZ))
     End Sub
 
 End Class
