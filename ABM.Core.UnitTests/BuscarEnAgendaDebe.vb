@@ -8,15 +8,19 @@ Public Class BuscarEnAgendaDebe
     <InlineData(Nothing)>
     <InlineData(CLIENTE_JUAN_PEREZ)>
     Public Sub DevolverNothing_CuandoSeBuscaNombreEnAgendaVacia(cualquierNombre As String)
-        Dim sut As New Agenda()
+        Dim sut As Agenda = CreateSystemUnderTest()
         Dim clientes As List(Of Cliente)
 
         clientes = sut.Buscar(cualquierNombre)
         Assert.Empty(clientes)
     End Sub
 
+    Private Function CreateSystemUnderTest() As Agenda
+        Return New Agenda()
+    End Function
+
     <Fact> Public Sub DevolverClienteBuscado_CuandoSeBuscaClienteExistente()
-        Dim sut As New Agenda()
+        Dim sut As Agenda = CreateSystemUnderTest()
         Dim clientes As List(Of Cliente)
 
         sut.Agregar(CLIENTE_JUAN_PEREZ)
@@ -27,7 +31,7 @@ Public Class BuscarEnAgendaDebe
     End Sub
 
     <Fact> Public Sub DevolverNothing_CuandoSeBuscaClienteInexistenteEnAgendaConContactos()
-        Dim sut As New Agenda()
+        Dim sut As Agenda = CreateSystemUnderTest()
         Dim clientes As List(Of Cliente)
 
         sut.Agregar(CLIENTE_JUAN_PEREZ)
@@ -37,7 +41,7 @@ Public Class BuscarEnAgendaDebe
     End Sub
 
     <Fact> Public Sub EncontrarAlCliente_CuandoSeLoRenombraYSeLoModifica()
-        Dim sut As New Agenda()
+        Dim sut As Agenda = CreateSystemUnderTest()
         Dim cliente As Cliente
         Dim clientes As List(Of Cliente)
 
@@ -54,7 +58,7 @@ Public Class BuscarEnAgendaDebe
     End Sub
 
     <Fact> Public Sub EncontrarAlCliente_CuandoSeRenombraYModificaUnClienteConNombreRepetido()
-        Dim sut As New Agenda()
+        Dim sut As Agenda = CreateSystemUnderTest()
         Dim cliente As Cliente
         Dim clientes As List(Of Cliente)
 

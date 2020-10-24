@@ -1,7 +1,8 @@
 ﻿Public Class Inventario
 
-    Private ReadOnly _productos As List(Of Object)
     Public Const NAME_IS_INVALID_EXCEPTION As String = "Nombre de producto inválido"
+
+    Private ReadOnly _productos As List(Of Object)
 
     Public Sub New()
         _productos = New List(Of Object)
@@ -13,9 +14,9 @@
         End Get
     End Property
 
-    Public Sub Agregar(producto As String)
-        If String.IsNullOrWhiteSpace(producto) Then Throw New ArgumentException(NAME_IS_INVALID_EXCEPTION)
-        _productos.Add(producto)
+    Public Sub Agregar(nombreDeProducto As Object)
+        If String.IsNullOrWhiteSpace(nombreDeProducto) Then Throw New ArgumentException(NAME_IS_INVALID_EXCEPTION)
+        _productos.Add(nombreDeProducto)
     End Sub
 
 End Class

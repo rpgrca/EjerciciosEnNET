@@ -5,16 +5,20 @@ Public Class BorrarEnAgendaDebe
 
     <Fact>
     Public Sub LanzarExcepcion_CuandoSeIntentaBorrarNothing()
-        Dim sut As New Agenda()
+        Dim sut As Agenda = CreateSystemUnderTest()
         Dim exception As Exception
 
         exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Borrar(Nothing))
         Assert.Contains(Agenda.CLIENT_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
+    Private Function CreateSystemUnderTest() As Agenda
+        Return New Agenda()
+    End Function
+
     <Fact>
     Public Sub BorrarCliente_CuandoElClienteExisteEnLaAgenda()
-        Dim sut As New Agenda()
+        Dim sut As Agenda = CreateSystemUnderTest()
         Dim cliente As Cliente
 
         cliente = sut.Agregar(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ)
@@ -25,7 +29,7 @@ Public Class BorrarEnAgendaDebe
 
     <Fact>
     Public Sub LanzarExcepcion_CuandoSeIntentaBorrarUnClienteQueNoExiste()
-        Dim sut As New Agenda()
+        Dim sut As Agenda = CreateSystemUnderTest()
         Dim cliente As Cliente
         Dim exception As Exception
 
@@ -38,7 +42,7 @@ Public Class BorrarEnAgendaDebe
 
     <Fact>
     Public Sub BorrarUnCliente_CuandoSeCambiaLaReferenciaDelClienteABorrar()
-        Dim sut As New Agenda()
+        Dim sut As Agenda = CreateSystemUnderTest()
         Dim cliente As Cliente
 
         cliente = sut.Agregar(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ)
