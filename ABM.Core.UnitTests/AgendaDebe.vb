@@ -41,14 +41,17 @@ Public Class AgendaDebe
         Assert.Contains(Agenda.NAME_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
-    <Fact>
-    Public Sub DevolverNothing_CuandoSeBuscaNombreEnAgendaVacia()
+    <Theory>
+    <InlineData("")>
+    <InlineData(Nothing)>
+    <InlineData("Juan Perez")>
+    Public Sub DevolverNothing_CuandoSeBuscaNombreEnAgendaVacia(cualquierNombre As String)
         Dim sut As Agenda
         Dim cliente As Object
 
         sut = New Agenda()
 
-        cliente = sut.Buscar("Juan Perez")
+        cliente = sut.Buscar(cualquierNombre)
         Assert.Null(cliente)
     End Sub
 
