@@ -1,5 +1,7 @@
 ﻿Public Class Agenda
 
+    Public Const CLIENT_IS_INVALID_EXCEPTION As String = "No se puede borrar un cliente invalido"
+
     Private ReadOnly _contactos As List(Of Cliente)
 
     Public Sub New()
@@ -24,4 +26,7 @@
         Return _contactos.SingleOrDefault(Function(o) o.ConocidoComo(nombre))
     End Function
 
+    Public Sub Borrar(cliente As Cliente)
+        Throw New ArgumentException(CLIENT_IS_INVALID_EXCEPTION)
+    End Sub
 End Class

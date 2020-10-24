@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgregarEnAgendaDebe.vb" />
+    <Compile Include="BorrarEnAgendaDebe.vb" />
     <Compile Include="BuscarEnAgendaDebe.vb" />
     <Compile Include="Constantes.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
