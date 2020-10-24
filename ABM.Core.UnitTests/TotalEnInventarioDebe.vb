@@ -24,8 +24,8 @@ Public Class TotalEnInventarioDebe
     <Fact> Public Sub DevolverTotal_CuandoSePideElTotalDeInventarioConVariosProductos()
         Dim sut As Inventario = CreateSystemUnderTest()
 
-        sut.Agregar(LATA_DE_ARVEJAS)
-        sut.Agregar(LATA_DE_CERVEZA)
+        sut.Agregar(LATA_DE_ARVEJAS, , CODIGO_DE_LATA_DE_ARVEJAS)
+        sut.Agregar(LATA_DE_CERVEZA, , CODIGO_DE_LATA_DE_CERVEZA)
 
         Assert.Equal(2, sut.Total)
     End Sub

@@ -1,6 +1,7 @@
 ﻿Public Class Inventario
 
     Public Const NAME_IS_INVALID_EXCEPTION As String = "Nombre de producto inválido"
+    Public Const CODE_IS_REPEATED_EXCEPTION As String = "Codigo repetido"
 
     Private ReadOnly _productos As List(Of Producto)
 
@@ -16,6 +17,7 @@
 
     Public Function Agregar(nombre As String, Optional precio As Decimal = 0, Optional codigo As String = "") As Producto
         If String.IsNullOrWhiteSpace(nombre) Then Throw New ArgumentException(NAME_IS_INVALID_EXCEPTION)
+        If _productos.Any(Function(p) p.ConCodigo(codigo)) Then Throw New ArgumentException(CODE_IS_REPEATED_EXCEPTION)
 
         Dim producto As Producto
         producto = New Producto(nombre, precio, codigo)

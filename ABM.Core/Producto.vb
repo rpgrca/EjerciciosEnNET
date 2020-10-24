@@ -19,7 +19,7 @@
     End Function
 
     Public Function ConCodigo(codigo As String) As Boolean
-        Return True
+        Return Me.Codigo = codigo
     End Function
 
 End Class

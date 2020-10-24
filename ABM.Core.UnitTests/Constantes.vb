@@ -11,8 +11,11 @@
     Public Const CLIENTE_MARTINA_PEREZ As String = "Martina Perez"
 
     Public Const LATA_DE_ARVEJAS As String = "Lata de arvejas Arcor"
-    Public Const LATA_DE_CERVEZA As String = "Lata de cerveza Quilmes"
     Public Const PRECIO_UNITARIO_LATA_DE_ARVEJAS As Decimal = 45
     Public Const CODIGO_DE_LATA_DE_ARVEJAS As String = "LATARJ1"
+
+    Public Const LATA_DE_CERVEZA As String = "Lata de cerveza Quilmes"
+    Public Const PRECIO_UNITARIO_LATA_DE_CERVEZA As Decimal = 75
+    Public Const CODIGO_DE_LATA_DE_CERVEZA As String = "QUI11"
 
 End Class
