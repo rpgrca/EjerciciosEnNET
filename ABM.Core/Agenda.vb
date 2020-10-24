@@ -23,10 +23,11 @@
     End Function
 
     Public Function Buscar(nombre As String) As Cliente
-        Return _contactos.SingleOrDefault(Function(o) o.ConocidoComo(nombre))
+        Return _contactos.SingleOrDefault(Function(c) c.ConocidoComo(nombre))
     End Function
 
     Public Sub Borrar(cliente As Cliente)
-        Throw New ArgumentException(CLIENT_IS_INVALID_EXCEPTION)
+        If cliente Is Nothing Then Throw New ArgumentException(CLIENT_IS_INVALID_EXCEPTION)
+        _contactos.Remove(cliente)
     End Sub
 End Class
