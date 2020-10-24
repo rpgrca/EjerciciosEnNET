@@ -15,7 +15,7 @@
     End Property
 
     Public Function Agregar(nombre As String, Optional telefono As String = "", Optional correo As String = "") As Cliente
-        Dim cliente As New Cliente(nombre, telefono, correo)
+        Dim cliente As New Cliente(1, nombre, telefono, correo)
 
         _contactos.Add(cliente)
 
@@ -33,4 +33,8 @@
         _contactos.Remove(cliente)
     End Sub
 
+    Public Sub Modificar(clienteModificado As Cliente)
+        _contactos.RemoveAll(Function(c) c.ConMismoIdQue(clienteModificado))
+        _contactos.Add(clienteModificado)
+    End Sub
 End Class
