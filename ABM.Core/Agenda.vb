@@ -20,4 +20,7 @@
         _contactos.Add(nombre)
     End Sub
 
+    Public Function Buscar(nombre As String) As Object
+        Return Nothing
+    End Function
 End Class
