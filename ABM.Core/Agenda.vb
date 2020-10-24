@@ -1,4 +1,6 @@
-﻿Public Class Agenda
+﻿Imports System.Linq
+
+Public Class Agenda
 
     Public Const CLIENT_IS_INVALID_EXCEPTION As String = "No se puede borrar un cliente invalido"
 
@@ -22,8 +24,8 @@
         Return cliente
     End Function
 
-    Public Function Buscar(nombre As String) As Cliente
-        Return _contactos.SingleOrDefault(Function(c) c.ConocidoComo(nombre))
+    Public Function Buscar(nombre As String) As List(Of Cliente)
+        Return _contactos.Where(Function(c) c.ConocidoComo(nombre)).ToList()
     End Function
 
     Public Sub Borrar(cliente As Cliente)
