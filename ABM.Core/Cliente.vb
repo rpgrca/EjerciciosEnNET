@@ -1,4 +1,5 @@
 ﻿Public Class Cliente
+    Implements IEquatable(Of Cliente)
 
     Public Const NAME_IS_INVALID_EXCEPTION As String = "El nombre del cliente es invalido"
 
@@ -42,5 +43,19 @@
 
     Public Function ConMismoIdQue(otroCliente As Cliente) As Boolean
         Return Id = otroCliente.Id
+    End Function
+
+    Public Overloads Function Equals(otroCliente As Cliente) As Boolean Implements IEquatable(Of Cliente).Equals
+        If otroCliente Is Nothing Then Return False
+        Return ConMismoIdQue(otroCliente)
+    End Function
+
+    Public Overrides Function Equals(obj As Object) As Boolean
+        If obj Is Nothing Then Return False
+        If TypeOf obj IsNot Cliente Then Return False
+
+        Dim otroCliente = CType(obj, Cliente)
+
+        Return Equals(otroCliente)
     End Function
 End Class

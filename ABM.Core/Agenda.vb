@@ -21,7 +21,7 @@ Public Class Agenda
         Dim cliente As New Cliente(_nextId, nombre, telefono, correo)
 
         _contactos.Add(cliente)
-        _nextId = _nextId + 1
+        _nextId += 1
 
         Return cliente
     End Function
