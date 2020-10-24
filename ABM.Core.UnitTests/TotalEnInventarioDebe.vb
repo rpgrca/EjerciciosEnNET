@@ -1,9 +1,7 @@
 ﻿Imports Xunit
+Imports ABM.Core.UnitTests.Constantes
 
 Public Class TotalEnInventarioDebe
-
-    Public Const LATA_DE_ARVEJAS As String = "Lata de arvejas Arcor"
-    Public Const LATA_DE_CERVEZA As String = "Lata de cerveza Quilmes"
 
     <Fact> Public Sub DevolverCero_CuandoSePideElTotalDeProductosDeUnInventarioVacio()
         Dim sut As Inventario = CreateSystemUnderTest()
