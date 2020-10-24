@@ -55,4 +55,16 @@ Public Class AgendaDebe
         Assert.Null(cliente)
     End Sub
 
+    <Fact> Public Sub Test1()
+        Dim sut As Agenda
+        Dim cliente As Cliente
+
+        sut = New Agenda()
+
+        sut.Agregar("Juan Perez")
+        cliente = sut.Buscar("Juan Perez")
+        Assert.NotNull(cliente)
+        Assert.Equal("Juan Perez", cliente.Nombre)
+    End Sub
+
 End Class

@@ -20,7 +20,11 @@
         _contactos.Add(nombre)
     End Sub
 
-    Public Function Buscar(nombre As String) As Object
+    Public Function Buscar(nombre As String) As Cliente
+        If _contactos.Count > 0 Then
+            Return New Cliente(nombre)
+        End If
+
         Return Nothing
     End Function
 End Class
