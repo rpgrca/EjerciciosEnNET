@@ -29,5 +29,7 @@
 
     Public Sub Borrar(producto As Producto)
         If producto Is Nothing Then Throw New ArgumentException(PRODUCT_IS_INVALID_EXCEPTION)
+
+        _productos.Remove(producto)
     End Sub
 End Class

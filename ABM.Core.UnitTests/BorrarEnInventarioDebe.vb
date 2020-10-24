@@ -1,4 +1,5 @@
 ﻿Imports Xunit
+Imports ABM.Core.UnitTests.Constantes
 
 Public Class BorrarEnInventarioDebe
 
@@ -14,5 +15,18 @@ Public Class BorrarEnInventarioDebe
     Private Function CreateSystemUnderTest() As Inventario
         Return New Inventario()
     End Function
+
+    <Fact>
+    Public Sub BorrarProducto_CuandoElProductoExisteEnLaAgenda()
+        Dim sut As Inventario = CreateSystemUnderTest()
+        Dim producto As Producto
+
+        producto = sut.Agregar(LATA_DE_ARVEJAS)
+
+        sut.Borrar(producto)
+        Assert.Equal(0, sut.Total)
+    End Sub
+
+
 
 End Class
