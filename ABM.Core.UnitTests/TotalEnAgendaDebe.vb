@@ -28,4 +28,5 @@ Public Class TotalEnAgendaDebe
 
         Assert.Equal(2, sut.Total)
     End Sub
+
 End Class

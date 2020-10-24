@@ -5,6 +5,7 @@ Public Class Agenda
     Public Const CLIENT_IS_INVALID_EXCEPTION As String = "No se puede borrar un cliente invalido"
 
     Private ReadOnly _contactos As List(Of Cliente)
+    Private _nextId As Integer = 0
 
     Public Sub New()
         _contactos = New List(Of Cliente)
@@ -17,9 +18,10 @@ Public Class Agenda
     End Property
 
     Public Function Agregar(nombre As String, Optional telefono As String = "", Optional correo As String = "") As Cliente
-        Dim cliente As New Cliente(1, nombre, telefono, correo)
+        Dim cliente As New Cliente(_nextId, nombre, telefono, correo)
 
         _contactos.Add(cliente)
+        _nextId = _nextId + 1
 
         Return cliente
     End Function
@@ -30,9 +32,9 @@ Public Class Agenda
 
     Public Sub Borrar(cliente As Cliente)
         If cliente Is Nothing Then Throw New ArgumentException(CLIENT_IS_INVALID_EXCEPTION)
-        If Not _contactos.Any(Function(c) c.Equals(cliente)) Then Throw New ArgumentException(CLIENT_IS_INVALID_EXCEPTION)
+        If Not _contactos.Any(Function(c) c.ConMismoIdQue(cliente)) Then Throw New ArgumentException(CLIENT_IS_INVALID_EXCEPTION)
 
-        _contactos.Remove(cliente)
+        _contactos.RemoveAll(Function(c) c.ConMismoIdQue(cliente))
     End Sub
 
     Public Sub Modificar(clienteModificado As Cliente)

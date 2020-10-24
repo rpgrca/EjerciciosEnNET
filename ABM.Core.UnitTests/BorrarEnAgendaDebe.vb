@@ -36,4 +36,17 @@ Public Class BorrarEnAgendaDebe
         Assert.Contains(Agenda.CLIENT_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
+    <Fact>
+    Public Sub BorrarUnCliente_CuandoSeCambiaLaReferenciaDelClienteABorrar()
+        Dim sut As New Agenda()
+        Dim cliente As Cliente
+
+        cliente = sut.Agregar(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ)
+        sut.Agregar(CLIENTE_JUAN_PEREZ)
+        cliente = cliente.CambiarCorreo(TELEFONO_DE_EDUARDO_PEREZ)
+
+        sut.Borrar(cliente)
+        Assert.Equal(1, sut.Total)
+    End Sub
+
 End Class
