@@ -28,12 +28,16 @@ Public Class AgendaDebe
         Assert.Equal(2, sut.Total)
     End Sub
 
-    <Fact> Public Sub Test1()
+    <Theory>
+    <InlineData("")>
+    <InlineData(Nothing)>
+    Public Sub LanzarExcepcion_CuandoSeIntentaAgregarUnClienteConNombreInvalido(nombreInvalido As String)
         Dim sut As Agenda
         Dim exception As Exception
 
         sut = New Agenda()
-        exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Agregar(""))
+
+        exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Agregar(nombreInvalido))
         Assert.Contains(Agenda.NAME_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
