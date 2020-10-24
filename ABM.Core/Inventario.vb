@@ -38,6 +38,6 @@
     End Sub
 
     Public Function Buscar(nombre As String) As List(Of Producto)
-        Return _productos
+        Return _productos.Where(Function(p) p.Nombrado(nombre)).ToList()
     End Function
 End Class

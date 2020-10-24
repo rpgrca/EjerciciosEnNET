@@ -13,7 +13,7 @@
     End Sub
 
     Public Function Nombrado(nombre As String) As Boolean
-        Return True
+        Return Me.Nombre = nombre
     End Function
 
     Public Function ConPrecio(precio As Decimal) As Boolean
