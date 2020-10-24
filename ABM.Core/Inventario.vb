@@ -5,9 +5,11 @@
     Public Const PRODUCT_IS_INVALID_EXCEPTION As String = "Producto inexistente"
 
     Private ReadOnly _productos As List(Of Producto)
+    Private _id As Integer
 
     Public Sub New()
         _productos = New List(Of Producto)
+        _id = 1
     End Sub
 
     Public ReadOnly Property Total As Integer
@@ -21,9 +23,10 @@
         If _productos.Any(Function(p) p.ConCodigo(codigo)) Then Throw New ArgumentException(CODE_IS_REPEATED_EXCEPTION)
 
         Dim producto As Producto
-        producto = New Producto(nombre, precio, codigo)
+        producto = New Producto(_id, nombre, precio, codigo)
         _productos.Add(producto)
 
+        _id += 1
         Return producto
     End Function
 
@@ -31,6 +34,6 @@
         If producto Is Nothing Then Throw New ArgumentException(PRODUCT_IS_INVALID_EXCEPTION)
         If Not _productos.Any(Function(p) p.ConMismoIdQue(producto)) Then Throw New ArgumentException(PRODUCT_IS_INVALID_EXCEPTION)
 
-        _productos.Remove(producto)
+        _productos.RemoveAll(Function(p) p.ConMismoIdQue(producto))
     End Sub
 End Class

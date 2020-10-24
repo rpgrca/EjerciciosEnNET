@@ -40,4 +40,17 @@ Public Class BorrarEnInventarioDebe
         Assert.Contains(Inventario.PRODUCT_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
+    <Fact>
+    Public Sub BorrarUnCliente_CuandoSeCambiaLaReferenciaDelClienteABorrar()
+        Dim sut As Inventario = CreateSystemUnderTest()
+        Dim producto As Producto
+
+        producto = sut.Agregar(LATA_DE_ARVEJAS, , CODIGO_DE_LATA_DE_ARVEJAS)
+        sut.Agregar(LATA_DE_ARVEJAS, , CODIGO_DE_LATA_DE_CERVEZA)
+        producto = producto.CambiarPrecio(PRECIO_UNITARIO_LATA_DE_CERVEZA)
+
+        sut.Borrar(producto)
+        Assert.Equal(1, sut.Total)
+    End Sub
+
 End Class
