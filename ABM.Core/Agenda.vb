@@ -21,7 +21,7 @@
     End Function
 
     Public Function Buscar(nombre As String) As Cliente
-        Return _contactos.SingleOrDefault(Function(o) o.Nombre = nombre)
+        Return _contactos.SingleOrDefault(Function(o) o.ConocidoComo(nombre))
     End Function
 
 End Class

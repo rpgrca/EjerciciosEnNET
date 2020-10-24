@@ -22,7 +22,7 @@ Public Class BuscarEnAgendaDebe
 
         cliente = sut.Buscar(Constantes.CLIENTE_JUAN_PEREZ)
         Assert.NotNull(cliente)
-        Assert.Equal(Constantes.CLIENTE_JUAN_PEREZ, cliente.Nombre)
+        Assert.True(cliente.ConocidoComo(Constantes.CLIENTE_JUAN_PEREZ))
     End Sub
 
     <Fact> Public Sub DevolverNothing_CuandoSeBuscaClienteInexistenteEnAgendaConContactos()
