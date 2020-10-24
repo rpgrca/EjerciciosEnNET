@@ -28,6 +28,8 @@
 
     Public Sub Borrar(cliente As Cliente)
         If cliente Is Nothing Then Throw New ArgumentException(CLIENT_IS_INVALID_EXCEPTION)
+        If Not _contactos.Any(Function(c) c.Equals(cliente)) Then Throw New ArgumentException(CLIENT_IS_INVALID_EXCEPTION)
+
         _contactos.Remove(cliente)
     End Sub
 End Class

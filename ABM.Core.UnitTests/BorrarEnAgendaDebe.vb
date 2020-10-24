@@ -18,9 +18,22 @@ Public Class BorrarEnAgendaDebe
         Dim cliente As Cliente
 
         cliente = sut.Agregar(CLIENTE_JUAN_PEREZ, TELEFONO, CORREO)
+
+        sut.Borrar(cliente)
+        Assert.Equal(0, sut.Total)
+    End Sub
+
+    <Fact>
+    Public Sub LanzarExcepcion_CuandoSeIntentaBorrarUnClienteQueNoExiste()
+        Dim sut As New Agenda()
+        Dim cliente As Cliente
+        Dim exception As Exception
+
+        cliente = sut.Agregar(CLIENTE_JUAN_PEREZ)
         sut.Borrar(cliente)
 
-        Assert.Equal(0, sut.Total)
+        exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Borrar(cliente))
+        Assert.Contains(Agenda.CLIENT_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
 End Class
