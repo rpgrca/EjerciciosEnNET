@@ -4,6 +4,7 @@ Public Class AgregarEnAgendaDebe
     <Theory>
     <InlineData("")>
     <InlineData(Nothing)>
+    <InlineData("    ")>
     Public Sub LanzarExcepcion_CuandoSeIntentaAgregarUnClienteConNombreInvalido(nombreInvalido As String)
         Dim sut As New Agenda()
         Dim exception As Exception

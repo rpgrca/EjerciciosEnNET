@@ -6,7 +6,7 @@
     Private ReadOnly Property Correo As String
 
     Public Sub New(nombre As String, telefono As String, correo As String)
-        If nombre = String.Empty Then Throw New ArgumentException(NAME_IS_INVALID_EXCEPTION)
+        If String.IsNullOrWhiteSpace(nombre) Then Throw New ArgumentException(NAME_IS_INVALID_EXCEPTION)
 
         Me.Nombre = nombre
         Me.Telefono = telefono
