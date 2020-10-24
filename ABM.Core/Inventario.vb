@@ -2,6 +2,7 @@
 
     Public Const NAME_IS_INVALID_EXCEPTION As String = "Nombre de producto inválido"
     Public Const CODE_IS_REPEATED_EXCEPTION As String = "Codigo repetido"
+    Public Const PRODUCT_IS_INVALID_EXCEPTION As String = "Producto inexistente"
 
     Private ReadOnly _productos As List(Of Producto)
 
@@ -26,4 +27,7 @@
         Return producto
     End Function
 
+    Public Sub Borrar(producto As Producto)
+        If producto Is Nothing Then Throw New ArgumentException(PRODUCT_IS_INVALID_EXCEPTION)
+    End Sub
 End Class

@@ -87,6 +87,7 @@
     <Compile Include="AgregarEnAgendaDebe.vb" />
     <Compile Include="AgregarEnInventarioDebe.vb" />
     <Compile Include="BorrarEnAgendaDebe.vb" />
+    <Compile Include="BorrarEnInventarioDebe.vb" />
     <Compile Include="BuscarEnAgendaDebe.vb" />
     <Compile Include="ClienteDebe.vb" />
     <Compile Include="Constantes.vb" />
