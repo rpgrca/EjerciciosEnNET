@@ -18,24 +18,33 @@ Public Class AgendaDebe
         Assert.Equal(1, sut.Total)
     End Sub
 
+    <Fact> Public Sub DevolverTotal_CuandoSePideElTotalDeContactosConVariosContactos()
+        Dim sut As Agenda
+
+        sut = New Agenda()
+        sut.Agregar("Juan Perez")
+        sut.Agregar("Eduardo Perez")
+
+        Assert.Equal(2, sut.Total)
+    End Sub
 End Class
 
 Public Class Agenda
 
-    Private _agregado As Boolean
+    Private ReadOnly _contactos As List(Of Object)
+
+    Public Sub New()
+        _contactos = New List(Of Object)
+    End Sub
 
     Public ReadOnly Property Total As Integer
         Get
-            If _agregado Then
-                Return 1
-            End If
-
-            Return 0
+            Return _contactos.Count
         End Get
     End Property
 
     Public Sub Agregar(nombre As String)
-        _agregado = True
+        _contactos.Add(nombre)
     End Sub
 
 End Class
