@@ -24,7 +24,7 @@ jobs:
         run: msbuild ABM\ABM.sln
 
       - name: Setup VSTest.exe
-        run: Malcolmnixon/Setup-VSTest@v3
+        uses: Malcolmnixon/Setup-VSTest@v3
 
       - name: Testing ABM
         run: vstest.console.exe ABM\ABM.Core.UnitTests\bin\Debug\ABM.Core.UnitTests.dll
