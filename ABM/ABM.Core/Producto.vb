@@ -44,8 +44,14 @@
         Return De(Id, nuevoNombre, Precio, Codigo)
     End Function
 
-    Public Function CambiarCodigo(nuevoCodigo As String) As Producto
-        Return De(Id, Nombre, Precio, nuevoCodigo)
+    Friend Function CambiarCodigo(nuevoCodigo As String, inventario As Inventario) As Producto
+        Dim nuevoProducto = De(Id, Nombre, Precio, nuevoCodigo)
+
+        If inventario.Filtrar(, nuevoCodigo).Count > 0 Then
+            Throw New ArgumentException(Inventario.CODE_IS_REPEATED_EXCEPTION)
+        End If
+
+        Return nuevoProducto
     End Function
 
     Public Function PrecioPor(cantidad As Integer) As Decimal

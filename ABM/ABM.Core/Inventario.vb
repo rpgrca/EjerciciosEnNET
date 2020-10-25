@@ -42,8 +42,20 @@
         Return _productos.Where(Function(p) p.Nombrado(nombre)).ToList()
     End Function
 
+    Public Function Filtrar(Optional nombre As String = "", Optional codigo As String = "") As List(Of Producto)
+        Return _productos.Where(Function(p)
+                                    Return (String.IsNullOrWhiteSpace(nombre) Or p.Nombrado(nombre)) And
+                                           (String.IsNullOrWhiteSpace(codigo) Or p.ConCodigo(codigo))
+                                End Function
+                                ).ToList()
+    End Function
+
     Public Sub Modificar(producto As Producto)
         _productos.Remove(producto)
         _productos.Add(producto)
     End Sub
+
+    Public Function CambiarCodigoDe(producto As Producto, nuevoCodigo As String) As Producto
+        Return producto.CambiarCodigo(nuevoCodigo, Me)
+    End Function
 End Class
