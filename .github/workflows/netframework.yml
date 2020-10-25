@@ -1,0 +1,24 @@
+name: Build NET Framework
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: nuget restore ABM\ABM.sln
+      
+      - name: Build Debug
+        run: msbuild ABM\ABM.sln
+
+      - name: Testing ABM
+        run: vstest.console.exe ABM\ABM.Core.UnitTests\bin\Debug\ABM.Core.UnitTests.dll
