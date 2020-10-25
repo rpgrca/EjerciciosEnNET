@@ -19,9 +19,6 @@ jobs:
         with:
           dotnet-version: 3.0.100
 
-      - name: Install dependencies
-        run: dotnet restore
-
       - name: Install tools
         run: dotnet tool install --global coverlet.console
 
