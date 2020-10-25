@@ -1,4 +1,4 @@
-name: Build NET Core
+name: Build NET Framework/Core
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -19,11 +19,20 @@ jobs:
       with:
         dotnet-version: 3.0.100
 
-    - name: Install dependencies
+    - name: Install Core dependencies
       run: dotnet restore
 
-    - name: Install tools
+    - name: Install Framework dependencies
+      run: nuget restore ABM\ABM.sln
+      
+    - name: Install Coverlet
       run: dotnet tool install --global coverlet.console
+
+    - name: Install Codecov
+      run: dotnet tool install --global Codecov.Tool
+
+    - name: Setup VSTest.exe
+      uses: Malcolmnixon/Setup-VSTest@v3
 
     - name: Build Release
       run: dotnet build --configuration Release --no-restore
@@ -31,11 +40,20 @@ jobs:
     - name: Build Debug
       run: dotnet build --configuration Debug --no-restore
 
+    - name: Setup .NET Framework
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Build Debug
+      run: msbuild ABM\ABM.sln
+
     - name: Testing Palindromo
       run: coverlet Palindromo/Palindromo.UnitTests/bin/Debug/netcoreapp3.0/Palindromo.UnitTests.dll --target "dotnet" --targetargs "test Palindromo/Palindromo.UnitTests/Palindromo.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output palindromo.coverage.xml
 
     - name: Testing Anaconda
       run: coverlet Anaconda/Anaconda.UnitTests/bin/Debug/netcoreapp3.0/Anaconda.UnitTests.dll --target "dotnet" --targetargs "test Anaconda/Anaconda.UnitTests/Anaconda.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output anaconda.coverage.xml
 
+    - name: Testing ABM
+      run: coverlet ABM\ABM.Core.UnitTests\bin\Debug\ABM.Core.UnitTests.dll --target "vstest.console.exe" --targetargs "ABM\ABM.Core.UnitTests\bin\Debug\ABM.Core.UnitTests.dll" --format OpenCover --output abm.coverage.xml --exclude-by-file "**/My Project/*"
+
     - name: Upload
-      run: bash <(curl -s https://codecov.io/bash)
+      run: codecov -f *.coverage.xml -t ${{ secrets.CODECOV_TOKEN }}
