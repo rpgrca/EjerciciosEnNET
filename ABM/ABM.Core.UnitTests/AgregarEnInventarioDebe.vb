@@ -49,4 +49,13 @@ Public Class AgregarEnInventarioDebe
         Assert.Equal(Inventario.CODE_IS_REPEATED_EXCEPTION, exception.Message)
     End Sub
 
+    <Fact> Public Sub LanzarExcepcion_CuandoSeIntentaAgregarProductoConPrecioNegativo()
+        Dim sut As Inventario = CreateSystemUnderTest()
+        Dim exception As Exception
+
+        exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Agregar(LATA_DE_ARVEJAS, -1, CODIGO_DE_LATA_DE_ARVEJAS))
+        Assert.Equal(Inventario.PRICE_IS_INVALID_EXCEPTION, exception.Message)
+
+    End Sub
+
 End Class

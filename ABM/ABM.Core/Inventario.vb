@@ -3,6 +3,7 @@
     Public Const NAME_IS_INVALID_EXCEPTION As String = "Nombre de producto inválido"
     Public Const CODE_IS_REPEATED_EXCEPTION As String = "Codigo repetido"
     Public Const PRODUCT_IS_INVALID_EXCEPTION As String = "Producto inexistente"
+    Public Const PRICE_IS_INVALID_EXCEPTION As String = "El precio es invalido"
 
     Private ReadOnly _productos As List(Of Producto)
     Private _id As Integer
@@ -19,7 +20,6 @@
     End Property
 
     Public Function Agregar(nombre As String, Optional precio As Decimal = 0, Optional codigo As String = "") As Producto
-        If String.IsNullOrWhiteSpace(nombre) Then Throw New ArgumentException(NAME_IS_INVALID_EXCEPTION)
         If _productos.Any(Function(p) p.ConCodigo(codigo)) Then Throw New ArgumentException(CODE_IS_REPEATED_EXCEPTION)
 
         Dim producto As Producto

@@ -6,6 +6,9 @@
     Private Property Codigo As String
 
     Public Sub New(id As Integer, nombre As String, precio As Decimal, codigo As String)
+        If String.IsNullOrWhiteSpace(nombre) Then Throw New ArgumentException(Inventario.NAME_IS_INVALID_EXCEPTION)
+        If precio < 0 Then Throw New ArgumentException(Inventario.PRICE_IS_INVALID_EXCEPTION)
+
         Me.Id = id
         Me.Nombre = nombre
         Me.Precio = precio
