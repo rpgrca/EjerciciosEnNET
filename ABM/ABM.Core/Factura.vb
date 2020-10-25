@@ -32,8 +32,6 @@
     End Property
 
     Public Sub Agregar(producto As Producto, unidades As Integer)
-        If producto Is Nothing Then Throw New ArgumentException(PRODUCT_IS_INVALID_EXCEPTION)
-
         Dim detalle As Detalle = Detalle.Para(producto, unidades)
 
         _detalles.Add(detalle)

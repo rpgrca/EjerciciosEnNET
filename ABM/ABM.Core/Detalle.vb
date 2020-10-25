@@ -1,4 +1,4 @@
-﻿Public Class Detalle
+﻿Friend Class Detalle
 
     Private ReadOnly _producto As Producto
     Private ReadOnly _unidades As Integer
@@ -8,11 +8,13 @@
     End Function
 
     Private Sub New(producto As Producto, unidades As Integer)
+        If producto Is Nothing Then Throw New ArgumentException(Factura.PRODUCT_IS_INVALID_EXCEPTION)
+
         _producto = producto
         _unidades = unidades
     End Sub
 
-    Public ReadOnly Property SubTotal
+    Friend ReadOnly Property SubTotal
         Get
             Return _producto.PrecioPor(_unidades)
         End Get
