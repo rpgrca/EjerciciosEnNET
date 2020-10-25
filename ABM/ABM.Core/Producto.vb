@@ -35,4 +35,8 @@
     Public Function CambiarNombre(nuevoNombre As String) As Producto
         Return New Producto(Id, nuevoNombre, Precio, Codigo)
     End Function
+
+    Public Function PrecioPor(cantidad As Integer) As Decimal
+        Return Me.Precio * cantidad
+    End Function
 End Class

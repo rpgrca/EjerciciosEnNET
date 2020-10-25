@@ -59,12 +59,24 @@ Public Class FacturaDebe
         Dim cliente As Cliente = agenda.Agregar(CLIENTE_JUAN_PEREZ)
         Dim inventario As New Inventario()
         Dim producto As Producto = inventario.Agregar(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS)
-        Dim sut As Factura
+        Dim sut As New Factura(cliente, FECHA_DE_VENTA)
 
-        sut = New Factura(cliente, FECHA_DE_VENTA)
-        sut.Agregar(producto, CANTIDAD_COMPRA_LATA_DE_ARVEJAS)
-
+        sut.Agregar(producto, CANTIDAD_COMPRA_LATAS_DE_ARVEJAS)
         Assert.Equal(TOTAL_LATAS_DE_ARVEJAS, sut.Total)
+    End Sub
+
+    <Fact> Public Sub DevolverTotalCorrecto_CuandoSeAgreganVariosDetalles()
+        Dim agenda As New Agenda()
+        Dim cliente As Cliente = agenda.Agregar(CLIENTE_JUAN_PEREZ)
+        Dim inventario As New Inventario()
+        Dim producto As Producto = inventario.Agregar(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
+        Dim otroProducto As Producto = inventario.Agregar(LATA_DE_CERVEZA, PRECIO_UNITARIO_LATA_DE_CERVEZA)
+        Dim sut As New Factura(cliente, FECHA_DE_VENTA)
+
+        sut.Agregar(producto, CANTIDAD_COMPRA_LATAS_DE_ARVEJAS)
+        sut.Agregar(otroProducto, CANTIDAD_COMPRA_LATAS_DE_CERVEZA)
+
+        Assert.Equal(TOTAL_LATAS_DE_ARVEJAS_Y_CERVEZA, sut.Total)
     End Sub
 
 End Class

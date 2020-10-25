@@ -4,12 +4,13 @@
 
     Private ReadOnly _comprador As Cliente
     Private ReadOnly _fecha As Date
-    Private _productoAgregado As Boolean = False
+    Private ReadOnly _detalles As List(Of Detalle)
 
     Public Sub New(comprador As Cliente, fecha As Date)
         If comprador Is Nothing Then Throw New ArgumentException(CLIENT_IS_INVALID_EXCEPTION)
         If fecha = Date.MinValue Then Throw New ArgumentException(DATE_IS_INVALID_EXCEPTION)
 
+        _detalles = New List(Of Detalle)
         _comprador = comprador
         _fecha = fecha
     End Sub
@@ -22,15 +23,31 @@
         Return _fecha = fecha
     End Function
 
-    Public Function Total() As Integer
-        If _productoAgregado Then
-            Return 270
-        End If
-
-        Return 0
-    End Function
+    Public ReadOnly Property Total As Decimal
+        Get
+            Return _detalles.Sum(Function(d) d.SubTotal)
+        End Get
+    End Property
 
     Public Sub Agregar(producto As Producto, unidades As Integer)
-        _productoAgregado = True
+        Dim detalle As New Detalle(producto, unidades)
+
+        _detalles.Add(detalle)
     End Sub
+End Class
+
+Public Class Detalle
+    Private ReadOnly _producto As Producto
+    Private ReadOnly _unidades As Integer
+
+    Public Sub New(producto As Producto, unidades As Integer)
+        _producto = producto
+        _unidades = unidades
+    End Sub
+
+    Public ReadOnly Property SubTotal
+        Get
+            Return _producto.PrecioPor(_unidades)
+        End Get
+    End Property
 End Class
