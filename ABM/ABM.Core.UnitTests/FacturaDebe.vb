@@ -2,17 +2,18 @@
 Imports ABM.Core.UnitTests.Constantes
 
 Public Class FacturaDebe
-    Private Const FECHA_VENTA As Date = #2020/12/13#
+    Private Const FECHA_DE_VENTA As Date = #2020/12/13#
+    Private Const OTRA_FECHA_DE_VENTA As Date = #2010/12/13#
 
     <Fact> Public Sub RetornarFacturaConDatos_CuandoSeCreaUnaFacturaAlClienteYEnUnaFecha()
         Dim clientes As New Agenda()
         Dim cliente As Cliente = clientes.Agregar(CLIENTE_JUAN_PEREZ)
         Dim sut As Factura
 
-        sut = New Factura(cliente, FECHA_VENTA)
+        sut = New Factura(cliente, FECHA_DE_VENTA)
 
         Assert.True(sut.HechaA(cliente))
-        Assert.True(sut.HechaEl(FECHA_VENTA))
+        Assert.True(sut.HechaEl(FECHA_DE_VENTA))
         Assert.Equal(0, sut.Total)
     End Sub
 
@@ -20,7 +21,7 @@ Public Class FacturaDebe
         Dim sut As Factura
         Dim exception As Exception
 
-        exception = Assert.Throws(GetType(ArgumentException), Sub() sut = New Factura(Nothing, FECHA_VENTA))
+        exception = Assert.Throws(GetType(ArgumentException), Sub() sut = New Factura(Nothing, FECHA_DE_VENTA))
         Assert.Equal(Factura.CLIENT_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
@@ -40,8 +41,17 @@ Public Class FacturaDebe
         Dim otroCliente As Cliente = clientes.Agregar(CLIENTE_EDUARDO_PEREZ)
         Dim sut As Factura
 
-        sut = New Factura(cliente, FECHA_VENTA)
+        sut = New Factura(cliente, FECHA_DE_VENTA)
         Assert.False(sut.HechaA(otroCliente))
+    End Sub
+
+    <Fact> Public Sub RetornarFalse_CuandoSePreguntaSiFacturaEsDeOtraFecha()
+        Dim clientes As New Agenda()
+        Dim cliente As Cliente = clientes.Agregar(CLIENTE_JUAN_PEREZ)
+        Dim sut As Factura
+
+        sut = New Factura(cliente, FECHA_DE_VENTA)
+        Assert.False(sut.HechaEl(OTRA_FECHA_DE_VENTA))
     End Sub
 
 End Class
