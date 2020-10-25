@@ -24,4 +24,14 @@ Public Class FacturaDebe
         Assert.Equal(Factura.CLIENT_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
+    <Fact> Public Sub LanzarExcepcion_AlCrearUnaFacturaConFechaInvalida()
+        Dim clientes As New Agenda()
+        Dim cliente As Cliente = clientes.Agregar(CLIENTE_JUAN_PEREZ)
+        Dim sut As Factura
+        Dim exception As Exception
+
+        exception = Assert.Throws(GetType(ArgumentException), Sub() sut = New Factura(cliente, Date.MinValue))
+        Assert.Equal(Factura.DATE_IS_INVALID_EXCEPTION, exception.Message)
+    End Sub
+
 End Class
