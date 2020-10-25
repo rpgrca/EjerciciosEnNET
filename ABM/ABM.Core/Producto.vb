@@ -5,7 +5,11 @@
     Private Property Precio As Decimal
     Private Property Codigo As String
 
-    Public Sub New(id As Integer, nombre As String, precio As Decimal, codigo As String)
+    Friend Shared Function De(id As Integer, nombre As String, precio As Decimal, codigo As String) As Producto
+        Return New Producto(id, nombre, precio, codigo)
+    End Function
+
+    Private Sub New(id As Integer, nombre As String, precio As Decimal, codigo As String)
         If String.IsNullOrWhiteSpace(nombre) Then Throw New ArgumentException(Inventario.NAME_IS_INVALID_EXCEPTION)
         If precio < 0 Then Throw New ArgumentException(Inventario.PRICE_IS_INVALID_EXCEPTION)
         If String.IsNullOrWhiteSpace(codigo) Then Throw New ArgumentException(Inventario.CODE_IS_INVALID_EXCEPTION)
@@ -28,7 +32,7 @@
         Return Me.Codigo = codigo
     End Function
 
-    Public Function ConMismoIdQue(otroProducto As Producto) As Boolean
+    Friend Function ConMismoIdQue(otroProducto As Producto) As Boolean
         Return Id = otroProducto.Id
     End Function
 
@@ -41,6 +45,6 @@
     End Function
 
     Public Function PrecioPor(cantidad As Integer) As Decimal
-        Return Me.Precio * cantidad
+        Return Precio * cantidad
     End Function
 End Class

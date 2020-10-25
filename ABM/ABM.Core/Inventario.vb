@@ -24,8 +24,7 @@
     Public Function Agregar(nombre As String, Optional precio As Decimal = 0, Optional codigo As String = DEFAULT_CODE) As Producto
         If _productos.Any(Function(p) p.ConCodigo(codigo)) Then Throw New ArgumentException(CODE_IS_REPEATED_EXCEPTION)
 
-        Dim producto As Producto
-        producto = New Producto(_id, nombre, precio, codigo)
+        Dim producto As Producto = Producto.De(_id, nombre, precio, codigo)
         _productos.Add(producto)
 
         _id += 1
