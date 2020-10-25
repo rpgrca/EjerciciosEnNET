@@ -5,7 +5,7 @@ Public Class FacturaDebe
     Private Const FECHA_DE_VENTA As Date = #2020/12/13#
     Private Const OTRA_FECHA_DE_VENTA As Date = #2010/12/13#
 
-    <Fact> Public Sub RetornarFacturaConDatos_CuandoSeCreaUnaFacturaAlClienteYEnUnaFecha()
+    <Fact> Public Sub DevolverFacturaConDatos_CuandoSeCreaUnaFacturaAlClienteYEnUnaFecha()
         Dim clientes As New Agenda()
         Dim cliente As Cliente = clientes.Agregar(CLIENTE_JUAN_PEREZ)
         Dim sut As Factura
@@ -35,7 +35,7 @@ Public Class FacturaDebe
         Assert.Equal(Factura.DATE_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
-    <Fact> Public Sub RetornarFalse_CuandoSePreguntaSiFacturaPerteneceAOtroComprador()
+    <Fact> Public Sub DevolverFalse_CuandoSePreguntaSiFacturaPerteneceAOtroComprador()
         Dim clientes As New Agenda()
         Dim cliente As Cliente = clientes.Agregar(CLIENTE_JUAN_PEREZ)
         Dim otroCliente As Cliente = clientes.Agregar(CLIENTE_EDUARDO_PEREZ)
@@ -45,7 +45,7 @@ Public Class FacturaDebe
         Assert.False(sut.HechaA(otroCliente))
     End Sub
 
-    <Fact> Public Sub RetornarFalse_CuandoSePreguntaSiFacturaEsDeOtraFecha()
+    <Fact> Public Sub DevolverFalse_CuandoSePreguntaSiFacturaEsDeOtraFecha()
         Dim clientes As New Agenda()
         Dim cliente As Cliente = clientes.Agregar(CLIENTE_JUAN_PEREZ)
         Dim sut As Factura
