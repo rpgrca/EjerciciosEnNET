@@ -25,7 +25,7 @@
     End Function
 
     Public Function ConPrecio(precio As Decimal) As Boolean
-        Return True
+        Return Me.Precio = precio
     End Function
 
     Public Function ConCodigo(codigo As String) As Boolean
