@@ -34,4 +34,14 @@ Public Class FacturaDebe
         Assert.Equal(Factura.DATE_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
+    <Fact> Public Sub RetornarFalse_CuandoSePreguntaSiFacturaPerteneceAOtroComprador()
+        Dim clientes As New Agenda()
+        Dim cliente As Cliente = clientes.Agregar(CLIENTE_JUAN_PEREZ)
+        Dim otroCliente As Cliente = clientes.Agregar(CLIENTE_EDUARDO_PEREZ)
+        Dim sut As Factura
+
+        sut = New Factura(cliente, FECHA_VENTA)
+        Assert.False(sut.HechaA(otroCliente))
+    End Sub
+
 End Class
