@@ -14,6 +14,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Setup .NET Core for Coverlet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.0.100
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Install tools
+        run: dotnet tool install --global coverlet.console
+
       - name: Setup .NET Framework
         uses: microsoft/setup-msbuild@v1.0.2
 
