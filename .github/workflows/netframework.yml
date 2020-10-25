@@ -27,5 +27,7 @@ jobs:
         uses: Malcolmnixon/Setup-VSTest@v3
 
       - name: Testing ABM
-        run: vstest.console.exe ABM\ABM.Core.UnitTests\bin\Debug\ABM.Core.UnitTests.dll
+        run: coverlet ABM\ABM.Core.UnitTests\bin\Debug\ABM.Core.UnitTests.dll --target "vstest.console.exe" --targetargs "ABM\ABM.Core.UnitTests\bin\Debug\ABM.Core.UnitTests.dll" --format OpenCover --output abm.coverage.xml --exclude-by-file "**/My Project/*"
 
+      - name: Upload
+        run: bash <(curl -s https://codecov.io/bash)
