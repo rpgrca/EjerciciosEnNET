@@ -89,4 +89,19 @@ Public Class FacturaDebe
         Assert.Equal(Factura.PRODUCT_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
+    <Theory>
+    <InlineData(-1)>
+    <InlineData(0)>
+    Public Sub LanzarExcepcion_CuandoSeAgregaUnaCantidadInvalidaALaFactura(cantidadInvalida As Integer)
+        Dim agenda As New Agenda()
+        Dim cliente As Cliente = agenda.Agregar(CLIENTE_JUAN_PEREZ)
+        Dim inventario As New Inventario()
+        Dim producto As Producto = inventario.Agregar(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
+        Dim sut As New Factura(cliente, FECHA_DE_VENTA)
+        Dim exception As Exception
+
+        exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Agregar(producto, cantidadInvalida))
+        Assert.Equal(Factura.QUANTITY_IS_INVALID_EXCEPTION, exception.Message)
+    End Sub
+
 End Class

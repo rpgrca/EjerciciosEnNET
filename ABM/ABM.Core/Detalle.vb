@@ -9,6 +9,7 @@
 
     Private Sub New(producto As Producto, unidades As Integer)
         If producto Is Nothing Then Throw New ArgumentException(Factura.PRODUCT_IS_INVALID_EXCEPTION)
+        If unidades <= 0 Then Throw New ArgumentException(Factura.QUANTITY_IS_INVALID_EXCEPTION)
 
         _producto = producto
         _unidades = unidades
