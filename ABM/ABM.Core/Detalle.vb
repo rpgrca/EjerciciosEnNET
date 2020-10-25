@@ -3,7 +3,11 @@
     Private ReadOnly _producto As Producto
     Private ReadOnly _unidades As Integer
 
-    Public Sub New(producto As Producto, unidades As Integer)
+    Friend Shared Function Para(producto As Producto, unidades As Integer) As Detalle
+        Return New Detalle(producto, unidades)
+    End Function
+
+    Private Sub New(producto As Producto, unidades As Integer)
         _producto = producto
         _unidades = unidades
     End Sub

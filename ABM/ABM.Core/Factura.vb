@@ -2,6 +2,7 @@
 
     Public Const CLIENT_IS_INVALID_EXCEPTION As String = "El cliente no puede estar vacio"
     Public Const DATE_IS_INVALID_EXCEPTION As String = "La fecha no puede estar vacia"
+    Public Const PRODUCT_IS_INVALID_EXCEPTION As String = "El producto es invalido"
 
     Private ReadOnly _comprador As Cliente
     Private ReadOnly _fecha As Date
@@ -31,7 +32,9 @@
     End Property
 
     Public Sub Agregar(producto As Producto, unidades As Integer)
-        Dim detalle As New Detalle(producto, unidades)
+        If producto Is Nothing Then Throw New ArgumentException(PRODUCT_IS_INVALID_EXCEPTION)
+
+        Dim detalle As Detalle = Detalle.Para(producto, unidades)
 
         _detalles.Add(detalle)
     End Sub

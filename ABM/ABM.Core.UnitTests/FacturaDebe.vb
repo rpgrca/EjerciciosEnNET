@@ -79,4 +79,14 @@ Public Class FacturaDebe
         Assert.Equal(TOTAL_LATAS_DE_ARVEJAS_Y_CERVEZA, sut.Total)
     End Sub
 
+    <Fact> Public Sub LanzarExcepcion_CuandoSeAgregaUnProductoNuloALaFactura()
+        Dim agenda As New Agenda()
+        Dim cliente As Cliente = agenda.Agregar(CLIENTE_JUAN_PEREZ)
+        Dim sut As New Factura(cliente, FECHA_DE_VENTA)
+        Dim exception As Exception
+
+        exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Agregar(Nothing, CANTIDAD_COMPRA_LATAS_DE_CERVEZA))
+        Assert.Equal(Factura.PRODUCT_IS_INVALID_EXCEPTION, exception.Message)
+    End Sub
+
 End Class
