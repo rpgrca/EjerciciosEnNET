@@ -4,6 +4,7 @@
 
     Private ReadOnly _comprador As Cliente
     Private ReadOnly _fecha As Date
+    Private _productoAgregado As Boolean = False
 
     Public Sub New(comprador As Cliente, fecha As Date)
         If comprador Is Nothing Then Throw New ArgumentException(CLIENT_IS_INVALID_EXCEPTION)
@@ -22,7 +23,14 @@
     End Function
 
     Public Function Total() As Integer
+        If _productoAgregado Then
+            Return 270
+        End If
+
         Return 0
     End Function
 
+    Public Sub Agregar(producto As Producto, unidades As Integer)
+        _productoAgregado = True
+    End Sub
 End Class

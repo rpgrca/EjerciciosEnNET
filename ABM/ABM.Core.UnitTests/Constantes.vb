@@ -13,6 +13,8 @@
     Public Const LATA_DE_ARVEJAS As String = "Lata de arvejas Arcor"
     Public Const PRECIO_UNITARIO_LATA_DE_ARVEJAS As Decimal = 45
     Public Const CODIGO_DE_LATA_DE_ARVEJAS As String = "LATARJ1"
+    Public Const CANTIDAD_COMPRA_LATA_DE_ARVEJAS As Integer = 6
+    Public Const TOTAL_LATAS_DE_ARVEJAS As Decimal = PRECIO_UNITARIO_LATA_DE_ARVEJAS * CANTIDAD_COMPRA_LATA_DE_ARVEJAS
 
     Public Const LATA_DE_CERVEZA As String = "Lata de cerveza Quilmes"
     Public Const PRECIO_UNITARIO_LATA_DE_CERVEZA As Decimal = 75

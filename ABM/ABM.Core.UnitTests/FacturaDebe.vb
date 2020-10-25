@@ -54,4 +54,17 @@ Public Class FacturaDebe
         Assert.False(sut.HechaEl(OTRA_FECHA_DE_VENTA))
     End Sub
 
+    <Fact> Public Sub DevolverTotalCorrecto_CuandoSeAgregaUnDetalle()
+        Dim agenda As New Agenda()
+        Dim cliente As Cliente = agenda.Agregar(CLIENTE_JUAN_PEREZ)
+        Dim inventario As New Inventario()
+        Dim producto As Producto = inventario.Agregar(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS)
+        Dim sut As Factura
+
+        sut = New Factura(cliente, FECHA_DE_VENTA)
+        sut.Agregar(producto, CANTIDAD_COMPRA_LATA_DE_ARVEJAS)
+
+        Assert.Equal(TOTAL_LATAS_DE_ARVEJAS, sut.Total)
+    End Sub
+
 End Class
