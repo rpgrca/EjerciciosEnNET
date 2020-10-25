@@ -40,4 +40,21 @@ Public Class BuscarEnInventarioDebe
         Assert.Empty(productos)
     End Sub
 
+    <Fact> Public Sub EncontrarAlProducto_CuandoSeLoRenombraYSeLoModifica()
+        Dim sut As Inventario = CreateSystemUnderTest()
+        Dim producto As Producto
+        Dim productos As List(Of Producto)
+
+        producto = sut.Agregar(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
+        producto = producto.CambiarNombre(LATA_DE_CERVEZA)
+        sut.Modificar(producto)
+
+        productos = sut.Buscar(LATA_DE_CERVEZA)
+
+        Assert.Single(productos)
+        Assert.True(productos(0).Nombrado(LATA_DE_CERVEZA))
+        Assert.True(productos(0).ConPrecio(PRECIO_UNITARIO_LATA_DE_ARVEJAS))
+        Assert.True(productos(0).ConCodigo(CODIGO_DE_LATA_DE_ARVEJAS))
+    End Sub
+
 End Class

@@ -40,4 +40,9 @@
     Public Function Buscar(nombre As String) As List(Of Producto)
         Return _productos.Where(Function(p) p.Nombrado(nombre)).ToList()
     End Function
+
+    Public Sub Modificar(producto As Producto)
+        _productos.Remove(producto)
+        _productos.Add(producto)
+    End Sub
 End Class
