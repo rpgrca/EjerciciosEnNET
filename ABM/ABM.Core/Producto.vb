@@ -37,14 +37,19 @@
     End Function
 
     Public Function CambiarPrecio(nuevoPrecio As Decimal) As Producto
-        Return New Producto(Id, Nombre, nuevoPrecio, Codigo)
+        Return De(Id, Nombre, nuevoPrecio, Codigo)
     End Function
 
     Public Function CambiarNombre(nuevoNombre As String) As Producto
-        Return New Producto(Id, nuevoNombre, Precio, Codigo)
+        Return De(Id, nuevoNombre, Precio, Codigo)
+    End Function
+
+    Public Function CambiarCodigo(nuevoCodigo As String) As Producto
+        Return De(Id, Nombre, Precio, nuevoCodigo)
     End Function
 
     Public Function PrecioPor(cantidad As Integer) As Decimal
         Return Precio * cantidad
     End Function
+
 End Class
