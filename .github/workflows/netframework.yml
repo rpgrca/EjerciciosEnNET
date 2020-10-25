@@ -24,4 +24,4 @@ jobs:
         run: msbuild ABM\ABM.sln
 
       - name: Testing ABM
-        run: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\IDE\\CommonExtensions\\Microsoft\\TestWindow\\vstest.console.exe" ABM\ABM.Core.UnitTests\bin\Debug\ABM.Core.UnitTests.dll
+        run: "C:/Program Files (x86)/Microsoft Visual Studio/2017/Enterprise/Common7/IDE/CommonExtensions/Microsoft/TestWindow/vstest.console.exe" ABM\ABM.Core.UnitTests\bin\Debug\ABM.Core.UnitTests.dll
