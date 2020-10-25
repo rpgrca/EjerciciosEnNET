@@ -18,7 +18,7 @@ Public Class Agenda
     End Property
 
     Public Function Agregar(nombre As String, Optional telefono As String = "", Optional correo As String = "") As Cliente
-        Dim cliente As New Cliente(_nextId, nombre, telefono, correo)
+        Dim cliente As Cliente = Cliente.CreadoComo(_nextId, nombre, telefono, correo)
 
         _contactos.Add(cliente)
         _nextId += 1

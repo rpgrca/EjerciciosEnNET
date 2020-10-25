@@ -19,9 +19,8 @@ Public Class FacturaDebe
 
     <Fact> Public Sub LanzarExcepcion_AlCrearUnaFacturaSinCliente()
         Dim sut As Factura
-        Dim exception As Exception
 
-        exception = Assert.Throws(GetType(ArgumentException), Sub() sut = New Factura(Nothing, FECHA_DE_VENTA))
+        Dim exception = Assert.Throws(GetType(ArgumentException), Sub() sut = New Factura(Nothing, FECHA_DE_VENTA))
         Assert.Equal(Factura.CLIENT_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
@@ -29,9 +28,8 @@ Public Class FacturaDebe
         Dim clientes As New Agenda()
         Dim cliente As Cliente = clientes.Agregar(CLIENTE_JUAN_PEREZ)
         Dim sut As Factura
-        Dim exception As Exception
 
-        exception = Assert.Throws(GetType(ArgumentException), Sub() sut = New Factura(cliente, Date.MinValue))
+        Dim exception = Assert.Throws(GetType(ArgumentException), Sub() sut = New Factura(cliente, Date.MinValue))
         Assert.Equal(Factura.DATE_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
@@ -83,9 +81,8 @@ Public Class FacturaDebe
         Dim agenda As New Agenda()
         Dim cliente As Cliente = agenda.Agregar(CLIENTE_JUAN_PEREZ)
         Dim sut As New Factura(cliente, FECHA_DE_VENTA)
-        Dim exception As Exception
 
-        exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Agregar(Nothing, CANTIDAD_COMPRA_LATAS_DE_CERVEZA))
+        Dim exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Agregar(Nothing, CANTIDAD_COMPRA_LATAS_DE_CERVEZA))
         Assert.Equal(Factura.PRODUCT_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
@@ -98,9 +95,8 @@ Public Class FacturaDebe
         Dim inventario As New Inventario()
         Dim producto As Producto = inventario.Agregar(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
         Dim sut As New Factura(cliente, FECHA_DE_VENTA)
-        Dim exception As Exception
 
-        exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Agregar(producto, cantidadInvalida))
+        Dim exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Agregar(producto, cantidadInvalida))
         Assert.Equal(Factura.QUANTITY_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 

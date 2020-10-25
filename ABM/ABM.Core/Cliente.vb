@@ -8,7 +8,11 @@
     Private ReadOnly Property Telefono As String
     Private ReadOnly Property Correo As String
 
-    Public Sub New(id As Integer, nombre As String, telefono As String, correo As String)
+    Friend Shared Function CreadoComo(id As Integer, nombre As String, telefono As String, correo As String)
+        Return New Cliente(id, nombre, telefono, correo)
+    End Function
+
+    Private Sub New(id As Integer, nombre As String, telefono As String, correo As String)
         If String.IsNullOrWhiteSpace(nombre) Then Throw New ArgumentException(NAME_IS_INVALID_EXCEPTION)
 
         Me.Id = id

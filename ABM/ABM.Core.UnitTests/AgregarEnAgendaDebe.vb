@@ -9,9 +9,8 @@ Public Class AgregarEnAgendaDebe
     <InlineData("    ")>
     Public Sub LanzarExcepcion_CuandoSeIntentaAgregarUnClienteConNombreInvalido(nombreInvalido As String)
         Dim sut As Agenda = CreateSystemUnderTest()
-        Dim exception As Exception
 
-        exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Agregar(nombreInvalido))
+        Dim exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Agregar(nombreInvalido))
         Assert.Contains(Cliente.NAME_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
