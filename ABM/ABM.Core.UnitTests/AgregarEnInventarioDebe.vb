@@ -55,7 +55,18 @@ Public Class AgregarEnInventarioDebe
 
         exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Agregar(LATA_DE_ARVEJAS, -1, CODIGO_DE_LATA_DE_ARVEJAS))
         Assert.Equal(Inventario.PRICE_IS_INVALID_EXCEPTION, exception.Message)
+    End Sub
 
+    <Theory>
+    <InlineData("")>
+    <InlineData("   ")>
+    <InlineData(Nothing)>
+    Public Sub LanzarExcepcion_CuandoSeIntentaAgregarProductoConCodigoInvalido(codigoInvalido As String)
+        Dim sut As Inventario = CreateSystemUnderTest()
+        Dim exception As Exception
+
+        exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Agregar(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, codigoInvalido))
+        Assert.Equal(Inventario.CODE_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
 End Class

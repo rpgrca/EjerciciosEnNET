@@ -4,6 +4,8 @@
     Public Const CODE_IS_REPEATED_EXCEPTION As String = "Codigo repetido"
     Public Const PRODUCT_IS_INVALID_EXCEPTION As String = "Producto inexistente"
     Public Const PRICE_IS_INVALID_EXCEPTION As String = "El precio es invalido"
+    Public Const CODE_IS_INVALID_EXCEPTION As String = "El codigo es invalido"
+    Public Const DEFAULT_CODE As String = "CodigoPorDefecto"
 
     Private ReadOnly _productos As List(Of Producto)
     Private _id As Integer
@@ -19,7 +21,7 @@
         End Get
     End Property
 
-    Public Function Agregar(nombre As String, Optional precio As Decimal = 0, Optional codigo As String = "") As Producto
+    Public Function Agregar(nombre As String, Optional precio As Decimal = 0, Optional codigo As String = DEFAULT_CODE) As Producto
         If _productos.Any(Function(p) p.ConCodigo(codigo)) Then Throw New ArgumentException(CODE_IS_REPEATED_EXCEPTION)
 
         Dim producto As Producto
