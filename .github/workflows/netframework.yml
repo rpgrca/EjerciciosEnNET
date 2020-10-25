@@ -19,8 +19,11 @@ jobs:
         with:
           dotnet-version: 3.0.100
 
-      - name: Install tools
+      - name: Install Coverlet
         run: dotnet tool install --global coverlet.console
+      
+      - name: Install Codecov
+        run: dotnet tool install --global Codecov.Tool
 
       - name: Setup .NET Framework
         uses: microsoft/setup-msbuild@v1.0.2
@@ -38,4 +41,4 @@ jobs:
         run: coverlet ABM\ABM.Core.UnitTests\bin\Debug\ABM.Core.UnitTests.dll --target "vstest.console.exe" --targetargs "ABM\ABM.Core.UnitTests\bin\Debug\ABM.Core.UnitTests.dll" --format OpenCover --output abm.coverage.xml --exclude-by-file "**/My Project/*"
 
       - name: Upload
-        run: bash <(curl -s https://codecov.io/bash)
+        run: codecov -f *.coverage.xml -t ${{ secrets.CODECOV_TOKEN }}
