@@ -22,12 +22,13 @@
     End Property
 
     Public Function Agregar(nombre As String, Optional precio As Decimal = 0, Optional codigo As String = DEFAULT_CODE) As Producto
+        Dim producto As Producto = Producto.De(_id, nombre, precio, codigo)
+
         If _productos.Any(Function(p) p.ConCodigo(codigo)) Then Throw New ArgumentException(CODE_IS_REPEATED_EXCEPTION)
 
-        Dim producto As Producto = Producto.De(_id, nombre, precio, codigo)
         _productos.Add(producto)
-
         _id += 1
+
         Return producto
     End Function
 
@@ -50,28 +51,23 @@
                                 ).ToList()
     End Function
 
-    Private Sub ReemplazarProductoDeInventario(productoExistente As Producto, nuevoProducto As Producto)
-        _productos.Remove(productoExistente)
-        _productos.Add(nuevoProducto)
-    End Sub
-
     Public Function CambiarCodigoDe(producto As Producto, nuevoCodigo As String) As Producto
-        Dim productoModificado = producto.CambiarCodigo(nuevoCodigo, Me)
-        ReemplazarProductoDeInventario(producto, productoModificado)
-
-        Return productoModificado
+        Return CambiarAlgoDe(producto, Function() producto.CambiarCodigo(nuevoCodigo, Me))
     End Function
 
     Public Function CambiarNombreDe(producto As Producto, nuevoNombre As String) As Producto
-        Dim productoModificado = producto.CambiarNombre(nuevoNombre, Me)
-        ReemplazarProductoDeInventario(producto, productoModificado)
-
-        Return productoModificado
+        Return CambiarAlgoDe(producto, Function() producto.CambiarNombre(nuevoNombre, Me))
     End Function
 
     Public Function CambiarPrecioDe(producto As Producto, nuevoPrecio As Integer) As Producto
-        Dim productoModificado = producto.CambiarPrecio(nuevoPrecio, Me)
-        ReemplazarProductoDeInventario(producto, productoModificado)
+        Return CambiarAlgoDe(producto, Function() producto.CambiarPrecio(nuevoPrecio, Me))
+    End Function
+
+    Private Function CambiarAlgoDe(productoOriginal As Producto, modificarProducto As Func(Of Producto)) As Producto
+        Dim productoModificado = modificarProducto()
+
+        _productos.Remove(productoOriginal)
+        _productos.Add(productoModificado)
 
         Return productoModificado
     End Function

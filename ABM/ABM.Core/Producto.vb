@@ -57,5 +57,4 @@
     Public Function PrecioPor(cantidad As Integer) As Decimal
         Return Precio * cantidad
     End Function
-
 End Class

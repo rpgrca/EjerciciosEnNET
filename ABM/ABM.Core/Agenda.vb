@@ -1,6 +1,4 @@
-﻿Imports System.Linq
-
-Public Class Agenda
+﻿Public Class Agenda
 
     Public Const CLIENT_IS_INVALID_EXCEPTION As String = "No se puede borrar un cliente invalido"
 
@@ -37,28 +35,23 @@ Public Class Agenda
         _contactos.RemoveAll(Function(c) c.ConMismoIdQue(cliente))
     End Sub
 
-    Private Sub ReemplazarCliente(cliente As Cliente, clienteModificado As Cliente)
-        _contactos.Remove(cliente)
-        _contactos.Add(clienteModificado)
-    End Sub
-
     Public Function CambiarNombreDe(cliente As Cliente, nuevoNombre As String) As Cliente
-        Dim clienteModificado = cliente.CambiarNombre(nuevoNombre, Me)
-        ReemplazarCliente(cliente, clienteModificado)
-
-        Return clienteModificado
+        Return CambiarAlgoDe(cliente, Function() cliente.CambiarNombre(nuevoNombre, Me))
     End Function
 
     Public Function CambiarCorreoDe(cliente As Cliente, nuevoCorreo As String) As Cliente
-        Dim clienteModificado = cliente.CambiarCorreo(nuevoCorreo, Me)
-        ReemplazarCliente(cliente, clienteModificado)
-
-        Return clienteModificado
+        Return CambiarAlgoDe(cliente, Function() cliente.CambiarCorreo(nuevoCorreo, Me))
     End Function
 
     Public Function CambiarTelefonoDe(cliente As Cliente, nuevoTelefono As String) As Cliente
-        Dim clienteModificado = cliente.CambiarTelefono(nuevoTelefono, Me)
-        ReemplazarCliente(cliente, clienteModificado)
+        Return CambiarAlgoDe(cliente, Function() cliente.CambiarTelefono(nuevoTelefono, Me))
+    End Function
+
+    Private Function CambiarAlgoDe(clienteOriginal As Cliente, cambiarCliente As Func(Of Cliente)) As Cliente
+        Dim clienteModificado = cambiarCliente()
+
+        _contactos.Remove(clienteOriginal)
+        _contactos.Add(clienteModificado)
 
         Return clienteModificado
     End Function
