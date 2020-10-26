@@ -36,11 +36,11 @@
         Return Id = otroProducto.Id
     End Function
 
-    Public Function CambiarPrecio(nuevoPrecio As Decimal) As Producto
+    Friend Function CambiarPrecio(nuevoPrecio As Decimal, inventario As Inventario) As Producto
         Return De(Id, Nombre, nuevoPrecio, Codigo)
     End Function
 
-    Public Function CambiarNombre(nuevoNombre As String) As Producto
+    Friend Function CambiarNombre(nuevoNombre As String, inventario As Inventario) As Producto
         Return De(Id, nuevoNombre, Precio, Codigo)
     End Function
 

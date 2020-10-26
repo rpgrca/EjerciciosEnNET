@@ -50,12 +50,29 @@
                                 ).ToList()
     End Function
 
-    Public Sub Modificar(producto As Producto)
-        _productos.Remove(producto)
-        _productos.Add(producto)
+    Private Sub ReemplazarProductoDeInventario(productoExistente As Producto, nuevoProducto As Producto)
+        _productos.Remove(productoExistente)
+        _productos.Add(nuevoProducto)
     End Sub
 
     Public Function CambiarCodigoDe(producto As Producto, nuevoCodigo As String) As Producto
-        Return producto.CambiarCodigo(nuevoCodigo, Me)
+        Dim productoModificado = producto.CambiarCodigo(nuevoCodigo, Me)
+        ReemplazarProductoDeInventario(producto, productoModificado)
+
+        Return productoModificado
+    End Function
+
+    Public Function CambiarNombreDe(producto As Producto, nuevoNombre As String) As Producto
+        Dim productoModificado = producto.CambiarNombre(nuevoNombre, Me)
+        ReemplazarProductoDeInventario(producto, productoModificado)
+
+        Return productoModificado
+    End Function
+
+    Public Function CambiarPrecioDe(producto As Producto, nuevoPrecio As Integer) As Producto
+        Dim productoModificado = producto.CambiarPrecio(nuevoPrecio, Me)
+        ReemplazarProductoDeInventario(producto, productoModificado)
+
+        Return productoModificado
     End Function
 End Class
