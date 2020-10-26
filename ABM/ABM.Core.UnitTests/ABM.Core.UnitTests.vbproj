@@ -90,6 +90,7 @@
     <Compile Include="BorrarEnInventarioDebe.vb" />
     <Compile Include="BuscarEnAgendaDebe.vb" />
     <Compile Include="BuscarEnInventarioDebe.vb" />
+    <Compile Include="CambiarCodigoDeProductoDebe.vb" />
     <Compile Include="ClienteDebe.vb" />
     <Compile Include="Constantes.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
