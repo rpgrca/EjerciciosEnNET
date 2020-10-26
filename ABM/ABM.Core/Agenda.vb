@@ -55,4 +55,5 @@
 
         Return clienteModificado
     End Function
+
 End Class
