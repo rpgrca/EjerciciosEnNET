@@ -1,9 +1,9 @@
 ﻿Public Class Producto
 
-    Private Property Id As Integer
-    Private Property Nombre As String
-    Private Property Precio As Decimal
-    Private Property Codigo As String
+    Private ReadOnly Property Id As Integer
+    Private ReadOnly Property Nombre As String
+    Private ReadOnly Property Precio As Decimal
+    Private ReadOnly Property Codigo As String
 
     Friend Shared Function De(id As Integer, nombre As String, precio As Decimal, codigo As String) As Producto
         Return New Producto(id, nombre, precio, codigo)
