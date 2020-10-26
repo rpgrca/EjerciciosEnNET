@@ -45,7 +45,7 @@ Public Class BorrarEnAgendaDebe
 
         cliente = sut.Agregar(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ)
         sut.Agregar(CLIENTE_JUAN_PEREZ)
-        cliente = cliente.CambiarCorreo(TELEFONO_DE_EDUARDO_PEREZ)
+        cliente = sut.CambiarCorreoDe(cliente, TELEFONO_DE_EDUARDO_PEREZ)
 
         sut.Borrar(cliente)
         Assert.Equal(1, sut.Total)

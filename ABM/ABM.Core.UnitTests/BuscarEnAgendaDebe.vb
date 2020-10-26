@@ -46,8 +46,7 @@ Public Class BuscarEnAgendaDebe
         Dim clientes As List(Of Cliente)
 
         cliente = sut.Agregar(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ)
-        cliente = cliente.CambiarNombre(CLIENTE_EDUARDO_PEREZ)
-        sut.Modificar(cliente)
+        sut.CambiarNombreDe(cliente, CLIENTE_EDUARDO_PEREZ)
 
         clientes = sut.Buscar(CLIENTE_EDUARDO_PEREZ)
 
@@ -64,11 +63,9 @@ Public Class BuscarEnAgendaDebe
 
         cliente = sut.Agregar(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ)
         sut.Agregar(CLIENTE_JUAN_PEREZ)
-        cliente = cliente.CambiarNombre(CLIENTE_MARTINA_PEREZ)
+        sut.CambiarNombreDe(cliente, CLIENTE_MARTINA_PEREZ)
 
-        sut.Modificar(cliente)
         clientes = sut.Buscar(CLIENTE_MARTINA_PEREZ)
-
         Assert.Single(clientes)
         Assert.True(clientes(0).ConocidoComo(CLIENTE_MARTINA_PEREZ))
         Assert.True(clientes(0).LlamadoAl(TELEFONO_DE_JUAN_PEREZ))

@@ -9,7 +9,7 @@ Public Class ClienteDebe
         Dim sut As Cliente
 
         cliente = agenda.Agregar(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ)
-        sut = cliente.CambiarNombre(CLIENTE_EDUARDO_PEREZ)
+        sut = agenda.CambiarNombreDe(cliente, CLIENTE_EDUARDO_PEREZ)
 
         Assert.True(sut.ConocidoComo(CLIENTE_EDUARDO_PEREZ))
         Assert.True(sut.LlamadoAl(TELEFONO_DE_JUAN_PEREZ))
@@ -22,7 +22,7 @@ Public Class ClienteDebe
         Dim sut As Cliente
 
         cliente = agenda.Agregar(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ)
-        sut = cliente.CambiarTelefono(TELEFONO_DE_EDUARDO_PEREZ)
+        sut = agenda.CambiarTelefonoDe(cliente, TELEFONO_DE_EDUARDO_PEREZ)
 
         Assert.True(sut.ConocidoComo(CLIENTE_JUAN_PEREZ))
         Assert.True(sut.LlamadoAl(TELEFONO_DE_EDUARDO_PEREZ))
@@ -35,7 +35,7 @@ Public Class ClienteDebe
         Dim sut As Cliente
 
         cliente = agenda.Agregar(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ)
-        sut = cliente.CambiarCorreo(CORREO_DE_EDUARDO_PEREZ)
+        sut = agenda.CambiarCorreoDe(cliente, CORREO_DE_EDUARDO_PEREZ)
 
         Assert.True(sut.ConocidoComo(CLIENTE_JUAN_PEREZ))
         Assert.True(sut.LlamadoAl(TELEFONO_DE_JUAN_PEREZ))
@@ -126,7 +126,7 @@ Public Class ClienteDebe
         Dim clienteRenombrado As Cliente
 
         cliente = agenda.Agregar(CLIENTE_JUAN_PEREZ)
-        clienteRenombrado = cliente.CambiarNombre(CLIENTE_EDUARDO_PEREZ)
+        clienteRenombrado = agenda.CambiarNombreDe(cliente, CLIENTE_EDUARDO_PEREZ)
 
         Assert.True(cliente.Equals(clienteRenombrado))
     End Sub

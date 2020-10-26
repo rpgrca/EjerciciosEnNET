@@ -33,19 +33,19 @@
         Return Me.Correo = correo
     End Function
 
-    Public Function CambiarNombre(nuevoNombre As String) As Cliente
+    Friend Function CambiarNombre(nuevoNombre As String, agenda As Agenda) As Cliente
         Return New Cliente(Id, nuevoNombre, Telefono, Correo)
     End Function
 
-    Public Function CambiarTelefono(nuevoTelefono As String) As Cliente
+    Friend Function CambiarTelefono(nuevoTelefono As String, agenda As Agenda) As Cliente
         Return New Cliente(Id, Nombre, nuevoTelefono, Correo)
     End Function
 
-    Public Function CambiarCorreo(nuevoCorreo As String) As Cliente
+    Friend Function CambiarCorreo(nuevoCorreo As String, agenda As Agenda) As Cliente
         Return New Cliente(Id, Nombre, Telefono, nuevoCorreo)
     End Function
 
-    Public Function ConMismoIdQue(otroCliente As Cliente) As Boolean
+    Friend Function ConMismoIdQue(otroCliente As Cliente) As Boolean
         Return Id = otroCliente.Id
     End Function
 
