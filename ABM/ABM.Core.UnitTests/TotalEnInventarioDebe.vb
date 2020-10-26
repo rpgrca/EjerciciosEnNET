@@ -10,7 +10,7 @@ Public Class TotalEnInventarioDebe
     End Sub
 
     Private Function CreateSystemUnderTest() As Inventario
-        Return New Inventario()
+        Return Inventario.Nuevo.Constructor.Construir()
     End Function
 
     <Fact> Public Sub DevolverUno_CuandoSePideElTotalDeContactosDeUnaAgendaConUnContacto()

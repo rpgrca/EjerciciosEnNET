@@ -10,7 +10,7 @@ Public Class TotalEnAgendaDebe
     End Sub
 
     Private Function CreateSystemUnderTest() As Agenda
-        Return New Agenda()
+        Return Agenda.Nuevo.Constructor.Construir()
     End Function
 
     <Fact> Public Sub DevolverUno_CuandoSePideElTotalDeContactosDeUnaAgendaConUnContacto()

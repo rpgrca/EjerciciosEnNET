@@ -4,7 +4,7 @@ Imports ABM.Core.UnitTests.Constantes
 Public Class ClienteDebe
 
     <Fact> Public Sub DevolverUnNuevoClienteRenombrado_CuandoSeCambiaElNombre()
-        Dim agenda As New Agenda()
+        Dim agenda = CreateSystemUnderTest()
         Dim cliente As Cliente
         Dim sut As Cliente
 
@@ -16,8 +16,12 @@ Public Class ClienteDebe
         Assert.True(sut.MensajeadoAl(CORREO_DE_JUAN_PEREZ))
     End Sub
 
+    Private Function CreateSystemUnderTest() As Agenda
+        Return Agenda.Nuevo.Constructor.Construir()
+    End Function
+
     <Fact> Public Sub DevolverUnNuevoClienteConNuevoTelefono_CuandoSeCambiaElTelefono()
-        Dim agenda As New Agenda()
+        Dim agenda = CreateSystemUnderTest()
         Dim cliente As Cliente
         Dim sut As Cliente
 
@@ -30,7 +34,7 @@ Public Class ClienteDebe
     End Sub
 
     <Fact> Public Sub DevolverUnNuevoClienteConNuevoCorreo_CuandoSeCambiaElCorreo()
-        Dim agenda As New Agenda()
+        Dim agenda = CreateSystemUnderTest()
         Dim cliente As Cliente
         Dim sut As Cliente
 
@@ -43,7 +47,7 @@ Public Class ClienteDebe
     End Sub
 
     <Fact> Public Sub DevolverFalse_CuandoDosClientesPoseenDistintoId()
-        Dim agenda As New Agenda()
+        Dim agenda = CreateSystemUnderTest()
         Dim clienteJuan As Cliente
         Dim clienteEduardo As Cliente
 
@@ -54,7 +58,7 @@ Public Class ClienteDebe
     End Sub
 
     <Fact> Public Sub DevolverFalse_CuandoDosClientesPoseenDistintoIdYSeComparaComoObject()
-        Dim agenda As New Agenda()
+        Dim agenda = CreateSystemUnderTest()
         Dim clienteJuan As Cliente
         Dim clienteEduardo As Cliente
 
@@ -68,8 +72,8 @@ Public Class ClienteDebe
         Dim clienteJuan As Cliente
         Dim clienteEduardo As Cliente
 
-        clienteJuan = New Agenda().Agregar(CLIENTE_JUAN_PEREZ)
-        clienteEduardo = New Agenda().Agregar(CLIENTE_EDUARDO_PEREZ)
+        clienteJuan = CreateSystemUnderTest().Agregar(CLIENTE_JUAN_PEREZ)
+        clienteEduardo = CreateSystemUnderTest().Agregar(CLIENTE_EDUARDO_PEREZ)
 
         Assert.True(clienteJuan.Equals(clienteEduardo))
     End Sub
@@ -78,14 +82,14 @@ Public Class ClienteDebe
         Dim clienteJuan As Cliente
         Dim clienteEduardo As Cliente
 
-        clienteJuan = New Agenda().Agregar(CLIENTE_JUAN_PEREZ)
-        clienteEduardo = New Agenda().Agregar(CLIENTE_EDUARDO_PEREZ)
+        clienteJuan = CreateSystemUnderTest().Agregar(CLIENTE_JUAN_PEREZ)
+        clienteEduardo = CreateSystemUnderTest().Agregar(CLIENTE_EDUARDO_PEREZ)
 
         Assert.True(clienteJuan.Equals(CType(clienteEduardo, Object)))
     End Sub
 
     <Fact> Public Sub DevolverFalse_CuandoSeComparaNothingConCliente()
-        Dim agenda = New Agenda()
+        Dim agenda = CreateSystemUnderTest()
         Dim cliente As Cliente
 
         cliente = agenda.Agregar(CLIENTE_JUAN_PEREZ)
@@ -94,7 +98,7 @@ Public Class ClienteDebe
     End Sub
 
     <Fact> Public Sub DevolverFalse_CuandoSeComparaNothingCasteadoAObjetConCliente()
-        Dim agenda = New Agenda()
+        Dim agenda = CreateSystemUnderTest()
         Dim cliente As Cliente
 
         cliente = agenda.Agregar(CLIENTE_JUAN_PEREZ)
@@ -103,7 +107,7 @@ Public Class ClienteDebe
     End Sub
 
     <Fact> Public Sub DevolverFalse_CuandoSeComparaClienteConOtroObjetoCasteadoACliente()
-        Dim agenda = New Agenda()
+        Dim agenda = CreateSystemUnderTest()
         Dim cliente As Cliente
 
         cliente = agenda.Agregar(CLIENTE_JUAN_PEREZ)
@@ -112,7 +116,7 @@ Public Class ClienteDebe
     End Sub
 
     <Fact> Public Sub DevolverFalse_CuandoSeComparaClienteConOtroObjetoCasteadoAObject()
-        Dim agenda = New Agenda()
+        Dim agenda = CreateSystemUnderTest()
         Dim cliente As Cliente
 
         cliente = agenda.Agregar(CLIENTE_JUAN_PEREZ)
@@ -121,7 +125,7 @@ Public Class ClienteDebe
     End Sub
 
     <Fact> Public Sub DevolverTrue_CuandoSeComparaClienteConClienteRenombrado()
-        Dim agenda = New Agenda()
+        Dim agenda = CreateSystemUnderTest()
         Dim cliente As Cliente
         Dim clienteRenombrado As Cliente
 

@@ -7,16 +7,20 @@ Public Class CambiarCodigoDeProductoDebe
     <InlineData(Nothing)>
     <InlineData("")>
     Public Sub LanzarExcepcion_CuandoSeCambiaElCodigoAUnCodigoInvalido(codigoInvalido As String)
-        Dim sut = New Inventario()
+        Dim sut = CreateSystemUnderTest()
         Dim producto = sut.Agregar(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
 
         Dim exception = Assert.Throws(GetType(ArgumentException), Sub() sut.CambiarCodigoDe(producto, codigoInvalido))
         Assert.Equal(Inventario.CODE_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
+    Private Function CreateSystemUnderTest() As Inventario
+        Return Inventario.Nuevo.Constructor.Construir()
+    End Function
+
     <Fact>
     Public Sub LanzarExcepcion_CuandoSeCambiaElCodigoAUnoExistente()
-        Dim inventario = New Inventario()
+        Dim inventario = CreateSystemUnderTest()
         Dim producto = inventario.Agregar(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
         inventario.Agregar(LATA_DE_CERVEZA, PRECIO_UNITARIO_LATA_DE_CERVEZA, CODIGO_DE_LATA_DE_CERVEZA)
 
@@ -26,7 +30,7 @@ Public Class CambiarCodigoDeProductoDebe
 
     <Fact>
     Public Sub CambiarCodigoCorrectamente_CuandoSeEligeUnNuevoCodigo()
-        Dim inventario = New Inventario()
+        Dim inventario = CreateSystemUnderTest()
         Dim producto = inventario.Agregar(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
 
         producto = inventario.CambiarCodigoDe(producto, CODIGO_DE_LATA_DE_CERVEZA)

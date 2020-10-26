@@ -16,7 +16,7 @@ Public Class BuscarEnInventarioDebe
     End Sub
 
     Private Function CreateSystemUnderTest() As Inventario
-        Return New Inventario()
+        Return Inventario.Nuevo.Constructor.Construir()
     End Function
 
     <Fact> Public Sub DevolverProductoBuscado_CuandoSeBuscaInventarioExistente()
