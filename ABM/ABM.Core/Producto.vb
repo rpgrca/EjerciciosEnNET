@@ -1,4 +1,5 @@
 ﻿Public Class Producto
+    Implements IEquatable(Of Producto)
 
     Private ReadOnly Property Id As Integer
     Private ReadOnly Property Nombre As String
@@ -80,4 +81,19 @@
 
         Return Me
     End Function
+
+    Public Overloads Function Equals(otroProducto As Producto) As Boolean Implements IEquatable(Of Producto).Equals
+        If otroProducto Is Nothing Then Return False
+        Return ConMismoIdQue(otroProducto)
+    End Function
+
+    Public Overrides Function Equals(obj As Object) As Boolean
+        If obj Is Nothing Then Return False
+        If TypeOf obj IsNot Producto Then Return False
+
+        Dim otroCliente = CType(obj, Producto)
+
+        Return Equals(otroCliente)
+    End Function
+
 End Class

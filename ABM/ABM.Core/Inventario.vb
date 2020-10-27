@@ -33,9 +33,11 @@
     Public Const DEFAULT_CODE As String = "CodigoPorDefecto"
 
     Private ReadOnly _productos As IAlmacenamientoDeInventario(Of Producto)
+    Private _nextId as Integer
 
     Private Sub New(productos As IAlmacenamientoDeInventario(Of Producto))
         _productos = productos
+        _nextId = 0
     End Sub
 
     Public ReadOnly Property Total As Integer
@@ -45,7 +47,9 @@
     End Property
 
     Public Function Crear(nombre As String, Optional precio As Decimal = 0, Optional codigo As String = DEFAULT_CODE) As Producto
-        Dim producto As Producto = Producto.De(-1, nombre, precio, codigo)
+        _nextId -= 1
+
+        Dim producto As Producto = Producto.De(_nextId, nombre, precio, codigo)
         Return producto.ConfirmarCreacionCon(_productos)
     End Function
 
