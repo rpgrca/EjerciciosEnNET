@@ -35,7 +35,7 @@
     Public Sub Agregar(producto As Producto, unidades As Integer)
         Dim detalle As Detalle = Detalle.Para(producto, unidades)
 
-        _detalles.Add(detalle)
+        detalle.AgregarseA(_detalles)
     End Sub
 
 End Class

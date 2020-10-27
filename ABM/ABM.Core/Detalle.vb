@@ -21,4 +21,7 @@
         End Get
     End Property
 
+    Public Sub AgregarseA(detalles As List(Of Detalle))
+        detalles.Add(Me)
+    End Sub
 End Class
