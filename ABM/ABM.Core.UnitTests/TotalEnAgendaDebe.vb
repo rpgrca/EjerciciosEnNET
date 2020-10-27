@@ -4,7 +4,7 @@ Imports ABM.Core.UnitTests.Constantes
 Public Class TotalEnAgendaDebe
 
     <Fact> Public Sub DevolverCero_CuandoSePideElTotalDeContactosDeUnaAgendaVacia()
-        Dim sut As Agenda = CreateSystemUnderTest()
+        Dim sut = CreateSystemUnderTest()
 
         Assert.Equal(0, sut.Total)
     End Sub
@@ -14,18 +14,21 @@ Public Class TotalEnAgendaDebe
     End Function
 
     <Fact> Public Sub DevolverUno_CuandoSePideElTotalDeContactosDeUnaAgendaConUnContacto()
-        Dim sut As Agenda = CreateSystemUnderTest()
+        Dim sut = CreateSystemUnderTest()
 
-        sut.Agregar(CLIENTE_JUAN_PEREZ)
+        Dim client = sut.Crear(CLIENTE_JUAN_PEREZ)
+        sut.Agregar(client)
 
         Assert.Equal(1, sut.Total)
     End Sub
 
     <Fact> Public Sub DevolverTotal_CuandoSePideElTotalDeContactosConVariosContactos()
-        Dim sut As Agenda = CreateSystemUnderTest()
+        Dim sut = CreateSystemUnderTest()
 
-        sut.Agregar(CLIENTE_JUAN_PEREZ)
-        sut.Agregar(CLIENTE_EDUARDO_PEREZ)
+        Dim client = sut.Crear(CLIENTE_JUAN_PEREZ)
+        sut.Agregar(client)
+        client = sut.Crear(CLIENTE_EDUARDO_PEREZ)
+        sut.Agregar(client)
 
         Assert.Equal(2, sut.Total)
     End Sub

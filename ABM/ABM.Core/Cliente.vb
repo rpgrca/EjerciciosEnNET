@@ -44,6 +44,10 @@
     Friend Function CambiarCorreo(nuevoCorreo As String, agenda As Agenda) As Cliente
         Return New Cliente(Id, Nombre, Telefono, nuevoCorreo)
     End Function
+    
+    Friend Function AjustarIdA(id As Integer) As Cliente
+        Return new Cliente(id, Nombre, Telefono, Correo)
+    End Function
 
     Friend Function ConMismoIdQue(otroCliente As Cliente) As Boolean
         Return Id = otroCliente.Id
@@ -62,4 +66,18 @@
 
         Return Equals(otroCliente)
     End Function
+
+    Friend Sub BorrarseDe(almacenamiento As IAlmacenamientoDeAgenda(Of Cliente))
+        If Not almacenamiento.Existe(Me) Then Throw New ArgumentException(Agenda.CLIENT_IS_INVALID_EXCEPTION)
+        almacenamiento.Borrar(Me)
+    End Sub
+
+    Friend Function AgregarseA(almacenamiento As IAlmacenamientoDeAgenda(Of Cliente)) As Cliente
+        Return almacenamiento.Agregar(Me)
+    End Function
+
+    Friend Function ConfirmarCreacionCon(almacenamiento As IAlmacenamientoDeAgenda(Of Cliente)) As Cliente
+        Return Me
+    End Function
+
 End Class

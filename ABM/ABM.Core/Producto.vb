@@ -54,7 +54,30 @@
         Return nuevoProducto
     End Function
 
+    Friend Function AjustarIdA(id As Integer) As Producto
+        Return De(id, Nombre, Precio, Codigo)
+    End Function
+
     Public Function PrecioPor(cantidad As Integer) As Decimal
         Return Precio * cantidad
+    End Function
+
+    Friend Function AgregarseA(almacenamiento As IAlmacenamientoDeInventario(Of Producto)) As Producto
+        Dim productos = almacenamiento.Filtrar(, Codigo)
+        If productos.Count > 0 Then Throw new ArgumentException(Inventario.CODE_IS_REPEATED_EXCEPTION)
+
+        Return almacenamiento.Agregar(Me)
+    End Function
+
+    Friend Sub BorrarseDe(almacenamiento As IAlmacenamientoDeInventario(Of Producto))
+        If Not almacenamiento.Existe(Me) Then Throw New ArgumentException(Inventario.PRODUCT_IS_INVALID_EXCEPTION)
+
+        almacenamiento.Borrar(Me)
+    End Sub
+
+    Friend Function ConfirmarCreacionCon(almacenamiento As IAlmacenamientoDeInventario(Of Producto)) As Producto
+        If almacenamiento.Filtrar(, Codigo).Count > 0 Then Throw New ArgumentException(Inventario.CODE_IS_REPEATED_EXCEPTION)
+
+        Return Me
     End Function
 End Class

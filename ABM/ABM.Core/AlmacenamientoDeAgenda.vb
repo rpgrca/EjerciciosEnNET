@@ -2,18 +2,25 @@
     Implements IAlmacenamientoDeAgenda(of Cliente)
 
     Private ReadOnly _contactos As List(Of Cliente)
+    Private _nextId as Integer
 
     Public Sub New()
         _contactos = New List(Of Cliente)
+        _nextId = 1
     End Sub
 
     Public Function Contar() As Integer Implements IAlmacenamientoDeAgenda(Of Cliente).Contar
         Return _contactos.Count
     End Function
 
-    Public Sub Agregar(clienteNuevo As Cliente) Implements IAlmacenamientoDeAgenda(Of Cliente).Agregar
-        _contactos.Add(clienteNuevo)
-    End Sub
+    Public Function Agregar(cliente As Cliente) As Cliente Implements IAlmacenamientoDeAgenda(Of Cliente).Agregar
+        Dim clienteModificado = cliente.AjustarIdA(_nextId)
+
+        _contactos.Add(clienteModificado)
+        _nextId += 1
+
+        Return clienteModificado
+    End Function
 
     Public Function Buscar(nombre As String) As List(Of Cliente) Implements IAlmacenamientoDeAgenda(Of Cliente).Buscar
         Return _contactos.Where(Function(c) c.ConocidoComo(nombre)).ToList()
@@ -27,4 +34,8 @@
         _contactos.RemoveAll(Function(c) c.ConMismoIdQue(cliente))
     End Sub
 
+    Public Sub Reemplazar(original As Cliente, reemplazo As Cliente) Implements IAlmacenamientoDeAgenda(Of Cliente).Reemplazar
+        _contactos.Remove(original)
+        _contactos.Add(reemplazo)
+    End Sub
 End Class

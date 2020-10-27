@@ -7,10 +7,8 @@ Public Class FacturaDebe
 
     <Fact> Public Sub DevolverFacturaConDatos_CuandoSeCreaUnaFacturaAlClienteYEnUnaFecha()
         Dim agenda = CreateSystemUnderTest()
-        Dim cliente As Cliente = agenda.Agregar(CLIENTE_JUAN_PEREZ)
-        Dim sut As Factura
-
-        sut = New Factura(cliente, FECHA_DE_VENTA)
+        Dim cliente = agenda.Crear(CLIENTE_JUAN_PEREZ)
+        Dim sut = New Factura(cliente, FECHA_DE_VENTA)
 
         Assert.True(sut.HechaA(cliente))
         Assert.True(sut.HechaEl(FECHA_DE_VENTA))
@@ -30,7 +28,7 @@ Public Class FacturaDebe
 
     <Fact> Public Sub LanzarExcepcion_AlCrearUnaFacturaConFechaInvalida()
         Dim agenda = CreateSystemUnderTest()
-        Dim cliente As Cliente = agenda.Agregar(CLIENTE_JUAN_PEREZ)
+        Dim cliente = agenda.Crear(CLIENTE_JUAN_PEREZ)
         Dim sut As Factura
 
         Dim exception = Assert.Throws(GetType(ArgumentException), Sub() sut = New Factura(cliente, Date.MinValue))
@@ -39,28 +37,26 @@ Public Class FacturaDebe
 
     <Fact> Public Sub DevolverFalse_CuandoSePreguntaSiFacturaPerteneceAOtroComprador()
         Dim agenda = CreateSystemUnderTest()
-        Dim cliente As Cliente = agenda.Agregar(CLIENTE_JUAN_PEREZ)
-        Dim otroCliente As Cliente = agenda.Agregar(CLIENTE_EDUARDO_PEREZ)
-        Dim sut As Factura
+        Dim cliente = agenda.Crear(CLIENTE_JUAN_PEREZ)
+        Dim otroCliente = agenda.Crear(CLIENTE_EDUARDO_PEREZ)
 
-        sut = New Factura(cliente, FECHA_DE_VENTA)
+        Dim sut = New Factura(cliente, FECHA_DE_VENTA)
         Assert.False(sut.HechaA(otroCliente))
     End Sub
 
     <Fact> Public Sub DevolverFalse_CuandoSePreguntaSiFacturaEsDeOtraFecha()
         Dim agenda = CreateSystemUnderTest()
-        Dim cliente As Cliente = agenda.Agregar(CLIENTE_JUAN_PEREZ)
-        Dim sut As Factura
+        Dim cliente = agenda.Crear(CLIENTE_JUAN_PEREZ)
 
-        sut = New Factura(cliente, FECHA_DE_VENTA)
+        Dim sut = New Factura(cliente, FECHA_DE_VENTA)
         Assert.False(sut.HechaEl(OTRA_FECHA_DE_VENTA))
     End Sub
 
     <Fact> Public Sub DevolverTotalCorrecto_CuandoSeAgregaUnDetalle()
         Dim agenda = CreateSystemUnderTest()
-        Dim cliente = agenda.Agregar(CLIENTE_JUAN_PEREZ)
+        Dim cliente = agenda.Crear(CLIENTE_JUAN_PEREZ)
         Dim inventario As Inventario = Inventario.Nuevo.Constructor.Construir()
-        Dim producto = inventario.Agregar(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS)
+        Dim producto = inventario.Crear(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS)
         Dim sut = New Factura(cliente, FECHA_DE_VENTA)
 
         sut.Agregar(producto, CANTIDAD_COMPRA_LATAS_DE_ARVEJAS)
@@ -69,10 +65,10 @@ Public Class FacturaDebe
 
     <Fact> Public Sub DevolverTotalCorrecto_CuandoSeAgreganVariosDetalles()
         Dim agenda = CreateSystemUnderTest()
-        Dim cliente = agenda.Agregar(CLIENTE_JUAN_PEREZ)
+        Dim cliente = agenda.Crear(CLIENTE_JUAN_PEREZ)
         Dim inventario As Inventario = Inventario.Nuevo.Constructor.Construir()
-        Dim producto = inventario.Agregar(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
-        Dim otroProducto = inventario.Agregar(LATA_DE_CERVEZA, PRECIO_UNITARIO_LATA_DE_CERVEZA)
+        Dim producto = inventario.Crear(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
+        Dim otroProducto = inventario.Crear(LATA_DE_CERVEZA, PRECIO_UNITARIO_LATA_DE_CERVEZA)
         Dim sut = New Factura(cliente, FECHA_DE_VENTA)
 
         sut.Agregar(producto, CANTIDAD_COMPRA_LATAS_DE_ARVEJAS)
@@ -83,8 +79,8 @@ Public Class FacturaDebe
 
     <Fact> Public Sub LanzarExcepcion_CuandoSeAgregaUnProductoNuloALaFactura()
         Dim agenda = CreateSystemUnderTest()
-        Dim cliente As Cliente = agenda.Agregar(CLIENTE_JUAN_PEREZ)
-        Dim sut As New Factura(cliente, FECHA_DE_VENTA)
+        Dim cliente = agenda.Crear(CLIENTE_JUAN_PEREZ)
+        Dim sut = New Factura(cliente, FECHA_DE_VENTA)
 
         Dim exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Agregar(Nothing, CANTIDAD_COMPRA_LATAS_DE_CERVEZA))
         Assert.Equal(Factura.PRODUCT_IS_INVALID_EXCEPTION, exception.Message)
@@ -95,9 +91,9 @@ Public Class FacturaDebe
     <InlineData(0)>
     Public Sub LanzarExcepcion_CuandoSeAgregaUnaCantidadInvalidaALaFactura(cantidadInvalida As Integer)
         Dim agenda = CreateSystemUnderTest()
-        Dim cliente = agenda.Agregar(CLIENTE_JUAN_PEREZ)
+        Dim cliente = agenda.Crear(CLIENTE_JUAN_PEREZ)
         Dim inventario As Inventario = Inventario.Nuevo.Constructor.Construir()
-        Dim producto = inventario.Agregar(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
+        Dim producto = inventario.Crear(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
         Dim sut = New Factura(cliente, FECHA_DE_VENTA)
 
         Dim exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Agregar(producto, cantidadInvalida))

@@ -13,10 +13,10 @@
             _almacenamiento = Nothing
         End sub
 
-        public Function AlmacenandoEn(almacenamiento As IAlmacenamientoDeInventario(Of Producto)) As Nuevo
-            _almacenamiento = almacenamiento
-            Return Me
-        End Function
+        'public Function AlmacenandoEn(almacenamiento As IAlmacenamientoDeInventario(Of Producto)) As Nuevo
+        '    _almacenamiento = almacenamiento
+        '    Return Me
+        'End Function
 
         public Function Construir() As Inventario
             If _almacenamiento Is Nothing Then _almacenamiento = New AlmacenamientoDeInventario()
@@ -33,9 +33,8 @@
     Public Const DEFAULT_CODE As String = "CodigoPorDefecto"
 
     Private ReadOnly _productos As IAlmacenamientoDeInventario(Of Producto)
-    Private _id As Integer
 
-    Public Sub New(productos As IAlmacenamientoDeInventario(Of Producto))
+    Private Sub New(productos As IAlmacenamientoDeInventario(Of Producto))
         _productos = productos
     End Sub
 
@@ -45,22 +44,19 @@
         End Get
     End Property
 
-    Public Function Agregar(nombre As String, Optional precio As Decimal = 0, Optional codigo As String = DEFAULT_CODE) As Producto
-        Dim producto As Producto = Producto.De(_id, nombre, precio, codigo)
+    Public Function Crear(nombre As String, Optional precio As Decimal = 0, Optional codigo As String = DEFAULT_CODE) As Producto
+        Dim producto As Producto = Producto.De(-1, nombre, precio, codigo)
+        Return producto.ConfirmarCreacionCon(_productos)
+    End Function
 
-        If _productos.Filtrar("", codigo).Count > 0 Then Throw New ArgumentException(CODE_IS_REPEATED_EXCEPTION)
-
-        _productos.Agregar(producto)
-        _id += 1
-
-        Return producto
+    public Function Agregar(producto As Producto) As Producto
+        If producto Is Nothing Then Throw New ArgumentException(PRODUCT_IS_INVALID_EXCEPTION)
+        Return producto.AgregarseA(_productos)
     End Function
 
     Public Sub Borrar(producto As Producto)
         If producto Is Nothing Then Throw New ArgumentException(PRODUCT_IS_INVALID_EXCEPTION)
-        If Not _productos.Existe(producto) Then Throw New ArgumentException(PRODUCT_IS_INVALID_EXCEPTION)
-
-        _productos.Borrar(producto)
+        producto.BorrarseDe(_productos)
     End Sub
 
     Public Function Buscar(nombre As String) As List(Of Producto)
@@ -86,9 +82,9 @@
     Private Function CambiarAlgoDe(productoOriginal As Producto, modificarProducto As Func(Of Producto)) As Producto
         Dim productoModificado = modificarProducto()
 
-        _productos.Borrar(productoOriginal)
-        _productos.Agregar(productoModificado)
+        _productos.Reemplazar(productoOriginal, productoModificado)
 
         Return productoModificado
     End Function
+
 End Class

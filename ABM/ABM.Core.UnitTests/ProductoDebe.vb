@@ -5,7 +5,7 @@ Public Class ProductoDebe
 
     <Fact> Public Sub ActualizarElPrecio_CuandoSeCambiaElPrecio()
         Dim sut = CreateSystemUnderTest()
-        Dim producto = sut.Agregar(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
+        Dim producto = sut.Crear(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
 
         producto = sut.CambiarPrecioDe(producto, PRECIO_UNITARIO_LATA_DE_CERVEZA)
 
@@ -18,7 +18,7 @@ Public Class ProductoDebe
 
     <Fact> Public Sub LanzarExcepcion_CuandoSeCambiaElPrecioAUnPrecioInvalido()
         Dim sut = CreateSystemUnderTest()
-        Dim producto = sut.Agregar(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
+        Dim producto = sut.Crear(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
 
         Dim exception = Assert.Throws(GetType(ArgumentException), Sub() sut.CambiarPrecioDe(producto, -1))
         Assert.Equal(Inventario.PRICE_IS_INVALID_EXCEPTION, exception.Message)
@@ -30,7 +30,7 @@ Public Class ProductoDebe
     <InlineData("  ")>
     Public Sub LanzarExcepcion_CuandoSeCambiaElNombreAUnNombreInvalido(nombreInvalido As String)
         Dim sut = CreateSystemUnderTest()
-        Dim producto = sut.Agregar(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
+        Dim producto = sut.Crear(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
 
         Dim exception = Assert.Throws(GetType(ArgumentException), Sub() sut.CambiarNombreDe(producto, nombreInvalido))
         Assert.Equal(Inventario.NAME_IS_INVALID_EXCEPTION, exception.Message)

@@ -8,10 +8,9 @@ Public Class BuscarEnInventarioDebe
     <InlineData(Nothing)>
     <InlineData(LATA_DE_ARVEJAS)>
     Public Sub DevolverNothing_CuandoSeBuscaNombreEnInventarioVacio(cualquierNombre As String)
-        Dim sut As Inventario = CreateSystemUnderTest()
-        Dim productos As List(Of Producto)
+        Dim sut = CreateSystemUnderTest()
 
-        productos = sut.Buscar(cualquierNombre)
+        Dim productos = sut.Buscar(cualquierNombre)
         Assert.Empty(productos)
     End Sub
 
@@ -20,35 +19,29 @@ Public Class BuscarEnInventarioDebe
     End Function
 
     <Fact> Public Sub DevolverProductoBuscado_CuandoSeBuscaInventarioExistente()
-        Dim sut As Inventario = CreateSystemUnderTest()
-        Dim productos As List(Of Producto)
+        Dim sut = CreateSystemUnderTest()
+        Dim producto = sut.Crear(LATA_DE_ARVEJAS)
+        sut.Agregar(producto)
 
-        sut.Agregar(LATA_DE_ARVEJAS)
-
-        productos = sut.Buscar(LATA_DE_ARVEJAS)
+        Dim productos = sut.Buscar(LATA_DE_ARVEJAS)
         Assert.Single(productos)
         Assert.True(productos(0).Nombrado(LATA_DE_ARVEJAS))
     End Sub
 
     <Fact> Public Sub DevolverNothing_CuandoSeBuscaProductoInexistenteEnIventarioConProductos()
-        Dim sut As Inventario = CreateSystemUnderTest()
-        Dim productos As List(Of Producto)
+        Dim sut = CreateSystemUnderTest()
+        sut.Crear(LATA_DE_ARVEJAS)
 
-        sut.Agregar(LATA_DE_ARVEJAS)
-
-        productos = sut.Buscar(LATA_DE_CERVEZA)
+        Dim productos = sut.Buscar(LATA_DE_CERVEZA)
         Assert.Empty(productos)
     End Sub
 
     <Fact> Public Sub EncontrarAlProducto_CuandoSeLoRenombraYSeLoModifica()
-        Dim sut As Inventario = CreateSystemUnderTest()
-        Dim producto As Producto
-        Dim productos As List(Of Producto)
-
-        producto = sut.Agregar(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
+        Dim sut = CreateSystemUnderTest()
+        Dim producto = sut.Crear(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
         sut.CambiarNombreDe(producto, LATA_DE_CERVEZA)
 
-        productos = sut.Buscar(LATA_DE_CERVEZA)
+        Dim productos = sut.Buscar(LATA_DE_CERVEZA)
         Assert.Single(productos)
         Assert.True(productos(0).Nombrado(LATA_DE_CERVEZA))
         Assert.True(productos(0).ConPrecio(PRECIO_UNITARIO_LATA_DE_ARVEJAS))
@@ -56,15 +49,12 @@ Public Class BuscarEnInventarioDebe
     End Sub
 
     <Fact> Public Sub EncontrarAlProducto_CuandoSeRenombraYModificaUnProductoConNombreRepetido()
-        Dim sut As Inventario = CreateSystemUnderTest()
-        Dim producto As Producto
-        Dim productos As List(Of Producto)
-
-        producto = sut.Agregar(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS)
-        sut.Agregar(LATA_DE_ARVEJAS)
+        Dim sut = CreateSystemUnderTest()
+        Dim producto = sut.Crear(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS)
+        sut.Crear(LATA_DE_ARVEJAS)
         sut.CambiarNombreDe(producto, LATA_DE_CERVEZA)
 
-        productos = sut.Buscar(LATA_DE_CERVEZA)
+        Dim productos = sut.Buscar(LATA_DE_CERVEZA)
         Assert.Single(productos)
         Assert.True(productos(0).Nombrado(LATA_DE_CERVEZA))
         Assert.True(productos(0).ConPrecio(PRECIO_UNITARIO_LATA_DE_ARVEJAS))

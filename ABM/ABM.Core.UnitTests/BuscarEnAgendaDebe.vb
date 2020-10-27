@@ -8,10 +8,9 @@ Public Class BuscarEnAgendaDebe
     <InlineData(Nothing)>
     <InlineData(CLIENTE_JUAN_PEREZ)>
     Public Sub DevolverNothing_CuandoSeBuscaNombreEnAgendaVacia(cualquierNombre As String)
-        Dim sut As Agenda = CreateSystemUnderTest()
-        Dim clientes As List(Of Cliente)
+        Dim sut = CreateSystemUnderTest()
 
-        clientes = sut.Buscar(cualquierNombre)
+        Dim clientes = sut.Buscar(cualquierNombre)
         Assert.Empty(clientes)
     End Sub
 
@@ -19,37 +18,30 @@ Public Class BuscarEnAgendaDebe
         Return Agenda.Nuevo.Constructor.Construir()
     End Function
 
-    <Fact> Public Sub DevolverClienteBuscado_CuandoSeBuscaClienteExistente()
-        Dim sut As Agenda = CreateSystemUnderTest()
-        Dim clientes As List(Of Cliente)
+    <Fact> Public Sub DevolverClienteBuscado_CuandoSeBuscaClienteAgregado()
+        Dim sut = CreateSystemUnderTest()
+        Dim cliente = sut.Crear(CLIENTE_JUAN_PEREZ)
+        sut.Agregar(cliente)
 
-        sut.Agregar(CLIENTE_JUAN_PEREZ)
-
-        clientes = sut.Buscar(CLIENTE_JUAN_PEREZ)
+        Dim clientes = sut.Buscar(CLIENTE_JUAN_PEREZ)
         Assert.Single(clientes)
         Assert.True(clientes(0).ConocidoComo(CLIENTE_JUAN_PEREZ))
     End Sub
 
     <Fact> Public Sub DevolverNothing_CuandoSeBuscaClienteInexistenteEnAgendaConContactos()
-        Dim sut As Agenda = CreateSystemUnderTest()
-        Dim clientes As List(Of Cliente)
+        Dim sut = CreateSystemUnderTest()
+        sut.Crear(CLIENTE_JUAN_PEREZ)
 
-        sut.Agregar(CLIENTE_JUAN_PEREZ)
-
-        clientes = sut.Buscar(CLIENTE_EDUARDO_PEREZ)
+        Dim clientes = sut.Buscar(CLIENTE_EDUARDO_PEREZ)
         Assert.Empty(clientes)
     End Sub
 
     <Fact> Public Sub EncontrarAlCliente_CuandoSeLoRenombraYSeLoModifica()
-        Dim sut As Agenda = CreateSystemUnderTest()
-        Dim cliente As Cliente
-        Dim clientes As List(Of Cliente)
-
-        cliente = sut.Agregar(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ)
+        Dim sut = CreateSystemUnderTest()
+        Dim cliente = sut.Crear(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ)
         sut.CambiarNombreDe(cliente, CLIENTE_EDUARDO_PEREZ)
 
-        clientes = sut.Buscar(CLIENTE_EDUARDO_PEREZ)
-
+        Dim clientes = sut.Buscar(CLIENTE_EDUARDO_PEREZ)
         Assert.Single(clientes)
         Assert.True(clientes(0).ConocidoComo(CLIENTE_EDUARDO_PEREZ))
         Assert.True(clientes(0).LlamadoAl(TELEFONO_DE_JUAN_PEREZ))
@@ -57,15 +49,12 @@ Public Class BuscarEnAgendaDebe
     End Sub
 
     <Fact> Public Sub EncontrarAlCliente_CuandoSeRenombraYModificaUnClienteConNombreRepetido()
-        Dim sut As Agenda = CreateSystemUnderTest()
-        Dim cliente As Cliente
-        Dim clientes As List(Of Cliente)
-
-        cliente = sut.Agregar(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ)
-        sut.Agregar(CLIENTE_JUAN_PEREZ)
+        Dim sut = CreateSystemUnderTest()
+        Dim cliente = sut.Crear(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ)
+        sut.Crear(CLIENTE_JUAN_PEREZ)
         sut.CambiarNombreDe(cliente, CLIENTE_MARTINA_PEREZ)
 
-        clientes = sut.Buscar(CLIENTE_MARTINA_PEREZ)
+        Dim clientes = sut.Buscar(CLIENTE_MARTINA_PEREZ)
         Assert.Single(clientes)
         Assert.True(clientes(0).ConocidoComo(CLIENTE_MARTINA_PEREZ))
         Assert.True(clientes(0).LlamadoAl(TELEFONO_DE_JUAN_PEREZ))
