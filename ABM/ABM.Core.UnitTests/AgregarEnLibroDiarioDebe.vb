@@ -7,7 +7,7 @@ Public Class AgregarEnLibroDiarioDebe
         Dim sut = CreateSystemUnderTest()
 
         Dim exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Agregar(Nothing))
-        Assert.Equal(Agenda.CLIENT_IS_INVALID_EXCEPTION, exception.Message)
+        Assert.Equal(LibroDiario.INVOICE_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
     Private Function CreateSystemUnderTest() As LibroDiario

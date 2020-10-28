@@ -89,6 +89,7 @@
     <Compile Include="AgregarEnLibroDiarioDebe.vb" />
     <Compile Include="BorrarEnAgendaDebe.vb" />
     <Compile Include="BorrarEnInventarioDebe.vb" />
+    <Compile Include="BorrarEnLibroDiarioDebe.vb" />
     <Compile Include="BuscarEnAgendaDebe.vb" />
     <Compile Include="BuscarEnInventarioDebe.vb" />
     <Compile Include="CambiarCodigoDeProductoDebe.vb" />

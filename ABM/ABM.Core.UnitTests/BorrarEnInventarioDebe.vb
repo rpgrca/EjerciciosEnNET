@@ -41,8 +41,7 @@ Public Class BorrarEnInventarioDebe
         Assert.Contains(Inventario.PRODUCT_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
-    <Fact>
-    Public Sub BorrarUnProducto_CuandoSeCambiaLaReferenciaDelProductoABorrar()
+    <Fact> Public Sub BorrarUnProducto_CuandoSeCambiaLaReferenciaDelProductoABorrar()
         Dim sut = CreateSystemUnderTest()
         Dim producto = sut.Crear(LATA_DE_ARVEJAS, , CODIGO_DE_LATA_DE_ARVEJAS)
         producto = sut.Agregar(producto)

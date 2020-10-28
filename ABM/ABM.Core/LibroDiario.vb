@@ -1,5 +1,7 @@
 ﻿Public Class LibroDiario
 
+    Public Const INVOICE_IS_INVALID_EXCEPTION As String = "La factura es invalida"
+
     Private ReadOnly _facturas As List(Of Factura)
 
     public Sub New()
@@ -11,7 +13,7 @@
     End Function
 
     Public Sub Agregar(factura As Factura)
-        If factura Is Nothing Then Throw new ArgumentException(Agenda.CLIENT_IS_INVALID_EXCEPTION)
+        If factura Is Nothing Then Throw new ArgumentException(INVOICE_IS_INVALID_EXCEPTION)
         _facturas.Add(factura)
     End Sub
 
@@ -19,5 +21,9 @@
         Get
             Return _facturas.Count
         End Get
-    End Property 
+    End Property
+
+    Public Function Borrar(factura As Factura) As LibroDiario
+        If factura Is Nothing Then Throw New ArgumentException(INVOICE_IS_INVALID_EXCEPTION)
+    End Function
 End Class

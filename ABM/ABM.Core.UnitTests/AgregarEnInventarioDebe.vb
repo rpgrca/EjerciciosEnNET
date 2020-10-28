@@ -10,6 +10,10 @@ Public Class AgregarEnInventarioDebe
         Assert.Equal(Inventario.PRODUCT_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
+    Private Function CreateSystemUnderTest() As Inventario
+        Return Inventario.Nuevo.Constructor.Construir()
+    End Function
+
     <Fact> Public Sub AceptarDosProductosIguales_CuandoSeAgregaUnProductoConDistintoCodigo()
         Dim sut = CreateSystemUnderTest()
 
@@ -21,10 +25,6 @@ Public Class AgregarEnInventarioDebe
         Assert.Equal(2, sut.Total)
     End Sub
 
-    Private Function CreateSystemUnderTest() As Inventario
-        Return Inventario.Nuevo.Constructor.Construir()
-    End Function
-    
     <Fact> Public Sub LanzarExcepcion_CuandoSeIntentaAgregarProductoConCodigoRepetidoQueYaExiste()
         Dim sut = CreateSystemUnderTest()
         Dim producto = sut.Crear(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)

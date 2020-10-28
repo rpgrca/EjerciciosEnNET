@@ -10,6 +10,10 @@ Public Class AgregarEnAgendaDebe
         Assert.Equal(Agenda.CLIENT_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
+    Private Function CreateSystemUnderTest() As Agenda
+        Return Agenda.Nuevo.Constructor().Construir()
+    End Function
+
     <Fact> Public Sub AceptarDosClientesIguales_CuandoSeAgregaUnClienteSimilar()
         Dim sut = CreateSystemUnderTest()
 
@@ -20,10 +24,6 @@ Public Class AgregarEnAgendaDebe
 
         Assert.Equal(2, sut.Total)
     End Sub
-
-    Private Function CreateSystemUnderTest() As Agenda
-        Return Agenda.Nuevo.Constructor().Construir()
-    End Function
 
     <Fact> Public Sub NoDebeAgregarALaLista_CuandoSeCreaUnCliente()
         Dim sut = CreateSystemUnderTest()
