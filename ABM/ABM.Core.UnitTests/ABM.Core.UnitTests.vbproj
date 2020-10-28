@@ -86,6 +86,7 @@
   <ItemGroup>
     <Compile Include="AgregarEnAgendaDebe.vb" />
     <Compile Include="AgregarEnInventarioDebe.vb" />
+    <Compile Include="AgregarEnLibroDiarioDebe.vb" />
     <Compile Include="BorrarEnAgendaDebe.vb" />
     <Compile Include="BorrarEnInventarioDebe.vb" />
     <Compile Include="BuscarEnAgendaDebe.vb" />
