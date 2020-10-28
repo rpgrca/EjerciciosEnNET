@@ -96,7 +96,7 @@
     <Compile Include="Constantes.vb" />
     <Compile Include="CrearEnAgendaDebe.vb" />
     <Compile Include="CrearEnInventarioDebe.vb" />
-    <Compile Include="CrearEnLibroDiarioDeberia.vb" />
+    <Compile Include="CrearEnLibroDiarioDebe.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
