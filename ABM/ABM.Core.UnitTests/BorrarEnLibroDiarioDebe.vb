@@ -1,4 +1,5 @@
 ﻿Imports Xunit
+Imports ABM.Core.UnitTests.Constantes
 
 Public Class BorrarEnLibroDiarioDebe
 
@@ -12,5 +13,15 @@ Public Class BorrarEnLibroDiarioDebe
     Private Function CreateSystemUnderTest() As LibroDiario
         Return New LibroDiario()
     End Function
+
+    <Fact> Public Sub BorrarFactura_CuandoLaFacturaExisteEnElLibroDiario()
+        Dim sut = CreateSystemUnderTest()
+        Dim cliente = Agenda.Nuevo.Constructor.Construir().Crear(CLIENTE_JUAN_PEREZ)
+        Dim factura = sut.Crear(cliente, FECHA_PRIMER_COMPRA)
+        sut.Agregar(factura)
+
+        sut.Borrar(factura)
+        Assert.Equal(0, sut.Total)
+    End Sub
 
 End Class
