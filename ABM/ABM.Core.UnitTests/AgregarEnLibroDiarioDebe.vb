@@ -14,7 +14,6 @@ Public Class AgregarEnLibroDiarioDebe
         Return new LibroDiario()
     End Function
     
-
     <Fact> Public Sub AceptarDosFacturasIguales_CuandoSeAgregaUnaFacturaSimilar()
         Dim sut = CreateSystemUnderTest()
         Dim agenda As Agenda = Agenda.Nuevo.Constructor.Construir()
@@ -26,6 +25,15 @@ Public Class AgregarEnLibroDiarioDebe
         sut.Agregar(factura)
 
         Assert.Equal(2, sut.Total)
+    End Sub
+
+    <Fact> Public Sub NoDebeAgregarALaLista_CuandoSeCreaUnaFactura()
+        Dim sut = CreateSystemUnderTest()
+        Dim agenda As Agenda = Agenda.Nuevo.Constructor.Construir()
+
+        sut.Crear(agenda.Crear(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ), FECHA_PRIMER_COMPRA)
+
+        Assert.Equal(0, sut.Total)
     End Sub
 
 End Class
