@@ -25,7 +25,7 @@
         End Function
     End Class
 
-    Public Const CLIENT_IS_INVALID_EXCEPTION As String = "No se puede borrar un cliente invalido"
+    Public Const CLIENT_IS_INVALID_EXCEPTION As String = "El cliente no puede estar vacio"
     Private _nextId as Integer
 
     Private ReadOnly _contactos As IAlmacenamientoDeAgenda(Of Cliente)

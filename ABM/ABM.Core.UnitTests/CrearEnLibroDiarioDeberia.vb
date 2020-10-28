@@ -18,10 +18,31 @@ Public Class CrearEnLibroDiarioDeberia
         Return new LibroDiario()
     End Function
 
-End Class
+    <Fact> Public Sub LanzarExcepcion_CuandoSeIntentaCrearUnaFacturaConClienteNulo()
+        Dim sut = CreateSystemUnderTest()
 
-Friend Class LibroDiario
-    Public Function Crear(cliente As Cliente, fecha As Date) As Factura
-        Return new Factura(cliente, fecha)
-    End Function
+        Dim exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Crear(Nothing, #2020/12/13#))
+        Assert.Equal(Factura.CLIENT_IS_INVALID_EXCEPTION, exception.Message)
+    End Sub
+
+    <Fact>
+    Public Sub LanzarExcepcion_CuandoSeCreaFacturaConFechaNula()
+        Dim sut = CreateSystemUnderTest()
+        Dim client = Agenda.Nuevo.Constructor.Construir().Crear(CLIENTE_JUAN_PEREZ)
+
+        Dim exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Crear(client, Nothing))
+        Assert.Equal(Factura.DATE_IS_INVALID_EXCEPTION, exception.Message)
+    End Sub
+
+    <Fact>
+    Public Sub LanzarExcepcion_CuandoSeCreaFacturaConFechaMinima()
+        Dim sut = CreateSystemUnderTest()
+        Dim client = Agenda.Nuevo.Constructor.Construir().Crear(CLIENTE_JUAN_PEREZ)
+
+        Dim exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Crear(client, Date.MinValue))
+        Assert.Equal(Factura.DATE_IS_INVALID_EXCEPTION, exception.Message)
+    End Sub
+
+
+    
 End Class

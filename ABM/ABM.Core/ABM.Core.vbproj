@@ -76,6 +76,7 @@
     <Compile Include="IAlmacenamientoDeAgenda.vb" />
     <Compile Include="IAlmacenamientoDeInventario.vb" />
     <Compile Include="Inventario.vb" />
+    <Compile Include="LibroDiario.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

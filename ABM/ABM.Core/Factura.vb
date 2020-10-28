@@ -1,6 +1,6 @@
 ﻿Public Class Factura
 
-    Public Const CLIENT_IS_INVALID_EXCEPTION As String = "El cliente no puede estar vacio"
+    Public Const CLIENT_IS_INVALID_EXCEPTION As String = Agenda.CLIENT_IS_INVALID_EXCEPTION
     Public Const DATE_IS_INVALID_EXCEPTION As String = "La fecha no puede estar vacia"
     Public Const PRODUCT_IS_INVALID_EXCEPTION As String = "El producto es invalido"
     Public Const QUANTITY_IS_INVALID_EXCEPTION As String = "La cantidad es invalida"
