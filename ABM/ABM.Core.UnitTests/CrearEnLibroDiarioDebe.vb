@@ -42,7 +42,5 @@ Public Class CrearEnLibroDiarioDeberia
         Dim exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Crear(client, Date.MinValue))
         Assert.Equal(Factura.DATE_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
-
-
     
 End Class
