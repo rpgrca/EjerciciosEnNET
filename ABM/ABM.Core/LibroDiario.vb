@@ -1,6 +1,6 @@
 ﻿Public Class LibroDiario
 
-    Private _facturas As List(Of Factura)
+    Private ReadOnly _facturas As List(Of Factura)
 
     public Sub New()
         _facturas = new List(Of Factura)
