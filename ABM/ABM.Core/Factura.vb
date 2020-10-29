@@ -44,11 +44,25 @@
         detalle.AgregarseA(Detalles)
     End Sub
 
-    Public Function AjustarIdA(id As Integer) As Factura
+    Friend Function AjustarIdA(id As Integer) As Factura
         Return Para(id, Comprador, Fecha)
     End Function
 
-    Public Function ConMismoIdQue(otraFactura As Factura) As Boolean
+    Friend Function ConMismoIdQue(otraFactura As Factura) As Boolean
         Return Id = otraFactura.Id
     End Function
+
+    Friend Function AgregarseA(almacenamiento As IAlmacenamientoDeLibroDiario(Of Factura)) As Factura
+        Return almacenamiento.Agregar(Me)
+    End Function
+
+    Friend Sub Borrarse(almacenamiento As IAlmacenamientoDeLibroDiario(Of Factura))
+        If Not almacenamiento.Existe(Me) Then Throw New ArgumentException(LibroDiario.INVOICE_IS_INVALID_EXCEPTION)
+        almacenamiento.Borrar(Me)
+    End Sub
+
+    Friend Function CambiarFecha(nuevaFecha As Date, libroDiario As LibroDiario) As Factura
+        Return Para(Id, Comprador, nuevaFecha)
+    End Function
+
 End Class

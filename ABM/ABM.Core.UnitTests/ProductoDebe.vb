@@ -36,6 +36,15 @@ Public Class ProductoDebe
         Assert.Equal(Inventario.NAME_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
+    <Fact>
+    Public Sub CambiarElNombreCorrectamente()
+        Dim sut = CreateSystemUnderTest()
+        Dim producto = sut.Crear(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
+
+        producto = sut.CambiarNombreDe(producto, LATA_DE_CERVEZA)
+        Assert.True(producto.Nombrado(LATA_DE_CERVEZA))
+    End Sub
+
     <Fact> Public Sub DevolverFalse_CuandoDosProductosPoseenDistintoId()
         Dim agenda = CreateSystemUnderTest()
         Dim productoJuan = agenda.Crear(CLIENTE_JUAN_PEREZ)

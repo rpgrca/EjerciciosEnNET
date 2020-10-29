@@ -38,4 +38,5 @@
         _contactos.Remove(original)
         _contactos.Add(reemplazo)
     End Sub
+
 End Class

@@ -29,7 +29,7 @@
     Public Sub Borrar(factura As Factura) Implements IAlmacenamientoDeLibroDiario(Of Factura).Borrar
         _facturas.RemoveAll(Function(p) p.ConMismoIdQue(factura))
     End Sub
-
+    
     Public Sub Reemplazar(original As Factura, reemplazo As Factura) Implements IAlmacenamientoDeLibroDiario(Of Factura).Reemplazar
         _facturas.Remove(original)
         _facturas.Add(reemplazo)

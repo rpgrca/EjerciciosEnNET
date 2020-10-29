@@ -22,11 +22,11 @@
 
     Public Const INVOICE_IS_INVALID_EXCEPTION As String = "La factura es invalida"
 
-    Private ReadOnly _facturas As List(Of Factura)
+    Private ReadOnly _facturas As IAlmacenamientoDeLibroDiario(Of Factura)
     Private _nextId as Integer
 
     private Sub New(facturas As IAlmacenamientoDeLibroDiario(Of Factura))
-        _facturas = new List(Of Factura)
+        _facturas = facturas
         _nextId = 0
     End Sub
 
@@ -35,21 +35,32 @@
         Return Factura.Para(_nextId, cliente, fecha)
     End Function
 
-    Public Sub Agregar(factura As Factura)
+    Public Function Agregar(factura As Factura) As Factura
         If factura Is Nothing Then Throw new ArgumentException(INVOICE_IS_INVALID_EXCEPTION)
-        _facturas.Add(factura)
-    End Sub
+        Return factura.AgregarseA(_facturas)
+    End Function
 
     Public ReadOnly Property Total As Integer
         Get
-            Return _facturas.Count
+            Return _facturas.Contar()
         End Get
     End Property
 
     Public Sub Borrar(factura As Factura)
         If factura Is Nothing Then Throw New ArgumentException(INVOICE_IS_INVALID_EXCEPTION)
-        If Not _facturas.Contains(factura) Then Throw New ArgumentException(INVOICE_IS_INVALID_EXCEPTION)
-        _facturas.Remove(factura)
+        factura.Borrarse(_facturas)
     End Sub
+
+    Public Function CambiarFechaDe(factura As Factura, nuevaFecha As Date) As Factura
+        Return CambiarAlgoDe(factura, Function() factura.CambiarFecha(nuevaFecha, Me))
+    End Function
+
+    Private Function CambiarAlgoDe(facturaOriginal As Factura, modificarFactura As Func(Of Factura)) As Factura
+        Dim facturaModificada = modificarFactura()
+
+        _facturas.Reemplazar(facturaOriginal, facturaModificada)
+
+        Return facturaModificada
+    End Function
 
 End Class

@@ -22,10 +22,6 @@
         Return productoModificado
     End Function
 
-    Public Function Buscar(nombre As String) As List(Of Producto) Implements IAlmacenamientoDeInventario(Of Producto).Buscar
-        Return _productos.Where(Function(p) p.Nombrado(nombre)).ToList()
-    End Function
-
     public Function Existe(producto As Producto) As Boolean Implements IAlmacenamientoDeInventario(Of Producto).Existe
         Return _productos.Any(Function(p) p.ConMismoIdQue(producto))
     End Function

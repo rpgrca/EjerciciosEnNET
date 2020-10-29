@@ -101,4 +101,14 @@ Public Class FacturaDebe
         Assert.Equal(Factura.QUANTITY_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
+    <Fact>
+    Public Sub CambiarLaFechaCorrectamente()
+        Dim cliente = Agenda.Nuevo.Constructor.Construir().Crear(CLIENTE_JUAN_PEREZ)
+        Dim sut = CreateSystemUnderTest()
+        Dim factura = sut.Crear(cliente, FECHA_PRIMER_COMPRA)
+
+        factura = sut.CambiarFechaDe(factura, FECHA_SEGUNDA_COMPRA)
+        Assert.True(factura.HechaEl(FECHA_SEGUNDA_COMPRA))
+    End Sub
+
 End Class

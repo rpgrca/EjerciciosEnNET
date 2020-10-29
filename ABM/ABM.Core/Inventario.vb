@@ -63,10 +63,6 @@
         producto.BorrarseDe(_productos)
     End Sub
 
-    Public Function Buscar(nombre As String) As List(Of Producto)
-        Return _productos.Buscar(nombre)
-    End Function
-
     Public Function Filtrar(Optional nombre As String = "", Optional codigo As String = "") As List(Of Producto)
         Return _productos.Filtrar(nombre, codigo)
     End Function
