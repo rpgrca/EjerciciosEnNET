@@ -23,9 +23,9 @@
         End Get
     End Property
 
-    Public Function Borrar(factura As Factura) As LibroDiario
+    Public Sub Borrar(factura As Factura)
         If factura Is Nothing Then Throw New ArgumentException(INVOICE_IS_INVALID_EXCEPTION)
         If Not _facturas.Contains(factura) Then Throw New ArgumentException(INVOICE_IS_INVALID_EXCEPTION)
         _facturas.Remove(factura)
-    End Function
+    End Sub
 End Class
