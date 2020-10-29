@@ -114,6 +114,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ProductoDebe.vb" />
+    <Compile Include="TotalEnLibroDiarioDebe.vb" />
     <Compile Include="TotalEnInventarioDebe.vb" />
     <Compile Include="TotalEnAgendaDebe.vb" />
     <Compile Include="FacturaDebe.vb" />

@@ -70,10 +70,12 @@
   <ItemGroup>
     <Compile Include="Agenda.vb" />
     <Compile Include="AlmacenamientoDeAgenda.vb" />
+    <Compile Include="AlmacenamientoDeLibroDiario.vb" />
     <Compile Include="AlmacenamientoDeInventario.vb" />
     <Compile Include="Cliente.vb" />
     <Compile Include="Detalle.vb" />
     <Compile Include="IAlmacenamientoDeAgenda.vb" />
+    <Compile Include="IAlmacenamientoDeLibroDiario.vb" />
     <Compile Include="IAlmacenamientoDeInventario.vb" />
     <Compile Include="Inventario.vb" />
     <Compile Include="LibroDiario.vb" />

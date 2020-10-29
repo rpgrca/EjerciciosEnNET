@@ -11,7 +11,7 @@ Public Class BorrarEnLibroDiarioDebe
     End Sub
 
     Private Function CreateSystemUnderTest() As LibroDiario
-        Return New LibroDiario()
+        Return LibroDiario.Nuevo.Constructor.Construir()
     End Function
 
     <Fact> Public Sub BorrarFactura_CuandoLaFacturaExisteEnElLibroDiario()

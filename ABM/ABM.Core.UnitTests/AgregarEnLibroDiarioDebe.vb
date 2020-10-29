@@ -11,7 +11,7 @@ Public Class AgregarEnLibroDiarioDebe
     End Sub
 
     Private Function CreateSystemUnderTest() As LibroDiario
-        Return new LibroDiario()
+        Return LibroDiario.Nuevo.Constructor.Construir()
     End Function
     
     <Fact> Public Sub AceptarDosFacturasIguales_CuandoSeAgregaUnaFacturaSimilar()
