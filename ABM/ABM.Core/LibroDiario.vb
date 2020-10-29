@@ -14,7 +14,7 @@
         End sub
 
         public Function Construir() As LibroDiario
-            If _almacenamiento Is Nothing Then _almacenamiento = New AlmacenamientoDeLibroDiario()
+            If _almacenamiento Is Nothing Then _almacenamiento = New AlmacenamientoTemporalDeLibroDiario()
 
             Return new LibroDiario(_almacenamiento)
         End Function

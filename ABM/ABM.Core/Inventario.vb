@@ -19,7 +19,7 @@
         'End Function
 
         public Function Construir() As Inventario
-            If _almacenamiento Is Nothing Then _almacenamiento = New AlmacenamientoDeInventario()
+            If _almacenamiento Is Nothing Then _almacenamiento = New AlmacenamientoTemporalDeInventario()
 
             Return new Inventario(_almacenamiento)
         End Function

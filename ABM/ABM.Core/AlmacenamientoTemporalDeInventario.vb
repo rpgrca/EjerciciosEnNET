@@ -1,4 +1,4 @@
-﻿Friend Class AlmacenamientoDeInventario
+﻿Friend Class AlmacenamientoTemporalDeInventario
     Implements IAlmacenamientoDeInventario(Of Producto)
 
     Private ReadOnly _productos As List(Of Producto)

@@ -69,8 +69,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Agenda.vb" />
-    <Compile Include="AlmacenamientoDeLibroDiario.vb" />
-    <Compile Include="AlmacenamientoDeInventario.vb" />
+    <Compile Include="AlmacenamientoTemporalDeLibroDiario.vb" />
+    <Compile Include="AlmacenamientoTemporalDeInventario.vb" />
     <Compile Include="AlmacenamientoTemporalDeAgenda.vb" />
     <Compile Include="Cliente.vb" />
     <Compile Include="Detalle.vb" />

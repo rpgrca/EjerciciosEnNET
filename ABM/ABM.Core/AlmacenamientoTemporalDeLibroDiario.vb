@@ -1,4 +1,4 @@
-﻿Friend Class AlmacenamientoDeLibroDiario
+﻿Friend Class AlmacenamientoTemporalDeLibroDiario
     Implements IAlmacenamientoDeLibroDiario(Of Factura)
 
     Private ReadOnly _facturas As List(Of Factura)
