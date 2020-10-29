@@ -9,8 +9,11 @@ Public Class FiltrarEnAgendaDebe
     <InlineData(CLIENTE_JUAN_PEREZ)>
     Public Sub DevolverNothing_CuandoSeFiltraNombreEnAgendaVacia(cualquierNombre As String)
         Dim sut = CreateSystemUnderTest()
+        Dim filtro = New FiltroDeAlmacenamientoDeAgenda With {
+            .Nombre = cualquierNombre
+        }
 
-        Dim clientes = sut.Filtrar(cualquierNombre)
+        Dim clientes = sut.Filtrar(filtro)
         Assert.Empty(clientes)
     End Sub
 
@@ -23,7 +26,10 @@ Public Class FiltrarEnAgendaDebe
         Dim cliente = sut.Crear(CLIENTE_JUAN_PEREZ)
         sut.Agregar(cliente)
 
-        Dim clientes = sut.Filtrar(CLIENTE_JUAN_PEREZ)
+        Dim filtro = New FiltroDeAlmacenamientoDeAgenda()
+        filtro.Nombre = CLIENTE_JUAN_PEREZ
+
+        Dim clientes = sut.Filtrar(filtro)
         Assert.Single(clientes)
         Assert.True(clientes(0).ConocidoComo(CLIENTE_JUAN_PEREZ))
     End Sub
@@ -32,7 +38,11 @@ Public Class FiltrarEnAgendaDebe
         Dim sut = CreateSystemUnderTest()
         sut.Crear(CLIENTE_JUAN_PEREZ)
 
-        Dim clientes = sut.Filtrar(CLIENTE_EDUARDO_PEREZ)
+        Dim filtro = New FiltroDeAlmacenamientoDeAgenda With {
+            .Nombre = CLIENTE_EDUARDO_PEREZ
+        }
+
+        Dim clientes = sut.Filtrar(filtro)
         Assert.Empty(clientes)
     End Sub
 
@@ -41,7 +51,11 @@ Public Class FiltrarEnAgendaDebe
         Dim cliente = sut.Crear(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ)
         sut.CambiarNombreDe(cliente, CLIENTE_EDUARDO_PEREZ)
 
-        Dim clientes = sut.Filtrar(CLIENTE_EDUARDO_PEREZ)
+        Dim filtro = New FiltroDeAlmacenamientoDeAgenda With {
+            .Nombre = CLIENTE_EDUARDO_PEREZ
+        }
+
+        Dim clientes = sut.Filtrar(filtro)
         Assert.Single(clientes)
         Assert.True(clientes(0).ConocidoComo(CLIENTE_EDUARDO_PEREZ))
         Assert.True(clientes(0).LlamadoAl(TELEFONO_DE_JUAN_PEREZ))
@@ -54,7 +68,11 @@ Public Class FiltrarEnAgendaDebe
         sut.Crear(CLIENTE_JUAN_PEREZ)
         sut.CambiarNombreDe(cliente, CLIENTE_MARTINA_PEREZ)
 
-        Dim clientes = sut.Filtrar(CLIENTE_MARTINA_PEREZ)
+        Dim filtro = New FiltroDeAlmacenamientoDeAgenda With {
+            .Nombre = CLIENTE_MARTINA_PEREZ
+        }
+        
+        Dim clientes = sut.Filtrar(filtro)
         Assert.Single(clientes)
         Assert.True(clientes(0).ConocidoComo(CLIENTE_MARTINA_PEREZ))
         Assert.True(clientes(0).LlamadoAl(TELEFONO_DE_JUAN_PEREZ))

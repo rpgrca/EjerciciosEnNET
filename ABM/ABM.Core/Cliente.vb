@@ -67,16 +67,16 @@
         Return Equals(otroCliente)
     End Function
 
-    Friend Sub BorrarseDe(almacenamiento As IAlmacenamientoDeAgenda(Of Cliente))
+    Friend Sub BorrarseDe(almacenamiento As IAlmacenamiento(Of Cliente))
         If Not almacenamiento.Existe(Me) Then Throw New ArgumentException(Agenda.CLIENT_IS_INVALID_EXCEPTION)
         almacenamiento.Borrar(Me)
     End Sub
 
-    Friend Function AgregarseA(almacenamiento As IAlmacenamientoDeAgenda(Of Cliente)) As Cliente
+    Friend Function AgregarseA(almacenamiento As IAlmacenamiento(Of Cliente)) As Cliente
         Return almacenamiento.Agregar(Me)
     End Function
 
-    Friend Function ConfirmarCreacionCon(almacenamiento As IAlmacenamientoDeAgenda(Of Cliente)) As Cliente
+    Friend Function ConfirmarCreacionCon(almacenamiento As IAlmacenamiento(Of Cliente)) As Cliente
         Return Me
     End Function
 

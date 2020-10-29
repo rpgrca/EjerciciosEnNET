@@ -1,7 +1,7 @@
 ﻿Public Class Agenda
 
     Public Class Nuevo
-        Private _almacenamiento as IAlmacenamientoDeAgenda(Of Cliente)
+        Private _almacenamiento as IAlmacenamiento(Of Cliente)
 
         public Shared ReadOnly Property Constructor As Nuevo
             get
@@ -19,7 +19,7 @@
         'End Function
 
         public Function Construir() As Agenda
-            If _almacenamiento Is Nothing Then _almacenamiento = New AlmacenamientoDeAgenda()
+            If _almacenamiento Is Nothing Then _almacenamiento = New AlmacenamientoTemporalDeAgenda()
 
             Return New Agenda(_almacenamiento)
         End Function
@@ -28,9 +28,9 @@
     Public Const CLIENT_IS_INVALID_EXCEPTION As String = "El cliente no puede estar vacio"
     Private _nextId as Integer
 
-    Private ReadOnly _contactos As IAlmacenamientoDeAgenda(Of Cliente)
+    Private ReadOnly _contactos As IAlmacenamiento(Of Cliente)
 
-    Private Sub New(contactos As IAlmacenamientoDeAgenda(Of Cliente))
+    Private Sub New(contactos As IAlmacenamiento(Of Cliente))
         _contactos = contactos
         _nextId = 0
     End Sub
@@ -53,8 +53,8 @@
         Return clienteNuevo.AgregarseA(_contactos)
     End Function
 
-    Public Function Filtrar(Optional nombre As String = "") As List(Of Cliente)
-        Return _contactos.Filtrar(nombre)
+    Public Function Filtrar(filtro As IFiltroDeAlmacenamiento(Of Cliente)) As List(Of Cliente)
+        Return _contactos.Filtrar(filtro)
     End Function
 
     Public Sub Borrar(cliente As Cliente)
