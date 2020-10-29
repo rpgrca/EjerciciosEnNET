@@ -22,7 +22,7 @@
         Return clienteModificado
     End Function
 
-    Public Function Buscar(nombre As String) As List(Of Cliente) Implements IAlmacenamientoDeAgenda(Of Cliente).Buscar
+    Public Function Filtrar(Optional nombre As String = "") As List(Of Cliente) Implements IAlmacenamientoDeAgenda(Of Cliente).Filtrar
         Return _contactos.Where(Function(c) c.ConocidoComo(nombre)).ToList()
     End Function
 

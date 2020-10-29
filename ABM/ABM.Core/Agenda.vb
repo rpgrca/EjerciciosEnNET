@@ -53,8 +53,8 @@
         Return clienteNuevo.AgregarseA(_contactos)
     End Function
 
-    Public Function Buscar(nombre As String) As List(Of Cliente)
-        Return _contactos.Buscar(nombre)
+    Public Function Filtrar(Optional nombre As String = "") As List(Of Cliente)
+        Return _contactos.Filtrar(nombre)
     End Function
 
     Public Sub Borrar(cliente As Cliente)
