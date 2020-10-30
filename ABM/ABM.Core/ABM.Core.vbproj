@@ -69,16 +69,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Agenda.vb" />
-    <Compile Include="AlmacenamientoTemporalDeLibroDiario.vb" />
-    <Compile Include="AlmacenamientoTemporalDeInventario.vb" />
-    <Compile Include="AlmacenamientoTemporalDeAgenda.vb" />
     <Compile Include="Cliente.vb" />
     <Compile Include="Detalle.vb" />
     <Compile Include="FiltroDeAgenda.vb" />
     <Compile Include="FiltroDeLibroDiario.vb" />
     <Compile Include="FiltroDeInventario.vb" />
-    <Compile Include="IAlmacenamiento.vb" />
-    <Compile Include="IFiltroDeAlmacenamiento.vb" />
     <Compile Include="Inventario.vb" />
     <Compile Include="LibroDiario.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -96,6 +91,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Almacenamiento\AgendaTemporal.vb" />
+    <Compile Include="Almacenamiento\InventarioTemporal.vb" />
+    <Compile Include="Almacenamiento\LibroDiarioTemporal.vb" />
+    <Compile Include="Almacenamiento\IAlmacenamiento.vb" />
+    <Compile Include="Almacenamiento\IFiltroDeAlmacenamiento.vb" />
     <Compile Include="Producto.vb" />
     <Compile Include="Factura.vb" />
   </ItemGroup>
@@ -124,5 +124,6 @@
       <Name>ABM.Persistance</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

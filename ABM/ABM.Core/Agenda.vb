@@ -1,4 +1,6 @@
-﻿Public Class Agenda
+﻿Imports ABM.Core.Almacenamiento
+
+Public Class Agenda
 
     Public Class Nuevo
         Private _almacenamiento as IAlmacenamiento(Of Cliente)
@@ -19,7 +21,7 @@
         'End Function
 
         public Function Construir() As Agenda
-            If _almacenamiento Is Nothing Then _almacenamiento = New AlmacenamientoTemporalDeAgenda()
+            If _almacenamiento Is Nothing Then _almacenamiento = New AgendaTemporal()
 
             Return New Agenda(_almacenamiento)
         End Function
@@ -43,9 +45,7 @@
 
     Public Function Crear(nombre As String, Optional telefono As String = "", Optional correo As String = "") As Cliente
         _nextId -= 1
-
-        Dim cliente As Cliente = Cliente.CreadoComo(_nextId, nombre, telefono, correo)
-        return cliente.ConfirmarCreacionCon(_contactos)
+        Return Cliente.CreadoComo(_nextId, nombre, telefono, correo)
     End Function
 
     public Function Agregar(clienteNuevo As Cliente) As Cliente
@@ -63,15 +63,15 @@
     End Sub
 
     Public Function CambiarNombreDe(cliente As Cliente, nuevoNombre As String) As Cliente
-        Return CambiarAlgoDe(cliente, Function() cliente.CambiarNombre(nuevoNombre, Me))
+        Return CambiarAlgoDe(cliente, Function() cliente.CambiarNombre(nuevoNombre))
     End Function
 
     Public Function CambiarCorreoDe(cliente As Cliente, nuevoCorreo As String) As Cliente
-        Return CambiarAlgoDe(cliente, Function() cliente.CambiarCorreo(nuevoCorreo, Me))
+        Return CambiarAlgoDe(cliente, Function() cliente.CambiarCorreo(nuevoCorreo))
     End Function
 
     Public Function CambiarTelefonoDe(cliente As Cliente, nuevoTelefono As String) As Cliente
-        Return CambiarAlgoDe(cliente, Function() cliente.CambiarTelefono(nuevoTelefono, Me))
+        Return CambiarAlgoDe(cliente, Function() cliente.CambiarTelefono(nuevoTelefono))
     End Function
 
     Private Function CambiarAlgoDe(clienteOriginal As Cliente, cambiarCliente As Func(Of Cliente)) As Cliente

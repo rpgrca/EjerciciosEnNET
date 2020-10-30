@@ -1,4 +1,6 @@
-﻿Public Class Inventario
+﻿Imports ABM.Core.Almacenamiento
+
+Public Class Inventario
 
     public class Nuevo
         Private _almacenamiento As IAlmacenamiento(Of Producto)
@@ -19,7 +21,7 @@
         'End Function
 
         public Function Construir() As Inventario
-            If _almacenamiento Is Nothing Then _almacenamiento = New AlmacenamientoTemporalDeInventario()
+            If _almacenamiento Is Nothing Then _almacenamiento = New InventarioTemporal()
 
             Return new Inventario(_almacenamiento)
         End Function

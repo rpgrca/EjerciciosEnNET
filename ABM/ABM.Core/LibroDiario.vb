@@ -1,4 +1,6 @@
-﻿Public Class LibroDiario
+﻿Imports ABM.Core.Almacenamiento
+
+Public Class LibroDiario
 
     public class Nuevo
         Private _almacenamiento As IAlmacenamiento(Of Factura)
@@ -14,7 +16,7 @@
         End sub
 
         public Function Construir() As LibroDiario
-            If _almacenamiento Is Nothing Then _almacenamiento = New AlmacenamientoTemporalDeLibroDiario()
+            If _almacenamiento Is Nothing Then _almacenamiento = New LibroDiarioTemporal()
 
             Return new LibroDiario(_almacenamiento)
         End Function

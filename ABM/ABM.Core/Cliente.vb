@@ -1,4 +1,6 @@
-﻿Public Class Cliente
+﻿Imports ABM.Core.Almacenamiento
+
+Public Class Cliente
     Implements IEquatable(Of Cliente)
 
     Public Const NAME_IS_INVALID_EXCEPTION As String = "El nombre del cliente es invalido"
@@ -33,15 +35,15 @@
         Return Me.Correo = correo
     End Function
 
-    Friend Function CambiarNombre(nuevoNombre As String, agenda As Agenda) As Cliente
+    Friend Function CambiarNombre(nuevoNombre As String) As Cliente
         Return New Cliente(Id, nuevoNombre, Telefono, Correo)
     End Function
 
-    Friend Function CambiarTelefono(nuevoTelefono As String, agenda As Agenda) As Cliente
+    Friend Function CambiarTelefono(nuevoTelefono As String) As Cliente
         Return New Cliente(Id, Nombre, nuevoTelefono, Correo)
     End Function
 
-    Friend Function CambiarCorreo(nuevoCorreo As String, agenda As Agenda) As Cliente
+    Friend Function CambiarCorreo(nuevoCorreo As String) As Cliente
         Return New Cliente(Id, Nombre, Telefono, nuevoCorreo)
     End Function
     
@@ -74,10 +76,6 @@
 
     Friend Function AgregarseA(almacenamiento As IAlmacenamiento(Of Cliente)) As Cliente
         Return almacenamiento.Agregar(Me)
-    End Function
-
-    Friend Function ConfirmarCreacionCon(almacenamiento As IAlmacenamiento(Of Cliente)) As Cliente
-        Return Me
     End Function
 
 End Class

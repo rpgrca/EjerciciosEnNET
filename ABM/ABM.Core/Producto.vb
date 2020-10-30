@@ -1,4 +1,6 @@
-﻿Public Class Producto
+﻿Imports ABM.Core.Almacenamiento
+
+Public Class Producto
     Implements IEquatable(Of Producto)
 
     Private ReadOnly Property Id As Integer

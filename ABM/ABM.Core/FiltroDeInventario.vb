@@ -1,4 +1,6 @@
-﻿Public Class FiltroDeInventario
+﻿Imports ABM.Core.Almacenamiento
+
+Public Class FiltroDeInventario
     Implements IFiltroDeAlmacenamiento(Of Producto)
 
     Public Property Nombre As String = String.Empty

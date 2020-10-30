@@ -1,4 +1,6 @@
-﻿Public Class FiltroDeAgenda
+﻿Imports ABM.Core.Almacenamiento
+
+Public Class FiltroDeAgenda
     Implements IFiltroDeAlmacenamiento(Of Cliente)
 
     Public Property Nombre As String = String.Empty

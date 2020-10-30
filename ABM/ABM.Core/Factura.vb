@@ -1,4 +1,6 @@
-﻿Public Class Factura
+﻿Imports ABM.Core.Almacenamiento
+
+Public Class Factura
 
     Public Const CLIENT_IS_INVALID_EXCEPTION As String = Agenda.CLIENT_IS_INVALID_EXCEPTION
     Public Const DATE_IS_INVALID_EXCEPTION As String = "La fecha no puede estar vacia"
