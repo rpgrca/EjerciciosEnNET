@@ -48,7 +48,7 @@
     Friend Function CambiarCodigo(nuevoCodigo As String, inventario As Inventario) As Producto
         Dim nuevoProducto = De(Id, Nombre, Precio, nuevoCodigo)
 
-        If inventario.Filtrar(, nuevoCodigo).Count > 0 Then
+        If CantidadDeProductosConCodigo(nuevoCodigo, inventario) > 0 Then
             Throw New ArgumentException(Inventario.CODE_IS_REPEATED_EXCEPTION)
         End If
 
@@ -63,21 +63,31 @@
         Return Precio * cantidad
     End Function
 
-    Friend Function AgregarseA(almacenamiento As IAlmacenamientoDeInventario(Of Producto)) As Producto
-        Dim productos = almacenamiento.Filtrar(, Codigo)
-        If productos.Count > 0 Then Throw new ArgumentException(Inventario.CODE_IS_REPEATED_EXCEPTION)
+    Friend Function AgregarseA(almacenamiento As IAlmacenamiento(Of Producto)) As Producto
+        Dim cantidadDeProductos = CantidadDeProductosConCodigo(Codigo, almacenamiento)
+        If cantidadDeProductos Then Throw new ArgumentException(Inventario.CODE_IS_REPEATED_EXCEPTION)
 
         Return almacenamiento.Agregar(Me)
     End Function
 
-    Friend Sub BorrarseDe(almacenamiento As IAlmacenamientoDeInventario(Of Producto))
+    Private Function CantidadDeProductosConCodigo(codigoABuscar As String, almacenamiento As IAlmacenamiento(Of Producto)) As Integer
+        Dim filtro = New FiltroDeInventario() With { .Codigo = codigoABuscar }
+        Return almacenamiento.Filtrar(filtro).Count
+    End Function
+
+    Private Function CantidadDeProductosConCodigo(codigoABuscar As String, inventario As Inventario) As Integer
+        Dim filtro = New FiltroDeInventario() With { .Codigo = codigoABuscar }
+        Return inventario.Filtrar(filtro).Count
+    End Function
+
+    Friend Sub BorrarseDe(almacenamiento As IAlmacenamiento(Of Producto))
         If Not almacenamiento.Existe(Me) Then Throw New ArgumentException(Inventario.PRODUCT_IS_INVALID_EXCEPTION)
 
         almacenamiento.Borrar(Me)
     End Sub
 
-    Friend Function ConfirmarCreacionCon(almacenamiento As IAlmacenamientoDeInventario(Of Producto)) As Producto
-        If almacenamiento.Filtrar(, Codigo).Count > 0 Then Throw New ArgumentException(Inventario.CODE_IS_REPEATED_EXCEPTION)
+    Friend Function ConfirmarCreacionCon(almacenamiento As IAlmacenamiento(Of Producto)) As Producto
+        If CantidadDeProductosConCodigo(Codigo, almacenamiento) > 0 Then Throw New ArgumentException(Inventario.CODE_IS_REPEATED_EXCEPTION)
 
         Return Me
     End Function

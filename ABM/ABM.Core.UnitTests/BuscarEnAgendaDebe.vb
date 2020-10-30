@@ -9,7 +9,7 @@ Public Class FiltrarEnAgendaDebe
     <InlineData(CLIENTE_JUAN_PEREZ)>
     Public Sub DevolverNothing_CuandoSeFiltraNombreEnAgendaVacia(cualquierNombre As String)
         Dim sut = CreateSystemUnderTest()
-        Dim filtro = New FiltroDeAlmacenamientoDeAgenda With {
+        Dim filtro = New FiltroDeAgenda With {
             .Nombre = cualquierNombre
         }
 
@@ -26,7 +26,7 @@ Public Class FiltrarEnAgendaDebe
         Dim cliente = sut.Crear(CLIENTE_JUAN_PEREZ)
         sut.Agregar(cliente)
 
-        Dim filtro = New FiltroDeAlmacenamientoDeAgenda()
+        Dim filtro = New FiltroDeAgenda()
         filtro.Nombre = CLIENTE_JUAN_PEREZ
 
         Dim clientes = sut.Filtrar(filtro)
@@ -38,7 +38,7 @@ Public Class FiltrarEnAgendaDebe
         Dim sut = CreateSystemUnderTest()
         sut.Crear(CLIENTE_JUAN_PEREZ)
 
-        Dim filtro = New FiltroDeAlmacenamientoDeAgenda With {
+        Dim filtro = New FiltroDeAgenda With {
             .Nombre = CLIENTE_EDUARDO_PEREZ
         }
 
@@ -51,7 +51,7 @@ Public Class FiltrarEnAgendaDebe
         Dim cliente = sut.Crear(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ)
         sut.CambiarNombreDe(cliente, CLIENTE_EDUARDO_PEREZ)
 
-        Dim filtro = New FiltroDeAlmacenamientoDeAgenda With {
+        Dim filtro = New FiltroDeAgenda With {
             .Nombre = CLIENTE_EDUARDO_PEREZ
         }
 
@@ -68,7 +68,7 @@ Public Class FiltrarEnAgendaDebe
         sut.Crear(CLIENTE_JUAN_PEREZ)
         sut.CambiarNombreDe(cliente, CLIENTE_MARTINA_PEREZ)
 
-        Dim filtro = New FiltroDeAlmacenamientoDeAgenda With {
+        Dim filtro = New FiltroDeAgenda With {
             .Nombre = CLIENTE_MARTINA_PEREZ
         }
         

@@ -1,7 +1,7 @@
 ﻿Public Class Inventario
 
     public class Nuevo
-        Private _almacenamiento As IAlmacenamientoDeInventario(Of Producto)
+        Private _almacenamiento As IAlmacenamiento(Of Producto)
 
         public Shared ReadOnly Property Constructor As Nuevo
             get
@@ -32,10 +32,10 @@
     Public Const CODE_IS_INVALID_EXCEPTION As String = "El codigo es invalido"
     Public Const DEFAULT_CODE As String = "CodigoPorDefecto"
 
-    Private ReadOnly _productos As IAlmacenamientoDeInventario(Of Producto)
+    Private ReadOnly _productos As IAlmacenamiento(Of Producto)
     Private _nextId as Integer
 
-    Private Sub New(productos As IAlmacenamientoDeInventario(Of Producto))
+    Private Sub New(productos As IAlmacenamiento(Of Producto))
         _productos = productos
         _nextId = 0
     End Sub
@@ -63,8 +63,8 @@
         producto.BorrarseDe(_productos)
     End Sub
 
-    Public Function Filtrar(Optional nombre As String = "", Optional codigo As String = "") As List(Of Producto)
-        Return _productos.Filtrar(nombre, codigo)
+    Public Function Filtrar(filtro As IFiltroDeAlmacenamiento(Of Producto)) As List(Of Producto)
+        Return _productos.Filtrar(filtro)
     End Function
 
     Public Function CambiarCodigoDe(producto As Producto, nuevoCodigo As String) As Producto

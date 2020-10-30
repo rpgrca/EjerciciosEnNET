@@ -1,7 +1,7 @@
 ﻿Public Class LibroDiario
 
     public class Nuevo
-        Private _almacenamiento As IAlmacenamientoDeLibroDiario(Of Factura)
+        Private _almacenamiento As IAlmacenamiento(Of Factura)
 
         public Shared ReadOnly Property Constructor As Nuevo
             get
@@ -22,10 +22,10 @@
 
     Public Const INVOICE_IS_INVALID_EXCEPTION As String = "La factura es invalida"
 
-    Private ReadOnly _facturas As IAlmacenamientoDeLibroDiario(Of Factura)
+    Private ReadOnly _facturas As IAlmacenamiento(Of Factura)
     Private _nextId as Integer
 
-    private Sub New(facturas As IAlmacenamientoDeLibroDiario(Of Factura))
+    private Sub New(facturas As IAlmacenamiento(Of Factura))
         _facturas = facturas
         _nextId = 0
     End Sub

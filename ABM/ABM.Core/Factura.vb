@@ -52,11 +52,11 @@
         Return Id = otraFactura.Id
     End Function
 
-    Friend Function AgregarseA(almacenamiento As IAlmacenamientoDeLibroDiario(Of Factura)) As Factura
+    Friend Function AgregarseA(almacenamiento As IAlmacenamiento(Of Factura)) As Factura
         Return almacenamiento.Agregar(Me)
     End Function
 
-    Friend Sub Borrarse(almacenamiento As IAlmacenamientoDeLibroDiario(Of Factura))
+    Friend Sub Borrarse(almacenamiento As IAlmacenamiento(Of Factura))
         If Not almacenamiento.Existe(Me) Then Throw New ArgumentException(LibroDiario.INVOICE_IS_INVALID_EXCEPTION)
         almacenamiento.Borrar(Me)
     End Sub

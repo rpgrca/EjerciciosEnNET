@@ -74,10 +74,10 @@
     <Compile Include="AlmacenamientoTemporalDeAgenda.vb" />
     <Compile Include="Cliente.vb" />
     <Compile Include="Detalle.vb" />
-    <Compile Include="FiltroDeAlmacenamientoDeAgenda.vb" />
-    <Compile Include="IAlmacenamientoDeAgenda.vb" />
-    <Compile Include="IAlmacenamientoDeLibroDiario.vb" />
-    <Compile Include="IAlmacenamientoDeInventario.vb" />
+    <Compile Include="FiltroDeAgenda.vb" />
+    <Compile Include="FiltroDeLibroDiario.vb" />
+    <Compile Include="FiltroDeInventario.vb" />
+    <Compile Include="IAlmacenamiento.vb" />
     <Compile Include="IFiltroDeAlmacenamiento.vb" />
     <Compile Include="Inventario.vb" />
     <Compile Include="LibroDiario.vb" />

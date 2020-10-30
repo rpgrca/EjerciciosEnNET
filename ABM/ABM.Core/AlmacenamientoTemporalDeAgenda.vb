@@ -36,7 +36,7 @@
     End Function
 
     Public Function Filtrar(filtro As IFiltroDeAlmacenamiento(Of Cliente)) As List(Of Cliente) Implements IAlmacenamiento(Of Cliente).Filtrar
-        Dim filtroDeAgenda As FiltroDeAlmacenamientoDeAgenda = filtro
+        Dim filtroDeAgenda As FiltroDeAgenda = filtro
 
         Return _contactos.Where(Function(c) c.ConocidoComo(filtroDeAgenda.Nombre)).ToList()
     End Function

@@ -1,5 +1,5 @@
 ﻿Friend Class AlmacenamientoTemporalDeInventario
-    Implements IAlmacenamientoDeInventario(Of Producto)
+    Implements IAlmacenamiento(Of Producto)
 
     Private ReadOnly _productos As List(Of Producto)
     Private _nextId As Integer
@@ -9,11 +9,11 @@
         _nextId = 1
     End Sub
 
-    Public Function Contar() As Integer Implements IAlmacenamientoDeInventario(Of Producto).Contar
+    Public Function Contar() As Integer Implements IAlmacenamiento(Of Producto).Contar
         Return _productos.Count
     End Function
 
-    Public Function Agregar(producto As Producto) As Producto Implements IAlmacenamientoDeInventario(Of Producto).Agregar
+    Public Function Agregar(producto As Producto) As Producto Implements IAlmacenamiento(Of Producto).Agregar
         Dim productoModificado = producto.AjustarIdA(_nextId)
 
         _productos.Add(productoModificado)
@@ -22,21 +22,23 @@
         Return productoModificado
     End Function
 
-    public Function Existe(producto As Producto) As Boolean Implements IAlmacenamientoDeInventario(Of Producto).Existe
+    public Function Existe(producto As Producto) As Boolean Implements IAlmacenamiento(Of Producto).Existe
         Return _productos.Any(Function(p) p.ConMismoIdQue(producto))
     End Function
 
-    Public Sub Borrar(producto As Producto) Implements IAlmacenamientoDeInventario(Of Producto).Borrar
+    Public Sub Borrar(producto As Producto) Implements IAlmacenamiento(Of Producto).Borrar
         _productos.RemoveAll(Function(p) p.ConMismoIdQue(producto))
     End Sub
 
-    Public Function Filtrar(Optional nombre As String = "", Optional codigo As String = "") As List(Of Producto) Implements IAlmacenamientoDeInventario(Of Producto).Filtrar
+    Public Function Filtrar(filtro As IFiltroDeAlmacenamiento(Of Producto)) As List(Of Producto) Implements IAlmacenamiento(Of Producto).Filtrar
+        Dim filtroDeInventario As FiltroDeInventario = filtro
+
         Return _productos.Where(Function(p)
-            Return (String.IsNullOrWhiteSpace(nombre) Or p.Nombrado(nombre)) And (String.IsNullOrWhiteSpace(codigo) Or p.ConCodigo(codigo))
+            Return (String.IsNullOrWhiteSpace(filtroDeInventario.Nombre) Or p.Nombrado(filtroDeInventario.Nombre)) And (String.IsNullOrWhiteSpace(filtroDeInventario.Codigo) Or p.ConCodigo(filtroDeInventario.Codigo))
         End Function).ToList()
     End Function
 
-    Public Sub Reemplazar(original As Producto, reemplazo As Producto) Implements IAlmacenamientoDeInventario(Of Producto).Reemplazar
+    Public Sub Reemplazar(original As Producto, reemplazo As Producto) Implements IAlmacenamiento(Of Producto).Reemplazar
         _productos.Remove(original)
         _productos.Add(reemplazo)
     End Sub
