@@ -109,6 +109,7 @@ Partial Class MainView
         Me.IsMdiContainer = true
         Me.MainMenuStrip = Me.MenuStrip1
         Me.Name = "MainView"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Alta Baja Modificacion Consulta"
         Me.MenuStrip1.ResumeLayout(false)
         Me.MenuStrip1.PerformLayout
