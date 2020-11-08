@@ -4,9 +4,9 @@ Imports ABM.Core.UnitTests.Constantes
 Public Class AgregarEnLibroDiarioDebe
 
     <Fact> Public Sub LanzarExcepcion_CuandoSeAgregaUnaFacturaNula()
-        Dim sut = CreateSystemUnderTest()
+        Dim sut As LibroDiario = CreateSystemUnderTest()
 
-        Dim exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Agregar(Nothing))
+        Dim exception As Exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Agregar(Nothing))
         Assert.Equal(LibroDiario.INVOICE_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
@@ -15,11 +15,11 @@ Public Class AgregarEnLibroDiarioDebe
     End Function
     
     <Fact> Public Sub AceptarDosFacturasIguales_CuandoSeAgregaUnaFacturaSimilar()
-        Dim sut = CreateSystemUnderTest()
+        Dim sut As LibroDiario = CreateSystemUnderTest()
         Dim agenda As Agenda = Agenda.Nuevo.Constructor.Construir()
 
-        Dim cliente = agenda.Crear(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ)
-        Dim factura = sut.Crear(cliente, FECHA_PRIMER_COMPRA)
+        Dim cliente As Cliente = agenda.Crear(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ)
+        Dim factura As Factura = sut.Crear(cliente, FECHA_PRIMER_COMPRA)
         sut.Agregar(factura)
         factura = sut.Crear(cliente, FECHA_PRIMER_COMPRA)
         sut.Agregar(factura)
@@ -28,7 +28,7 @@ Public Class AgregarEnLibroDiarioDebe
     End Sub
 
     <Fact> Public Sub NoDebeAgregarALaLista_CuandoSeCreaUnaFactura()
-        Dim sut = CreateSystemUnderTest()
+        Dim sut As LibroDiario = CreateSystemUnderTest()
         Dim agenda As Agenda = Agenda.Nuevo.Constructor.Construir()
 
         sut.Crear(agenda.Crear(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ), FECHA_PRIMER_COMPRA)

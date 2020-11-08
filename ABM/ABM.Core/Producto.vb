@@ -48,7 +48,7 @@ Public Class Producto
     End Function
 
     Friend Function CambiarCodigo(nuevoCodigo As String, inventario As Inventario) As Producto
-        Dim nuevoProducto = De(Id, Nombre, Precio, nuevoCodigo)
+        Dim nuevoProducto As Producto = De(Id, Nombre, Precio, nuevoCodigo)
 
         If CantidadDeProductosConCodigo(nuevoCodigo, inventario) > 0 Then
             Throw New ArgumentException(Inventario.CODE_IS_REPEATED_EXCEPTION)
@@ -66,19 +66,19 @@ Public Class Producto
     End Function
 
     Friend Function AgregarseA(almacenamiento As IAlmacenamiento(Of Producto)) As Producto
-        Dim cantidadDeProductos = CantidadDeProductosConCodigo(Codigo, almacenamiento)
-        If cantidadDeProductos Then Throw new ArgumentException(Inventario.CODE_IS_REPEATED_EXCEPTION)
+        Dim cantidadDeProductos As Integer = CantidadDeProductosConCodigo(Codigo, almacenamiento)
+        If cantidadDeProductos > 0 Then Throw new ArgumentException(Inventario.CODE_IS_REPEATED_EXCEPTION)
 
         Return almacenamiento.Agregar(Me)
     End Function
 
     Private Function CantidadDeProductosConCodigo(codigoABuscar As String, almacenamiento As IAlmacenamiento(Of Producto)) As Integer
-        Dim filtro = New FiltroDeInventario() With { .Codigo = codigoABuscar }
+        Dim filtro As FiltroDeInventario = New FiltroDeInventario() With { .Codigo = codigoABuscar }
         Return almacenamiento.Filtrar(filtro).Count
     End Function
 
     Private Function CantidadDeProductosConCodigo(codigoABuscar As String, inventario As Inventario) As Integer
-        Dim filtro = New FiltroDeInventario() With { .Codigo = codigoABuscar }
+        Dim filtro As FiltroDeInventario = New FiltroDeInventario() With { .Codigo = codigoABuscar }
         Return inventario.Filtrar(filtro).Count
     End Function
 
@@ -103,7 +103,7 @@ Public Class Producto
         If obj Is Nothing Then Return False
         If TypeOf obj IsNot Producto Then Return False
 
-        Dim otroCliente = CType(obj, Producto)
+        Dim otroCliente As Producto = CType(obj, Producto)
 
         Return Equals(otroCliente)
     End Function

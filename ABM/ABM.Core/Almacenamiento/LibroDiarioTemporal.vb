@@ -16,7 +16,7 @@
         End Function
 
         Public Function Agregar(factura As Factura) As Factura Implements IAlmacenamiento(Of Factura).Agregar
-            Dim facturaModificada = factura.AjustarIdA(_nextId)
+            Dim facturaModificada As Factura = factura.AjustarIdA(_nextId)
 
             _facturas.Add(facturaModificada)
             _nextId += 1

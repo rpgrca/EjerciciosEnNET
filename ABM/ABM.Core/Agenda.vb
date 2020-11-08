@@ -43,9 +43,20 @@ Public Class Agenda
         End Get
     End Property
 
-    Public Function Crear(nombre As String, Optional telefono As String = "", Optional correo As String = "") As Cliente
+    Public Function CrearY(nombre As String, Optional telefono As String = "", Optional correo As String = "") As Resultado(Of Cliente)
         _nextId -= 1
-        Return Cliente.CreadoComo(_nextId, nombre, telefono, correo)
+
+        return Cliente.CreadoComoY(_nextId, nombre, telefono, correo)
+    End Function
+
+    Public Function Crear(nombre As String, Optional telefono As String = "", Optional correo As String = "") As Cliente
+        Dim cliente As Cliente = Nothing
+
+        CrearY(nombre, telefono, correo) _
+            .ConExitoEjecutar(Sub(clienteCreado) cliente = clienteCreado) _
+            .ConErrorEjecutar(Sub(mensajeDeError) Throw New ArgumentException(mensajeDeError))
+
+        return cliente
     End Function
 
     public Function Agregar(clienteNuevo As Cliente) As Cliente
@@ -62,6 +73,17 @@ Public Class Agenda
         cliente.BorrarseDe(_contactos)
     End Sub
 
+    Public Function CambiarNombreDeY(cliente As Cliente, nuevoNombre As String) As Resultado(Of Cliente)
+        Dim resultadoDeModificacion As Resultado(Of Cliente) = cliente.CambiarNombreY(nuevoNombre)
+
+        resultadoDeModificacion _
+            .ConExitoEjecutar(Sub(clienteModificado)
+                                  _contactos.Reemplazar(cliente, clienteModificado)
+                              End Sub)
+
+        Return resultadoDeModificacion
+    End Function
+
     Public Function CambiarNombreDe(cliente As Cliente, nuevoNombre As String) As Cliente
         Return CambiarAlgoDe(cliente, Function() cliente.CambiarNombre(nuevoNombre))
     End Function
@@ -75,7 +97,7 @@ Public Class Agenda
     End Function
 
     Private Function CambiarAlgoDe(clienteOriginal As Cliente, cambiarCliente As Func(Of Cliente)) As Cliente
-        Dim clienteModificado = cambiarCliente()
+        Dim clienteModificado As Cliente = cambiarCliente()
 
         _contactos.Reemplazar(clienteOriginal, clienteModificado)
 

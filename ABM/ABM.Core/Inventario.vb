@@ -77,12 +77,12 @@ Public Class Inventario
         Return CambiarAlgoDe(producto, Function() producto.CambiarNombre(nuevoNombre, Me))
     End Function
 
-    Public Function CambiarPrecioDe(producto As Producto, nuevoPrecio As Integer) As Producto
+    Public Function CambiarPrecioDe(producto As Producto, nuevoPrecio As Decimal) As Producto
         Return CambiarAlgoDe(producto, Function() producto.CambiarPrecio(nuevoPrecio, Me))
     End Function
 
     Private Function CambiarAlgoDe(productoOriginal As Producto, modificarProducto As Func(Of Producto)) As Producto
-        Dim productoModificado = modificarProducto()
+        Dim productoModificado As Producto = modificarProducto()
 
         _productos.Reemplazar(productoOriginal, productoModificado)
 

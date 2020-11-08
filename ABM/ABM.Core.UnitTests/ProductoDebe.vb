@@ -4,8 +4,8 @@ Imports ABM.Core.UnitTests.Constantes
 Public Class ProductoDebe
 
     <Fact> Public Sub ActualizarElPrecio_CuandoSeCambiaElPrecio()
-        Dim sut = CreateSystemUnderTest()
-        Dim producto = sut.Crear(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
+        Dim sut As Inventario = CreateSystemUnderTest()
+        Dim producto As Producto = sut.Crear(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
 
         producto = sut.CambiarPrecioDe(producto, PRECIO_UNITARIO_LATA_DE_CERVEZA)
 
@@ -17,10 +17,10 @@ Public Class ProductoDebe
     End Function
 
     <Fact> Public Sub LanzarExcepcion_CuandoSeCambiaElPrecioAUnPrecioInvalido()
-        Dim sut = CreateSystemUnderTest()
-        Dim producto = sut.Crear(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
+        Dim sut As Inventario = CreateSystemUnderTest()
+        Dim producto As Producto = sut.Crear(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
 
-        Dim exception = Assert.Throws(GetType(ArgumentException), Sub() sut.CambiarPrecioDe(producto, -1))
+        Dim exception As Exception = Assert.Throws(GetType(ArgumentException), Sub() sut.CambiarPrecioDe(producto, -1))
         Assert.Equal(Inventario.PRICE_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
@@ -29,76 +29,76 @@ Public Class ProductoDebe
     <InlineData("")>
     <InlineData("  ")>
     Public Sub LanzarExcepcion_CuandoSeCambiaElNombreAUnNombreInvalido(nombreInvalido As String)
-        Dim sut = CreateSystemUnderTest()
-        Dim producto = sut.Crear(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
+        Dim sut As Inventario = CreateSystemUnderTest()
+        Dim producto As Producto = sut.Crear(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
 
-        Dim exception = Assert.Throws(GetType(ArgumentException), Sub() sut.CambiarNombreDe(producto, nombreInvalido))
+        Dim exception As Exception = Assert.Throws(GetType(ArgumentException), Sub() sut.CambiarNombreDe(producto, nombreInvalido))
         Assert.Equal(Inventario.NAME_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
     <Fact>
     Public Sub CambiarElNombreCorrectamente()
-        Dim sut = CreateSystemUnderTest()
-        Dim producto = sut.Crear(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
+        Dim sut As Inventario = CreateSystemUnderTest()
+        Dim producto As Producto = sut.Crear(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
 
         producto = sut.CambiarNombreDe(producto, LATA_DE_CERVEZA)
         Assert.True(producto.Nombrado(LATA_DE_CERVEZA))
     End Sub
 
     <Fact> Public Sub DevolverFalse_CuandoDosProductosPoseenDistintoId()
-        Dim agenda = CreateSystemUnderTest()
-        Dim productoJuan = agenda.Crear(CLIENTE_JUAN_PEREZ)
-        Dim productoEduardo = agenda.Crear(CLIENTE_EDUARDO_PEREZ)
+        Dim inventario As Inventario = CreateSystemUnderTest()
+        Dim sut As Producto = inventario.Crear(LATA_DE_ARVEJAS)
+        Dim lataDeCerveza As Producto = inventario.Crear(LATA_DE_CERVEZA)
 
-        Assert.False(productoJuan.Equals(productoEduardo))
+        Assert.False(sut.Equals(lataDeCerveza))
     End Sub
 
     <Fact> Public Sub DevolverFalse_CuandoDosProductosPoseenDistintoIdYSeComparaComoObject()
-        Dim inventario = CreateSystemUnderTest()
-        Dim lataDeArvejas = inventario.Crear(LATA_DE_ARVEJAS)
-        Dim lataDeCerveza = inventario.Crear(LATA_DE_CERVEZA)
+        Dim inventario As Inventario = CreateSystemUnderTest()
+        Dim sut As Producto = inventario.Crear(LATA_DE_ARVEJAS)
+        Dim lataDeCerveza As Producto = inventario.Crear(LATA_DE_CERVEZA)
 
-        Assert.False(lataDeArvejas.Equals(CType(lataDeCerveza, Object)))
+        Assert.False(sut.Equals(CType(lataDeCerveza, Object)))
     End Sub
 
     <Fact> Public Sub DevolverTrue_CuandoDosProductosPoseenMismoId()
-        Dim lataDeArvejas = CreateSystemUnderTest().Crear(LATA_DE_ARVEJAS)
-        Dim lataDeCerveza = CreateSystemUnderTest().Crear(LATA_DE_CERVEZA)
+        Dim sut As Producto = CreateSystemUnderTest().Crear(LATA_DE_ARVEJAS)
+        Dim lataDeCerveza As Producto = CreateSystemUnderTest().Crear(LATA_DE_CERVEZA)
 
-        Assert.True(lataDeArvejas.Equals(lataDeCerveza))
+        Assert.True(sut.Equals(lataDeCerveza))
     End Sub
 
     <Fact> Public Sub DevolverTrue_CuandoDosProductosPoseenMismoIdYSeComparaComoObject()
-        Dim lataDeArvejas = CreateSystemUnderTest().Crear(LATA_DE_ARVEJAS)
-        Dim lataDeCerveza = CreateSystemUnderTest().Crear(LATA_DE_CERVEZA)
+        Dim sut As Producto = CreateSystemUnderTest().Crear(LATA_DE_ARVEJAS)
+        Dim lataDeCerveza As Producto = CreateSystemUnderTest().Crear(LATA_DE_CERVEZA)
 
-        Assert.True(lataDeArvejas.Equals(CType(lataDeCerveza, Object)))
+        Assert.True(sut.Equals(CType(lataDeCerveza, Object)))
     End Sub
 
     <Fact> Public Sub DevolverFalse_CuandoSeComparaNothingConProducto()
-        Dim inventario = CreateSystemUnderTest()
-        Dim producto = inventario.Crear(LATA_DE_ARVEJAS)
+        Dim inventario As Inventario = CreateSystemUnderTest()
+        Dim producto As Producto = inventario.Crear(LATA_DE_ARVEJAS)
 
         Assert.False(producto.Equals(Nothing))
     End Sub
 
     <Fact> Public Sub DevolverFalse_CuandoSeComparaNothingCasteadoAObjetConProducto()
-        Dim inventario = CreateSystemUnderTest()
-        Dim producto = inventario.Crear(LATA_DE_ARVEJAS)
+        Dim inventario As Inventario = CreateSystemUnderTest()
+        Dim producto As Producto = inventario.Crear(LATA_DE_ARVEJAS)
 
         Assert.False(producto.Equals(CType(Nothing, Object)))
     End Sub
 
     <Fact> Public Sub DevolverFalse_CuandoSeComparaProductoConOtroObjetoCasteadoAProducto()
-        Dim inventario = CreateSystemUnderTest()
-        Dim producto = inventario.Crear(LATA_DE_ARVEJAS)
+        Dim inventario As Inventario = CreateSystemUnderTest()
+        Dim producto As Producto = inventario.Crear(LATA_DE_ARVEJAS)
 
         Assert.False(producto.Equals(New Object()))
     End Sub
 
     <Fact> Public Sub DevolverFalse_CuandoSeComparaProductoConOtroObjetoCasteadoAObject()
-        Dim inventario = CreateSystemUnderTest()
-        Dim producto = inventario.Crear(LATA_DE_ARVEJAS)
+        Dim inventario As Inventario = CreateSystemUnderTest()
+        Dim producto As Producto = inventario.Crear(LATA_DE_ARVEJAS)
 
         Assert.False(producto.Equals(inventario))
     End Sub

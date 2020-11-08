@@ -58,7 +58,7 @@ Public Class LibroDiario
     End Function
 
     Private Function CambiarAlgoDe(facturaOriginal As Factura, modificarFactura As Func(Of Factura)) As Factura
-        Dim facturaModificada = modificarFactura()
+        Dim facturaModificada As Factura = modificarFactura()
 
         _facturas.Reemplazar(facturaOriginal, facturaModificada)
 

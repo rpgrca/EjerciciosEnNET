@@ -29,9 +29,9 @@
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>ABM.Core.UnitTests.xml</DocumentationFile>
-    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
-    <WarningsAsErrors>
-    </WarningsAsErrors>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -40,9 +40,9 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>ABM.Core.UnitTests.xml</DocumentationFile>
-    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
-    <WarningsAsErrors>
-    </WarningsAsErrors>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
     <OptionExplicit>On</OptionExplicit>
@@ -51,10 +51,10 @@
     <OptionCompare>Binary</OptionCompare>
   </PropertyGroup>
   <PropertyGroup>
-    <OptionStrict>Off</OptionStrict>
+    <OptionStrict>On</OptionStrict>
   </PropertyGroup>
   <PropertyGroup>
-    <OptionInfer>On</OptionInfer>
+    <OptionInfer>Off</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -102,6 +102,8 @@
     <Compile Include="CrearEnAgendaDebe.vb" />
     <Compile Include="CrearEnInventarioDebe.vb" />
     <Compile Include="CrearEnLibroDiarioDebe.vb" />
+    <Compile Include="FiltroDeLibroDiarioDebe.vb" />
+    <Compile Include="MostrarseUnClienteDebe.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

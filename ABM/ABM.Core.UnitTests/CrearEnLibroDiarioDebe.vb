@@ -4,10 +4,10 @@ Imports ABM.Core.UnitTests.Constantes
 Public Class CrearEnLibroDiarioDeberia
 
     <Fact> Public Sub DevolverFacturaCreada_CuandoSeCreaFactura()
-        Dim sut = CreateSystemUnderTest()
-        Dim cliente = Agenda.Nuevo.Constructor.Construir().Crear(CLIENTE_JUAN_PEREZ)
-        Dim fecha = new Date(2020, 1, 10)
-        Dim factura = sut.Crear(cliente, fecha)
+        Dim sut As LibroDiario = CreateSystemUnderTest()
+        Dim cliente As Cliente = Agenda.Nuevo.Constructor.Construir().Crear(CLIENTE_JUAN_PEREZ)
+        Dim fecha As Date = new Date(2020, 1, 10)
+        Dim factura As Factura = sut.Crear(cliente, fecha)
 
         Assert.NotNull(factura)
         Assert.True(factura.HechaA(cliente))
@@ -19,27 +19,27 @@ Public Class CrearEnLibroDiarioDeberia
     End Function
 
     <Fact> Public Sub LanzarExcepcion_CuandoSeIntentaCrearUnaFacturaConClienteNulo()
-        Dim sut = CreateSystemUnderTest()
+        Dim sut As LibroDiario = CreateSystemUnderTest()
 
-        Dim exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Crear(Nothing, #2020/12/13#))
+        Dim exception As Exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Crear(Nothing, #2020/12/13#))
         Assert.Equal(Factura.CLIENT_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
     <Fact>
     Public Sub LanzarExcepcion_CuandoSeCreaFacturaConFechaNula()
-        Dim sut = CreateSystemUnderTest()
-        Dim client = Agenda.Nuevo.Constructor.Construir().Crear(CLIENTE_JUAN_PEREZ)
+        Dim sut As LibroDiario = CreateSystemUnderTest()
+        Dim cliente As Cliente = Agenda.Nuevo.Constructor.Construir().Crear(CLIENTE_JUAN_PEREZ)
 
-        Dim exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Crear(client, Nothing))
+        Dim exception As Exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Crear(cliente, Nothing))
         Assert.Equal(Factura.DATE_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
     <Fact>
     Public Sub LanzarExcepcion_CuandoSeCreaFacturaConFechaMinima()
-        Dim sut = CreateSystemUnderTest()
-        Dim client = Agenda.Nuevo.Constructor.Construir().Crear(CLIENTE_JUAN_PEREZ)
+        Dim sut As LibroDiario = CreateSystemUnderTest()
+        Dim cliente As Cliente = Agenda.Nuevo.Constructor.Construir().Crear(CLIENTE_JUAN_PEREZ)
 
-        Dim exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Crear(client, Date.MinValue))
+        Dim exception As Exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Crear(cliente, Date.MinValue))
         Assert.Equal(Factura.DATE_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
     

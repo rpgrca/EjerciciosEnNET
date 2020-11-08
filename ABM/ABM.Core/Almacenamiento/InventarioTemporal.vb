@@ -16,7 +16,7 @@
         End Function
 
         Public Function Agregar(producto As Producto) As Producto Implements IAlmacenamiento(Of Producto).Agregar
-            Dim productoModificado = producto.AjustarIdA(_nextId)
+            Dim productoModificado As Producto = producto.AjustarIdA(_nextId)
 
             _productos.Add(productoModificado)
             _nextId += 1
@@ -33,7 +33,7 @@
         End Sub
 
         Public Function Filtrar(filtro As IFiltroDeAlmacenamiento(Of Producto)) As List(Of Producto) Implements IAlmacenamiento(Of Producto).Filtrar
-            Dim filtroDeInventario As FiltroDeInventario = filtro
+            Dim filtroDeInventario As FiltroDeInventario = CType(filtro, FiltroDeInventario)
 
             Return _productos.Where(Function(p)
                 Return (String.IsNullOrWhiteSpace(filtroDeInventario.Nombre) Or p.Nombrado(filtroDeInventario.Nombre)) And (String.IsNullOrWhiteSpace(filtroDeInventario.Codigo) Or p.ConCodigo(filtroDeInventario.Codigo))

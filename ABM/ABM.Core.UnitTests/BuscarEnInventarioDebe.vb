@@ -20,7 +20,7 @@
 
 '    <Fact> Public Sub DevolverProductoBuscado_CuandoSeBuscaInventarioExistente()
 '        Dim sut = CreateSystemUnderTest()
-'        Dim producto = sut.Crear(LATA_DE_ARVEJAS)
+'        Dim producto As Producto = sut.Crear(LATA_DE_ARVEJAS)
 '        sut.Agregar(producto)
 
 '        Dim productos = sut.Buscar(LATA_DE_ARVEJAS)
@@ -38,7 +38,7 @@
 
 '    <Fact> Public Sub EncontrarAlProducto_CuandoSeLoRenombraYSeLoModifica()
 '        Dim sut = CreateSystemUnderTest()
-'        Dim producto = sut.Crear(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
+'        Dim producto As Producto = sut.Crear(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, CODIGO_DE_LATA_DE_ARVEJAS)
 '        sut.CambiarNombreDe(producto, LATA_DE_CERVEZA)
 
 '        Dim productos = sut.Buscar(LATA_DE_CERVEZA)
@@ -50,7 +50,7 @@
 
 '    <Fact> Public Sub EncontrarAlProducto_CuandoSeRenombraYModificaUnProductoConNombreRepetido()
 '        Dim sut = CreateSystemUnderTest()
-'        Dim producto = sut.Crear(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS)
+'        Dim producto As Producto = sut.Crear(LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS, PRECIO_UNITARIO_LATA_DE_ARVEJAS)
 '        sut.Crear(LATA_DE_ARVEJAS)
 '        sut.CambiarNombreDe(producto, LATA_DE_CERVEZA)
 

@@ -20,9 +20,9 @@
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>ABM.Core.xml</DocumentationFile>
-    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
-    <WarningsAsErrors>
-    </WarningsAsErrors>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,9 +31,9 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>ABM.Core.xml</DocumentationFile>
-    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
-    <WarningsAsErrors>
-    </WarningsAsErrors>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
     <OptionExplicit>On</OptionExplicit>
@@ -42,10 +42,10 @@
     <OptionCompare>Binary</OptionCompare>
   </PropertyGroup>
   <PropertyGroup>
-    <OptionStrict>Off</OptionStrict>
+    <OptionStrict>On</OptionStrict>
   </PropertyGroup>
   <PropertyGroup>
-    <OptionInfer>On</OptionInfer>
+    <OptionInfer>Off</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -69,12 +69,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Agenda.vb" />
+    <Compile Include="Almacenamiento\AgendaPermanente.vb" />
     <Compile Include="Cliente.vb" />
     <Compile Include="Detalle.vb" />
     <Compile Include="FiltroDeAgenda.vb" />
     <Compile Include="FiltroDeLibroDiario.vb" />
     <Compile Include="FiltroDeInventario.vb" />
     <Compile Include="Inventario.vb" />
+    <Compile Include="Visualizadores\IVisualizadorDeCliente.vb" />
     <Compile Include="LibroDiario.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -98,6 +100,7 @@
     <Compile Include="Almacenamiento\IFiltroDeAlmacenamiento.vb" />
     <Compile Include="Producto.vb" />
     <Compile Include="Factura.vb" />
+    <Compile Include="Resultado.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

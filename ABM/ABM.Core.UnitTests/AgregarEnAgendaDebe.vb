@@ -4,9 +4,9 @@ Imports ABM.Core.UnitTests.Constantes
 Public Class AgregarEnAgendaDebe
 
     <Fact> Public Sub LanzarExcepcion_CuandoSeAgregaUnClienteNulo()
-        Dim sut = CreateSystemUnderTest()
+        Dim sut As Agenda = CreateSystemUnderTest()
 
-        Dim exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Agregar(Nothing))
+        Dim exception As Exception = Assert.Throws(GetType(ArgumentException), Sub() sut.Agregar(Nothing))
         Assert.Equal(Agenda.CLIENT_IS_INVALID_EXCEPTION, exception.Message)
     End Sub
 
@@ -15,9 +15,9 @@ Public Class AgregarEnAgendaDebe
     End Function
 
     <Fact> Public Sub AceptarDosClientesIguales_CuandoSeAgregaUnClienteSimilar()
-        Dim sut = CreateSystemUnderTest()
+        Dim sut As Agenda = CreateSystemUnderTest()
 
-        Dim cliente = sut.Crear(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ)
+        Dim cliente As Cliente = sut.Crear(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ)
         sut.Agregar(cliente)
         cliente = sut.Crear(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ)
         sut.Agregar(cliente)
@@ -26,7 +26,7 @@ Public Class AgregarEnAgendaDebe
     End Sub
 
     <Fact> Public Sub NoDebeAgregarALaLista_CuandoSeCreaUnCliente()
-        Dim sut = CreateSystemUnderTest()
+        Dim sut As Agenda = CreateSystemUnderTest()
 
         sut.Crear(CLIENTE_JUAN_PEREZ, TELEFONO_DE_JUAN_PEREZ, CORREO_DE_JUAN_PEREZ)
 

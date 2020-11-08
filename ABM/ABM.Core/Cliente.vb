@@ -1,22 +1,29 @@
-﻿Imports ABM.Core.Almacenamiento
+﻿Imports System
+Imports ABM.Core.Almacenamiento
+Imports ABM.Core.Visualizadores
 
 Public Class Cliente
     Implements IEquatable(Of Cliente)
 
     Public Const NAME_IS_INVALID_EXCEPTION As String = "El nombre del cliente es invalido"
+    public Const VIEWER_IS_INVALID_EXCEPTION As String = "El visualizador es invalido"
 
-    Private ReadOnly Property Id As Integer
-    Private ReadOnly Property Nombre As String
-    Private ReadOnly Property Telefono As String
-    Private ReadOnly Property Correo As String
+    Friend ReadOnly Property Id As Integer
+    Friend ReadOnly Property Nombre As String
+    Friend ReadOnly Property Telefono As String
+    Friend ReadOnly Property Correo As String
 
-    Friend Shared Function CreadoComo(id As Integer, nombre As String, telefono As String, correo As String)
+    Friend Shared Function CreadoComoY(id As Integer, nombre As String, telefono As String, correo As String) As Resultado(Of Cliente)
+        If String.IsNullOrWhiteSpace(nombre) Then Return Resultado(Of Cliente).Mal(NAME_IS_INVALID_EXCEPTION)
+        Return Resultado(Of Cliente).Bien(New Cliente(id, nombre, telefono, correo))
+    End Function
+
+    Friend Shared Function CreadoComo(id As Integer, nombre As String, telefono As String, correo As String) As Cliente
+        If String.IsNullOrWhiteSpace(nombre) Then Throw New ArgumentException(NAME_IS_INVALID_EXCEPTION)
         Return New Cliente(id, nombre, telefono, correo)
     End Function
 
     Private Sub New(id As Integer, nombre As String, telefono As String, correo As String)
-        If String.IsNullOrWhiteSpace(nombre) Then Throw New ArgumentException(NAME_IS_INVALID_EXCEPTION)
-
         Me.Id = id
         Me.Nombre = nombre
         Me.Telefono = telefono
@@ -35,8 +42,12 @@ Public Class Cliente
         Return Me.Correo = correo
     End Function
 
+    Friend Function CambiarNombreY(nuevoNombre As String) As Resultado(Of Cliente)
+        Return CreadoComoY(Id, nuevoNombre, Telefono, Correo)
+    End Function
+
     Friend Function CambiarNombre(nuevoNombre As String) As Cliente
-        Return New Cliente(Id, nuevoNombre, Telefono, Correo)
+        Return CreadoComo(Id, nuevoNombre, Telefono, Correo)
     End Function
 
     Friend Function CambiarTelefono(nuevoTelefono As String) As Cliente
@@ -55,6 +66,10 @@ Public Class Cliente
         Return Id = otroCliente.Id
     End Function
 
+    Friend Function ConId(id As Integer) As Boolean
+        return Me.Id = id
+    End Function
+
     Public Overloads Function Equals(otroCliente As Cliente) As Boolean Implements IEquatable(Of Cliente).Equals
         If otroCliente Is Nothing Then Return False
         Return ConMismoIdQue(otroCliente)
@@ -64,7 +79,7 @@ Public Class Cliente
         If obj Is Nothing Then Return False
         If TypeOf obj IsNot Cliente Then Return False
 
-        Dim otroCliente = CType(obj, Cliente)
+        Dim otroCliente As Cliente = CType(obj, Cliente)
 
         Return Equals(otroCliente)
     End Function
@@ -77,5 +92,10 @@ Public Class Cliente
     Friend Function AgregarseA(almacenamiento As IAlmacenamiento(Of Cliente)) As Cliente
         Return almacenamiento.Agregar(Me)
     End Function
+
+    Public Sub MostrarmeEn(visualizador As IVisualizadorDeCliente)
+        if visualizador Is Nothing Then Throw New ArgumentException(VIEWER_IS_INVALID_EXCEPTION)
+        visualizador.Generar(Id, Nombre, Telefono, Correo)
+    End Sub
 
 End Class

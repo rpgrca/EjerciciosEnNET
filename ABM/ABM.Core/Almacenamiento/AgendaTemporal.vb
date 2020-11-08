@@ -25,7 +25,7 @@
         End Function
 
         Public Function Agregar(elemento As Cliente) As Cliente Implements IAlmacenamiento(Of Cliente).Agregar
-            Dim clienteModificado = elemento.AjustarIdA(_nextId)
+            Dim clienteModificado As Cliente = elemento.AjustarIdA(_nextId)
 
             _contactos.Add(clienteModificado)
             _nextId += 1
@@ -38,10 +38,17 @@
         End Function
 
         Public Function Filtrar(filtro As IFiltroDeAlmacenamiento(Of Cliente)) As List(Of Cliente) Implements IAlmacenamiento(Of Cliente).Filtrar
-            Dim filtroDeAgenda As FiltroDeAgenda = filtro
+            Dim filtroDeAgenda As FiltroDeAgenda = CType(filtro, FiltroDeAgenda)
 
-            Return _contactos.Where(Function(c) c.ConocidoComo(filtroDeAgenda.Nombre)).ToList()
+            Return _contactos.Where(
+                Function(c)
+                    Return filtroDeAgenda Is Nothing OrElse (
+                               (String.IsNullOrEmpty(filtroDeAgenda.Nombre) OrElse c.ConocidoComo(filtroDeAgenda.Nombre)) And _
+                               (Not filtroDeAgenda.Id.HasValue OrElse c.ConId(filtroDeAgenda.Id.Value))
+                    )
+                End Function).OrderBy(function(cliente) cliente.Id).ToList()
         End Function
+
     End Class
 
 End NameSpace
