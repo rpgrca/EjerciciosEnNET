@@ -83,6 +83,12 @@
     <Compile Include="AgendaView.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="DatosDeCliente.Designer.vb">
+      <DependentUpon>DatosDeCliente.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DatosDeCliente.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="MainView.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +117,9 @@
   <ItemGroup>
     <EmbeddedResource Include="AgendaView.resx">
       <DependentUpon>AgendaView.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DatosDeCliente.resx">
+      <DependentUpon>DatosDeCliente.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainView.resx">
       <DependentUpon>MainView.vb</DependentUpon>

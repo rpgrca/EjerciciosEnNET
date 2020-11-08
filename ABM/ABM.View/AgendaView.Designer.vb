@@ -22,16 +22,13 @@ Partial Class AgendaView
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.ListView1 = New System.Windows.Forms.ListView()
-        Me.editorDeNombre = New System.Windows.Forms.TextBox()
+        Me.DatosDeCliente1 = New ABM.View.DatosDeCliente()
         Me.botonAgregar = New System.Windows.Forms.Button()
-        Me.editorDeId = New System.Windows.Forms.TextBox()
-        Me.etiquetaDeId = New System.Windows.Forms.Label()
-        Me.etiquetaDeNombre = New System.Windows.Forms.Label()
-        Me.etiquetaDeCorreo = New System.Windows.Forms.Label()
-        Me.etiquetaDeTelefono = New System.Windows.Forms.Label()
-        Me.editorDeTelefono = New System.Windows.Forms.TextBox()
-        Me.editorDeCorreo = New System.Windows.Forms.TextBox()
+        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.BorrarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ContextMenuStrip1.SuspendLayout
         Me.SuspendLayout
         '
         'ListView1
@@ -44,127 +41,59 @@ Partial Class AgendaView
         Me.ListView1.HideSelection = false
         Me.ListView1.Location = New System.Drawing.Point(12, 12)
         Me.ListView1.Name = "ListView1"
-        Me.ListView1.Size = New System.Drawing.Size(390, 264)
+        Me.ListView1.Size = New System.Drawing.Size(390, 250)
         Me.ListView1.TabIndex = 5
         Me.ListView1.UseCompatibleStateImageBehavior = false
         Me.ListView1.View = System.Windows.Forms.View.Details
         '
-        'editorDeNombre
+        'DatosDeCliente1
         '
-        Me.editorDeNombre.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
+        Me.DatosDeCliente1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.editorDeNombre.Location = New System.Drawing.Point(70, 310)
-        Me.editorDeNombre.Name = "editorDeNombre"
-        Me.editorDeNombre.Size = New System.Drawing.Size(332, 20)
-        Me.editorDeNombre.TabIndex = 1
+        Me.DatosDeCliente1.Location = New System.Drawing.Point(12, 268)
+        Me.DatosDeCliente1.Name = "DatosDeCliente1"
+        Me.DatosDeCliente1.Size = New System.Drawing.Size(390, 123)
+        Me.DatosDeCliente1.TabIndex = 13
         '
         'botonAgregar
         '
         Me.botonAgregar.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.botonAgregar.Location = New System.Drawing.Point(299, 362)
+        Me.botonAgregar.Location = New System.Drawing.Point(297, 358)
         Me.botonAgregar.Name = "botonAgregar"
         Me.botonAgregar.Size = New System.Drawing.Size(103, 23)
-        Me.botonAgregar.TabIndex = 4
+        Me.botonAgregar.TabIndex = 14
         Me.botonAgregar.Text = "Agregar"
         Me.botonAgregar.UseVisualStyleBackColor = true
         '
-        'editorDeId
+        'ContextMenuStrip1
         '
-        Me.editorDeId.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.editorDeId.Enabled = false
-        Me.editorDeId.Location = New System.Drawing.Point(70, 282)
-        Me.editorDeId.Name = "editorDeId"
-        Me.editorDeId.Size = New System.Drawing.Size(332, 20)
-        Me.editorDeId.TabIndex = 0
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BorrarToolStripMenuItem})
+        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(181, 48)
         '
-        'etiquetaDeId
+        'BorrarToolStripMenuItem
         '
-        Me.etiquetaDeId.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
-        Me.etiquetaDeId.AutoSize = true
-        Me.etiquetaDeId.Location = New System.Drawing.Point(9, 285)
-        Me.etiquetaDeId.Name = "etiquetaDeId"
-        Me.etiquetaDeId.Size = New System.Drawing.Size(16, 13)
-        Me.etiquetaDeId.TabIndex = 7
-        Me.etiquetaDeId.Text = "Id"
-        '
-        'etiquetaDeNombre
-        '
-        Me.etiquetaDeNombre.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
-        Me.etiquetaDeNombre.AutoSize = true
-        Me.etiquetaDeNombre.Location = New System.Drawing.Point(9, 313)
-        Me.etiquetaDeNombre.Name = "etiquetaDeNombre"
-        Me.etiquetaDeNombre.Size = New System.Drawing.Size(44, 13)
-        Me.etiquetaDeNombre.TabIndex = 8
-        Me.etiquetaDeNombre.Text = "Nombre"
-        '
-        'etiquetaDeCorreo
-        '
-        Me.etiquetaDeCorreo.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
-        Me.etiquetaDeCorreo.AutoSize = true
-        Me.etiquetaDeCorreo.Location = New System.Drawing.Point(12, 367)
-        Me.etiquetaDeCorreo.Name = "etiquetaDeCorreo"
-        Me.etiquetaDeCorreo.Size = New System.Drawing.Size(38, 13)
-        Me.etiquetaDeCorreo.TabIndex = 12
-        Me.etiquetaDeCorreo.Text = "Correo"
-        '
-        'etiquetaDeTelefono
-        '
-        Me.etiquetaDeTelefono.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
-        Me.etiquetaDeTelefono.AutoSize = true
-        Me.etiquetaDeTelefono.Location = New System.Drawing.Point(9, 341)
-        Me.etiquetaDeTelefono.Name = "etiquetaDeTelefono"
-        Me.etiquetaDeTelefono.Size = New System.Drawing.Size(49, 13)
-        Me.etiquetaDeTelefono.TabIndex = 11
-        Me.etiquetaDeTelefono.Text = "Telefono"
-        '
-        'editorDeTelefono
-        '
-        Me.editorDeTelefono.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.editorDeTelefono.Location = New System.Drawing.Point(70, 338)
-        Me.editorDeTelefono.Name = "editorDeTelefono"
-        Me.editorDeTelefono.Size = New System.Drawing.Size(332, 20)
-        Me.editorDeTelefono.TabIndex = 2
-        '
-        'editorDeCorreo
-        '
-        Me.editorDeCorreo.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.editorDeCorreo.Location = New System.Drawing.Point(70, 364)
-        Me.editorDeCorreo.Name = "editorDeCorreo"
-        Me.editorDeCorreo.Size = New System.Drawing.Size(223, 20)
-        Me.editorDeCorreo.TabIndex = 3
+        Me.BorrarToolStripMenuItem.Name = "BorrarToolStripMenuItem"
+        Me.BorrarToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.BorrarToolStripMenuItem.Text = "Borrar"
         '
         'AgendaView
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(414, 391)
-        Me.Controls.Add(Me.etiquetaDeCorreo)
-        Me.Controls.Add(Me.etiquetaDeTelefono)
-        Me.Controls.Add(Me.editorDeTelefono)
-        Me.Controls.Add(Me.editorDeCorreo)
-        Me.Controls.Add(Me.etiquetaDeNombre)
-        Me.Controls.Add(Me.etiquetaDeId)
-        Me.Controls.Add(Me.editorDeId)
         Me.Controls.Add(Me.botonAgregar)
-        Me.Controls.Add(Me.editorDeNombre)
+        Me.Controls.Add(Me.DatosDeCliente1)
         Me.Controls.Add(Me.ListView1)
         Me.Name = "AgendaView"
         Me.Text = "AgendaView"
+        Me.ContextMenuStrip1.ResumeLayout(false)
         Me.ResumeLayout(false)
-        Me.PerformLayout
 
 End Sub
     Friend WithEvents ListView1 As ListView
+    Friend WithEvents DatosDeCliente1 As DatosDeCliente
     Friend WithEvents botonAgregar As Button
-    Friend WithEvents editorDeNombre As TextBox
-    Friend WithEvents editorDeId As TextBox
-    Friend WithEvents etiquetaDeId As Label
-    Friend WithEvents etiquetaDeNombre As Label
-    Friend WithEvents etiquetaDeCorreo As Label
-    Friend WithEvents etiquetaDeTelefono As Label
-    Friend WithEvents editorDeTelefono As TextBox
-    Friend WithEvents editorDeCorreo As TextBox
+    Friend WithEvents ContextMenuStrip1 As ContextMenuStrip
+    Friend WithEvents BorrarToolStripMenuItem As ToolStripMenuItem
 End Class

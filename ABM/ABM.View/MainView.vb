@@ -17,8 +17,16 @@ Public Class MainView
             .MdiParent = Me
         }
 
-        agendaView.LlenarListaConAgenda()
+        agendaView.LlenarListaCon(_agenda.Filtrar(Nothing))
         agendaView.Show()
     End Sub
 
+    Private Sub AgregarToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles AgregarToolStripMenuItem1.Click
+        Dim agendaView As AgendaView = New AgendaView(_agenda) With {
+            .MdiParent = Me
+        }
+
+        agendaView.PrepararParaBusqueda()
+        agendaView.Show()
+    End Sub
 End Class

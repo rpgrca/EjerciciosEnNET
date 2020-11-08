@@ -24,11 +24,11 @@
         Return Me
     End Function
 
-    Friend Shared Function Mal(descripcion As String) As Resultado(Of T)
+    Public Shared Function Mal(descripcion As String) As Resultado(Of T)
         Return new Resultado(Of T)(descripcion)
     End Function
 
-    Friend Shared Function Bien(resultadoCorrecto As T) As Resultado(Of T)
+    Public Shared Function Bien(resultadoCorrecto As T) As Resultado(Of T)
         Return new Resultado(Of T)(resultadoCorrecto)
     End Function
 
