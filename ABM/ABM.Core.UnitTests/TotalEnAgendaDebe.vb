@@ -10,13 +10,14 @@ Public Class TotalEnAgendaDebe
     End Sub
 
     Private Function CreateSystemUnderTest() As Agenda
-        Return New Agenda()
+        Return Agenda.Nuevo.Constructor.Construir()
     End Function
 
     <Fact> Public Sub DevolverUno_CuandoSePideElTotalDeContactosDeUnaAgendaConUnContacto()
         Dim sut As Agenda = CreateSystemUnderTest()
 
-        sut.Agregar(CLIENTE_JUAN_PEREZ)
+        Dim cliente As Cliente = sut.Crear(CLIENTE_JUAN_PEREZ)
+        sut.Agregar(cliente)
 
         Assert.Equal(1, sut.Total)
     End Sub
@@ -24,8 +25,10 @@ Public Class TotalEnAgendaDebe
     <Fact> Public Sub DevolverTotal_CuandoSePideElTotalDeContactosConVariosContactos()
         Dim sut As Agenda = CreateSystemUnderTest()
 
-        sut.Agregar(CLIENTE_JUAN_PEREZ)
-        sut.Agregar(CLIENTE_EDUARDO_PEREZ)
+        Dim cliente As Cliente = sut.Crear(CLIENTE_JUAN_PEREZ)
+        sut.Agregar(cliente)
+        cliente = sut.Crear(CLIENTE_EDUARDO_PEREZ)
+        sut.Agregar(cliente)
 
         Assert.Equal(2, sut.Total)
     End Sub

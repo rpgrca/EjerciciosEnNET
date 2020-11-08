@@ -9,6 +9,8 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ABM.Core.UnitTests", "ABM.C
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ABM.Core", "ABM.Core\ABM.Core.vbproj", "{B6C91399-7E2E-4C2C-A676-3B5B9DB49AC8}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ABM.Persistance", "ABM.Persistance\ABM.Persistance.vbproj", "{03F5AABC-991B-4E6C-919E-1766DDA352B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{B6C91399-7E2E-4C2C-A676-3B5B9DB49AC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6C91399-7E2E-4C2C-A676-3B5B9DB49AC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6C91399-7E2E-4C2C-A676-3B5B9DB49AC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03F5AABC-991B-4E6C-919E-1766DDA352B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03F5AABC-991B-4E6C-919E-1766DDA352B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03F5AABC-991B-4E6C-919E-1766DDA352B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03F5AABC-991B-4E6C-919E-1766DDA352B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

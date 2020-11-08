@@ -1,4 +1,31 @@
-﻿Public Class Inventario
+﻿Imports ABM.Core.Almacenamiento
+
+Public Class Inventario
+
+    public class Nuevo
+        Private _almacenamiento As IAlmacenamiento(Of Producto)
+
+        public Shared ReadOnly Property Constructor As Nuevo
+            get
+                Return New Nuevo()
+            End Get
+        End Property
+
+        Private sub New()
+            _almacenamiento = Nothing
+        End sub
+
+        'public Function AlmacenandoEn(almacenamiento As IAlmacenamientoDeInventario(Of Producto)) As Nuevo
+        '    _almacenamiento = almacenamiento
+        '    Return Me
+        'End Function
+
+        public Function Construir() As Inventario
+            If _almacenamiento Is Nothing Then _almacenamiento = New InventarioTemporal()
+
+            Return new Inventario(_almacenamiento)
+        End Function
+    End Class
 
     Public Const NAME_IS_INVALID_EXCEPTION As String = "Nombre de producto inválido"
     Public Const CODE_IS_REPEATED_EXCEPTION As String = "Codigo repetido"
@@ -7,48 +34,39 @@
     Public Const CODE_IS_INVALID_EXCEPTION As String = "El codigo es invalido"
     Public Const DEFAULT_CODE As String = "CodigoPorDefecto"
 
-    Private ReadOnly _productos As List(Of Producto)
-    Private _id As Integer
+    Private ReadOnly _productos As IAlmacenamiento(Of Producto)
+    Private _nextId as Integer
 
-    Public Sub New()
-        _productos = New List(Of Producto)
-        _id = 1
+    Private Sub New(productos As IAlmacenamiento(Of Producto))
+        _productos = productos
+        _nextId = 0
     End Sub
 
     Public ReadOnly Property Total As Integer
         Get
-            Return _productos.Count
+            Return _productos.Contar()
         End Get
     End Property
 
-    Public Function Agregar(nombre As String, Optional precio As Decimal = 0, Optional codigo As String = DEFAULT_CODE) As Producto
-        Dim producto As Producto = Producto.De(_id, nombre, precio, codigo)
+    Public Function Crear(nombre As String, Optional precio As Decimal = 0, Optional codigo As String = DEFAULT_CODE) As Producto
+        _nextId -= 1
 
-        If _productos.Any(Function(p) p.ConCodigo(codigo)) Then Throw New ArgumentException(CODE_IS_REPEATED_EXCEPTION)
+        Dim producto As Producto = Producto.De(_nextId, nombre, precio, codigo)
+        Return producto.ConfirmarCreacionCon(_productos)
+    End Function
 
-        _productos.Add(producto)
-        _id += 1
-
-        Return producto
+    public Function Agregar(producto As Producto) As Producto
+        If producto Is Nothing Then Throw New ArgumentException(PRODUCT_IS_INVALID_EXCEPTION)
+        Return producto.AgregarseA(_productos)
     End Function
 
     Public Sub Borrar(producto As Producto)
         If producto Is Nothing Then Throw New ArgumentException(PRODUCT_IS_INVALID_EXCEPTION)
-        If Not _productos.Any(Function(p) p.ConMismoIdQue(producto)) Then Throw New ArgumentException(PRODUCT_IS_INVALID_EXCEPTION)
-
-        _productos.RemoveAll(Function(p) p.ConMismoIdQue(producto))
+        producto.BorrarseDe(_productos)
     End Sub
 
-    Public Function Buscar(nombre As String) As List(Of Producto)
-        Return _productos.Where(Function(p) p.Nombrado(nombre)).ToList()
-    End Function
-
-    Public Function Filtrar(Optional nombre As String = "", Optional codigo As String = "") As List(Of Producto)
-        Return _productos.Where(Function(p)
-                                    Return (String.IsNullOrWhiteSpace(nombre) Or p.Nombrado(nombre)) And
-                                           (String.IsNullOrWhiteSpace(codigo) Or p.ConCodigo(codigo))
-                                End Function
-                                ).ToList()
+    Public Function Filtrar(filtro As IFiltroDeAlmacenamiento(Of Producto)) As List(Of Producto)
+        Return _productos.Filtrar(filtro)
     End Function
 
     Public Function CambiarCodigoDe(producto As Producto, nuevoCodigo As String) As Producto
@@ -59,15 +77,14 @@
         Return CambiarAlgoDe(producto, Function() producto.CambiarNombre(nuevoNombre, Me))
     End Function
 
-    Public Function CambiarPrecioDe(producto As Producto, nuevoPrecio As Integer) As Producto
+    Public Function CambiarPrecioDe(producto As Producto, nuevoPrecio As Decimal) As Producto
         Return CambiarAlgoDe(producto, Function() producto.CambiarPrecio(nuevoPrecio, Me))
     End Function
 
     Private Function CambiarAlgoDe(productoOriginal As Producto, modificarProducto As Func(Of Producto)) As Producto
-        Dim productoModificado = modificarProducto()
+        Dim productoModificado As Producto = modificarProducto()
 
-        _productos.Remove(productoOriginal)
-        _productos.Add(productoModificado)
+        _productos.Reemplazar(productoOriginal, productoModificado)
 
         Return productoModificado
     End Function

@@ -15,10 +15,13 @@
         _unidades = unidades
     End Sub
 
-    Friend ReadOnly Property SubTotal
+    Friend ReadOnly Property SubTotal As Decimal
         Get
             Return _producto.PrecioPor(_unidades)
         End Get
     End Property
 
+    Public Sub AgregarseA(detalles As List(Of Detalle))
+        detalles.Add(Me)
+    End Sub
 End Class
