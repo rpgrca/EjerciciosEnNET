@@ -8,49 +8,77 @@ namespace AdventOfCode2020.Day2
         [Fact]
         public void ReturnTrue_WhenFeedingValidRule()
         {
-            var sut = new PasswordValidatorForSecondPuzzle("1-3 a: abcde");
+            var sut = new PasswordValidation.Builder()
+                .ForEntry("1-3 a: abcde")
+                .WithValidator(e => new SecondPuzzleValidation(e))
+                .Build();
+
             Assert.True(sut.Verify());
         }
 
         [Fact]
         public void ReturnFalse_WhenPasswordHasNoRequiredLetters()
         {
-            var sut = new PasswordValidatorForSecondPuzzle("1-3 b: cdefg");
+            var sut = new PasswordValidation.Builder()
+                .ForEntry("1-3 b: cdefg")
+                .WithValidator(e => new SecondPuzzleValidation(e))
+                .Build();
+
             Assert.False(sut.Verify());
         }
 
         [Fact]
         public void ReturnFalse_WhenBothPositionsAreOccupiedByRequiredLetter()
         {
-            var sut = new PasswordValidatorForSecondPuzzle("2-9 c: ccccccccc");
+            var sut = new PasswordValidation.Builder()
+                .ForEntry("2-9 c: ccccccccc")
+                .WithValidator(e => new SecondPuzzleValidation(e))
+                .Build();
+
             Assert.False(sut.Verify());
         }
 
         [Fact]
         public void ReturnTrue_WhenOnePositionIsOccupiedByRequiredLetter()
         {
-            var sut = new PasswordValidatorForSecondPuzzle("2-9 c: cccc");
+            var sut = new PasswordValidation.Builder()
+                .ForEntry("2-9 c: cccc")
+                .WithValidator(e => new SecondPuzzleValidation(e))
+                .Build();
+
             Assert.True(sut.Verify());
         }
 
         [Fact]
         public void ReturnFalse_WhenOnePositionIsNotOccupiedByRequiredLetter()
         {
-            var sut = new PasswordValidatorForSecondPuzzle("2-9 c: cdcc");
+            var sut = new PasswordValidation.Builder()
+                .ForEntry("2-9 c: cdcc")
+                .WithValidator(e => new SecondPuzzleValidation(e))
+                .Build();
+
             Assert.False(sut.Verify());
         }
 
         [Fact]
         public void ReturnTrue_WhenSecondPositionIsOccupiedByRequiredLetter()
         {
-            var sut = new PasswordValidatorForSecondPuzzle("2-9 c: cdccccccc");
+            var sut = new PasswordValidation.Builder()
+                .ForEntry("2-9 c: cdccccccc")
+                .WithValidator(e => new SecondPuzzleValidation(e))
+                .Build();
+
             Assert.True(sut.Verify());
         }
 
         [Fact]
         public void ReturnFalse_WhenNoPositionIsNotOcuppiedByRequiredLetter()
         {
-            var sut = new PasswordValidatorForSecondPuzzle("2-9 c: cdccccccd");
+            var sut = new PasswordValidation.Builder()
+                .ForEntry("2-9 c: cdccccccd")
+                .WithValidator(e => new SecondPuzzleValidation(e))
+                .Build();
+
             Assert.False(sut.Verify());
         }
 
@@ -1061,11 +1089,13 @@ namespace AdventOfCode2020.Day2
             };
 
             var correctPasswords = entries
-                .Select(e => new PasswordValidatorForSecondPuzzle(e))
+                .Select(e => new PasswordValidation.Builder()
+                    .ForEntry(e)
+                    .WithValidator(e => new SecondPuzzleValidation(e))
+                    .Build())
                 .Count(p => p.Verify());
 
             Assert.Equal(275, correctPasswords);
         }
-
     }
 }

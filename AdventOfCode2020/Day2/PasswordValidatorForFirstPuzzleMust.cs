@@ -8,28 +8,44 @@ namespace AdventOfCode2020.Day2
         [Fact]
         public void ReturnTrue_WhenFeedingValidRule()
         {
-            var sut = new PasswordValidatorForFirstPuzzle("1-3 a: abcde");
+            var sut = new PasswordValidation.Builder()
+                .ForEntry("1-3 a: abcde")
+                .WithValidator(e => new FirstPuzzleValidation(e))
+                .Build();
+
             Assert.True(sut.Verify());
         }
 
         [Fact]
         public void ReturnFalse_WhenPasswordHasNoRequiredLetters()
         {
-            var sut = new PasswordValidatorForFirstPuzzle("1-3 b: cdefg");
+            var sut = new PasswordValidation.Builder()
+                .ForEntry("1-3 b: cdefg")
+                .WithValidator(e => new FirstPuzzleValidation(e))
+                .Build();
+
             Assert.False(sut.Verify());
         }
 
         [Fact]
         public void ReturnFalse_WhenPasswordHasTooFewRequiredLetters()
         {
-            var sut = new PasswordValidatorForFirstPuzzle("2-3 b: abcdef");
+            var sut = new PasswordValidation.Builder()
+                .ForEntry("2-3 b: abcdef")
+                .WithValidator(e => new FirstPuzzleValidation(e))
+                .Build();
+
             Assert.False(sut.Verify());
         }
 
         [Fact]
         public void ReturnTrue_WhenRequiredLetterIsNotRequired()
         {
-            var sut = new PasswordValidatorForFirstPuzzle("0-0 a: bcdef");
+            var sut = new PasswordValidation.Builder()
+                .ForEntry("0-0 a: bcdef")
+                .WithValidator(e => new FirstPuzzleValidation(e))
+                .Build();
+
             Assert.True(sut.Verify());
         }
 
@@ -1040,7 +1056,10 @@ namespace AdventOfCode2020.Day2
             };
 
             var correctPasswords = entries
-                .Select(e => new PasswordValidatorForFirstPuzzle(e))
+                .Select(e => new PasswordValidation.Builder()
+                    .ForEntry(e)
+                    .WithValidator(e => new FirstPuzzleValidation(e))
+                    .Build())
                 .Count(p => p.Verify());
 
             Assert.Equal(546, correctPasswords);
