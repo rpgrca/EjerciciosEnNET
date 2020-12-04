@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace AdventOfCode2020.Day3
 {
@@ -18,16 +19,9 @@ namespace AdventOfCode2020.Day3
         public MultiplierFinder(string[] map) =>
             _map = map;
 
-        public long CalculateSolution()
-        {
-            var result = 1L;
-
-            foreach (var path in _paths)
-            {
-                result *= new PathFinder(_map).TraverseWith(path.MoveX, path.MoveY);
-            }
-
-            return result;
-        }
+        public long CalculateSolution() =>
+            _paths
+                .Select(p => new PathFinder(_map).TraverseWith(p.MoveX, p.MoveY))
+                .Aggregate(1L, (r, i) => r *= i);
     }
 }

@@ -12,7 +12,7 @@ namespace AdventOfCode2020.Day3
         public PathFinder(string[] map) =>
             _map = map;
 
-        public int TraverseWith(Func<int, int> moveX, Func<int, int> moveY)
+        public long TraverseWith(Func<int, int> moveX, Func<int, int> moveY)
         {
             var trees = 0;
 
