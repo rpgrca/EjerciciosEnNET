@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
-namespace Day3
+namespace AdventOfCode2020.Day3
 {
     public class PathFinderForFirstPuzzleMust
     {
@@ -15,10 +13,10 @@ namespace Day3
                 "..##",
                 "#..."
             };
-            var path = new PathFinderForFirstPuzzle(map);
+            var path = new PathFinder(map);
 
-            path.Traverse(x => x + 3, y => y + 1);
-            Assert.Equal(0, path.Trees);
+            var trees = path.TraverseWith(x => x + 3, y => y + 1);
+            Assert.Equal(0, trees);
         }
 
         [Fact]
@@ -30,10 +28,10 @@ namespace Day3
                 "#...#..",
                 ".#....#"
             };
-            var path = new PathFinderForFirstPuzzle(map);
+            var path = new PathFinder(map);
 
-            path.Traverse(x => x + 3, y => y + 1);
-            Assert.Equal(1, path.Trees);
+            var trees = path.TraverseWith(x => x + 3, y => y + 1);
+            Assert.Equal(1, trees);
         }
 
         [Fact]
@@ -45,10 +43,10 @@ namespace Day3
                 "#...#..",
                 ".#....#"
             };
-            var path = new PathFinderForFirstPuzzle(map);
+            var path = new PathFinder(map);
 
-            path.Traverse(x => x + 1, y => y + 3);
-            Assert.Equal(0, path.Trees);
+            var trees = path.TraverseWith(x => x + 1, y => y + 3);
+            Assert.Equal(0, trees);
         }
 
         [Fact]
@@ -61,10 +59,10 @@ namespace Day3
                 ".#....#..#",
                 "..#.#...#."
             };
-            var path = new PathFinderForFirstPuzzle(map);
+            var path = new PathFinder(map);
 
-            path.Traverse(x => x + 3, y => y + 1);
-            Assert.Equal(1, path.Trees);
+            var trees = path.TraverseWith(x => x + 3, y => y + 1);
+            Assert.Equal(1, trees);
         }
 
         [Theory]
@@ -89,10 +87,10 @@ namespace Day3
                 "#...##....#",
                 ".#..#...#.#"
             };
-            var path = new PathFinderForFirstPuzzle(map);
+            var path = new PathFinder(map);
 
-            path.Traverse(x => x + offsetX, y => y + offsetY);
-            Assert.Equal(expectedTrees, path.Trees);
+            var trees = path.TraverseWith(x => x + offsetX, y => y + offsetY);
+            Assert.Equal(expectedTrees, trees);
         }
 
         [Fact]
@@ -425,10 +423,10 @@ namespace Day3
                 "##...#..#....#.........##......"
             };
 
-            var path = new PathFinderForFirstPuzzle(map);
+            var path = new PathFinder(map);
 
-            path.Traverse(x => x + 3, y => y + 1);
-            Assert.Equal(169, path.Trees);
+            var trees = path.TraverseWith(x => x + 3, y => y + 1);
+            Assert.Equal(169, trees);
         }
 
         [Fact]
@@ -449,25 +447,8 @@ namespace Day3
                 ".#..#...#.#"
             };
 
-            var paths = new (Func<int, int>, Func<int, int>)[]
-            {
-                (x => x + 3, y => y + 1),
-                (x => x + 1, y => y + 1),
-                (x => x + 5, y => y + 1),
-                (x => x + 7, y => y + 1),
-                (x => x + 1, y => y + 2)
-            };
-
-            var finder = new PathFinderForFirstPuzzle(map);
-            var result = 1;
-
-            foreach (var movements in paths)
-            {
-                finder.Traverse(movements.Item1, movements.Item2);
-                result *= finder.Trees;
-            }
-
-            Assert.Equal(336, result);
+            var sut = new MultiplierFinder(map);
+            Assert.Equal(336, sut.CalculateSolution());
         }
 
         [Fact]
@@ -535,7 +516,7 @@ namespace Day3
                 "#.#.#.#........##......#...#.#.",
                 "......#..#.###.#...#.##.##....#",
                 ".#....#...#....#........#....#.",
-                "..#.#..........#..##.......#..#", // 11
+                "..#.#..........#..##.......#..#",
                 ".....#...##..#................#",
                 ".#...............##...#.##...##",
                 "#.####....##.....#.......#.##..",
@@ -597,7 +578,7 @@ namespace Day3
                 "....#......#.........#.........",
                 "#....##....###.....#......#.#..",
                 "...#..#....#........###..#...#.",
-                "..#.#........#.#.#.###..#.#.#..", // 19
+                "..#.#........#.#.#.###..#.#.#..",
                 ".....###.....##.#....###.#.....",
                 "##.#....#....##...##.###.#.##..",
                 ".###.#..#.......##...#...##....",
@@ -659,7 +640,7 @@ namespace Day3
                 "....#.#....#...#........#...#..",
                 "....#.#......#.#.###.#.#.##.#..",
                 "#..#........###..#..#..#.....#.",
-                "...#....#...##...#........##.##", // 33
+                "...#....#...##...#........##.##",
                 ".....#..#..#.....#....#.#...#..",
                 "..#.###....#.#..##......#.##.#.",
                 "..####......#..#.#.#..#.#####..",
@@ -721,7 +702,7 @@ namespace Day3
                 "##.#..##.#..##.#.#.##.#...#.#..",
                 ".##.#..#.#........##.#...##....",
                 "#.........##....##..#......#...",
-                ".#.#.......##...#..#......###.#", // 42
+                ".#.#.......##...#..#......###.#",
                 "........#.#.#.#......#....#..#.",
                 "...##..#...#...#.##..#....#.#..",
                 "...#.#.#.#.......#.......###..#",
@@ -783,7 +764,7 @@ namespace Day3
                 "....#.......#.##....##.#.#.#..#",
                 "............#.#.#.....##.......",
                 "........#...##.#..#......#...##",
-                ".........#...#...#....#...#.##.", // 51
+                ".........#...#...#....#...#.##.",
                 "..#.....#......#......#.....#..",
                 "#....#...##..#.#....#.#...#.###",
                 ".......#..#..#..#.#...#.....#.#",
@@ -797,53 +778,11 @@ namespace Day3
                 "..#....#...#......#........#.#.",
                 "##.#.......#..#.....#..##..##..",
                 ".#..#..#.#.#...#....##...#.##.#",
-                "##...#..#....#.........##......" // 53
+                "##...#..#....#.........##......"
             };
 
-            var paths = new (Func<int, int>, Func<int, int>)[]
-            {
-                (x => x + 3, y => y + 1),
-                (x => x + 1, y => y + 1),
-                (x => x + 5, y => y + 1),
-                (x => x + 7, y => y + 1),
-                (x => x + 1, y => y + 2)
-            };
-
-            var finder = new PathFinderForFirstPuzzle(map);
-            var result = 1L;
-
-            foreach (var movements in paths)
-            {
-                finder.Traverse(movements.Item1, movements.Item2);
-                result *= finder.Trees;
-            }
-
-            Assert.Equal(7560370818, result);
-        }
-    }
-
-    public class PathFinderForFirstPuzzle
-    {
-        private readonly string[] _map;
-
-        public int Trees { get; private set; }
-
-        public PathFinderForFirstPuzzle(string[] map) =>
-            _map = map;
-
-        public void Traverse(Func<int, int> moveX, Func<int, int> moveY)
-        {
-            var x = 0;
-            Trees = 0;
-
-            for (var y = moveY(0); y < _map.Length; y = moveY(y))
-            {
-                x = moveX(x) % _map[0].Length;
-                if (_map[y][x] != '.')
-                {
-                    Trees++;
-                }
-            }
+            var sut = new MultiplierFinder(map);
+            Assert.Equal(7560370818, sut.CalculateSolution());
         }
     }
 }
