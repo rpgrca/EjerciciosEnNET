@@ -1,11 +1,9 @@
-using System.Runtime.CompilerServices;
-using System;
 using Xunit;
-using AdventOfCode2020.Day1;
+using AdventOfCode2020.Day1.Logic;
 
-namespace Day1
+namespace AdventOfCode2020.Day1.UnitTests
 {
-    public class UnitTest1
+    public class PuzzleSolverMust
     {
         [Fact]
         public void Find2020_WhenCombiningTwoNumbers()

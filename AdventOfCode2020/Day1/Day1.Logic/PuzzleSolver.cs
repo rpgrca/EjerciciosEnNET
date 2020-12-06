@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace AdventOfCode2020.Day1
+namespace AdventOfCode2020.Day1.Logic
 {
     public sealed class PuzzleSolver
     {

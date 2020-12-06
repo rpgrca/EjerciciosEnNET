@@ -64,7 +64,7 @@ jobs:
       run: coverlet ABM\ABM.Core.UnitTests\bin\Debug\ABM.Core.UnitTests.dll --target "vstest.console.exe" --targetargs "ABM\ABM.Core.UnitTests\bin\Debug\ABM.Core.UnitTests.dll" --format OpenCover --output abm.coverage.xml --exclude-by-file "**/My Project/*"
 
     - name: Testing AdventOfCode2020
-      run: coverlet AdventOfCode2020/Day1/bin/Debug/net5.0/Day1.dll --target "vstest.console.exe" --targetargs "AdventOfCode2020/Day1/bin/Debug/net5.0/Day1.dll" --format OpenCover --output adventofcode2020day1.coverage.xml
+      run: coverlet AdventOfCode2020/Day1/Day1.UnitTests/bin/Debug/net5.0/Day1.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day1/Day1.UnitTests/bin/Debug/net5.0/Day1.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day1.coverage.xml
 
     - name: Upload
       run: codecov -f *.coverage.xml -t ${{ secrets.CODECOV_TOKEN }}
