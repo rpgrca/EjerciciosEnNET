@@ -24,8 +24,11 @@ jobs:
       with:
         dotnet-version: 5.0.100
 
-    - name: Install Core dependencies
+    - name: Restore packages for main solution
       run: dotnet restore
+
+    - name: Restore packages for AdventOfCode2020
+      run: dotnet restore AdventOfCode2020/AdventOfCode2020.sln
 
     - name: Install Framework dependencies
       run: nuget restore ABM\ABM.sln
