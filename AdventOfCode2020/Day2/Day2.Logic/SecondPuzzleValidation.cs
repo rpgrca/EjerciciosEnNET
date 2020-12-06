@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace AdventOfCode2020.Day2
+namespace AdventOfCode2020.Day2.Logic
 {
     public class SecondPuzzleValidation : PasswordValidation
     {

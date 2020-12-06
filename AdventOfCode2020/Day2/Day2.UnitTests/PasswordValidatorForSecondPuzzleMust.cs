@@ -1,7 +1,8 @@
 using System.Linq;
 using Xunit;
+using AdventOfCode2020.Day2.Logic;
 
-namespace AdventOfCode2020.Day2
+namespace AdventOfCode2020.Day2.UnitTests
 {
     public class PasswordValidatorForSecondPuzzleMust
     {
