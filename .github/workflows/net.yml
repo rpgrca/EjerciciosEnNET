@@ -34,11 +34,11 @@ jobs:
     - name: Setup VSTest.console.exe
       uses: darenm/Setup-VSTest@v1
 
-    - name: Build Release
-      run: dotnet build --configuration Release --no-restore
-
-    - name: Build Debug
+    - name: Build Main Solution in Debug
       run: dotnet build --configuration Debug --no-restore
+      
+    - name: Build AdventOfCode Solution in Debug
+      run: dotnet build --configuration Debug --no-restore AdventOfCode2020\AdventOfCode2020.sln
 
     - name: Setup .NET Framework
       uses: microsoft/setup-msbuild@v1.0.2
