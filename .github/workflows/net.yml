@@ -31,8 +31,8 @@ jobs:
     - name: Install Codecov
       run: dotnet tool install --global Codecov.Tool
 
-    - name: Setup VSTest.exe
-      uses: Malcolmnixon/Setup-VSTest@v3
+    - name: Setup VSTest.console.exe
+      uses: darenm/Setup-VSTest@v1
 
     - name: Build Release
       run: dotnet build --configuration Release --no-restore
