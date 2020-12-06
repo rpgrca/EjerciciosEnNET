@@ -70,4 +70,4 @@ jobs:
       run: coverlet AdventOfCode2020/Day2/Day2.UnitTests/bin/Debug/net5.0/Day2.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day2/Day2.UnitTests/bin/Debug/net5.0/Day2.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day2.coverage.xml
 
     - name: Upload
-      run: codecov -f *.coverage.xml -t ${{ secrets.CODECOV_TOKEN }}
+      run: codecov -f *.coverage.xml
