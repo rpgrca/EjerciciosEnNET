@@ -40,7 +40,7 @@ jobs:
       run: dotnet build --configuration Debug --no-restore
       
     - name: Build AdventOfCode Solution in Debug
-      run: dotnet build --configuration Debug --no-restore AdventOfCode2020\AdventOfCode2020.sln
+      run: dotnet build --configuration Debug --no-restore AdventOfCode2020/AdventOfCode2020.sln
 
     - name: Testing Palindromo
       run: coverlet Palindromo/Palindromo.UnitTests/bin/Debug/netcoreapp3.0/Palindromo.UnitTests.dll --target "dotnet" --targetargs "test Palindromo/Palindromo.UnitTests/Palindromo.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output palindromo.coverage.xml
