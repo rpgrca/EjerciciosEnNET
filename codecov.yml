@@ -1,3 +1,5 @@
+codecov:
+  disable_default_path_fixes: false
+
 fixes:
-  - 'D:\a\EjerciciosEnNET\EjerciciosEnNET\::'
-  - '/home/runner/work/EjerciciosEnNET/EjerciciosEnNET/::'
+  - "/home/runner/work/EjerciciosEnNET/EjerciciosEnNET/::"
