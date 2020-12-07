@@ -33,9 +33,6 @@ jobs:
     - name: Install Coverlet
       run: dotnet tool install --global coverlet.console
 
-    - name: Install Codecov
-      run: dotnet tool install --global Codecov.Tool
-
     - name: Build Main Solution in Debug
       run: dotnet build --configuration Debug --no-restore
       
@@ -55,7 +52,7 @@ jobs:
       run: coverlet AdventOfCode2020/Day2/Day2.UnitTests/bin/Debug/net5.0/Day2.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day2/Day2.UnitTests/bin/Debug/net5.0/Day2.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day2.coverage.xml
 
     - name: Upload coverage to CodeCov
-      run: codecov -f *.coverage.xml
+      run: bash <(curl -s https://codecov.io/bash)
 
     - name: Archive code coverage results
       uses: actions/upload-artifact@v2
