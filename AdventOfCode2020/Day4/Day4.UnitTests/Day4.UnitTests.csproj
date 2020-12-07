@@ -19,4 +19,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Day4.Logic\Day4.Logic.csproj" />
+  </ItemGroup>
+
 </Project>

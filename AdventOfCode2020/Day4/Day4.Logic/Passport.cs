@@ -1,8 +1,7 @@
-using System;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Day4
+namespace AdventOfCode2020.Day4.Logic
 {
     public class Passport
     {
