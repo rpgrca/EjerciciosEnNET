@@ -69,5 +69,11 @@ jobs:
     - name: Testing AdventOfCode2020.Day2
       run: coverlet AdventOfCode2020/Day2/Day2.UnitTests/bin/Debug/net5.0/Day2.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day2/Day2.UnitTests/bin/Debug/net5.0/Day2.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day2.coverage.xml
 
-    - name: Upload
+    - name: Upload coverage to CodeCov
       run: codecov -f *.coverage.xml
+
+    - name: Archive code coverage results
+      uses: actions/upload-artifact@v2
+      with:
+        name: code-coverage-report
+        path: *.coverage.xml
