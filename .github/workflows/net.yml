@@ -60,6 +60,9 @@ jobs:
     - name: Testing AdventOfCode2020.Day5
       run: coverlet AdventOfCode2020/Day5/Day5.UnitTests/bin/Debug/net5.0/Day5.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day5/Day5.UnitTests/bin/Debug/net5.0/Day5.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day5.coverage.xml
 
+    - name: Testing AdventOfCode2020.Day6
+      run: coverlet AdventOfCode2020/Day6/Day6.UnitTests/bin/Debug/net5.0/Day6.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day6/Day6.UnitTests/bin/Debug/net5.0/Day6.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day6.coverage.xml
+
     - name: Upload coverage to CodeCov
       run: bash <(curl -s https://codecov.io/bash)
 

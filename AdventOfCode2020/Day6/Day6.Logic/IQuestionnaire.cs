@@ -1,4 +1,4 @@
-namespace AdventOfCode2020.Day6
+namespace AdventOfCode2020.Day6.Logic
 {
     public interface IQuestionnaire
     {

@@ -1,6 +1,7 @@
 using Xunit;
+using AdventOfCode2020.Day6.Logic;
 
-namespace AdventOfCode2020.Day6
+namespace AdventOfCode2020.Day6.UnitTests
 {
     public class QuestionnairesMust
     {

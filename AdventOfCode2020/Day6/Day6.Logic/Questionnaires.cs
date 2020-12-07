@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace AdventOfCode2020.Day6
+namespace AdventOfCode2020.Day6.Logic
 {
     public class Questionnaires
     {
