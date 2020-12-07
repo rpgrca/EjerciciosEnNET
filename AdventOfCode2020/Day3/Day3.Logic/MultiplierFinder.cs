@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace AdventOfCode2020.Day3
+namespace AdventOfCode2020.Day3.Logic
 {
     public class MultiplierFinder
     {

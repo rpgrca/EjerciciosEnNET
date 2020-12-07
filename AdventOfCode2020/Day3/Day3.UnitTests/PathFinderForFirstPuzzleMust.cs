@@ -1,12 +1,13 @@
 using System;
 using Xunit;
+using AdventOfCode2020.Day3.Logic;
 
-namespace AdventOfCode2020.Day3
+namespace AdventOfCode2020.Day3.UnitTests
 {
     public class PathFinderForFirstPuzzleMust
     {
         [Fact]
-        public void Test1()
+        public void TraversePath3East1SouthInOneStep()
         {
             var map = new string[]
             {
@@ -20,7 +21,7 @@ namespace AdventOfCode2020.Day3
         }
 
         [Fact]
-        public void Test2()
+        public void TraversePath3East1SouthInTwoSteps()
         {
             var map = new string[]
             {
@@ -35,7 +36,7 @@ namespace AdventOfCode2020.Day3
         }
 
         [Fact]
-        public void Test21()
+        public void TraversePath1East3SouthInOneStep()
         {
             var map = new string[]
             {
@@ -50,7 +51,7 @@ namespace AdventOfCode2020.Day3
         }
 
         [Fact]
-        public void Test3()
+        public void TraversePath3East1SouthInThreeSteps()
         {
             var map = new string[]
             {
