@@ -1,10 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using Xunit;
 
-namespace AdventOfCode2020.Day5
+namespace AdventOfCode2020.Day5.Logic
 {
-
     public class SeatLocator
     {
         private readonly string[] _seatCodes;

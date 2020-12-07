@@ -1,6 +1,6 @@
 using System;
 
-namespace AdventOfCode2020.Day5
+namespace AdventOfCode2020.Day5.Logic
 {
     public class Seat
     {

@@ -1,8 +1,7 @@
 using System.Linq;
 
-namespace AdventOfCode2020.Day5
+namespace AdventOfCode2020.Day5.Logic
 {
-
     public class SeatTopLocator
     {
         private readonly string[] _seatCodes;

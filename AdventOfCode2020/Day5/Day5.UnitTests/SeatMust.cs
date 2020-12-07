@@ -1,6 +1,7 @@
 using Xunit;
+using AdventOfCode2020.Day5.Logic;
 
-namespace AdventOfCode2020.Day5
+namespace AdventOfCode2020.Day5.UnitTests
 {
     public class SeatMust
     {
