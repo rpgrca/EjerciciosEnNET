@@ -6,8 +6,8 @@ namespace AdventOfCode2020.Day1.Logic
     {
         public class Builder
         {
-            private int _expectedValue = 2020;
-            private int[] _values = {
+            private readonly int _expectedValue = 2020;
+            private readonly int[] _values = {
                 1757, 1890, 1750, 1440, 1822, 1957, 2005, 1979, 1405, 2003,
                 1997, 1741, 1494, 1780, 1774, 1813, 447, 1429, 1990, 1767,
                 1969, 1787, 1944, 1863, 1778, 2004, 1991, 1754, 1748, 1756,
@@ -29,18 +29,6 @@ namespace AdventOfCode2020.Day1.Logic
                 1832, 1673, 1964, 1800, 1971, 1842, 2002, 1921, 1940, 1845,
                 1527, 1428, 1932, 1893, 1908, 1889, 1974, 1981, 1791, 1975
             };
-
-            public Builder WithValues(int[] values)
-            {
-                _values = values;
-                return this;
-            }
-
-            public Builder LookingFor(int aValue)
-            {
-                _expectedValue = aValue;
-                return this;
-            }
 
             public PuzzleSolver Build() =>
                 new PuzzleSolver(_values, _expectedValue);
