@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SistemaDeAparcamiento.Logica.Opciones
 {
-    public class CantidadDeAutosEstacionados : IOpcion
+    internal class CantidadDeAutosEstacionados : IOpcion
     {
         public int Numero => 6;
         public string Nombre => "Cantidad de autos estacionados";

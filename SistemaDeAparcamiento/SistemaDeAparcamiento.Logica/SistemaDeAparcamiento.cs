@@ -88,7 +88,7 @@ namespace SistemaDeAparcamiento.Logica
         public bool HayEspacioDisponibleEn(string unaPlaya) =>
             _playon.HayEspacioDisponibleEn(unaPlaya);
 
-        public object ObtenerEspacioDisponibleEn(string unaPlaya) =>
+        public int ObtenerEspacioDisponibleEn(string unaPlaya) =>
             _playon.ObtenerEspacioDisponibleEn(unaPlaya);
 
         public bool EgresarDe(string unaPlaya) =>

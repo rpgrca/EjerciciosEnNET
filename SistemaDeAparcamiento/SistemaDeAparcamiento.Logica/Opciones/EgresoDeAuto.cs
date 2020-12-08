@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SistemaDeAparcamiento.Logica.Opciones
 {
-    public class EgresoDeAuto : IOpcion
+    internal class EgresoDeAuto : IOpcion
     {
         private readonly string[] _opcionParaVolverAtras = { "volver atrás" };
         private List<string> _opciones;

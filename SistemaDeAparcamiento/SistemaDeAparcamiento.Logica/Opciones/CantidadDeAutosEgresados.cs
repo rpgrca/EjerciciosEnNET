@@ -1,6 +1,6 @@
 namespace SistemaDeAparcamiento.Logica.Opciones
 {
-    public class CantidadDeAutosEgresados : IOpcion
+    internal class CantidadDeAutosEgresados : IOpcion
     {
         public int Numero => 5;
         public string Nombre => "Cantidad de autos egresados";

@@ -1,6 +1,6 @@
 namespace SistemaDeAparcamiento.Logica.Opciones
 {
-    public class Salir : IOpcion
+    internal class Salir : IOpcion
     {
         public int Numero => 7;
         public string Nombre => "Salir";

@@ -70,5 +70,70 @@ namespace SistemaDeAparcamiento.Tests
 
             Assert.Equal(2, sut.CantidadDeVehiculosEgresados);
         }
+
+        [Fact]
+        public void EmpezarVacia()
+        {
+            var sut = CrearSubjectUnderTest();
+
+            Assert.False(sut.HayAutosEstacionadosEn("izquierda"));
+            Assert.False(sut.HayAutosEstacionadosEn("central"));
+            Assert.False(sut.HayAutosEstacionadosEn("derecha"));
+            Assert.True(sut.HayEspacioDisponibleEn("izquierda"));
+            Assert.True(sut.HayEspacioDisponibleEn("central"));
+            Assert.True(sut.HayEspacioDisponibleEn("derecha"));
+        }
+
+        private static Playon CrearSubjectUnderTest()
+        {
+            var sut = new Playon();
+            sut.Agregar(new PlayaIzquierda());
+            sut.Agregar(new PlayaCentral());
+            sut.Agregar(new PlayaDerecha());
+
+            return sut;
+        }
+
+        [Theory]
+        [InlineData("izquierda")]
+        [InlineData("derecha")]
+        [InlineData("central")]
+        public void EstacionarEnPlaya(string playa)
+        {
+            var sut = CrearSubjectUnderTest();
+
+            sut.EstacionarEn(playa);
+            Assert.True(sut.HayAutosEstacionadosEn(playa));
+        }
+
+        [Fact]
+        public void ListarLasPlayas()
+        {
+            var sut = CrearSubjectUnderTest();
+            Assert.Collection(sut.ListarPlayas(),
+                p1 => Assert.Equal("izquierda", p1),
+                p2 => Assert.Equal("central", p2),
+                p3 => Assert.Equal("derecha", p3));
+        }
+
+        [Theory]
+        [InlineData("izquierda")]
+        [InlineData("derecha")]
+        [InlineData("central")]
+        public void RetornarFalse_CuandoNoHayAutosQueEgresarEnUnaPlaya(string playa)
+        {
+            var sut = CrearSubjectUnderTest();
+            Assert.False(sut.EgresarDe(playa));
+        }
+
+        [Theory]
+        [InlineData("izquierda")]
+        [InlineData("derecha")]
+        [InlineData("central")]
+        public void ObtenerEspacioDisponibleDePlaya(string playa)
+        {
+            var sut = CrearSubjectUnderTest();
+            Assert.True(sut.ObtenerEspacioDisponibleEn(playa) > 0);
+        }
     }
 }

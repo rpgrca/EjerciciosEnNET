@@ -2,7 +2,7 @@ using System;
 
 namespace SistemaDeAparcamiento.Logica.Opciones
 {
-    public class EstacionarEnPlaya : IOpcion
+    internal class EstacionarEnPlaya : IOpcion
     {
         private readonly string _nombre;
 
