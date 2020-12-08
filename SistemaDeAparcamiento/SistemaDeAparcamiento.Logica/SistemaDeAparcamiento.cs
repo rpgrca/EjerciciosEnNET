@@ -11,6 +11,9 @@ namespace SistemaDeAparcamiento.Logica
         private readonly Playon _playon;
         private IOpcion _opcionSeleccionada;
 
+        protected Func<string> _leerDeConsola = () => Console.ReadLine();
+        protected Action<string> _escribirAConsola = s => Console.WriteLine(s);
+
         public SistemaDeAparcamiento()
         {
             _opciones = new List<IOpcion>
@@ -28,15 +31,15 @@ namespace SistemaDeAparcamiento.Logica
 
             _playon = new Playon();
             _playon.Agregar(new PlayaIzquierda());
-            _playon.Agregar(new PlayaDerecha());
             _playon.Agregar(new PlayaCentral());
+            _playon.Agregar(new PlayaDerecha());
         }
 
-        public bool HayAutosEstacionadosEn(string playa) =>
-            _playon.HayAutosEstacionadosEn(playa);
+        public bool DebeTerminar() =>
+            _opcionSeleccionada?.Numero == 7;
 
-        public IEnumerable<string> ListarPlayas() =>
-            _playon.ListarPlayas();
+        public void MostrarMenu() =>
+            _opciones.ForEach(opcion => EscribirAConsola($"{opcion.Numero}) {opcion.Nombre}"));
 
         public void IngresarOpcion()
         {
@@ -44,7 +47,7 @@ namespace SistemaDeAparcamiento.Logica
 
             do
             {
-                var linea = Console.ReadLine();
+                var linea = LeerDeConsola();
                 if (int.TryParse(linea, out var unaOpcion))
                 {
                     _opcionSeleccionada = Buscar(unaOpcion);
@@ -52,11 +55,24 @@ namespace SistemaDeAparcamiento.Logica
 
                 if (_opcionSeleccionada is null)
                 {
-                    Console.Write("Opcion invalida, por favor vuelva a seleccionar: ");
+                    EscribirAConsola("Opcion invalida, por favor vuelva a seleccionar: ");
                 }
             }
             while (NingunaOpcionSeleccionada());
         }
+
+        public void EjecutarOpcion() =>
+            _opcionSeleccionada.Ejecutar(this);
+
+        internal bool HayAutosEstacionadosEn(string playa) =>
+            _playon.HayAutosEstacionadosEn(playa);
+
+        internal IEnumerable<string> ListarPlayas() =>
+            _playon.ListarPlayas();
+
+        internal string LeerDeConsola() => _leerDeConsola.Invoke();
+
+        internal void EscribirAConsola(string texto) => _escribirAConsola.Invoke(texto);
 
         private bool NingunaOpcionSeleccionada() =>
             _opcionSeleccionada == null;
@@ -64,34 +80,25 @@ namespace SistemaDeAparcamiento.Logica
         private IOpcion Buscar(int opcionNumerica) =>
             _opciones.SingleOrDefault(opcion => opcion.Numero == opcionNumerica);
 
-        public bool DebeTerminar() =>
-            _opcionSeleccionada?.Numero == 7;
+        internal void MostrarMensajeFinal() =>
+            EscribirAConsola("Muchísimas Gracias por usar el sistema de Aparcamiento. Los datos acumulados del día de hoy se borrarán. Nos vemos en la próxima jornada laboral");
 
-        public void MostrarMensajeFinal() =>
-            Console.WriteLine("Muchísimas Gracias por usar el sistema de Aparcamiento. Los datos acumulados del día de hoy se borrarán. Nos vemos en la próxima jornada laboral");
+        internal void MostrarCantidadDeAutosEstacionados() =>
+            EscribirAConsola($"En el playón hay {_playon.CantidadDeVehiculosEstacionados} vehículos estacionados.");
 
-        public void MostrarMenu() =>
-            _opciones.ForEach(opcion => Console.WriteLine($"{opcion.Numero}) {opcion.Nombre}"));
+        internal void MostrarCantidadDeAutosEgresados() =>
+            EscribirAConsola($"Del playón egresaron {_playon.CantidadDeVehiculosEgresados} vehículos en total.");
 
-        public void EjecutarOpcion() =>
-            _opcionSeleccionada.Ejecutar(this);
-
-        public void MostrarCantidadDeAutosEstacionados() =>
-            Console.WriteLine($"En el playón hay {_playon.CantidadDeVehiculosEstacionados} vehículos estacionados.");
-
-        public void MostrarCantidadDeAutosEgresados() =>
-            Console.WriteLine($"Del playón egresaron {_playon.CantidadDeVehiculosEgresados} vehículos en total.");
-
-        public bool EstacionarEn(string unaPlaya) =>
+        internal bool EstacionarEn(string unaPlaya) =>
             _playon.EstacionarEn(unaPlaya);
 
-        public bool HayEspacioDisponibleEn(string unaPlaya) =>
+        internal bool HayEspacioDisponibleEn(string unaPlaya) =>
             _playon.HayEspacioDisponibleEn(unaPlaya);
 
-        public int ObtenerEspacioDisponibleEn(string unaPlaya) =>
+        internal int ObtenerEspacioDisponibleEn(string unaPlaya) =>
             _playon.ObtenerEspacioDisponibleEn(unaPlaya);
 
-        public bool EgresarDe(string unaPlaya) =>
+        internal bool EgresarDe(string unaPlaya) =>
             _playon.EgresarDe(unaPlaya);
     }
 }

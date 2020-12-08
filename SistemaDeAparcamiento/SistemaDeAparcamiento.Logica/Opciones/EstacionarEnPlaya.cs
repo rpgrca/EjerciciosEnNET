@@ -19,19 +19,19 @@ namespace SistemaDeAparcamiento.Logica.Opciones
         {
             if (! sistemaDeAparcamiento.EstacionarEn(_nombre))
             {
-                Console.WriteLine("No se puede estacionar en esta playa.");
+                sistemaDeAparcamiento.EscribirAConsola("No se puede estacionar en esta playa.");
             }
             else
             {
-                Console.Write("Auto estacionado correctamente.");
+                sistemaDeAparcamiento.EscribirAConsola("Auto estacionado correctamente.");
 
                 if (sistemaDeAparcamiento.HayEspacioDisponibleEn(_nombre))
                 {
-                    Console.WriteLine($" Aún queda espacio para {sistemaDeAparcamiento.ObtenerEspacioDisponibleEn(_nombre)} vehículo/s.");
+                    sistemaDeAparcamiento.EscribirAConsola($" Aún queda espacio para {sistemaDeAparcamiento.ObtenerEspacioDisponibleEn(_nombre)} vehículo/s.");
                 }
                 else
                 {
-                    Console.WriteLine(" Ya no hay más lugar disponible en esta playa.");
+                    sistemaDeAparcamiento.EscribirAConsola(" Ya no hay más lugar disponible en esta playa.");
                 }
             }
         }

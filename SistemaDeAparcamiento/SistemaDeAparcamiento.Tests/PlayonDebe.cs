@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Xunit;
 using SistemaDeAparcamiento.Logica;
 
@@ -95,15 +96,20 @@ namespace SistemaDeAparcamiento.Tests
         }
 
         [Theory]
-        [InlineData("izquierda")]
-        [InlineData("derecha")]
-        [InlineData("central")]
+        [MemberData(nameof(ListadoDePlayas))]
         public void EstacionarEnPlaya(string playa)
         {
             var sut = CrearSubjectUnderTest();
 
             sut.EstacionarEn(playa);
             Assert.True(sut.HayAutosEstacionadosEn(playa));
+        }
+
+        public static IEnumerable<object[]> ListadoDePlayas()
+        {
+            yield return new object[] { "izquierda" };
+            yield return new object[] { "central" };
+            yield return new object[] { "derecha" };
         }
 
         [Fact]
@@ -117,9 +123,7 @@ namespace SistemaDeAparcamiento.Tests
         }
 
         [Theory]
-        [InlineData("izquierda")]
-        [InlineData("derecha")]
-        [InlineData("central")]
+        [MemberData(nameof(ListadoDePlayas))]
         public void RetornarFalse_CuandoNoHayAutosQueEgresarEnUnaPlaya(string playa)
         {
             var sut = CrearSubjectUnderTest();
@@ -127,9 +131,7 @@ namespace SistemaDeAparcamiento.Tests
         }
 
         [Theory]
-        [InlineData("izquierda")]
-        [InlineData("derecha")]
-        [InlineData("central")]
+        [MemberData(nameof(ListadoDePlayas))]
         public void ObtenerEspacioDisponibleDePlaya(string playa)
         {
             var sut = CrearSubjectUnderTest();
