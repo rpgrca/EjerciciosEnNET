@@ -35,15 +35,18 @@ jobs:
 
     - name: Build Main Solution in Debug
       run: dotnet build --configuration Debug --no-restore
-      
+
+    - name: Build SistemaDeAparcamiento in Debug
+      run: dotnet build --configuration Debug --no-restore SistemaDeAparcamiento/SistemaDeAparcamiento.sln
+
     - name: Build AdventOfCode Solution in Debug
       run: dotnet build --configuration Debug --no-restore AdventOfCode2020/AdventOfCode2020.sln
 
     - name: Testing Palindromo
-      run: coverlet Palindromo/Palindromo.UnitTests/bin/Debug/netcoreapp3.0/Palindromo.UnitTests.dll --target "dotnet" --targetargs "test Palindromo/Palindromo.UnitTests/Palindromo.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output palindromo.coverage.xml
-
-    - name: Testing Anaconda
-      run: coverlet Anaconda/Anaconda.UnitTests/bin/Debug/netcoreapp3.0/Anaconda.UnitTests.dll --target "dotnet" --targetargs "test Anaconda/Anaconda.UnitTests/Anaconda.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output anaconda.coverage.xml
+      run: |
+           coverlet Palindromo/Palindromo.UnitTests/bin/Debug/netcoreapp3.0/Palindromo.UnitTests.dll --target "dotnet" --targetargs "test Palindromo/Palindromo.UnitTests/Palindromo.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output palindromo.coverage.xml
+           coverlet Anaconda/Anaconda.UnitTests/bin/Debug/netcoreapp3.0/Anaconda.UnitTests.dll --target "dotnet" --targetargs "test Anaconda/Anaconda.UnitTests/Anaconda.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output anaconda.coverage.xml
+           coverlet SistemaDeAparcamiento/SistemaDeAparcamiento.Tests/bin/Debug/net5.0/SistemaDeAparcamiento.Tests.dll --target "dotnet" --targetargs "test SistemaDeAparcamiento/SistemaDeAparcamiento.Tests/SistemaDeAparcamiento.Tests.csproj --no-build --verbosity quiet" --format OpenCover --output sistemadeaparcamiento.coverage.xml
 
     - name: Testing AdventOfCode2020.Day1
       run: coverlet AdventOfCode2020/Day1/Day1.UnitTests/bin/Debug/net5.0/Day1.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day1/Day1.UnitTests/bin/Debug/net5.0/Day1.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day1.coverage.xml
