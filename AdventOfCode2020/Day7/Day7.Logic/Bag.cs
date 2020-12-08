@@ -1,48 +1,60 @@
-using System.ComponentModel;
-using System.Reflection;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AdventOfCode2020.Day7.Logic
 {
-    public record ContainedBagInformation(string Name, int Amount);
-
     public class Bag
     {
+        private readonly string[] _emptyDescription = { "no other bags." };
         private readonly string _rule;
-        public string Description { get; private set; }
-        public List<ContainedBagInformation> ContainedBags { get; }
+        private string _description;
+        private List<string> _containedBags;
+        private List<ContainedBagInformation> ContainedBags { get; }
 
         public Bag(string rule)
         {
             ContainedBags = new List<ContainedBagInformation>();
             _rule = rule;
+
             ExtractDescriptionFromRule();
             ExtractContainedBagsFromRule();
         }
 
         private void ExtractDescriptionFromRule() =>
-            Description = string.Join(" ", _rule.Split(" ").Take(2));
+            _description = string.Join(" ", _rule.Split(" ").Take(2));
 
         private void ExtractContainedBagsFromRule()
         {
-            var containedBags = _rule[(Description.Length + " bags contain ".Length)..].Trim();
-            if (! containedBags.Contains("no other bags"))
-            {
-                var containing = containedBags.Split(",");
-                foreach (var containedDescription in containing)
-                {
-                    var parsedInformation = containedDescription.Trim().Split(" ");
-                    ContainedBags.Add(new ContainedBagInformation(string.Join(" ", parsedInformation[1..3]), int.Parse(parsedInformation[0])));
-                }
-            }
+            ExtractContainedBagDescriptionsFromRule();
+            AddContainedBags();
         }
 
-        public bool IsOf(string aDescription) =>
-            Description == aDescription;
+        private void ExtractContainedBagDescriptionsFromRule() =>
+            _containedBags = _rule[(_description.Length + " bags contain ".Length)..]
+                .Split(",")
+                .Except(_emptyDescription)
+                .ToList();
 
-        public bool CanContainBagOf(string aDescription) =>
-            _rule[Description.Length..].Contains(aDescription);
+        private void AddContainedBags() =>
+            _containedBags
+                .ForEach(p => ContainedBags.Add(ContainedBagInformation.Create(p)));
+
+        public bool IsOf(string aDescription) =>
+            _description == aDescription;
+
+        public bool CanContainBagOf(string aDescription, Dictionary<string, Bag> bags = null) =>
+            ContainedBags.Any(b => b.Description == aDescription) ||
+            (bags != null && ContainedBags.Any(b => bags[b.Description].CanContainBagOf(aDescription, bags)));
+
+        public int CountBagsThatFitInside(Dictionary<string, Bag> bags) =>
+            CountBagsThatFitInside(this, bags);
+
+        private int CountBagsThatFitInside(Bag bag, Dictionary<string, Bag> bags) =>
+            bag.ContainedBags
+                .Sum(b => (1 + CountBagsThatFitInside(bags[b.Description], bags)) * b.Amount);
+
+        public void AddMyselfTo(Dictionary<string, Bag> bags) =>
+            bags.Add(_description, this);
     }
 }

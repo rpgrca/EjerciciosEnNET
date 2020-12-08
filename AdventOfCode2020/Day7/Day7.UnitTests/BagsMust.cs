@@ -610,38 +610,36 @@ plaid turquoise bags contain 3 clear teal bags, 2 dull tomato bags, 5 dotted pur
 drab aqua bags contain 3 bright lime bags, 5 posh red bags.";
 
         [Fact]
-        public void Test1()
+        public void ReturnTwo_WhenGivenAContainedBag()
         {
             var bags = new Bags(@"bright white bags contain 1 shiny gold bag.
 muted yellow bags contain 2 shiny gold bags, 9 faded blue bags.");
-            Assert.Collection(bags.ThatContainBagOf("shiny gold"),
-                p1 => Assert.True(p1.IsOf("bright white")),
-                p2 => Assert.True(p2.IsOf("muted yellow")));
+            Assert.Equal(2, bags.ThatContainBagOf("shiny gold"));
         }
 
         [Fact]
-        public void Test2()
+        public void ReturnZero_WhenGivenAnInexistantBag()
         {
             var bags = new Bags(RULES);
-            Assert.Empty(bags.ThatContainBagOf("dampened violet"));
+            Assert.Equal(0, bags.ThatContainBagOf("dampened violet"));
         }
 
         [Fact]
-        public void Test3()
+        public void ReturnFour_WhenFindingShinyGoldBagsInSampleData()
         {
             var bags = new Bags(RULES);
-            Assert.Equal(4, bags.ThatContainBagOf("shiny gold").Count);
+            Assert.Equal(4, bags.ThatContainBagOf("shiny gold"));
         }
 
         [Fact]
         public void SolveFirstPuzzle()
         {
             var bags = new Bags(PUZZLE_RULES);
-            Assert.Equal(335, bags.ThatContainBagOf("shiny gold").Count);
+            Assert.Equal(335, bags.ThatContainBagOf("shiny gold"));
         }
 
         [Fact]
-        public void Test4()
+        public void Return32_WhenFindingBagsThatCanBeContainedInShinyGoldOne()
         {
             const string rules = @"light red bags contain 1 bright white bag, 2 muted yellow bags.
 dark orange bags contain 3 bright white bags, 4 muted yellow bags.
@@ -658,7 +656,7 @@ dotted black bags contain no other bags.";
         }
 
         [Fact]
-        public void Test5()
+        public void Return126_WhenFindingBagsThatCanBeContainedInShinyGoldOne()
         {
             const string rules = @"shiny gold bags contain 2 dark red bags.
 dark red bags contain 2 dark orange bags.
