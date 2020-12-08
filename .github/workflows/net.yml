@@ -27,6 +27,9 @@ jobs:
     - name: Restore packages for main solution
       run: dotnet restore
 
+    - name: Restore packages for SistemaDeAparcamiento
+      run: dotnet restore SistemaDeAparcamiento/SistemaDeAparcamiento.sln
+
     - name: Restore packages for AdventOfCode2020
       run: dotnet restore AdventOfCode2020/AdventOfCode2020.sln
 
