@@ -758,7 +758,7 @@ jmp -4
 acc +6";
 
             var bootCode = new BootCode(instructions);
-            bootCode.PatchCorruptedInstruction();
+            bootCode.Fix();
             bootCode.Run();
 
             Assert.Equal(8, bootCode.Accumulator);
@@ -768,7 +768,7 @@ acc +6";
         public void SolveSecondPuzzle()
         {
             var bootCode = new BootCode(PUZZLE_DATA);
-            bootCode.PatchCorruptedInstruction();
+            bootCode.Fix();
             bootCode.Run();
 
             Assert.Equal(1089, bootCode.Accumulator);

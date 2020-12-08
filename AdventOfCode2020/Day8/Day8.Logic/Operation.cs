@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 
 namespace AdventOfCode2020.Day8.Logic
@@ -50,40 +51,19 @@ namespace AdventOfCode2020.Day8.Logic
             _executed = true;
         }
 
-        internal bool Patch()
+        internal bool Patch(Func<string, string> patch)
         {
-            if (_opCode == "acc")
+            var patchedInstruction = patch.Invoke(_opCode);
+            if (patchedInstruction != _opCode)
             {
-                return false;
+                _opCode = patchedInstruction;
+                return true;
             }
 
-            if (_opCode == "nop")
-            {
-                _opCode = "jmp";
-            }
-            else
-            {
-                _opCode = "nop";
-            }
-
-            return true;
+            return false;
         }
 
-        internal void UnPatch()
-        {
-            if (_opCode == "nop")
-            {
-                _opCode = "jmp";
-            }
-            else if (_opCode == "jmp")
-            {
-                _opCode = "nop";
-            }
-        }
-
-        internal void MarkAsNotExecuted()
-        {
+        internal void MarkAsNotExecuted() =>
             _executed = false;
-        }
     }
 }
