@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 using Xunit;
 
@@ -25,6 +26,16 @@ namespace SistemaDeAparcamiento.Tests
         }
 
         [Fact]
+        public void RetornarFalse_CuandoSePreguntaSiDebeTerminarDespuesDeElegirOtraOpcion()
+        {
+            var sut = new SistemaDeAparcamientoEspia();
+            sut.TextoAEntrarPorConsola.Enqueue("1");
+            sut.IngresarOpcion();
+
+            Assert.False(sut.DebeTerminar());
+        }
+
+        [Fact]
         public void MostrarMenuCon7Opciones()
         {
             var sut = new SistemaDeAparcamientoEspia();
@@ -38,6 +49,17 @@ namespace SistemaDeAparcamiento.Tests
                 t5 => Assert.Contains("5)", t5),
                 t6 => Assert.Contains("6)", t6),
                 t7 => Assert.Contains("7)", t7));
+        }
+
+        [Fact]
+        public void PedirNuevaOpcion_CuandoSeIngresaOpcionIncorrecta()
+        {
+            var sut = new SistemaDeAparcamientoEspia();
+            sut.TextoAEntrarPorConsola.Enqueue("9");
+            sut.TextoAEntrarPorConsola.Enqueue("7");
+            sut.IngresarOpcion();
+
+            Assert.Contains("Opcion invalida", sut.TextoEscritoEnConsola[0]);
         }
 
         // Opcion 1
@@ -207,9 +229,42 @@ namespace SistemaDeAparcamiento.Tests
                 t => Assert.StartsWith("No hay", t));
         }
 
+        [Fact]
+        public void AvisarQueNoSePuedeSacarAuto_CuandoSeTrataDeSacarAutoDeLaPlayaDeLaIzquierda()
+        {
+            var sut = new SistemaDeAparcamientoEspia();
+            sut.TextoAEntrarPorConsola.Enqueue("1");
+            sut.IngresarOpcion();
+            sut.EjecutarOpcion();
+
+            sut.TextoAEntrarPorConsola.Enqueue("4");
+            sut.TextoAEntrarPorConsola.Enqueue("1");
+            sut.IngresarOpcion();
+            sut.EjecutarOpcion();
+
+            Assert.Contains("No es posible egresar", sut.TextoEscritoEnConsola[5]);
+        }
+
+        [Fact]
+        public void AvisarQueLaOpcionNoExiste_CuandoSeElijeUnaOpcionIncorrecta()
+        {
+            var sut = new SistemaDeAparcamientoEspia();
+            sut.TextoAEntrarPorConsola.Enqueue("1");
+            sut.IngresarOpcion();
+            sut.EjecutarOpcion();
+
+            sut.TextoAEntrarPorConsola.Enqueue("4");
+            sut.TextoAEntrarPorConsola.Enqueue("3");
+            sut.TextoAEntrarPorConsola.Enqueue("2");
+            sut.IngresarOpcion();
+            sut.EjecutarOpcion();
+
+            Assert.Contains("Opcion inválida", sut.TextoEscritoEnConsola[5]);
+        }
+
         // Opcion 5
         [Fact]
-        public void RetornarCero_CuandoSeVerificaCantidadDeAutosIngresadosSinNinguno()
+        public void MostrarCero_CuandoSeVerificaCantidadDeAutosIngresadosSinNinguno()
         {
             var sut = new SistemaDeAparcamientoEspia();
             sut.TextoAEntrarPorConsola.Enqueue("5");
@@ -219,6 +274,35 @@ namespace SistemaDeAparcamiento.Tests
 
             Assert.Collection(sut.TextoEscritoEnConsola,
                 t => Assert.Contains(" 0 vehículos", t));
+        }
+
+        // Opcion 6
+        [Fact]
+        public void MostrarCero_CuandoSePideMostrarCantidadDeAutosEstacionadosSinHaberNinguno()
+        {
+            var sut = new SistemaDeAparcamientoEspia();
+            sut.TextoAEntrarPorConsola.Enqueue("6");
+
+            sut.IngresarOpcion();
+            sut.EjecutarOpcion();
+
+            Assert.Collection(sut.TextoEscritoEnConsola,
+                t => Assert.Contains(" 0 vehículo", t));
+        }
+
+        [Fact]
+        public void MostrarUno_CuandoSePideMostrarCantidadDeAutosEstacionados()
+        {
+            var sut = new SistemaDeAparcamientoEspia();
+            sut.TextoAEntrarPorConsola.Enqueue("1");
+            sut.IngresarOpcion();
+            sut.EjecutarOpcion();
+
+            sut.TextoAEntrarPorConsola.Enqueue("6");
+            sut.IngresarOpcion();
+            sut.EjecutarOpcion();
+
+            Assert.Contains("hay 1 vehículo", sut.TextoEscritoEnConsola[2]);
         }
 
         [Fact]

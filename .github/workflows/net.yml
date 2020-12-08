@@ -24,53 +24,36 @@ jobs:
       with:
         dotnet-version: 5.0.100
 
-    - name: Restore packages for main solution
-      run: dotnet restore
-
-    - name: Restore packages for SistemaDeAparcamiento
-      run: dotnet restore SistemaDeAparcamiento/SistemaDeAparcamiento.sln
-
-    - name: Restore packages for AdventOfCode2020
-      run: dotnet restore AdventOfCode2020/AdventOfCode2020.sln
+    - name: Restore packages
+      run: |
+           dotnet restore
+           dotnet restore SistemaDeAparcamiento/SistemaDeAparcamiento.sln
+           dotnet restore AdventOfCode2020/AdventOfCode2020.sln
 
     - name: Install Coverlet
       run: dotnet tool install --global coverlet.console
 
-    - name: Build Main Solution in Debug
-      run: dotnet build --configuration Debug --no-restore
+    - name: Build solutions
+      run: |
+           dotnet build --configuration Debug --no-restore
+           dotnet build --configuration Debug --no-restore SistemaDeAparcamiento/SistemaDeAparcamiento.sln
+           dotnet build --configuration Debug --no-restore AdventOfCode2020/AdventOfCode2020.sln
 
-    - name: Build SistemaDeAparcamiento in Debug
-      run: dotnet build --configuration Debug --no-restore SistemaDeAparcamiento/SistemaDeAparcamiento.sln
-
-    - name: Build AdventOfCode Solution in Debug
-      run: dotnet build --configuration Debug --no-restore AdventOfCode2020/AdventOfCode2020.sln
-
-    - name: Testing Palindromo
+    - name: Testing Standalone Programs
       run: |
            coverlet Palindromo/Palindromo.UnitTests/bin/Debug/netcoreapp3.0/Palindromo.UnitTests.dll --target "dotnet" --targetargs "test Palindromo/Palindromo.UnitTests/Palindromo.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output palindromo.coverage.xml
            coverlet Anaconda/Anaconda.UnitTests/bin/Debug/netcoreapp3.0/Anaconda.UnitTests.dll --target "dotnet" --targetargs "test Anaconda/Anaconda.UnitTests/Anaconda.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output anaconda.coverage.xml
            coverlet SistemaDeAparcamiento/SistemaDeAparcamiento.Tests/bin/Debug/net5.0/SistemaDeAparcamiento.Tests.dll --target "dotnet" --targetargs "test SistemaDeAparcamiento/SistemaDeAparcamiento.Tests/SistemaDeAparcamiento.Tests.csproj --no-build --verbosity quiet" --format OpenCover --output sistemadeaparcamiento.coverage.xml
 
-    - name: Testing AdventOfCode2020.Day1
-      run: coverlet AdventOfCode2020/Day1/Day1.UnitTests/bin/Debug/net5.0/Day1.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day1/Day1.UnitTests/bin/Debug/net5.0/Day1.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day1.coverage.xml
-
-    - name: Testing AdventOfCode2020.Day2
-      run: coverlet AdventOfCode2020/Day2/Day2.UnitTests/bin/Debug/net5.0/Day2.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day2/Day2.UnitTests/bin/Debug/net5.0/Day2.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day2.coverage.xml
-
-    - name: Testing AdventOfCode2020.Day3
-      run: coverlet AdventOfCode2020/Day3/Day3.UnitTests/bin/Debug/net5.0/Day3.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day3/Day3.UnitTests/bin/Debug/net5.0/Day3.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day3.coverage.xml
-
-    - name: Testing AdventOfCode2020.Day4
-      run: coverlet AdventOfCode2020/Day4/Day4.UnitTests/bin/Debug/net5.0/Day4.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day4/Day4.UnitTests/bin/Debug/net5.0/Day4.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day4.coverage.xml
-
-    - name: Testing AdventOfCode2020.Day5
-      run: coverlet AdventOfCode2020/Day5/Day5.UnitTests/bin/Debug/net5.0/Day5.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day5/Day5.UnitTests/bin/Debug/net5.0/Day5.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day5.coverage.xml
-
-    - name: Testing AdventOfCode2020.Day6
-      run: coverlet AdventOfCode2020/Day6/Day6.UnitTests/bin/Debug/net5.0/Day6.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day6/Day6.UnitTests/bin/Debug/net5.0/Day6.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day6.coverage.xml
-
-    - name: Testing AdventOfCode2020.Day7
-      run: coverlet AdventOfCode2020/Day7/Day7.UnitTests/bin/Debug/net5.0/Day7.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day7/Day7.UnitTests/bin/Debug/net5.0/Day7.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day7.coverage.xml
+    - name: Testing AdventOfCode2020
+      run: |
+           coverlet AdventOfCode2020/Day1/Day1.UnitTests/bin/Debug/net5.0/Day1.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day1/Day1.UnitTests/bin/Debug/net5.0/Day1.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day1.coverage.xml
+           coverlet AdventOfCode2020/Day2/Day2.UnitTests/bin/Debug/net5.0/Day2.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day2/Day2.UnitTests/bin/Debug/net5.0/Day2.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day2.coverage.xml
+           coverlet AdventOfCode2020/Day3/Day3.UnitTests/bin/Debug/net5.0/Day3.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day3/Day3.UnitTests/bin/Debug/net5.0/Day3.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day3.coverage.xml
+           coverlet AdventOfCode2020/Day4/Day4.UnitTests/bin/Debug/net5.0/Day4.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day4/Day4.UnitTests/bin/Debug/net5.0/Day4.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day4.coverage.xml
+           coverlet AdventOfCode2020/Day5/Day5.UnitTests/bin/Debug/net5.0/Day5.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day5/Day5.UnitTests/bin/Debug/net5.0/Day5.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day5.coverage.xml
+           coverlet AdventOfCode2020/Day6/Day6.UnitTests/bin/Debug/net5.0/Day6.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day6/Day6.UnitTests/bin/Debug/net5.0/Day6.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day6.coverage.xml
+           coverlet AdventOfCode2020/Day7/Day7.UnitTests/bin/Debug/net5.0/Day7.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day7/Day7.UnitTests/bin/Debug/net5.0/Day7.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day7.coverage.xml
 
     - name: Upload coverage to CodeCov
       run: bash <(curl -s https://codecov.io/bash)
