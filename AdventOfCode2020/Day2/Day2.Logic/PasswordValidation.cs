@@ -9,7 +9,7 @@ namespace AdventOfCode2020.Day2.Logic
         {
             private Func<PasswordEntry, PasswordValidation> _validator;
             private string _entry;
-            private PasswordEntryParser _parser = new PasswordEntryParser();
+            private readonly PasswordEntryParser _parser = new PasswordEntryParser();
 
             public Builder ForEntry(string entry)
             {
@@ -17,11 +17,11 @@ namespace AdventOfCode2020.Day2.Logic
                 return this;
             }
 
-            public Builder WithParser(PasswordEntryParser parser)
-            {
-                _parser = parser;
-                return this;
-            }
+            //public Builder WithParser(PasswordEntryParser parser)
+            //{
+            //    _parser = parser;
+            //    return this;
+            //}
 
             public Builder WithValidator(Func<PasswordEntry, PasswordValidation> validator)
             {
