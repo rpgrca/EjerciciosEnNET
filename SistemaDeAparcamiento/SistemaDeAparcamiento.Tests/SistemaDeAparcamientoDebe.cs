@@ -245,8 +245,11 @@ namespace SistemaDeAparcamiento.Tests
             Assert.Contains("No es posible egresar", sut.TextoEscritoEnConsola[5]);
         }
 
-        [Fact]
-        public void AvisarQueLaOpcionNoExiste_CuandoSeElijeUnaOpcionIncorrecta()
+        [Theory]
+        [InlineData("3")]
+        [InlineData("0")]
+        [InlineData("a")]
+        public void AvisarQueLaOpcionNoExiste_CuandoSeElijeUnaOpcionIncorrecta(string opcionIncorrecta)
         {
             var sut = new SistemaDeAparcamientoEspia();
             sut.TextoAEntrarPorConsola.Enqueue("1");
@@ -254,7 +257,7 @@ namespace SistemaDeAparcamiento.Tests
             sut.EjecutarOpcion();
 
             sut.TextoAEntrarPorConsola.Enqueue("4");
-            sut.TextoAEntrarPorConsola.Enqueue("3");
+            sut.TextoAEntrarPorConsola.Enqueue(opcionIncorrecta);
             sut.TextoAEntrarPorConsola.Enqueue("2");
             sut.IngresarOpcion();
             sut.EjecutarOpcion();
