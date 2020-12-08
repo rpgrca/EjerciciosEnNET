@@ -31,9 +31,9 @@ namespace AdventOfCode2020.Day2.Logic
 
             public PasswordValidation Build()
             {
-                if (string.IsNullOrWhiteSpace(_entry)) throw new ArgumentNullException(nameof(_entry));
-                if (_validator is null) throw new ArgumentNullException(nameof(_validator));
-                if (_parser is null) throw new ArgumentNullException(nameof(_parser));
+                //if (string.IsNullOrWhiteSpace(_entry)) throw new ArgumentNullException(nameof(_entry));
+                //if (_validator is null) throw new ArgumentNullException(nameof(_validator));
+                //if (_parser is null) throw new ArgumentNullException(nameof(_parser));
 
                 return _validator(_parser.Parse(_entry));
             }
