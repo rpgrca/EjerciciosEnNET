@@ -66,7 +66,7 @@ namespace AdventOfCode2020.Day8.Logic
         internal void Terminate() =>
             _eip = -1;
 
-        public void Fix()
+        public void FixBug()
         {
             Func<string, string> patch = op => op == "nop"? "jmp" : (op == "jmp"? "nop" : op);
             foreach (var operation in _operations)
