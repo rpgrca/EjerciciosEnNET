@@ -47,14 +47,9 @@ jobs:
 
     - name: Testing AdventOfCode2020
       run: |
-           coverlet AdventOfCode2020/Day1/Day1.UnitTests/bin/Debug/net5.0/Day1.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day1/Day1.UnitTests/bin/Debug/net5.0/Day1.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day1.coverage.xml
-           coverlet AdventOfCode2020/Day2/Day2.UnitTests/bin/Debug/net5.0/Day2.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day2/Day2.UnitTests/bin/Debug/net5.0/Day2.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day2.coverage.xml
-           coverlet AdventOfCode2020/Day3/Day3.UnitTests/bin/Debug/net5.0/Day3.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day3/Day3.UnitTests/bin/Debug/net5.0/Day3.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day3.coverage.xml
-           coverlet AdventOfCode2020/Day4/Day4.UnitTests/bin/Debug/net5.0/Day4.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day4/Day4.UnitTests/bin/Debug/net5.0/Day4.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day4.coverage.xml
-           coverlet AdventOfCode2020/Day5/Day5.UnitTests/bin/Debug/net5.0/Day5.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day5/Day5.UnitTests/bin/Debug/net5.0/Day5.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day5.coverage.xml
-           coverlet AdventOfCode2020/Day6/Day6.UnitTests/bin/Debug/net5.0/Day6.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day6/Day6.UnitTests/bin/Debug/net5.0/Day6.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day6.coverage.xml
-           coverlet AdventOfCode2020/Day7/Day7.UnitTests/bin/Debug/net5.0/Day7.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day7/Day7.UnitTests/bin/Debug/net5.0/Day7.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day7.coverage.xml
-           coverlet AdventOfCode2020/Day8/Day8.UnitTests/bin/Debug/net5.0/Day8.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day8/Day8.UnitTests/bin/Debug/net5.0/Day8.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day8.coverage.xml
+           for d in `seq 9`; do
+               coverlet AdventOfCode2020/Day$d/Day$d.UnitTests/bin/Debug/net5.0/Day$d.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day$d/Day$d.UnitTests/bin/Debug/net5.0/Day$d.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day$d.coverage.xml
+           done
 
     - name: Upload coverage to CodeCov
       run: bash <(curl -s https://codecov.io/bash)
