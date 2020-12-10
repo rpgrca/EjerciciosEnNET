@@ -49,6 +49,7 @@ namespace AdventOfCode2020.Day10.UnitTests
             sut.CalculateChain();
 
             Assert.Collection(sut.ChainOfAdapters,
+                p0 => Assert.Equal(0, p0),
                 p1 => Assert.Equal(1, p1),
                 p2 => Assert.Equal(4, p2),
                 p3 => Assert.Equal(5, p3),
@@ -59,7 +60,8 @@ namespace AdventOfCode2020.Day10.UnitTests
                 p8 => Assert.Equal(12, p8),
                 p9 => Assert.Equal(15, p9),
                 p10 => Assert.Equal(16, p10),
-                p11 => Assert.Equal(19, p11));
+                p11 => Assert.Equal(19, p11),
+                p12 => Assert.Equal(22, p12));
 
             Assert.Equal(35, sut.DifferenceMultiplied);
         }
@@ -231,7 +233,7 @@ namespace AdventOfCode2020.Day10.UnitTests
 
             var sut = new Device(joltages);
             sut.CalculateChain();
-            Assert.Equal(8, sut.CalculateChains());
+            Assert.Equal(8, sut.CalculateAmountOfPossibleChains());
         }
 
         [Fact]
@@ -274,7 +276,7 @@ namespace AdventOfCode2020.Day10.UnitTests
 
             var sut = new Device(joltages);
             sut.CalculateChain();
-            Assert.Equal(19208, sut.CalculateChains());
+            Assert.Equal(19208, sut.CalculateAmountOfPossibleChains());
         }
 
         [Fact]
@@ -378,7 +380,7 @@ namespace AdventOfCode2020.Day10.UnitTests
 
             var sut = new Device(data);
             sut.CalculateChain();
-            Assert.Equal(12401793332096, sut.CalculateChains());
+            Assert.Equal(12401793332096, sut.CalculateAmountOfPossibleChains());
         }
     }
 }
