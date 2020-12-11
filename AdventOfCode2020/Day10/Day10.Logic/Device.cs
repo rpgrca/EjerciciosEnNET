@@ -7,6 +7,7 @@ namespace AdventOfCode2020.Day10.Logic
     public class Device
     {
         private readonly List<long> _joltages;
+
         public long BuiltInJoltageAdapterRating { get; }
         public List<long> ChainOfAdapters { get; private set; }
         public long DifferenceMultiplied { get; private set; }
@@ -15,6 +16,8 @@ namespace AdventOfCode2020.Day10.Logic
         {
             _joltages = joltages.ToList();
             BuiltInJoltageAdapterRating = _joltages.Max() + 3;
+            _joltages.Add(0);
+            _joltages.Add(BuiltInJoltageAdapterRating);
         }
 
         public void CalculateChain()
@@ -24,54 +27,43 @@ namespace AdventOfCode2020.Day10.Logic
             var diffOfThree = 0;
             var diffOfOne = 0;
             var previousJoltage = 0L;
+
             foreach (var joltage in _joltages.OrderBy(p => p))
             {
-                if (joltage <= previousJoltage + 3)
+                switch (joltage - previousJoltage)
                 {
-                    switch (joltage - previousJoltage)
-                    {
-                        case 1:
-                            diffOfOne++;
-                            break;
+                    case 1:
+                        diffOfOne++;
+                        break;
 
-                        case 3:
-                            diffOfThree++;
-                            break;
-                    }
+                    case 3:
+                        diffOfThree++;
+                        break;
+                }
 
-                    ChainOfAdapters.Add(joltage);
-                    previousJoltage = joltage;
-                }
-                else
-                {
-                    break;
-                }
+                ChainOfAdapters.Add(joltage);
+                previousJoltage = joltage;
             }
 
-            ChainOfAdapters.Insert(0, 0);
-            ChainOfAdapters.Add(ChainOfAdapters.Last() + 3);
-
-            DifferenceMultiplied = diffOfOne * (diffOfThree + 1);
+            DifferenceMultiplied = diffOfOne * diffOfThree;
         }
 
         public long CalculateAmountOfPossibleChains()
         {
-            var subList = new List<long>();
             var total = 1D;
+            var start = 0;
 
-            for (int i = 0; i < ChainOfAdapters.Count - 1; i++)
+            for (var index = 0; index < ChainOfAdapters.Count - 1; index++)
             {
-                subList.Add(ChainOfAdapters[i]);
-                if (ChainOfAdapters[i + 1] - ChainOfAdapters[i] == 3)
+                if (ChainOfAdapters[index + 1] - ChainOfAdapters[index] == 3)
                 {
-                    if (subList.Count > 2)
+                    if (index - start >= 2)
                     {
-                        total *= (subList[^1] - subList[0] > 3)
-                            ? 7
-                            : Math.Pow(2, subList.Count - 2);
+                        total *= Math.Pow(2, index - start - 1) -
+                            ((ChainOfAdapters[index] - ChainOfAdapters[start] > 3)? 1 : 0);
                     }
 
-                    subList.Clear();
+                    start = index + 1;
                 }
             }
 
