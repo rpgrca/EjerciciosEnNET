@@ -44,22 +44,18 @@ namespace AdventOfCode.Day12.Logic
                     case Action.L:
                         switch (offset)
                         {
-                            case 0: break;
                             case 90: _facing =(Action)(((int)_facing + 3) % 4); break;
                             case 180: _facing = (Action)(((int)_facing + 2) % 4); break;
                             case 270: _facing = (Action)(((int)_facing + 1) % 4); break;
-                            default: throw new ArgumentOutOfRangeException();
                         }
                         break;
 
                     case Action.R:
                         switch (offset)
                         {
-                            case 0: break;
                             case 90: _facing =(Action)(((int)_facing + 1) % 4); break;
                             case 180: _facing = (Action)(((int)_facing + 2) % 4); break;
                             case 270: _facing = (Action)(((int)_facing + 3) % 4); break;
-                            default: throw new ArgumentOutOfRangeException();
                         }
                         break;
 
@@ -70,7 +66,6 @@ namespace AdventOfCode.Day12.Logic
                             case Action.S: northOffset -= offset; break;
                             case Action.E: eastOffset += offset; break;
                             case Action.W: eastOffset -= offset; break;
-                            default: throw new ArgumentOutOfRangeException();
                         }
                         break;
                 }
@@ -99,7 +94,6 @@ namespace AdventOfCode.Day12.Logic
                     case Action.L:
                         switch (offset)
                         {
-                            case 0: break;
                             case 90:
                                 _facing =(Action)(((int)_facing + 3) % 4);
                                 spare = _waypoint.North;
@@ -123,15 +117,12 @@ namespace AdventOfCode.Day12.Logic
                                 _waypoint.South = _waypoint.East;
                                 _waypoint.East = spare;
                                 break;
-
-                            default: throw new ArgumentOutOfRangeException();
                         }
                         break;
 
                     case Action.R:
                         switch (offset)
                         {
-                            case 0: break;
                             case 90:
                                 _facing =(Action)(((int)_facing + 1) % 4);
                                 spare = _waypoint.North;
@@ -155,8 +146,6 @@ namespace AdventOfCode.Day12.Logic
                                 _waypoint.South = _waypoint.West;
                                 _waypoint.West = spare;
                                 break;
-
-                            default: throw new ArgumentOutOfRangeException();
                         }
                         break;
 

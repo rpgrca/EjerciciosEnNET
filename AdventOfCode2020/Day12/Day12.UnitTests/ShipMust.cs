@@ -28,11 +28,9 @@ namespace AdventOfCode.Day12.UnitTests
         }
 
         [Theory]
-        [InlineData("R0", Action.E)]
         [InlineData("R90", Action.S)]
         [InlineData("R180", Action.W)]
         [InlineData("R270", Action.N)]
-        [InlineData("L0", Action.E)]
         [InlineData("L90", Action.N)]
         [InlineData("L180", Action.W)]
         [InlineData("L270", Action.S)]
