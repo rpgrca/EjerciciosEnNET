@@ -8,17 +8,22 @@ namespace AdventOfCode.Day12.Logic
     {
         private readonly string _instructions;
         private Action _facing;
+        private List<(Action, int)> _parsedInstructions;
 
         protected (int North, int East, int South, int West) _waypoint;
+
         protected (Action Action, int Offset) CurrentInstruction { get; private set; }
-        protected List<(Action, int)> ParsedInstructions { get; private set; }
+        protected int NorthOffset { get; private set; }
+        protected int EastOffset { get; private set; }
 
-        public int ManhattanDistance { get; protected set; }
+        public int ManhattanDistance { get; private set; }
 
-        protected int _northOffset;
-        protected int _eastOffset;
+        public Ship(string instructions)
+            : this(instructions, (0, 1, 0, 0))
+        {
+        }
 
-        public Ship(string instructions, (int, int, int, int) waypoint)
+        protected Ship(string instructions, (int, int, int, int) waypoint)
         {
             _waypoint = waypoint;
             _facing = Action.E;
@@ -28,15 +33,12 @@ namespace AdventOfCode.Day12.Logic
         }
 
         private void ParseInstructions() =>
-            ParsedInstructions = _instructions
+            _parsedInstructions = _instructions
                 .Split("\n")
                 .Select(p => (
                     (Action)Enum.Parse(typeof(Action), p[0].ToString()),
                     int.Parse(p[1..])))
                 .ToList();
-
-        public bool IsFacing(Action action) =>
-            action == _facing;
 
         public void ExecuteInstructions()
         {
@@ -47,13 +49,13 @@ namespace AdventOfCode.Day12.Logic
 
         private void InitializeOffsets()
         {
-            _northOffset = 0;
-            _eastOffset = 0;
+            NorthOffset = 0;
+            EastOffset = 0;
         }
 
         private void ProcessInstructions()
         {
-            ParsedInstructions.ForEach(c =>
+            _parsedInstructions.ForEach(c =>
             {
                 CurrentInstruction = c;
                 ProcessInstruction();
@@ -61,7 +63,7 @@ namespace AdventOfCode.Day12.Logic
         }
 
         private void UpdateManhattanDistance() =>
-            ManhattanDistance = Math.Abs(_northOffset) + Math.Abs(_eastOffset);
+            ManhattanDistance = Math.Abs(NorthOffset) + Math.Abs(EastOffset);
 
         private void ProcessInstruction()
         {
@@ -77,12 +79,12 @@ namespace AdventOfCode.Day12.Logic
             }
         }
 
-        protected virtual void MoveNorth() => _northOffset += CurrentInstruction.Offset;
-        protected virtual void MoveSouth() => _northOffset -= CurrentInstruction.Offset;
-        protected virtual void MoveEast() => _eastOffset += CurrentInstruction.Offset;
-        protected virtual void MoveWest() => _eastOffset -= CurrentInstruction.Offset;
+        protected virtual void MoveNorth() => NorthOffset += CurrentInstruction.Offset;
+        protected virtual void MoveSouth() => NorthOffset -= CurrentInstruction.Offset;
+        protected virtual void MoveEast() => EastOffset += CurrentInstruction.Offset;
+        protected virtual void MoveWest() => EastOffset -= CurrentInstruction.Offset;
 
-        protected virtual void RotateLeft()
+        private void RotateLeft()
         {
             int spare;
 
@@ -114,7 +116,7 @@ namespace AdventOfCode.Day12.Logic
             }
         }
 
-        protected virtual void RotateRight()
+        private void RotateRight()
         {
             int spare;
 
@@ -146,12 +148,12 @@ namespace AdventOfCode.Day12.Logic
             }
         }
 
-        protected virtual void MoveForward()
+        private void MoveForward()
         {
-            _northOffset += CurrentInstruction.Offset * _waypoint.North;
-            _northOffset -= CurrentInstruction.Offset * _waypoint.South;
-            _eastOffset += CurrentInstruction.Offset * _waypoint.East;
-            _eastOffset -= CurrentInstruction.Offset * _waypoint.West;
+            NorthOffset += CurrentInstruction.Offset * _waypoint.North;
+            NorthOffset -= CurrentInstruction.Offset * _waypoint.South;
+            EastOffset += CurrentInstruction.Offset * _waypoint.East;
+            EastOffset -= CurrentInstruction.Offset * _waypoint.West;
         }
     }
 }

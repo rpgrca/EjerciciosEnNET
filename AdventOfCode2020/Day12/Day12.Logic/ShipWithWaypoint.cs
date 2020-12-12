@@ -2,8 +2,8 @@ namespace AdventOfCode.Day12.Logic
 {
     public class ShipWithWaypoint : Ship
     {
-        public ShipWithWaypoint(string instructions, (int, int, int, int) startingWaypoint)
-            : base(instructions, startingWaypoint)
+        public ShipWithWaypoint(string instructions)
+            : base(instructions, (1, 10, 0, 0))
         {
         }
 
