@@ -6,159 +6,152 @@ namespace AdventOfCode.Day12.Logic
 {
     public class Ship
     {
-        private (int North, int East, int South, int West) _waypoint;
+        private readonly string _instructions;
         private Action _facing;
-        private readonly List<string> _instructions;
 
-        public int ManhattanDistance { get; private set; } = 10;
-        public (int, int, int, int) Waypoint => _waypoint;
+        protected (int North, int East, int South, int West) _waypoint;
+        protected (Action Action, int Offset) CurrentInstruction { get; private set; }
+        protected List<(Action, int)> ParsedInstructions { get; private set; }
+
+        public int ManhattanDistance { get; protected set; }
+
+        protected int _northOffset;
+        protected int _eastOffset;
 
         public Ship(string instructions, (int, int, int, int) waypoint)
         {
             _waypoint = waypoint;
             _facing = Action.E;
-            _instructions = instructions.Split("\n").ToList();
+            _instructions = instructions;
+
+            ParseInstructions();
         }
 
-        public bool IsFacing(Action action)
-        {
-            return action == _facing;
-        }
+        private void ParseInstructions() =>
+            ParsedInstructions = _instructions
+                .Split("\n")
+                .Select(p => (
+                    (Action)Enum.Parse(typeof(Action), p[0].ToString()),
+                    int.Parse(p[1..])))
+                .ToList();
+
+        public bool IsFacing(Action action) =>
+            action == _facing;
 
         public void ExecuteInstructions()
         {
-            var northOffset = 0;
-            var eastOffset = 0;
-
-            foreach (var instruction in _instructions)
-            {
-                var action = Enum.Parse(typeof(Action), instruction[0].ToString());
-                var offset = int.Parse(instruction[1..]);
-
-                switch (action)
-                {
-                    case Action.N: northOffset += offset; break;
-                    case Action.S: northOffset -= offset; break;
-                    case Action.E: eastOffset += offset; break;
-                    case Action.W: eastOffset -= offset; break;
-                    case Action.L:
-                        switch (offset)
-                        {
-                            case 90: _facing =(Action)(((int)_facing + 3) % 4); break;
-                            case 180: _facing = (Action)(((int)_facing + 2) % 4); break;
-                            case 270: _facing = (Action)(((int)_facing + 1) % 4); break;
-                        }
-                        break;
-
-                    case Action.R:
-                        switch (offset)
-                        {
-                            case 90: _facing =(Action)(((int)_facing + 1) % 4); break;
-                            case 180: _facing = (Action)(((int)_facing + 2) % 4); break;
-                            case 270: _facing = (Action)(((int)_facing + 3) % 4); break;
-                        }
-                        break;
-
-                    case Action.F:
-                        switch (_facing)
-                        {
-                            case Action.N: northOffset += offset; break;
-                            case Action.S: northOffset -= offset; break;
-                            case Action.E: eastOffset += offset; break;
-                            case Action.W: eastOffset -= offset; break;
-                        }
-                        break;
-                }
-            }
-
-            ManhattanDistance = Math.Abs(northOffset) + Math.Abs(eastOffset);
+            InitializeOffsets();
+            ProcessInstructions();
+            UpdateManhattanDistance();
         }
 
-        public void ExecuteInstructionsWithWaypoint()
+        private void InitializeOffsets()
         {
-            var northOffset = 0;
-            var eastOffset = 0;
+            _northOffset = 0;
+            _eastOffset = 0;
+        }
 
-            foreach (var instruction in _instructions)
+        private void ProcessInstructions()
+        {
+            ParsedInstructions.ForEach(c =>
             {
-                var action = Enum.Parse(typeof(Action), instruction[0].ToString());
-                var offset = int.Parse(instruction[1..]);
-                int spare;
+                CurrentInstruction = c;
+                ProcessInstruction();
+            });
+        }
 
-                switch (action)
-                {
-                    case Action.N: _waypoint.North += offset; break;
-                    case Action.S: _waypoint.South += offset; break;
-                    case Action.E: _waypoint.East += offset; break;
-                    case Action.W: _waypoint.West += offset; break;
-                    case Action.L:
-                        switch (offset)
-                        {
-                            case 90:
-                                _facing =(Action)(((int)_facing + 3) % 4);
-                                spare = _waypoint.North;
-                                _waypoint.North = _waypoint.East;
-                                _waypoint.East = _waypoint.South;
-                                _waypoint.South = _waypoint.West;
-                                _waypoint.West = spare;
-                                break;
+        private void UpdateManhattanDistance() =>
+            ManhattanDistance = Math.Abs(_northOffset) + Math.Abs(_eastOffset);
 
-                            case 180:
-                                _facing = (Action)(((int)_facing + 2) % 4);
-                                (_waypoint.North, _waypoint.South) = (_waypoint.South, _waypoint.North);
-                                (_waypoint.East, _waypoint.West) = (_waypoint.West, _waypoint.East);
-                                break;
-
-                            case 270:
-                                _facing = (Action)(((int)_facing + 1) % 4);
-                                spare = _waypoint.North;
-                                _waypoint.North = _waypoint.West;
-                                _waypoint.West = _waypoint.South;
-                                _waypoint.South = _waypoint.East;
-                                _waypoint.East = spare;
-                                break;
-                        }
-                        break;
-
-                    case Action.R:
-                        switch (offset)
-                        {
-                            case 90:
-                                _facing =(Action)(((int)_facing + 1) % 4);
-                                spare = _waypoint.North;
-                                _waypoint.North = _waypoint.West;
-                                _waypoint.West = _waypoint.South;
-                                _waypoint.South = _waypoint.East;
-                                _waypoint.East = spare;
-                                break;
-
-                            case 180:
-                                _facing = (Action)(((int)_facing + 2) % 4);
-                                (_waypoint.North, _waypoint.South) = (_waypoint.South, _waypoint.North);
-                                (_waypoint.East, _waypoint.West) = (_waypoint.West, _waypoint.East);
-                                break;
-
-                            case 270:
-                                _facing = (Action)(((int)_facing + 3) % 4);
-                                spare = _waypoint.North;
-                                _waypoint.North = _waypoint.East;
-                                _waypoint.East = _waypoint.South;
-                                _waypoint.South = _waypoint.West;
-                                _waypoint.West = spare;
-                                break;
-                        }
-                        break;
-
-                    case Action.F:
-                        northOffset += offset * _waypoint.North;
-                        northOffset -= offset * _waypoint.South;
-                        eastOffset += offset * _waypoint.East;
-                        eastOffset -= offset * _waypoint.West;
-                        break;
-                }
+        private void ProcessInstruction()
+        {
+            switch (CurrentInstruction.Action)
+            {
+                case Action.N: MoveNorth(); break;
+                case Action.S: MoveSouth(); break;
+                case Action.E: MoveEast(); break;
+                case Action.W: MoveWest(); break;
+                case Action.L: RotateLeft(); break;
+                case Action.R: RotateRight(); break;
+                case Action.F: MoveForward(); break;
             }
+        }
 
-            ManhattanDistance = Math.Abs(northOffset) + Math.Abs(eastOffset);
+        protected virtual void MoveNorth() => _northOffset += CurrentInstruction.Offset;
+        protected virtual void MoveSouth() => _northOffset -= CurrentInstruction.Offset;
+        protected virtual void MoveEast() => _eastOffset += CurrentInstruction.Offset;
+        protected virtual void MoveWest() => _eastOffset -= CurrentInstruction.Offset;
+
+        protected virtual void RotateLeft()
+        {
+            int spare;
+
+            switch (CurrentInstruction.Offset)
+            {
+                case 90:
+                    _facing =(Action)(((int)_facing + 3) % 4);
+                    spare = _waypoint.North;
+                    _waypoint.North = _waypoint.East;
+                    _waypoint.East = _waypoint.South;
+                    _waypoint.South = _waypoint.West;
+                    _waypoint.West = spare;
+                    break;
+
+                case 180:
+                    _facing = (Action)(((int)_facing + 2) % 4);
+                    (_waypoint.North, _waypoint.South) = (_waypoint.South, _waypoint.North);
+                    (_waypoint.East, _waypoint.West) = (_waypoint.West, _waypoint.East);
+                    break;
+
+                case 270:
+                    _facing = (Action)(((int)_facing + 1) % 4);
+                    spare = _waypoint.North;
+                    _waypoint.North = _waypoint.West;
+                    _waypoint.West = _waypoint.South;
+                    _waypoint.South = _waypoint.East;
+                    _waypoint.East = spare;
+                    break;
+            }
+        }
+
+        protected virtual void RotateRight()
+        {
+            int spare;
+
+            switch (CurrentInstruction.Offset)
+            {
+                case 90:
+                    _facing =(Action)(((int)_facing + 1) % 4);
+                    spare = _waypoint.North;
+                    _waypoint.North = _waypoint.West;
+                    _waypoint.West = _waypoint.South;
+                    _waypoint.South = _waypoint.East;
+                    _waypoint.East = spare;
+                    break;
+
+                case 180:
+                    _facing = (Action)(((int)_facing + 2) % 4);
+                    (_waypoint.North, _waypoint.South) = (_waypoint.South, _waypoint.North);
+                    (_waypoint.East, _waypoint.West) = (_waypoint.West, _waypoint.East);
+                    break;
+
+                case 270:
+                    _facing = (Action)(((int)_facing + 3) % 4);
+                    spare = _waypoint.North;
+                    _waypoint.North = _waypoint.East;
+                    _waypoint.East = _waypoint.South;
+                    _waypoint.South = _waypoint.West;
+                    _waypoint.West = spare;
+                    break;
+            }
+        }
+
+        protected virtual void MoveForward()
+        {
+            _northOffset += CurrentInstruction.Offset * _waypoint.North;
+            _northOffset -= CurrentInstruction.Offset * _waypoint.South;
+            _eastOffset += CurrentInstruction.Offset * _waypoint.East;
+            _eastOffset -= CurrentInstruction.Offset * _waypoint.West;
         }
     }
 }
