@@ -22,9 +22,9 @@ namespace AdventOfCode2020.Day13.UnitTests
             Assert.Collection(sut.BusesStoppingHere,
                 p1 => Assert.Equal(7, p1),
                 p2 => Assert.Equal(13, p2),
-                p3 => Assert.Equal(19, p3),
+                p3 => Assert.Equal(59, p3),
                 p4 => Assert.Equal(31, p4),
-                p5 => Assert.Equal(59, p5));
+                p5 => Assert.Equal(19, p5));
         }
 
         [Fact]
@@ -46,6 +46,22 @@ namespace AdventOfCode2020.Day13.UnitTests
             sut.CalculateEarliestArrival();
             Assert.Equal((569, 1007130), sut.EarliestBusArrival);
             Assert.Equal(2845, sut.Solution);
+        }
+
+        [Theory]
+        [InlineData("939\n17,x,13,19", 3417)]
+        [InlineData("939\n67,7,59,61", 754018)]
+        [InlineData("939\n67,x,7,59,61", 779210)]
+        [InlineData("939\n67,7,x,59,61", 1261476)]
+        [InlineData("939\n1789,37,47,1889", 1202161486)]
+        //[InlineData("1007125\n13,x,x,41,x,x,x,x,x,x,x,x,x,569,x,29,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,19,x,x,x,23,x,x,x,x,x,x,x,937,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,17", 0)]
+        [InlineData("1007125\n13,x,x,41,x,x,x,x,x,x,x,x,x,119602093,x,29,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,19,x,x,x,23,x,x,x,x,x,x,x,18939581,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,17", 487905974205117)]
+        public void Test4(string notes, long expectedResult)
+        {
+            var sut = new BusStop(notes);
+            sut.CalculateEarliestConsecutiveArrival();
+
+            Assert.Equal(expectedResult, sut.EarliestConsecutiveBusArrival);
         }
     }
 }
