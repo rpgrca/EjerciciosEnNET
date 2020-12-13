@@ -1,6 +1,5 @@
-using System.Globalization;
-using System.Linq;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace AdventOfCode2020.Day13.Logic
@@ -8,6 +7,12 @@ namespace AdventOfCode2020.Day13.Logic
     public class BusStop
     {
         private readonly string _notes;
+
+        public int Arrival { get; private set; }
+        public int EarliestBusArriving { get; private set; }
+        public List<(int BusId, int Offset)> BusesArrivingByOffset { get; private set; }
+        public int BusIdTimesWaitingTime { get; private set; }
+        public long EarliestConsecutiveBusArrival { get; private set; }
 
         public BusStop(string notes)
         {
@@ -20,12 +25,6 @@ namespace AdventOfCode2020.Day13.Logic
         {
             var splittedNotes = _notes.Split("\n");
             Arrival = int.Parse(splittedNotes[0]);
-            BusesStoppingHere = splittedNotes[1]
-                .Split(",")
-                .Where(x => x != "x")
-                .Select(p => int.Parse(p))
-                .ToList();
-
             BusesArrivingByOffset = splittedNotes[1]
                 .Split(",")
                 .Select((p, i) => (BusId: p != "x"? int.Parse(p) : 0, Offset: i))
@@ -35,31 +34,23 @@ namespace AdventOfCode2020.Day13.Logic
 
         public void CalculateEarliestArrival()
         {
-            var minimumArrival = (BusId: 100000000, ArrivalTime: 100000000);
+            var maximumBusId = BusesArrivingByOffset.Max(p => p.BusId);
 
-            foreach (var busId in BusesStoppingHere)
+            for (var arrivalTime = Arrival; arrivalTime < arrivalTime + maximumBusId; arrivalTime++)
             {
-                var arrivalTime = 0;
-                while (arrivalTime < Arrival)
+                if (BusesArrivingByOffset.Any(p => arrivalTime % p.BusId == 0))
                 {
-                    arrivalTime += busId;
-                }
-
-                if (arrivalTime < minimumArrival.ArrivalTime)
-                {
-                    minimumArrival.ArrivalTime = arrivalTime;
-                    minimumArrival.BusId = busId;
+                    EarliestBusArriving = BusesArrivingByOffset.Single(p => arrivalTime % p.BusId == 0).BusId;
+                    BusIdTimesWaitingTime = EarliestBusArriving * (arrivalTime - Arrival);
+                    return;
                 }
             }
-
-            EarliestBusArrival = minimumArrival;
-            Solution = EarliestBusArrival.BusId * (EarliestBusArrival.ArrivalTime - Arrival);
-        }
+       }
 
         public void CalculateEarliestConsecutiveArrival()
         {
             var found = false;
-            var maximum = BusesStoppingHere.Max();
+            var maximum = BusesArrivingByOffset.Max(p => p.BusId);
             var indexOfMaximumBusId = BusesArrivingByOffset
                 .Single(p => p.BusId == maximum)
                 .Offset;
@@ -88,11 +79,60 @@ namespace AdventOfCode2020.Day13.Logic
             }
         }
 
-        public int Arrival { get; private set; }
-        public List<int> BusesStoppingHere { get; private set; }
-        public (int BusId, int ArrivalTime) EarliestBusArrival { get; internal set; }
-        public List<(int BusId, int Offset)> BusesArrivingByOffset { get; private set; }
-        public int Solution { get; private set; }
-        public long EarliestConsecutiveBusArrival { get; private set; }
+        public void CalculateEarliestConsecutiveArrival2()
+        {
+            var buses = BusesArrivingByOffset;
+
+            foreach (var bus in buses)
+            {
+                for (var offset = bus.BusId + bus.Offset; offset <= buses[^1].Offset; offset += bus.BusId)
+                {
+                    if (buses.Any(p => p.Offset == offset))
+                    {
+                        var index = buses
+                            .Select((p, i) => new {
+                                p.BusId,
+                                p.Offset,
+                                Index = i
+                            })
+                            .Where(p => p.Offset == offset || p.BusId == bus.BusId)
+                            .OrderByDescending(p => p.BusId)
+                            .Select(p => p.Index)
+                            .First();
+
+                        BusesArrivingByOffset = BusesArrivingByOffset
+                            .Select((p, i) => i != index
+                                ? p
+                                : (BusId: p.BusId * bus.BusId, p.Offset))
+                            .ToList();
+                    }
+                }
+
+                for (var offset = bus.Offset - bus.BusId; offset >= 0; offset -= bus.BusId)
+                {
+                    if (buses.Any(p => p.Offset == offset))
+                    {
+                        var index = buses
+                            .Select((p, i) => new {
+                                p.BusId,
+                                p.Offset,
+                                Index = i
+                            })
+                            .Where(p => p.Offset == offset || p.BusId == bus.BusId)
+                            .OrderByDescending(p => p.BusId)
+                            .Select(p => p.Index)
+                            .First();
+
+                        BusesArrivingByOffset = BusesArrivingByOffset
+                            .Select((p, i) => i != index
+                                ? p
+                                : (BusId: p.BusId * bus.BusId, p.Offset))
+                            .ToList();
+                    }
+                }
+            }
+
+            CalculateEarliestConsecutiveArrival();
+        }
     }
 }

@@ -8,44 +8,52 @@ namespace AdventOfCode2020.Day13.UnitTests
         [Theory]
         [InlineData("939\n7,13,x,x,59,x,31,19", 939)]
         [InlineData("100\n3,5,7,9", 100)]
-        public void Test1(string notes, int expectedArrival)
+        public void ExtractArrivalFromNotes(string notes, int expectedArrival)
         {
             var sut = new BusStop(notes);
             Assert.Equal(expectedArrival, sut.Arrival);
         }
 
         [Fact]
-        public void Test2()
+        public void ExtractBusIdsFromNotes()
         {
             const string notes = "939\n7,13,x,x,59,31,19";
             var sut = new BusStop(notes);
-            Assert.Collection(sut.BusesStoppingHere,
-                p1 => Assert.Equal(7, p1),
-                p2 => Assert.Equal(13, p2),
-                p3 => Assert.Equal(59, p3),
-                p4 => Assert.Equal(31, p4),
-                p5 => Assert.Equal(19, p5));
+            Assert.Collection(sut.BusesArrivingByOffset,
+                p1 => Assert.Equal((7, 0), p1),
+                p2 => Assert.Equal((13, 1), p2),
+                p3 => Assert.Equal((59, 4), p3),
+                p4 => Assert.Equal((31, 5), p4),
+                p5 => Assert.Equal((19, 6), p5));
         }
 
         [Fact]
-        public void Test3()
+        public void CalculateBusArrivingFirst()
         {
             const string notes = "939\n7,13,x,x,59,31,19";
             var sut = new BusStop(notes);
+
             sut.CalculateEarliestArrival();
-            Assert.Equal((59, 944), sut.EarliestBusArrival);
-            Assert.Equal(295, sut.Solution);
+            Assert.Equal(59, sut.EarliestBusArriving);
+        }
+
+        [Fact]
+        public void CalculateSolutionForFirstPuzzle()
+        {
+            const string notes = "939\n7,13,x,x,59,31,19";
+            var sut = new BusStop(notes);
+
+            sut.CalculateEarliestArrival();
+            Assert.Equal(295, sut.BusIdTimesWaitingTime);
         }
 
         [Fact]
         public void SolveFirstPuzzle()
         {
-            const string notes = @"1007125
-13,x,x,41,x,x,x,x,x,x,x,x,x,569,x,29,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,19,x,x,x,23,x,x,x,x,x,x,x,937,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,17";
-            var sut = new BusStop(notes);
+            var sut = new BusStop(PuzzleData.PUZZLE_DATA);
+
             sut.CalculateEarliestArrival();
-            Assert.Equal((569, 1007130), sut.EarliestBusArrival);
-            Assert.Equal(2845, sut.Solution);
+            Assert.Equal(2845, sut.BusIdTimesWaitingTime);
         }
 
         [Theory]
@@ -54,14 +62,21 @@ namespace AdventOfCode2020.Day13.UnitTests
         [InlineData("939\n67,x,7,59,61", 779210)]
         [InlineData("939\n67,7,x,59,61", 1261476)]
         [InlineData("939\n1789,37,47,1889", 1202161486)]
-        //[InlineData("1007125\n13,x,x,41,x,x,x,x,x,x,x,x,x,569,x,29,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,19,x,x,x,23,x,x,x,x,x,x,x,937,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,17", 0)]
-        [InlineData("1007125\n13,x,x,41,x,x,x,x,x,x,x,x,x,119602093,x,29,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,19,x,x,x,23,x,x,x,x,x,x,x,18939581,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,17", 487905974205117)]
         public void Test4(string notes, long expectedResult)
         {
             var sut = new BusStop(notes);
-            sut.CalculateEarliestConsecutiveArrival();
+            sut.CalculateEarliestConsecutiveArrival2();
 
             Assert.Equal(expectedResult, sut.EarliestConsecutiveBusArrival);
+        }
+
+        [Fact]
+        public void SolveSecondPuzzle()
+        {
+            var sut = new BusStop(PuzzleData.PUZZLE_DATA);
+            sut.CalculateEarliestConsecutiveArrival2();
+
+            Assert.Equal(487905974205117, sut.EarliestConsecutiveBusArrival);
         }
     }
 }
