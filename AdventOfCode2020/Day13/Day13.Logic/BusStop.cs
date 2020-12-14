@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Collections.Generic;
+using System;
 
 namespace AdventOfCode2020.Day13.Logic
 {
@@ -71,16 +72,17 @@ namespace AdventOfCode2020.Day13.Logic
 
         private void OptimizeBusArrival()
         {
+            LookFor(x => x, (x, y) => x <= y);
+            LookFor(x => -x, (x, _) => x >= 0);
+        }
+
+        private void LookFor(Func<long, long> step, Func<long, long, bool> condition)
+        {
             var buses = BusesArrivingByOffset;
 
             foreach (var (busId, initialOffset) in buses)
             {
-                for (var offset = initialOffset + busId; offset <= buses[^1].Offset; offset += busId)
-                {
-                    UpdateBusesArrivingByOffsetIfNeeded(buses, busId, offset);
-                }
-
-                for (var offset = initialOffset - busId; offset >= 0; offset -= busId)
+                for (var offset = initialOffset + step.Invoke(busId); condition.Invoke(offset, buses[^1].Offset); offset += step.Invoke(busId))
                 {
                     UpdateBusesArrivingByOffsetIfNeeded(buses, busId, offset);
                 }
@@ -104,8 +106,10 @@ namespace AdventOfCode2020.Day13.Logic
                     EarliestConsecutiveBusArrival = testedValue - indexOfMaximumBusId;
                     found = true;
                 }
-
-                testedValue += _maximumBusId;
+                else
+                {
+                    testedValue += _maximumBusId;
+                }
             }
         }
 
