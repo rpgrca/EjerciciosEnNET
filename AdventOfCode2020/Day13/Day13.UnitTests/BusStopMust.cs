@@ -65,7 +65,7 @@ namespace AdventOfCode2020.Day13.UnitTests
         public void Test4(string notes, long expectedResult)
         {
             var sut = new BusStop(notes);
-            sut.CalculateEarliestConsecutiveArrival2();
+            sut.CalculateEarliestConsecutiveArrival();
 
             Assert.Equal(expectedResult, sut.EarliestConsecutiveBusArrival);
         }
@@ -74,7 +74,7 @@ namespace AdventOfCode2020.Day13.UnitTests
         public void SolveSecondPuzzle()
         {
             var sut = new BusStop(PuzzleData.PUZZLE_DATA);
-            sut.CalculateEarliestConsecutiveArrival2();
+            sut.CalculateEarliestConsecutiveArrival();
 
             Assert.Equal(487905974205117, sut.EarliestConsecutiveBusArrival);
         }
