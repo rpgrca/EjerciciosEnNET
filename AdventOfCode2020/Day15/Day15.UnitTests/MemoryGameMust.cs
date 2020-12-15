@@ -124,18 +124,27 @@ namespace AdventOfCode2020.Day15.UnitTests
             Assert.Equal(758, sut.Next(2020));
         }
 
- /*       [Theory]
+        [Theory]
         [InlineData(0, 3, 6, 175594)]
-        //[InlineData(1, 3, 2, 2578)]
-        //[InlineData(2, 1, 3, 3544142)]
-        //[InlineData(1, 2, 3, 261214)]
-        //[InlineData(2, 3, 1, 6895259)]
-        //[InlineData(3, 2, 1, 18)]
-        //[InlineData(3, 1, 2, 362)]
+        [InlineData(1, 3, 2, 2578)]
+        [InlineData(2, 1, 3, 3544142)]
+        [InlineData(1, 2, 3, 261214)]
+        [InlineData(2, 3, 1, 6895259)]
+        [InlineData(3, 2, 1, 18)]
+        [InlineData(3, 1, 2, 362)]
         public void Test12(int firstNumber, int secondNumber, int thirdNumber, int expectedNumber)
         {
             var sut = new MemoryGame(new int[] { firstNumber, secondNumber, thirdNumber });
             Assert.Equal(expectedNumber, sut.Next(30000000));
-        }*/
+        }
+
+        [Fact]
+        public void SolveSecondPuzzle()
+        {
+            int[] numbers = { 2, 20, 0, 4, 1, 17 };
+            var sut = new MemoryGame(numbers);
+
+            Assert.Equal(814, sut.Next(30000000));
+        }
     }
 }

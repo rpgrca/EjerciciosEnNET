@@ -7,14 +7,16 @@ namespace AdventOfGame2020.Day15.Logic
     public class MemoryGame
     {
         private readonly int[] _startingNumbers;
-        private readonly List<int> _numbers;
+        private readonly Dictionary<int, int> _numbers;
         private int _index;
+        private int _lastNumber;
 
         public MemoryGame(int[] startingNumbers)
         {
             _startingNumbers = startingNumbers;
-            _numbers = new List<int>();
+            _numbers = new Dictionary<int, int>();
             _index = 0;
+            _lastNumber = -1;
         }
 
         public int Next()
@@ -23,31 +25,29 @@ namespace AdventOfGame2020.Day15.Logic
 
             if (_index < _startingNumbers.Length)
             {
-                nextNumber = _startingNumbers[_index++];
+                nextNumber = _startingNumbers[_index];
+
+                if (_lastNumber != -1)
+                {
+                    _numbers[_lastNumber] = _index;
+                }
             }
             else
             {
-                var lastNumber = _numbers[^1];
-
-                nextNumber = _numbers.Count(p => p == lastNumber);
-                if (nextNumber == 1)
+                if (_numbers.ContainsKey(_lastNumber))
                 {
-                    nextNumber = 0;
+                    nextNumber = _index - _numbers[_lastNumber];
                 }
                 else
                 {
-                    for (var i = _numbers.Count - 2; i >= 0; i--)
-                    {
-                        if (_numbers[i] == lastNumber)
-                        {
-                            nextNumber = _numbers.Count - (i + 1);
-                            break;
-                        }
-                    }
+                    nextNumber = 0;
                 }
+
+                _numbers[_lastNumber] = _index;
             }
 
-            _numbers.Add(nextNumber);
+            _index++;
+            _lastNumber = nextNumber;
             return nextNumber;
         }
 
