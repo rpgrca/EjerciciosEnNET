@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 using AdventOfGame2020.Day15.Logic;
 
@@ -7,20 +6,18 @@ namespace AdventOfCode2020.Day15.UnitTests
     public class MemoryGameMust
     {
         [Fact]
-        public void Test1()
+        public void ReturnTheFirstElementOfInitializationNumbers_WhenInitializationNumbersHasIt()
         {
             int[] numbers = { 0, 3, 6 };
 
             var sut = new MemoryGame(numbers);
-
             Assert.Equal(0, sut.Next());
         }
 
         [Fact]
-        public void Test2()
+        public void ReturnTheSecondElementOfInitializationNumbers_WhenInitializationNumbersHasIt()
         {
             int[] numbers = { 0, 3, 6 };
-
             var sut = new MemoryGame(numbers);
             sut.Next();
 
@@ -28,7 +25,7 @@ namespace AdventOfCode2020.Day15.UnitTests
         }
 
         [Fact]
-        public void Test3()
+        public void ReturnTheThirdElemebntOfInitializationNumbers_WhenInitializationNumbersHasIt()
         {
             int[] numbers = { 0, 3, 6 };
             var sut = new MemoryGame(numbers);
@@ -38,67 +35,20 @@ namespace AdventOfCode2020.Day15.UnitTests
             Assert.Equal(6, sut.Next());
         }
 
-        [Fact]
-        public void Test4()
+        [Theory]
+        [InlineData(4, 0)]
+        [InlineData(5, 3)]
+        [InlineData(6, 3)]
+        [InlineData(7, 1)]
+        [InlineData(8, 0)]
+        [InlineData(9, 4)]
+        [InlineData(10, 0)]
+        public void CalculateTheNthElement_WhenItsNoLongerInTheInitializationArray(int order, int expectedResult)
         {
             int[] numbers = { 0, 3, 6 };
             var sut = new MemoryGame(numbers);
 
-            Assert.Equal(0, sut.Next(4));
-        }
-
-        [Fact]
-        public void Test5()
-        {
-            int[] numbers = { 0, 3, 6 };
-            var sut = new MemoryGame(numbers);
-
-            Assert.Equal(3, sut.Next(5));
-        }
-
-        [Fact]
-        public void Test6()
-        {
-            int[] numbers = { 0, 3, 6 };
-            var sut = new MemoryGame(numbers);
-
-            Assert.Equal(3, sut.Next(6));
-        }
-
-        [Fact]
-        public void Test7()
-        {
-            int[] numbers = { 0, 3, 6 };
-            var sut = new MemoryGame(numbers);
-
-            Assert.Equal(1, sut.Next(7));
-        }
-
-        [Fact]
-        public void Test8()
-        {
-            int[] numbers = { 0, 3, 6 };
-            var sut = new MemoryGame(numbers);
-
-            Assert.Equal(0, sut.Next(8));
-        }
-
-        [Fact]
-        public void Test9()
-        {
-            int[] numbers = { 0, 3, 6 };
-            var sut = new MemoryGame(numbers);
-
-            Assert.Equal(4, sut.Next(9));
-        }
-
-        [Fact]
-        public void Test10()
-        {
-            int[] numbers = { 0, 3, 6 };
-            var sut = new MemoryGame(numbers);
-
-            Assert.Equal(0, sut.Next(10));
+            Assert.Equal(expectedResult, sut.Next(order));
         }
 
         [Theory]
@@ -109,7 +59,7 @@ namespace AdventOfCode2020.Day15.UnitTests
         [InlineData(2, 3, 1, 78)]
         [InlineData(3, 2, 1, 438)]
         [InlineData(3, 1, 2, 1836)]
-        public void Test11(int firstNumber, int secondNumber, int thirdNumber, int expectedNumber)
+        public void FindThe2020thElementFromSamples(int firstNumber, int secondNumber, int thirdNumber, int expectedNumber)
         {
             var sut = new MemoryGame(new int[] { firstNumber, secondNumber, thirdNumber });
             Assert.Equal(expectedNumber, sut.Next(2020));
@@ -132,7 +82,7 @@ namespace AdventOfCode2020.Day15.UnitTests
         [InlineData(2, 3, 1, 6895259)]
         [InlineData(3, 2, 1, 18)]
         [InlineData(3, 1, 2, 362)]
-        public void Test12(int firstNumber, int secondNumber, int thirdNumber, int expectedNumber)
+        public void FindThe30millionthElementFromSamples(int firstNumber, int secondNumber, int thirdNumber, int expectedNumber)
         {
             var sut = new MemoryGame(new int[] { firstNumber, secondNumber, thirdNumber });
             Assert.Equal(expectedNumber, sut.Next(30000000));
