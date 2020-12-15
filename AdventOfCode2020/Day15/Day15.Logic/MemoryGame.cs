@@ -1,67 +1,56 @@
-using System;
-using System.Linq;
 using System.Collections.Generic;
 
 namespace AdventOfGame2020.Day15.Logic
 {
     public class MemoryGame
     {
-        private readonly int[] _startingNumbers;
+        private readonly List<int> _startingNumbers;
         private readonly Dictionary<int, int> _numbers;
         private int _index;
         private int _lastNumber;
 
         public MemoryGame(int[] startingNumbers)
         {
-            _startingNumbers = startingNumbers;
+            _startingNumbers = new List<int>(startingNumbers);
             _numbers = new Dictionary<int, int>();
             _index = 0;
             _lastNumber = -1;
         }
 
-        public int Next()
+        private int Next()
+        {
+            var nextNumber = _numbers.ContainsKey(_lastNumber)
+                ? _index - _numbers[_lastNumber]
+                : 0;
+
+            _numbers[_lastNumber] = _index++;
+            _lastNumber = nextNumber;
+
+            return _lastNumber;
+        }
+
+        public int CalculateFor(int index)
         {
             var nextNumber = 0;
 
-            if (_index < _startingNumbers.Length)
+            if (index < _startingNumbers.Count + 1)
             {
-                nextNumber = _startingNumbers[_index];
-
-                if (_lastNumber != -1)
-                {
-                    _numbers[_lastNumber] = _index;
-                }
+                return _startingNumbers[index - 1];
             }
             else
             {
-                if (_numbers.ContainsKey(_lastNumber))
+                _startingNumbers.ForEach(n => _numbers.Add(n, ++_index));
+                _lastNumber = _startingNumbers[^1];
+
+                index -= _startingNumbers.Count;
+                while (index > 0)
                 {
-                    nextNumber = _index - _numbers[_lastNumber];
-                }
-                else
-                {
-                    nextNumber = 0;
+                    nextNumber = Next();
+                    index--;
                 }
 
-                _numbers[_lastNumber] = _index;
+                return nextNumber;
             }
-
-            _index++;
-            _lastNumber = nextNumber;
-            return nextNumber;
-        }
-
-        public int Next(int times)
-        {
-            var nextNumber = 0;
-
-            while (times > 0)
-            {
-                nextNumber = Next();
-                times--;
-            }
-
-            return nextNumber;
         }
     }
 }

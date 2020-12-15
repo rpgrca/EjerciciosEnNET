@@ -5,37 +5,10 @@ namespace AdventOfCode2020.Day15.UnitTests
 {
     public class MemoryGameMust
     {
-        [Fact]
-        public void ReturnTheFirstElementOfInitializationNumbers_WhenInitializationNumbersHasIt()
-        {
-            int[] numbers = { 0, 3, 6 };
-
-            var sut = new MemoryGame(numbers);
-            Assert.Equal(0, sut.Next());
-        }
-
-        [Fact]
-        public void ReturnTheSecondElementOfInitializationNumbers_WhenInitializationNumbersHasIt()
-        {
-            int[] numbers = { 0, 3, 6 };
-            var sut = new MemoryGame(numbers);
-            sut.Next();
-
-            Assert.Equal(3, sut.Next());
-        }
-
-        [Fact]
-        public void ReturnTheThirdElemebntOfInitializationNumbers_WhenInitializationNumbersHasIt()
-        {
-            int[] numbers = { 0, 3, 6 };
-            var sut = new MemoryGame(numbers);
-            sut.Next();
-            sut.Next();
-
-            Assert.Equal(6, sut.Next());
-        }
-
         [Theory]
+        [InlineData(1, 0)]
+        [InlineData(2, 3)]
+        [InlineData(3, 6)]
         [InlineData(4, 0)]
         [InlineData(5, 3)]
         [InlineData(6, 3)]
@@ -48,7 +21,7 @@ namespace AdventOfCode2020.Day15.UnitTests
             int[] numbers = { 0, 3, 6 };
             var sut = new MemoryGame(numbers);
 
-            Assert.Equal(expectedResult, sut.Next(order));
+            Assert.Equal(expectedResult, sut.CalculateFor(order));
         }
 
         [Theory]
@@ -62,7 +35,7 @@ namespace AdventOfCode2020.Day15.UnitTests
         public void FindThe2020thElementFromSamples(int firstNumber, int secondNumber, int thirdNumber, int expectedNumber)
         {
             var sut = new MemoryGame(new int[] { firstNumber, secondNumber, thirdNumber });
-            Assert.Equal(expectedNumber, sut.Next(2020));
+            Assert.Equal(expectedNumber, sut.CalculateFor(2020));
         }
 
         [Fact]
@@ -71,7 +44,7 @@ namespace AdventOfCode2020.Day15.UnitTests
             int[] numbers = { 2, 20, 0, 4, 1, 17 };
             var sut = new MemoryGame(numbers);
 
-            Assert.Equal(758, sut.Next(2020));
+            Assert.Equal(758, sut.CalculateFor(2020));
         }
 
         [Theory]
@@ -85,7 +58,7 @@ namespace AdventOfCode2020.Day15.UnitTests
         public void FindThe30millionthElementFromSamples(int firstNumber, int secondNumber, int thirdNumber, int expectedNumber)
         {
             var sut = new MemoryGame(new int[] { firstNumber, secondNumber, thirdNumber });
-            Assert.Equal(expectedNumber, sut.Next(30000000));
+            Assert.Equal(expectedNumber, sut.CalculateFor(30000000));
         }
 
         [Fact]
@@ -94,7 +67,7 @@ namespace AdventOfCode2020.Day15.UnitTests
             int[] numbers = { 2, 20, 0, 4, 1, 17 };
             var sut = new MemoryGame(numbers);
 
-            Assert.Equal(814, sut.Next(30000000));
+            Assert.Equal(814, sut.CalculateFor(30000000));
         }
     }
 }
