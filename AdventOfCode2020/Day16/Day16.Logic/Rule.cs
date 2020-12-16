@@ -7,13 +7,12 @@ namespace AdventOfCode2020.Day16.Logic
     public class Rule
     {
         private readonly string _rules;
-        private readonly List<Func<int, bool>> _ranges;
+        private List<Func<int, bool>> _ranges;
         public string Name { get; private set; }
 
         public Rule(string rules)
         {
             _rules = rules;
-            _ranges = new List<Func<int, bool>>();
 
             ParseRules();
         }
@@ -22,58 +21,15 @@ namespace AdventOfCode2020.Day16.Logic
         {
             var sections = _rules.Split(":");
             Name = sections[0];
-            var rules = sections[1].Split(" or ");
 
-            foreach (var rule in rules)
-            {
-                var range = rule.Split("-");
-                var bottom = int.Parse(range[0]);
-                var top = int.Parse(range[1]);
-                _ranges.Add(x => x >= bottom && x <= top);
-            }
+            _ranges = sections[1]
+                .Split(" or ")
+                .Select(s => (Bottom: int.Parse(s.Split("-")[0]), Top: int.Parse(s.Split("-")[1])))
+                .Select(p => new Func<int, bool>(x => x >= p.Bottom && x <= p.Top))
+                .ToList();
         }
 
-        public bool Includes(int value)
-        {
-            return _ranges.Any(x => x(value));
-        }
+        public bool Includes(int value) =>
+            _ranges.Any(x => x(value));
     }
-
-
-
-/*
-    public class Scanner
-    {
-        private readonly string _rules;
-
-        public Scanner(string rules)
-        {
-            _rules = rules;
-        }
-
-
-
-    }
-
-
-        [Fact]
-        public void Test1()
-        {
-            var rules = @"class: 1-3 or 5-7
-row: 6-11 or 33-44
-seat: 13-40 or 45-50
-
-your ticket:
-7,1,14
-
-nearby tickets:
-7,3,47
-40,4,50
-55,2,20
-38,6,12";
-
-            var scanner = new Scanner(rules);
-            
-        }*/
-
 }
