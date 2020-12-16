@@ -10,11 +10,13 @@ namespace AdventOfCode2020.Day16.Logic
         private Rules _rules;
         private Ticket _myTicket;
         private List<Ticket> _otherTickets;
+        private readonly Dictionary<string, int> _fields;
 
         public int ErrorRate { get; private set; }
 
         public Scanner(string data)
         {
+            _fields = new Dictionary<string, int>();
             _data = data;
 
             ParseData();
@@ -46,14 +48,46 @@ namespace AdventOfCode2020.Day16.Logic
         {
             _otherTickets.RemoveAll(p => p.GetValuesNotDefinedIn(_rules).Count > 0);
         }
-/*
+
         public void Translate()
         {
+            while (_fields.Count < _rules.Count)
+            {
+                for (var index = 0; index < _myTicket.FieldCount; index++)
+                {
+                    if (_fields.ContainsValue(index))
+                    {
+                        continue;
+                    }
+
+                    var fields = _rules.GuessFields(_otherTickets.ConvertAll(t => t.GetValueAt(index)));
+                    if (fields.Count == 1)
+                    {
+                        _fields[fields[0]] = index;
+                    }
+                    else
+                    {
+                        fields.RemoveAll(f => _fields.Keys.Any(g => g == f));
+                        if (fields.Count == 1)
+                        {
+                            _fields[fields[0]] = index;
+                        }
+                   }
+                }
+            }
         }
 
         public int FromMyTicketGet(string key)
         {
-            throw new NotImplementedException();
-        }*/
+            return _myTicket.GetValueAt(_fields[key]);
+        }
+
+        public long MultiplyDepartureKeys()
+        {
+            return _fields.Keys
+                .Where(p => p.StartsWith("departure"))
+                .Select(f => (long)_myTicket.GetValueAt(_fields[f]))
+                .Aggregate((r, i) => r *= i);
+        }
     }
 }

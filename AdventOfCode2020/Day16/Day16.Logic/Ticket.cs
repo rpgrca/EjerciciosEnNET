@@ -9,6 +9,8 @@ namespace AdventOfCode2020.Day16.Logic
         private readonly string _ticket;
         private readonly List<int> _values;
 
+        public int FieldCount => _values.Count;
+
         public Ticket(string ticket)
         {
             _ticket = ticket;
@@ -38,6 +40,11 @@ namespace AdventOfCode2020.Day16.Logic
         public List<int> GetValuesNotDefinedIn(Rules rules)
         {
             return _values.Where(v => !rules.Includes(v)).ToList();
+        }
+
+        public int GetValueAt(int position)
+        {
+            return _values[position];
         }
     }
 }

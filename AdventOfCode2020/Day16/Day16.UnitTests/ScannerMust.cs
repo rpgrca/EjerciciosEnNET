@@ -281,7 +281,6 @@ nearby tickets:
             Assert.Equal(27850, sut.ErrorRate);
         }
 
-/*
         [Fact]
         public void Test2()
         {
@@ -303,6 +302,22 @@ nearby tickets:
             Assert.Equal(12, sut.FromMyTicketGet("class"));
             Assert.Equal(11, sut.FromMyTicketGet("row"));
             Assert.Equal(13, sut.FromMyTicketGet("seat"));
-        }*/
+        }
+
+        [Fact]
+        public void SolveSecondPuzzle()
+        {
+            var sut = new Scanner(PUZZLE_DATA);
+            sut.DiscardInvalidTickets();
+            sut.Translate();
+
+            Assert.Equal(137, sut.FromMyTicketGet("departure location"));
+            Assert.Equal(173, sut.FromMyTicketGet("departure station"));
+            Assert.Equal(61, sut.FromMyTicketGet("departure platform"));
+            Assert.Equal(59, sut.FromMyTicketGet("departure track"));
+            Assert.Equal(79, sut.FromMyTicketGet("departure date"));
+            Assert.Equal(73, sut.FromMyTicketGet("departure time"));
+            Assert.Equal(491924517533, sut.MultiplyDepartureKeys());
+        }
     }
 }

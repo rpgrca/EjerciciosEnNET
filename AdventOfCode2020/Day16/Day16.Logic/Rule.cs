@@ -7,8 +7,8 @@ namespace AdventOfCode2020.Day16.Logic
     public class Rule
     {
         private readonly string _rules;
-        private readonly string _name;
         private readonly List<Func<int, bool>> _ranges;
+        public string Name { get; private set; }
 
         public Rule(string rules)
         {
@@ -21,13 +21,15 @@ namespace AdventOfCode2020.Day16.Logic
         private void ParseRules()
         {
             var sections = _rules.Split(":");
-            var _name = sections[0];
+            Name = sections[0];
             var rules = sections[1].Split(" or ");
 
             foreach (var rule in rules)
             {
                 var range = rule.Split("-");
-                _ranges.Add(x => x >= int.Parse(range[0]) && x <= int.Parse(range[1]));
+                var bottom = int.Parse(range[0]);
+                var top = int.Parse(range[1]);
+                _ranges.Add(x => x >= bottom && x <= top);
             }
         }
 
