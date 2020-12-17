@@ -272,7 +272,7 @@ namespace Day17.UnitTests
     public class PocketDimension
     {
         private readonly string _initialState;
-        private List<Cube> _dimension;
+        private Dictionary<string, Cube> _dimension;
 
         public int MinimumX { get; private set; }
         public int MaximumX { get; private set; }
@@ -283,11 +283,11 @@ namespace Day17.UnitTests
         public int MinimumW { get; private set; }
         public int MaximumW { get; private set; }
 
-        public int ActiveCubes => _dimension.Count(c => c.IsActive);
+        public int ActiveCubes => _dimension.Values.Count(c => c.IsActive);
 
         public PocketDimension(string initialState)
         {
-            _dimension = new List<Cube>();
+            _dimension = new Dictionary<string, Cube>();
             _initialState = initialState;
 
             ParseState();
@@ -306,7 +306,7 @@ namespace Day17.UnitTests
                     var cube = new Cube($"x={x},y={y},z=0,w=0", state == '#');
                     x++;
 
-                    _dimension.Add(cube);
+                    _dimension.Add(cube.Coordinates, cube);
                 }
 
                 y++;
@@ -324,7 +324,7 @@ namespace Day17.UnitTests
 
             ExpandDimension();
 
-            foreach (var cube in _dimension)
+            foreach (var cube in _dimension.Values)
             {
                 var activeNeighbours = GetActiveNeighbours(cube);
                 if (cube.IsActive)
@@ -348,18 +348,17 @@ namespace Day17.UnitTests
 
         private void ExpandDimension()
         {
-            var neighboursToCreate = new List<Cube>();
+            var neighboursToCreate = new Dictionary<string, Cube>();
 
-            foreach (var cube in _dimension)
+            foreach (var cube in _dimension.Values)
             {
                 CreateSurroundingCubes(cube, neighboursToCreate);
             }
 
-            _dimension.AddRange(neighboursToCreate);
-            _dimension = _dimension.OrderBy(p => p.X).ThenBy(p => p.Y).ThenBy(p => p.Z).ThenBy(p => p.W).ToList();
+            neighboursToCreate.Values.ToList().ForEach(c => _dimension.Add(c.Coordinates, c));
         }
 
-        private void CreateSurroundingCubes(Cube cube, List<Cube> neighboursToCreate)
+        private void CreateSurroundingCubes(Cube cube, Dictionary<string, Cube> neighboursToCreate)
         {
             if (cube.Neighbours.Count < 26)
             {
@@ -374,14 +373,14 @@ namespace Day17.UnitTests
                             var z = cube.Z + zOffset;
                             var w = 0;
 
-                            var neighbour = _dimension.Find(c => c.LocatedAt(x, y, z, w));
-                            if (neighbour is null)
+                            var coordinates = $"x={x},y={y},z={z},w={w}";
+                            Cube neighbour;
+                            if (! _dimension.ContainsKey(coordinates))
                             {
-                                neighbour = neighboursToCreate.Find(c => c.LocatedAt(x, y, z, w));
-                                if (neighbour is null)
+                                if (! neighboursToCreate.ContainsKey(coordinates))
                                 {
                                     neighbour = new Cube($"x={x},y={y},z={z},w={w}", false);
-                                    neighboursToCreate.Add(neighbour);
+                                    neighboursToCreate.Add(neighbour.Coordinates, neighbour);
 
                                     if (neighbour.X > MaximumX) MaximumX = neighbour.X;
                                     else if (neighbour.X < MinimumX) MinimumX = neighbour.X;
@@ -395,6 +394,14 @@ namespace Day17.UnitTests
                                     if (neighbour.W > MaximumW) MaximumW = neighbour.W;
                                     else if (neighbour.W < MinimumW) MinimumW = neighbour.W;
                                 }
+                                else
+                                {
+                                    neighbour = neighboursToCreate[coordinates];
+                                }
+                            }
+                            else
+                            {
+                                neighbour = _dimension[coordinates];
                             }
 
                             cube.Neighbours[neighbour.Coordinates] = neighbour;
@@ -418,7 +425,7 @@ namespace Day17.UnitTests
 
             ExpandDimensionIn4D();
 
-            foreach (var cube in _dimension)
+            foreach (var cube in _dimension.Values)
             {
                 var activeNeighbours = GetActiveNeighbours(cube);
                 if (cube.IsActive)
@@ -442,18 +449,18 @@ namespace Day17.UnitTests
 
         private void ExpandDimensionIn4D()
         {
-            var neighboursToCreate = new List<Cube>();
+            var neighboursToCreate = new Dictionary<string, Cube>();
 
-            foreach (var cube in _dimension)
+            foreach (var cube in _dimension.Values)
             {
                 CreateSurroundingCubesIn4D(cube, neighboursToCreate);
             }
 
-            _dimension.AddRange(neighboursToCreate);
-            _dimension = _dimension.OrderBy(p => p.X).ThenBy(p => p.Y).ThenBy(p => p.Z).ThenBy(p => p.W).ToList();
+            neighboursToCreate.Values.ToList().ForEach(c => _dimension.Add(c.Coordinates, c));
+            //_dimension = _dimension.OrderBy(p => p.X).ThenBy(p => p.Y).ThenBy(p => p.Z).ThenBy(p => p.W).ToList();
         }
 
-        private void CreateSurroundingCubesIn4D(Cube cube, List<Cube> neighboursToCreate)
+        private void CreateSurroundingCubesIn4D(Cube cube, Dictionary<string, Cube> neighboursToCreate)
         {
             if (cube.Neighbours.Count < 80)
             {
@@ -469,15 +476,15 @@ namespace Day17.UnitTests
                                 var y = cube.Y + yOffset;
                                 var z = cube.Z + zOffset;
                                 var w = cube.W + wOffset;
+                                var coordinates = $"x={x},y={y},z={z},w={w}";
+                                Cube neighbour;
 
-                                var neighbour = _dimension.Find(c => c.LocatedAt(x, y, z, w));
-                                if (neighbour is null)
+                                if (! _dimension.ContainsKey(coordinates))
                                 {
-                                    neighbour = neighboursToCreate.Find(c => c.LocatedAt(x, y, z, w));
-                                    if (neighbour is null)
+                                    if (! neighboursToCreate.ContainsKey(coordinates))
                                     {
                                         neighbour = new Cube($"x={x},y={y},z={z},w={w}", false);
-                                        neighboursToCreate.Add(neighbour);
+                                        neighboursToCreate.Add(neighbour.Coordinates, neighbour);
 
                                         if (neighbour.X > MaximumX) MaximumX = neighbour.X;
                                         else if (neighbour.X < MinimumX) MinimumX = neighbour.X;
@@ -491,6 +498,14 @@ namespace Day17.UnitTests
                                         if (neighbour.W > MaximumW) MaximumW = neighbour.W;
                                         else if (neighbour.W < MinimumW) MinimumW = neighbour.W;
                                     }
+                                    else
+                                    {
+                                        neighbour = neighboursToCreate[coordinates];
+                                    }
+                                }
+                                else
+                                {
+                                    neighbour = _dimension[coordinates];
                                 }
 
                                 cube.Neighbours[neighbour.Coordinates] = neighbour;
