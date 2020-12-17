@@ -43,30 +43,29 @@ namespace Day17.UnitTests
         }
     }
 
-    [DebuggerDisplay("Coord: ({_coordinates}}), Active? {IsActive}")]
+    [DebuggerDisplay("Coord: ({Coordinates}}), Active? {IsActive}")]
     public class Cube : IEquatable<Cube>
     {
-        private readonly string _coordinates;
-
         public int X { get; private set; }
         public int Y { get; private set; }
         public int Z { get; private set; }
         public int W { get; private set; }
         public bool IsActive { get; private set; }
-        public bool IsNew { get; private set; }
+        public Dictionary<string, Cube> Neighbours { get; }
+        public string Coordinates { get; private set; }
 
         public Cube(string coordinates, bool active)
         {
             IsActive = active;
-            IsNew = true;
-            _coordinates = coordinates;
+            Neighbours = new Dictionary<string, Cube>();
+            Coordinates = coordinates;
 
             ParseCoordinates();
         }
 
         private void ParseCoordinates()
         {
-            var values = _coordinates
+            var values = Coordinates
                 .Split(",")
                 .Select(c => c.Split("="));
 
@@ -96,9 +95,6 @@ namespace Day17.UnitTests
         {
             IsActive = true;
         }
-
-        public void Fix() =>
-            IsNew = false;
 
         public bool LocatedAt(int x, int y, int z, int w)
         {
@@ -205,7 +201,7 @@ namespace Day17.UnitTests
             Assert.Equal(395, sut.ActiveCubes);
         }
 
-/*        [Fact]
+        [Fact]
         public void Test6()
         {
             const string initialState = @".#.
@@ -214,11 +210,25 @@ namespace Day17.UnitTests
 
             var sut = new PocketDimension(initialState);
             sut.DoCycleIn4D();
-            Assert.Equal(11, sut.ActiveCubes);
-        }*/
+            Assert.Equal(29, sut.ActiveCubes);
+        }
 
-        /*[Fact]
+        [Fact]
         public void Test7()
+        {
+            const string initialState = @".#.
+..#
+###";
+
+            var sut = new PocketDimension(initialState);
+            sut.DoCycleIn4D();
+
+            sut.DoCycleIn4D();
+            Assert.Equal(60, sut.ActiveCubes);
+        }
+
+        [Fact]
+        public void Test8()
         {
             const string initialState = @".#.
 ..#
@@ -233,7 +243,30 @@ namespace Day17.UnitTests
 
             sut.DoCycleIn4D();
             Assert.Equal(848, sut.ActiveCubes);
-        }*/
+        }
+
+        [Fact]
+        public void SolveSecondPuzzle()
+        {
+            const string initialState = @".#######
+#######.
+###.###.
+#....###
+.#..##..
+#.#.###.
+###..###
+.#.#.##.";
+
+            var sut = new PocketDimension(initialState);
+            sut.DoCycleIn4D();
+            sut.DoCycleIn4D();
+            sut.DoCycleIn4D();
+            sut.DoCycleIn4D();
+            sut.DoCycleIn4D();
+
+            sut.DoCycleIn4D();
+            Assert.Equal(2296, sut.ActiveCubes);
+        }
     }
 
     public class PocketDimension
@@ -328,46 +361,53 @@ namespace Day17.UnitTests
 
         private void CreateSurroundingCubes(Cube cube, List<Cube> neighboursToCreate)
         {
-            for (var xOffset = -1; xOffset <= 1; xOffset++)
+            if (cube.Neighbours.Count < 26)
             {
-                for (var yOffset = -1; yOffset <= 1; yOffset++)
+                for (var xOffset = -1; xOffset <= 1; xOffset++)
                 {
-                    for (var zOffset = -1; zOffset <= 1; zOffset++)
+                    for (var yOffset = -1; yOffset <= 1; yOffset++)
                     {
-                        var x = cube.X + xOffset;
-                        var y = cube.Y + yOffset;
-                        var z = cube.Z + zOffset;
-                        var w = 0;
-
-                        var neighbour = _dimension.Find(c => c.LocatedAt(x, y, z, w));
-                        if (neighbour is null)
+                        for (var zOffset = -1; zOffset <= 1; zOffset++)
                         {
-                            if (neighboursToCreate.Find(c => c.LocatedAt(x, y, z, w)) is null)
+                            var x = cube.X + xOffset;
+                            var y = cube.Y + yOffset;
+                            var z = cube.Z + zOffset;
+                            var w = 0;
+
+                            var neighbour = _dimension.Find(c => c.LocatedAt(x, y, z, w));
+                            if (neighbour is null)
                             {
-                                neighbour = new Cube($"x={x},y={y},z={z},w={w}", false);
-                                neighboursToCreate.Add(neighbour);
+                                neighbour = neighboursToCreate.Find(c => c.LocatedAt(x, y, z, w));
+                                if (neighbour is null)
+                                {
+                                    neighbour = new Cube($"x={x},y={y},z={z},w={w}", false);
+                                    neighboursToCreate.Add(neighbour);
 
-                                if (neighbour.X > MaximumX) MaximumX = neighbour.X;
-                                else if (neighbour.X < MinimumX) MinimumX = neighbour.X;
+                                    if (neighbour.X > MaximumX) MaximumX = neighbour.X;
+                                    else if (neighbour.X < MinimumX) MinimumX = neighbour.X;
 
-                                if (neighbour.Y > MaximumY) MaximumY = neighbour.Y;
-                                else if (neighbour.Y < MinimumY) MinimumY = neighbour.Y;
+                                    if (neighbour.Y > MaximumY) MaximumY = neighbour.Y;
+                                    else if (neighbour.Y < MinimumY) MinimumY = neighbour.Y;
 
-                                if (neighbour.Z > MaximumZ) MaximumZ = neighbour.Z;
-                                else if (neighbour.Z < MinimumZ) MinimumZ = neighbour.Z;
+                                    if (neighbour.Z > MaximumZ) MaximumZ = neighbour.Z;
+                                    else if (neighbour.Z < MinimumZ) MinimumZ = neighbour.Z;
 
-                                if (neighbour.W > MaximumW) MaximumW = neighbour.W;
-                                else if (neighbour.W < MinimumW) MinimumW = neighbour.W;
+                                    if (neighbour.W > MaximumW) MaximumW = neighbour.W;
+                                    else if (neighbour.W < MinimumW) MinimumW = neighbour.W;
+                                }
                             }
+
+                            cube.Neighbours[neighbour.Coordinates] = neighbour;
+                            neighbour.Neighbours[cube.Coordinates] = cube;
                         }
                     }
                 }
             }
         }
 
-        private List<Cube> GetActiveNeighbours(Cube cube)
+        private static List<Cube> GetActiveNeighbours(Cube cube)
         {
-            return _dimension
+            return cube.Neighbours.Values
                 .Where(p => cube.IsNeighbourOf(p) && p.IsActive && !p.Equals(cube))
                 .ToList();
         }
@@ -415,39 +455,46 @@ namespace Day17.UnitTests
 
         private void CreateSurroundingCubesIn4D(Cube cube, List<Cube> neighboursToCreate)
         {
-            for (var xOffset = -1; xOffset <= 1; xOffset++)
+            if (cube.Neighbours.Count < 80)
             {
-                for (var yOffset = -1; yOffset <= 1; yOffset++)
+                for (var xOffset = -1; xOffset <= 1; xOffset++)
                 {
-                    for (var zOffset = -1; zOffset <= 1; zOffset++)
+                    for (var yOffset = -1; yOffset <= 1; yOffset++)
                     {
-                        for (var wOffset = -1; wOffset <= 1; wOffset++)
+                        for (var zOffset = -1; zOffset <= 1; zOffset++)
                         {
-                            var x = cube.X + xOffset;
-                            var y = cube.Y + yOffset;
-                            var z = cube.Z + zOffset;
-                            var w = cube.W + wOffset;
-
-                            var neighbour = _dimension.Find(c => c.LocatedAt(x, y, z, w));
-                            if (neighbour is null)
+                            for (var wOffset = -1; wOffset <= 1; wOffset++)
                             {
-                                if (neighboursToCreate.Find(c => c.LocatedAt(x, y, z, w)) is null)
+                                var x = cube.X + xOffset;
+                                var y = cube.Y + yOffset;
+                                var z = cube.Z + zOffset;
+                                var w = cube.W + wOffset;
+
+                                var neighbour = _dimension.Find(c => c.LocatedAt(x, y, z, w));
+                                if (neighbour is null)
                                 {
-                                    neighbour = new Cube($"x={x},y={y},z={z},w={w}", false);
-                                    neighboursToCreate.Add(neighbour);
+                                    neighbour = neighboursToCreate.Find(c => c.LocatedAt(x, y, z, w));
+                                    if (neighbour is null)
+                                    {
+                                        neighbour = new Cube($"x={x},y={y},z={z},w={w}", false);
+                                        neighboursToCreate.Add(neighbour);
 
-                                    if (neighbour.X > MaximumX) MaximumX = neighbour.X;
-                                    else if (neighbour.X < MinimumX) MinimumX = neighbour.X;
+                                        if (neighbour.X > MaximumX) MaximumX = neighbour.X;
+                                        else if (neighbour.X < MinimumX) MinimumX = neighbour.X;
 
-                                    if (neighbour.Y > MaximumY) MaximumY = neighbour.Y;
-                                    else if (neighbour.Y < MinimumY) MinimumY = neighbour.Y;
+                                        if (neighbour.Y > MaximumY) MaximumY = neighbour.Y;
+                                        else if (neighbour.Y < MinimumY) MinimumY = neighbour.Y;
 
-                                    if (neighbour.Z > MaximumZ) MaximumZ = neighbour.Z;
-                                    else if (neighbour.Z < MinimumZ) MinimumZ = neighbour.Z;
+                                        if (neighbour.Z > MaximumZ) MaximumZ = neighbour.Z;
+                                        else if (neighbour.Z < MinimumZ) MinimumZ = neighbour.Z;
 
-                                    if (neighbour.W > MaximumW) MaximumW = neighbour.W;
-                                    else if (neighbour.W < MinimumW) MinimumW = neighbour.W;
+                                        if (neighbour.W > MaximumW) MaximumW = neighbour.W;
+                                        else if (neighbour.W < MinimumW) MinimumW = neighbour.W;
+                                    }
                                 }
+
+                                cube.Neighbours[neighbour.Coordinates] = neighbour;
+                                neighbour.Neighbours[cube.Coordinates] = cube;
                             }
                         }
                     }
