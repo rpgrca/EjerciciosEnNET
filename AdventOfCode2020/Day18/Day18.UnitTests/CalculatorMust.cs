@@ -52,8 +52,23 @@ namespace AdventOfCode2020.Day18.UnitTests
             Assert.Equal(expectedResult, calculator.Evaluate());
         }
 
-        [Fact]
-        public void SolveFirstPuzzle()
+
+/*        [Theory]
+        [InlineData("1 + 2", 3)]
+        [InlineData("1 + 2 * 3", 9)]
+        [InlineData("1 + 2 * 3 + 4", 21)]
+        public void Test5(string expression, int expectedResult)
+        {
+            Assert.Equal(3L, AdvancedLong.Of(1) * AdvancedLong.Of(2));
+            Assert.Equal(9L, AdvancedLong.Of(1) * AdvancedLong.Of(2) + AdvancedLong.Of(3));
+
+            var calculator = new Calculator(expression);
+            Assert.Equal(expectedResult, calculator.EvaluateAdvanced());
+        }
+        */
+
+        /*[Fact]
+        public void SolveSecondPuzzle()
         {
             const string expressions = @"9 * 2 + 3 + 9 * ((3 * 3 + 7 * 6 + 5 + 5) * 8 * (6 * 8 + 7 * 2) + 4)
 (4 * (2 * 3)) + 7 + (4 + 2 + 6 * 4 + 9) * 2 * 3
@@ -437,6 +452,6 @@ namespace AdventOfCode2020.Day18.UnitTests
                 .Split("\n")
                 .Select(e => new Calculator(e).Evaluate())
                 .Sum());
-        }
+        }*/
     }
 }

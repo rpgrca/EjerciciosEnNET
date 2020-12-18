@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AdventOfCode2020.Day18.Logic
@@ -15,6 +16,12 @@ namespace AdventOfCode2020.Day18.Logic
         public long Evaluate()
         {
             var parser = new Parser(_expression);
+            return parser.Parse();
+        }
+
+        public long EvaluateAdvanced()
+        {
+            var parser = new AdvancedParser(_expression);
             return parser.Parse();
         }
     }
