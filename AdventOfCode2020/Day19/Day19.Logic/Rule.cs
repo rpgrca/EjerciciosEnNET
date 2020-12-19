@@ -45,6 +45,13 @@ namespace AdventOfCode2020.Day19.Logic
 
         public int Consumes(string message, Rules rules)
         {
+            var consumed = 0;
+
+            if (string.IsNullOrEmpty(message))
+            {
+                return 0;
+            }
+
             if (Character.HasValue)
             {
                 return message[0] == Character? 1 : 0;
@@ -53,7 +60,7 @@ namespace AdventOfCode2020.Day19.Logic
             {
                 foreach (var subRule in _subRules)
                 {
-                    var consumed = 0;
+                    consumed = 0;
                     var fail = false;
                     foreach (var id in subRule)
                     {
@@ -66,15 +73,14 @@ namespace AdventOfCode2020.Day19.Logic
 
                         consumed += consumedNow;
                     }
-
-                    if (! fail)
+                    /*if (! fail)
                     {
                         return consumed;
-                    }
+                    }*/
                 }
             }
 
-            return 0;
+            return consumed;
         }
     }
 }
