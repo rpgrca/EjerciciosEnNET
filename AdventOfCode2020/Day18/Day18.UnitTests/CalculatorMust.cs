@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Xunit;
 using AdventOfCode2020.Day18.Logic;
@@ -52,22 +51,24 @@ namespace AdventOfCode2020.Day18.UnitTests
             Assert.Equal(expectedResult, calculator.Evaluate());
         }
 
-
-/*        [Theory]
+        [Theory]
         [InlineData("1 + 2", 3)]
         [InlineData("1 + 2 * 3", 9)]
         [InlineData("1 + 2 * 3 + 4", 21)]
+        [InlineData("1 + 2 * 3 + 4 * 5 + 6", 231)]
+        [InlineData("1 + (2 * 3)", 7)]
+        [InlineData("1 + (2 * 3) + (4 * (5 + 6))", 51)]
+        [InlineData("2 * 3 + (4 * 5)", 46)]
+        [InlineData("5 + (8 * 3 + 9 + 3 * 4 * 3)", 1445)]
+        [InlineData("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", 669060)]
+        [InlineData("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", 23340)]
         public void Test5(string expression, int expectedResult)
         {
-            Assert.Equal(3L, AdvancedLong.Of(1) * AdvancedLong.Of(2));
-            Assert.Equal(9L, AdvancedLong.Of(1) * AdvancedLong.Of(2) + AdvancedLong.Of(3));
-
             var calculator = new Calculator(expression);
             Assert.Equal(expectedResult, calculator.EvaluateAdvanced());
         }
-        */
 
-        /*[Fact]
+        [Fact]
         public void SolveSecondPuzzle()
         {
             const string expressions = @"9 * 2 + 3 + 9 * ((3 * 3 + 7 * 6 + 5 + 5) * 8 * (6 * 8 + 7 * 2) + 4)
@@ -448,10 +449,10 @@ namespace AdventOfCode2020.Day18.UnitTests
 (5 * 2 + 4 + 3 + 8) + 3 * (9 + 7 * 3 * 2 + 7)
 4 + (4 + 5 * (5 * 6 * 5 + 2 * 4) + (2 * 7 * 3 * 8 * 8 + 5) * 5 + 8) * 5 + (9 + (5 + 2 + 7 + 6 * 5 * 6) * 9) * (2 * (8 * 3 + 9)) + 8";
 
-            Assert.Equal(1890866893020, expressions
+            Assert.Equal(34646237037193, expressions
                 .Split("\n")
-                .Select(e => new Calculator(e).Evaluate())
+                .Select(e => new Calculator(e).EvaluateAdvanced())
                 .Sum());
-        }*/
+        }
     }
 }
