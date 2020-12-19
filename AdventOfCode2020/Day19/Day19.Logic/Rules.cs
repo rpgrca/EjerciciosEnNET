@@ -1,6 +1,4 @@
 using System.Linq;
-using System.Data;
-using System;
 using System.Collections.Generic;
 
 namespace AdventOfCode2020.Day19.Logic
@@ -32,14 +30,14 @@ namespace AdventOfCode2020.Day19.Logic
             return _rules[id];
         }
 
-        public int ConsumesMessageWith(int id, string message)
+        public List<int> ConsumesMessageWith(int id, string message)
         {
             return _rules[id].Consumes(message, this);
         }
 
         public bool VerifiesWithRule(int id, string message)
         {
-            return ConsumesMessageWith(id, message) == message.Length;
+            return ConsumesMessageWith(id, message).Any(p => p == message.Length);
         }
     }
 }

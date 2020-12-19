@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Collections.Generic;
+using System;
 
 namespace AdventOfCode2020.Day19.Logic
 {
@@ -43,44 +44,67 @@ namespace AdventOfCode2020.Day19.Logic
             }
         }
 
-        public int Consumes(string message, Rules rules)
+        public List<int> Consumes(string message, Rules rules)
         {
-            var consumed = 0;
+            var finalConsumedList = new List<int>();
+            var consumedList = new List<int>();
+            var actions = new List<Action<List<int>>>();
 
             if (string.IsNullOrEmpty(message))
             {
-                return 0;
+                return consumedList;
             }
 
             if (Character.HasValue)
             {
-                return message[0] == Character? 1 : 0;
+                finalConsumedList.Add(message[0] == Character? 1 : 0);
+                return finalConsumedList;
             }
             else
             {
                 foreach (var subRule in _subRules)
                 {
-                    consumed = 0;
+                    consumedList.Add(0);
                     var fail = false;
                     foreach (var id in subRule)
                     {
-                        var consumedNow = rules.ConsumesMessageWith(id, message[consumed..]);
-                        if (consumedNow < 1)
+                        foreach (var consumed in consumedList)
                         {
-                            fail = true;
-                            break;
+                            var consumedNow = rules.ConsumesMessageWith(id, message[consumed..]).Where(p => p > 0).ToList();
+                            if (consumedNow.Count > 0)
+                            {
+                                consumedNow.ForEach(c => actions.Add(l => l.Add(c + consumed)));
+                            }
+                            else
+                            {
+                                actions.Add(l => l.Remove(consumed));
+                                fail = true;
+                            }
                         }
 
-                        consumed += consumedNow;
+                        consumedList.Clear();
+                        actions.ForEach(a => a(consumedList));
+                        actions.Clear();
+
+                        if (fail)
+                        {
+                            break;
+                        }
                     }
-                    /*if (! fail)
+
+                    if (consumedList.Any(p => p == message.Length))
                     {
-                        return consumed;
-                    }*/
+                        return consumedList;
+                    }
+                    else
+                    {
+                        finalConsumedList.AddRange(consumedList);
+                        consumedList.Clear();
+                    }
                 }
             }
 
-            return consumed;
+            return finalConsumedList;
         }
     }
 }

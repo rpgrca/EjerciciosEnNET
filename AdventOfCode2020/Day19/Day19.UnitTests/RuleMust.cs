@@ -29,7 +29,8 @@ namespace AdventOfCode2020.Day19.UnitTests
             const string data = "0: \"a\"";
 
             var rule = new Rule(data);
-            Assert.Equal(1, rule.Consumes("a", null));
+            Assert.Collection(rule.Consumes("a", null),
+                p1 => Assert.Equal(1, p1));
         }
 
         [Fact]
@@ -38,7 +39,8 @@ namespace AdventOfCode2020.Day19.UnitTests
             const string data = "0: \"a\"";
 
             var rule = new Rule(data);
-            Assert.Equal(0, rule.Consumes("b", null));
+            Assert.Collection(rule.Consumes("b", null),
+                p1 => Assert.Equal(0, p1));
         }
     }
 }
