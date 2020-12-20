@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>AdventOfCode2020.Day20.Logic</RootNamespace>
+  </PropertyGroup>
+
+</Project>
