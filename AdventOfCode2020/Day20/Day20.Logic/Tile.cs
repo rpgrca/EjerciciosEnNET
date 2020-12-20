@@ -6,7 +6,7 @@ namespace AdventOfCode2020.Day20.Logic
 {
     public class Tile
     {
-        private enum CurrentPosition
+        public enum CurrentPosition
         {
             Normal = 0,
             Rotated90 = 1,
@@ -27,12 +27,11 @@ namespace AdventOfCode2020.Day20.Logic
         }
 
         private const int Size = 10;
-        private CurrentPosition _currentPosition;
-
         private readonly string _data;
 
         public int Id { get; private set; }
         public string Image { get; private set; }
+        public CurrentPosition Position { get; private set; }
         public List<Tile> Transformations { get; }
         private readonly List<string> _borders;
         public string Top { get; private set; }
@@ -43,8 +42,8 @@ namespace AdventOfCode2020.Day20.Logic
         public Tile(string data)
         {
             _data = data;
-            _currentPosition = CurrentPosition.Normal;
             _borders = new List<string>();
+            Position = CurrentPosition.Normal;
             Transformations = new List<Tile>();
 
             ParseTile();
@@ -73,6 +72,7 @@ namespace AdventOfCode2020.Day20.Logic
 
         private void ComputeVariants()
         {
+            // TODO: Optimization: Borders have repeated values (Normal.Top == FlippedHorizontally.Bottom)
             _borders.AddRange(new string[] { Top, Right, Bottom, Left });
 
             RotateAQuarterToTheRight(); // →
@@ -174,9 +174,9 @@ namespace AdventOfCode2020.Day20.Logic
             Image = new string(newImage);
             GetBordersFromImage();
 
-            var currentRotation = (int)_currentPosition & 3;
+            var currentRotation = (int)Position & 3;
             currentRotation = (currentRotation + 1) & 3;
-            _currentPosition = (CurrentPosition)(((int)_currentPosition & 1100) | currentRotation);
+            Position = (CurrentPosition)(((int)Position & 1100) | currentRotation);
         }
 
         public void RotateRight(int degrees)
@@ -237,7 +237,7 @@ namespace AdventOfCode2020.Day20.Logic
             Image = new string(newImage);
             GetBordersFromImage();
 
-            _currentPosition ^= CurrentPosition.FlippedHorizontally;
+            Position ^= CurrentPosition.FlippedHorizontally;
         }
 
         public void FlipVertically()
@@ -255,61 +255,17 @@ namespace AdventOfCode2020.Day20.Logic
             Image = new string(newImage);
             GetBordersFromImage();
 
-            _currentPosition ^= CurrentPosition.FlippedVertically;
+            Position ^= CurrentPosition.FlippedVertically;
         }
 
         public bool CouldBeAdjacentOf(Tile possibleAdjacentTile)
         {
-            // ↑
-            if (IsAdjacentOf(possibleAdjacentTile)) return true;
+            var sameSides = _borders.Join(possibleAdjacentTile._borders,
+                p => p,
+                q => q,
+                (r, s) => r == s).Count();
 
-            var possibleTile = new Tile(possibleAdjacentTile);
-            possibleTile.RotateAQuarterToTheRight(); // →
-            if (IsAdjacentOf(possibleTile)) return true;
-
-            possibleTile.RotateAQuarterToTheRight(); // ↓
-            if (IsAdjacentOf(possibleTile)) return true;
-
-            possibleTile.RotateAQuarterToTheRight(); // ←
-            if (IsAdjacentOf(possibleTile)) return true;
-
-            possibleTile.FlipVertically(); // ←V
-            if (IsAdjacentOf(possibleTile)) return true;
-
-            possibleTile.RotateAQuarterToTheRight(); // ↑V
-            if (IsAdjacentOf(possibleTile)) return true;
-
-            possibleTile.RotateAQuarterToTheRight(); // →V
-            if (IsAdjacentOf(possibleTile)) return true;
-
-            possibleTile.RotateAQuarterToTheRight(); // ↓V
-            if (IsAdjacentOf(possibleTile)) return true;
-
-            possibleTile.FlipHorizontally(); // ↓VH
-            if (IsAdjacentOf(possibleTile)) return true;
-
-            possibleTile.RotateAQuarterToTheRight(); // ←VH
-            if (IsAdjacentOf(possibleTile)) return true;
-
-            possibleTile.RotateAQuarterToTheRight(); // ↑VH
-            if (IsAdjacentOf(possibleTile)) return true;
-
-            possibleTile.RotateAQuarterToTheRight(); // →VH
-            if (IsAdjacentOf(possibleTile)) return true;
-
-            possibleTile.FlipVertically(); // →H
-            if (IsAdjacentOf(possibleTile)) return true;
-
-            possibleTile.RotateAQuarterToTheRight(); // ↓H
-            if (IsAdjacentOf(possibleTile)) return true;
-
-            possibleTile.RotateAQuarterToTheRight(); // ←H
-            if (IsAdjacentOf(possibleTile)) return true;
-
-            possibleTile.RotateAQuarterToTheRight(); // ↑H
-            if (IsAdjacentOf(possibleTile)) return true;
-
-            return false;
+            return sameSides > 0;
         }
     }
 }
