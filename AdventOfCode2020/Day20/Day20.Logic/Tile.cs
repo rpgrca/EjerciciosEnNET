@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -29,6 +28,9 @@ namespace AdventOfCode2020.Day20.Logic
         private const int Size = 10;
         private readonly string _data;
 
+        public bool IsCorner { get; private set; }
+        public bool IsBorder { get; private set; }
+        public List<string> InnerSide { get; private set; }
         public int Id { get; private set; }
         public string Image { get; private set; }
         public CurrentPosition Position { get; private set; }
@@ -266,6 +268,63 @@ namespace AdventOfCode2020.Day20.Logic
                 (r, s) => r == s).Count();
 
             return sameSides > 0;
+        }
+
+        public void MarkAsCorner(List<Tile> adjacentTiles)
+        {
+            IsCorner = true;
+            InnerSide = new List<string>();
+
+            if (adjacentTiles.Any(t => t._borders.Contains(Top)))
+            {
+                InnerSide.Add(Top);
+            }
+
+            if (adjacentTiles.Any(t => t._borders.Contains(Right)))
+            {
+                InnerSide.Add(Right);
+            }
+
+            if (adjacentTiles.Any(t => t._borders.Contains(Bottom)))
+            {
+                InnerSide.Add(Bottom);
+            }
+
+            if (adjacentTiles.Any(t => t._borders.Contains(Left)))
+            {
+                InnerSide.Add(Left);
+            }
+        }
+
+        public void MarkAsBorder(List<Tile> adjacentTiles)
+        {
+            IsBorder = true;
+            InnerSide = new List<string>();
+
+            if (adjacentTiles.Any(t => t._borders.Contains(Top)))
+            {
+                InnerSide.Add(Top);
+            }
+
+            if (adjacentTiles.Any(t => t._borders.Contains(Right)))
+            {
+                InnerSide.Add(Right);
+            }
+
+            if (adjacentTiles.Any(t => t._borders.Contains(Bottom)))
+            {
+                InnerSide.Add(Bottom);
+            }
+
+            if (adjacentTiles.Any(t => t._borders.Contains(Left)))
+            {
+                InnerSide.Add(Left);
+            }
+        }
+
+        public void MarkAsInsidePiece(List<Tile> adjacentTiles)
+        {
+            
         }
     }
 }
