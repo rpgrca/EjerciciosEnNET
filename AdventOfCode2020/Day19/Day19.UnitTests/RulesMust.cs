@@ -8,7 +8,7 @@ namespace AdventOfCode2020.Day19.UnitTests
         [Theory]
         [InlineData("aab")]
         [InlineData("aba")]
-        public void Test2(string message)
+        public void ReturnTrue_WhenVerifyingRuleZeroWithValidMessage(string message)
         {
             const string data = @"0: 1 2
 1: ""a""
