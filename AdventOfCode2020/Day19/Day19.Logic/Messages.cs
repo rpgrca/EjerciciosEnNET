@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AdventOfCode2020.Day19.Logic
 {
-
     public class Messages
     {
         private readonly string _data;
@@ -15,15 +13,11 @@ namespace AdventOfCode2020.Day19.Logic
             _data = data;
             _messages = new List<string>();
 
-            foreach (var message in _data.Split("\n\n")[1].Split("\n"))
-            {
-                _messages.Add(message);
-            }
+            ParseMessages();
         }
 
-        public int ThatMatchRule(int ruleId, Rules rules)
-        {
-            return _messages.Count(p => rules.VerifiesWithRule(ruleId, p));
-        }
+        private void ParseMessages() => _messages.AddRange(_data.Split("\n\n")[1].Split("\n"));
+
+        public int ThatMatchRule(int id, Rules rules) => _messages.Count(p => rules.VerifiesWith(id, p));
     }
 }

@@ -24,7 +24,7 @@ namespace AdventOfCode2020.Day19.UnitTests
         }
 
         [Fact]
-        public void Test1()
+        public void ReturnOne_WhenConsumingValidData()
         {
             const string data = "0: \"a\"";
 
@@ -34,7 +34,7 @@ namespace AdventOfCode2020.Day19.UnitTests
         }
 
         [Fact]
-        public void Test2()
+        public void ReturnZero_WhenConsumingInvalidData()
         {
             const string data = "0: \"a\"";
 

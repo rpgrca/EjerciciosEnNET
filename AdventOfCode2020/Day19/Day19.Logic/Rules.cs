@@ -5,39 +5,30 @@ namespace AdventOfCode2020.Day19.Logic
 {
     public class Rules
     {
+        private readonly string _data;
         private readonly Dictionary<int, Rule> _rules;
-
-        public int Count => _rules.Count;
 
         public Rules (string data)
         {
             _rules = new Dictionary<int, Rule>();
+            _data = data;
 
-            foreach (var line in data.Split("\n\n")[0].Split("\n"))
-            {
-                if (string.IsNullOrEmpty(line))
-                {
-                    break;
-                }
-
-                var rule = new Rule(line);
-                _rules.Add(rule.Id, rule);
-            }
+            ParseRules();
         }
 
-        public Rule GetRule(int id)
-        {
-            return _rules[id];
-        }
+        private void ParseRules() =>
+            _data
+                .Split("\n\n")[0].Split("\n")
+                .ToList()
+                .ForEach(r => {
+                    var rule = new Rule(r);
+                    _rules.Add(rule.Id, rule);
+                });
 
-        public List<int> ConsumesMessageWith(int id, string message)
-        {
-            return _rules[id].Consumes(message, this);
-        }
+        internal List<int> ConsumesMessageWith(int id, string message) =>
+            _rules[id].Consumes(message, this);
 
-        public bool VerifiesWithRule(int id, string message)
-        {
-            return ConsumesMessageWith(id, message).Any(p => p == message.Length);
-        }
+        public bool VerifiesWith(int id, string message) =>
+            ConsumesMessageWith(id, message).Any(p => p == message.Length);
     }
 }

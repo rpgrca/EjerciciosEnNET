@@ -20,29 +20,7 @@ namespace AdventOfCode2020.Day19.Logic
             ParseRule();
         }
 
-        private void ParseRule()
-        {
-            var line = _rule.Split(":");
-            Id = int.Parse(line[0]);
-
-            if (line[1].Trim().StartsWith("\""))
-            {
-                Character = line[1].Trim()[1];
-            }
-            else
-            {
-                foreach (var subRule in line[1].Trim().Split("|"))
-                {
-                    var subRules = new List<int>();
-                    subRule.Trim()
-                        .Split(" ")
-                        .ToList()
-                        .ForEach(s => subRules.Add(int.Parse(s)));
-
-                    _subRules.Add(subRules);
-                }
-            }
-        }
+        private void ParseRule() => new RuleParser(_rule).Parse(this);
 
         public List<int> Consumes(string message, Rules rules)
         {
@@ -106,5 +84,11 @@ namespace AdventOfCode2020.Day19.Logic
 
             return finalConsumedList;
         }
+
+        internal void AddSubRule(List<int> subRules) => _subRules.Add(subRules);
+
+        internal void SetCharacter(char character) => Character = character;
+
+        internal void SetId(int id) => Id = id;
     }
 }
