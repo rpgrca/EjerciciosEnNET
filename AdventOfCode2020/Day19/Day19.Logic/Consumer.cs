@@ -81,6 +81,7 @@ namespace AdventOfCode2020.Day19.Logic
 
         private bool ConsumedCharactersSuccessfully() => _recentlyConsumed.Count > 0;
 
+		// partial coverage as _rule.Character can never be null
         private void AddRuleResolutionToConsumedList() =>
             _finalConsumedList.Add(_message[0] == _rule.Character ? 1 : 0);
 
