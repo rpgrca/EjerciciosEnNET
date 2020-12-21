@@ -1,4 +1,6 @@
+#region
 using System;
+#endregion
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,7 +28,7 @@ namespace AdventOfCode2020.Day20.Logic
             FlippedVerticallyAndHorizontallyRotated270 = 15
         }
 
-        private const int Size = 10;
+        private readonly int Size = 10;
         private readonly string _data;
 
         public bool IsCorner { get; private set; }
@@ -52,6 +54,17 @@ namespace AdventOfCode2020.Day20.Logic
             ParseTile();
         }
 
+        public Tile(string data, int size)
+        {
+            _data = data;
+            Size = size;
+            _borders = new List<string>();
+            Position = CurrentPosition.Normal;
+            Transformations = new List<Tile>();
+
+            ParseTile();
+        }
+
         private Tile(Tile tile)
         {
             _data = tile._data;
@@ -61,6 +74,7 @@ namespace AdventOfCode2020.Day20.Logic
             Left = tile.Left;
             Right = tile.Right;
             Bottom = tile.Bottom;
+            Position = tile.Position;
 
             _borders = new List<string>(tile._borders);
         }
@@ -68,6 +82,7 @@ namespace AdventOfCode2020.Day20.Logic
         private void ParseTile()
         {
             GetIdFromData();
+
             GetImageFromData();
             GetBordersFromImage();
             ComputeVariants();
@@ -76,6 +91,7 @@ namespace AdventOfCode2020.Day20.Logic
         private void ComputeVariants()
         {
             _borders.Clear();
+            Transformations.Clear();
 
             // TODO: Optimization: Borders have repeated values (Normal.Top == FlippedHorizontally.Bottom)
             _borders.AddRange(new string[] { Top, Right, Bottom, Left });
@@ -92,8 +108,8 @@ namespace AdventOfCode2020.Day20.Logic
             Transformations.Add(new Tile(this));
             _borders.AddRange(new string[] { Top, Right, Bottom, Left });
 
-            FlipVertically(); // ↑V
             RotateAQuarterToTheRight();
+            FlipVertically(); // ↑V
             Transformations.Add(new Tile(this));
             _borders.AddRange(new string[] { Top, Right, Bottom, Left });
 
@@ -109,8 +125,8 @@ namespace AdventOfCode2020.Day20.Logic
             Transformations.Add(new Tile(this));
             _borders.AddRange(new string[] { Top, Right, Bottom, Left });
 
-            FlipVertically();
             RotateAQuarterToTheRight();
+            FlipVertically();
             FlipHorizontally(); // ↑H
             Transformations.Add(new Tile(this));
             _borders.AddRange(new string[] { Top, Right, Bottom, Left });
@@ -162,6 +178,12 @@ namespace AdventOfCode2020.Day20.Logic
             Right = new string(Image.Where((_, i) => (i + 1) % Size == 0).ToArray());
             Bottom = Image[((Size * Size) - Size)..(Size*Size)];
             Left = new string(Image.Where((_, i) => i % Size == 0).ToArray());
+/*
+            Top = Image[0..Size];
+            Right = new string(Image.Where((_, i) => (i + 1) % Size == 0).ToArray());
+            Bottom = new string(Image[((Size * Size) - Size)..(Size*Size)].Reverse().ToArray());
+            Left = new string(Image.Where((_, i) => i % Size == 0).Reverse().ToArray());
+*/
         }
 
         private void RotateAQuarterToTheRight()
@@ -411,6 +433,66 @@ namespace AdventOfCode2020.Day20.Logic
         public bool MakeLeftSideBe(string side)
         {
             var undo = new List<Action<Tile>>();
+            foreach (var (rotation, flippedHorizontally, flippedVertically) in from index in Transformations.Select((t, i) => new { Index = i, Tile = t }).Where(t => t.Tile.Left == side).Select(t => t.Index)
+                                                                               let position = Transformations[index].Position
+                                                                               let rotation = (CurrentPosition)((int)position & 3)
+                                                                               let flippedHorizontally = (position & CurrentPosition.FlippedHorizontally) == CurrentPosition.FlippedHorizontally
+                                                                               let flippedVertically = (position & CurrentPosition.FlippedVertically) == CurrentPosition.FlippedVertically
+                                                                               select (rotation, flippedHorizontally, flippedVertically))
+            {
+                if (flippedHorizontally)
+                {
+                    FlipHorizontally(); // unverified
+                    undo.Add(t => t.FlipHorizontally());
+                }
+
+                if (flippedVertically)
+                {
+                    FlipVertically(); // unverified
+                    undo.Add(t => t.FlipVertically());
+                }
+
+                switch (rotation)
+                {
+                    case CurrentPosition.Normal:
+                        // ok
+                        break;
+
+                    case CurrentPosition.Rotated90:
+                        RotateRight(90);
+                        undo.Add(t => t.RotateLeft(90));
+                        break;
+
+                    case CurrentPosition.Rotated180:
+                        RotateRight(180);
+                        undo.Add(t => t.RotateRight(180));
+                        break;
+
+                    case CurrentPosition.Rotated270:
+                        RotateRight(270);
+                        undo.Add(t => t.RotateRight(90));
+                        break;
+                }
+
+                if (Left == side)
+                {
+                    break;
+                }
+                else
+                {
+                    undo.ForEach(a => a(this));
+                    undo.Clear();
+                }
+            }
+
+            return Left == side;
+
+
+
+
+
+/*
+            var undo = new List<Action<Tile>>();
             ComputeVariants();
 
             foreach (var index in _borders.Select((p,i) => new { Index = i, Side = p }).Where(p => p.Side == side).Select(p => p.Index))
@@ -453,7 +535,7 @@ namespace AdventOfCode2020.Day20.Logic
                         break;
                 }
 
-                if (Left == side)
+                if (new string(Left.Reverse().ToArray()) == side)
                 {
                     break;
                 }
@@ -464,100 +546,30 @@ namespace AdventOfCode2020.Day20.Logic
                 }
             }
 
-/*
-            switch ((CurrentPosition)index)
+            if (new string (Left.Reverse().ToArray()) != side)
             {
-                case CurrentPosition.Normal:
-                    RotateLeft(90); // unverified
-                    break;
+                System.Diagnostics.Debugger.Break();
+            }
 
-                case CurrentPosition.Rotated90:
-                    RotateLeft(180); // unverified
-                    break;
-
-                case CurrentPosition.Rotated180:
-                    RotateRight(90); // verified
-                    break;
-
-                case CurrentPosition.Rotated270:
-                    // ok
-                    break;
-
-                case CurrentPosition.FlippedVertically:
-                    FlipVertically(); // unverified
-                    RotateLeft(90);
-                    break;
-
-                case CurrentPosition.FlippedVerticallyRotated90:
-                    FlipVertically();
-                    RotateLeft(180); // unverified
-                    break;
-
-                case CurrentPosition.FlippedVerticallyRotated180:
-                    FlipVertically(); // unverified
-                    RotateRight(90);
-                    break;
-
-                case CurrentPosition.FlippedVerticallyRotated270:
-                    FlipVertically(); // unverified
-                    break;
-
-                case CurrentPosition.FlippedHorizontally:
-                    FlipHorizontally(); // unverified
-                    RotateLeft(90);
-                    break;
-
-                case CurrentPosition.FlippedHorizontallyRotated90:
-                    FlipHorizontally(); // unverified
-                    RotateLeft(180);
-                    break;
-
-                case CurrentPosition.FlippedHorizontallyRotated180:
-                    FlipHorizontally(); // unverified
-                    RotateRight(90);
-                    break;
-
-                case CurrentPosition.FlippedHorizontallyRotated270:
-                    FlipHorizontally(); // unverified
-                    break;
-
-                case CurrentPosition.FlippedVerticallyAndHorizontally:
-                    FlipHorizontally(); // unverified
-                    FlipVertically();
-                    RotateLeft(90);
-                    break;
-
-                case CurrentPosition.FlippedVerticallyAndHorizontallyRotated90:
-                    FlipHorizontally(); // unverified
-                    FlipVertically();
-                    RotateLeft(180);
-                    break;
-
-                case CurrentPosition.FlippedVerticallyAndHorizontallyRotated180:
-                    FlipHorizontally(); // unverified
-                    FlipVertically();
-                    RotateRight(90);
-                    break;
-
-                case CurrentPosition.FlippedVerticallyAndHorizontallyRotated270:
-                    FlipHorizontally(); // unverified
-                    FlipVertically();
-                    break;
-            }*/
-
-            return Left == side;
+            return new string(Left.Reverse().ToArray()) == side;*/
         }
 
         public bool MakeTopSideBe(string side)
         {
             var undo = new List<Action<Tile>>();
-
-            ComputeVariants();
-            foreach (var index in _borders.Select((p,i) => new { Index = i, Side = p }).Where(p => p.Side == side).Select(p => p.Index))
+            foreach (var index in Transformations.Select((t, i) => new { Index = i, Tile = t }).Where(t => t.Tile.Top == side).Select(t => t.Index))
             {
-                var rotation = (CurrentPosition)(index & 3);
-                var flippedHorizontally = (index & (int)CurrentPosition.FlippedHorizontally) == (int)CurrentPosition.FlippedHorizontally;
-                var flippedVertically = (index & (int)CurrentPosition.FlippedVertically) == (int)CurrentPosition.FlippedVertically;
+                var position = Transformations[index].Position;
+                var rotation = (CurrentPosition)((int)position & 3);
+                var flippedHorizontally = (position & CurrentPosition.FlippedHorizontally) == CurrentPosition.FlippedHorizontally;
+                var flippedVertically = (position & CurrentPosition.FlippedVertically) == CurrentPosition.FlippedVertically;
+
+            //ComputeVariants();
+            //foreach (var index in _borders.Select((p,i) => new { Index = i, Side = p }).Where(p => p.Side == side).Select(p => p.Index))
+            //{
+                //var rotation = (CurrentPosition)(index & 3);
+                //var flippedHorizontally = (index & (int)CurrentPosition.FlippedHorizontally) == (int)CurrentPosition.FlippedHorizontally;
+                //var flippedVertically = (index & (int)CurrentPosition.FlippedVertically) == (int)CurrentPosition.FlippedVertically;
 
                 if (flippedHorizontally)
                 {
@@ -578,8 +590,8 @@ namespace AdventOfCode2020.Day20.Logic
                         break;
 
                     case CurrentPosition.Rotated90:
-                        RotateLeft(90); // unverified
-                        undo.Add(t => t.RotateRight(90));
+                        RotateRight(90);
+                        undo.Add(t => t.RotateLeft(90));
                         break;
 
                     case CurrentPosition.Rotated180:
@@ -588,8 +600,8 @@ namespace AdventOfCode2020.Day20.Logic
                         break;
 
                     case CurrentPosition.Rotated270:
-                        RotateRight(90); // unverified
-                        undo.Add(t => t.RotateLeft(90));
+                        RotateRight(270);
+                        undo.Add(t => t.RotateRight(90));
                         break;
                 }
 
@@ -605,90 +617,19 @@ namespace AdventOfCode2020.Day20.Logic
             }
 
             return Top == side;
+        }
 
-            /*
-            ComputeVariants();
-            var index = _borders.IndexOf(side) / 4;
+        public void Crop()
+        {
+            Image = string.Join(string.Empty, _data.Split(":\n")[1].Split("\n").Skip(1).Take(8).Select(p => p[1..9]));
+        }
 
-            switch ((CurrentPosition)index)
+        public void Display()
+        {
+            for (var y = 0; y < Size; y++)
             {
-                case CurrentPosition.Normal:
-                    // ok
-                    break;
-
-                case CurrentPosition.Rotated90:
-                    RotateLeft(90); // unverified
-                    break;
-
-                case CurrentPosition.Rotated180:
-                    RotateRight(180); // unverified
-                    break;
-
-                case CurrentPosition.Rotated270:
-                    RotateRight(90); // unverified
-                    break;
-
-                case CurrentPosition.FlippedVertically:
-                    FlipVertically(); // unverified
-                    break;
-
-                case CurrentPosition.FlippedVerticallyRotated90:
-                    FlipVertically();
-                    RotateLeft(90); // unverified
-                    break;
-
-                case CurrentPosition.FlippedVerticallyRotated180:
-                    FlipVertically(); // unverified
-                    RotateRight(180);
-                    break;
-
-                case CurrentPosition.FlippedVerticallyRotated270:
-                    FlipVertically(); // unverified
-                    RotateRight(90);
-                    break;
-
-                case CurrentPosition.FlippedHorizontally:
-                    FlipHorizontally(); // unverified
-                    break;
-
-                case CurrentPosition.FlippedHorizontallyRotated90:
-                    FlipHorizontally(); // unverified
-                    RotateLeft(90);
-                    break;
-
-                case CurrentPosition.FlippedHorizontallyRotated180:
-                    FlipHorizontally(); // unverified
-                    RotateRight(180);
-                    break;
-
-                case CurrentPosition.FlippedHorizontallyRotated270:
-                    FlipHorizontally(); // unverified
-                    RotateRight(90);
-                    break;
-
-                case CurrentPosition.FlippedVerticallyAndHorizontally:
-                    FlipHorizontally(); // unverified
-                    FlipVertically();
-                    break;
-
-                case CurrentPosition.FlippedVerticallyAndHorizontallyRotated90:
-                    FlipHorizontally(); // unverified
-                    FlipVertically();
-                    RotateLeft(90);
-                    break;
-
-                case CurrentPosition.FlippedVerticallyAndHorizontallyRotated180:
-                    FlipHorizontally(); // unverified
-                    FlipVertically();
-                    RotateRight(180);
-                    break;
-
-                case CurrentPosition.FlippedVerticallyAndHorizontallyRotated270:
-                    FlipHorizontally(); // unverified
-                    FlipVertically();
-                    RotateRight(90);
-                    break;
-            }*/
+                Console.WriteLine($"{Image[(y*Size)..((y*Size)+Size)]}");
+            }
         }
     }
 }
