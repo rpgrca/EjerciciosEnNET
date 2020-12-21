@@ -2367,16 +2367,16 @@ Tile 3079:
             map.ClassifyEdge();
 
             Assert.Collection(map.Corners,
-                p1 => Assert.Collection(p1.InnerSide,
+                p1 => Assert.Collection(p1.InnerSide.Keys,
                     s1 => Assert.Equal("#.##...##.", s1),
                     s2 => Assert.Equal(".#####..#.", s2)),
-                p2 => Assert.Collection(p2.InnerSide,
+                p2 => Assert.Collection(p2.InnerSide.Keys,
                     s1 => Assert.Equal("####...##.", s1),
                     s2 => Assert.Equal(".#..#.....", s2)),
-                p3 => Assert.Collection(p3.InnerSide,
+                p3 => Assert.Collection(p3.InnerSide.Keys,
                     s1 => Assert.Equal("#...##.#.#", s1),
                     s2 => Assert.Equal("...#.#.#.#", s2)),
-                p4 => Assert.Collection(p4.InnerSide,
+                p4 => Assert.Collection(p4.InnerSide.Keys,
                     s1 => Assert.Equal("..#.###...", s1),
                     s2 => Assert.Equal("#..##.#...", s2)));
         }
@@ -2387,19 +2387,19 @@ Tile 3079:
             var map = new Map(SAMPLE_DATA, 3, 3);
             map.ClassifyEdge();
             Assert.Collection(map.Borders,
-                p1 => Assert.Collection(p1.InnerSide,
+                p1 => Assert.Collection(p1.InnerSide.Keys,
                     s1 => Assert.Equal("..##.#..#.", s1),
                     s2 => Assert.Equal("...#.##..#", s2),
                     s3 => Assert.Equal(".#####..#.", s3)),
-                p2 => Assert.Collection(p2.InnerSide,
+                p2 => Assert.Collection(p2.InnerSide.Keys,
                     s1 => Assert.Equal(".....#..#.", s1),
                     s2 => Assert.Equal("###.##.#..", s2),
                     s3 => Assert.Equal("#...##.#.#", s3)),
-                p3 => Assert.Collection(p3.InnerSide,
+                p3 => Assert.Collection(p3.InnerSide.Keys,
                     s1 => Assert.Equal("...###.#..", s1),
                     s2 => Assert.Equal("..###.#.#.", s2),
                     s3 => Assert.Equal("####...##.", s3)),
-                p4 => Assert.Collection(p4.InnerSide,
+                p4 => Assert.Collection(p4.InnerSide.Keys,
                     s1 => Assert.Equal("...#.#.#.#", s1),
                     s2 => Assert.Equal("#..#......", s2),
                     s3 => Assert.Equal("#.##...##.", s3)));
@@ -2411,6 +2411,17 @@ Tile 3079:
             var map = new Map(SAMPLE_DATA, 3, 3);
             map.ClassifyEdge();
             map.ReformEdge();
+
+            var reassembledMap = map.GetReassembledMap();
+            Assert.Equal(3079, reassembledMap[0,0].Id);
+            Assert.Equal(2311, reassembledMap[0,1].Id);
+            Assert.Equal(1951, reassembledMap[0,2].Id);
+            Assert.Equal(2473, reassembledMap[1,0].Id);
+            Assert.Equal(1427, reassembledMap[1,1].Id);
+            Assert.Equal(2729, reassembledMap[1,2].Id);
+            Assert.Equal(1171, reassembledMap[2,0].Id);
+            Assert.Equal(1489, reassembledMap[2,1].Id);
+            Assert.Equal(2971, reassembledMap[2,2].Id);
         }
     }
 
@@ -2489,6 +2500,63 @@ Tile 3079:
 
         public void ReformEdge()
         {
+            foreach (var corner in Corners)
+            {
+                _reassembledMap[0, 0] = corner;
+
+                if (corner.InnerSide.ContainsKey(corner.Right) && corner.InnerSide.ContainsKey(corner.Bottom))
+                {
+                    // acomodado
+                }
+                else
+                if (corner.InnerSide.ContainsKey(corner.Right) && corner.InnerSide.ContainsKey(corner.Top))
+                {
+                    corner.RotateRight(90); // o flip horizontal
+                }
+                else
+                if (corner.InnerSide.ContainsKey(corner.Left) && corner.InnerSide.ContainsKey(corner.Bottom))
+                {
+                    corner.RotateLeft(90); // o flip vertical
+                }
+                else
+                if (corner.InnerSide.ContainsKey(corner.Left) && corner.InnerSide.ContainsKey(corner.Top))
+                {
+                    corner.RotateRight(180); // o flip + rotate / rotate + flip
+                }
+
+                for (var y = 0; y < Height; y++)
+                {
+                    for (var x = 0; x < Width; x++)
+                    {
+                        if (x != 0 || y != 0)
+                        {
+                            if (x > 0)
+                            {
+                                var previousTile = _reassembledMap[y, x - 1];
+                                var nextTile = previousTile.InnerSide[previousTile.Right];
+                                if (nextTile.MakeLeftSideBe(previousTile.Right))
+                                {
+                                    _reassembledMap[y, x] = nextTile;
+                                }
+                            }
+                            else
+                            {
+                                if (y > 0)
+                                {
+                                    var previousTile = _reassembledMap[y - 1, x];
+                                    var nextTile = previousTile.InnerSide[previousTile.Bottom];
+                                    if (nextTile.MakeTopSideBe(previousTile.Bottom))
+                                    {
+                                        _reassembledMap[y, x] = nextTile;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+           }
         }
+
+        public Tile[,] GetReassembledMap() => _reassembledMap;
     }
 }
