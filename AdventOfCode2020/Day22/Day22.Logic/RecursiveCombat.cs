@@ -54,8 +54,9 @@ namespace AdventOfCode2020.Day22.Logic
 
         private void PlayMinigame()
         {
-            var recursiveGame = new RecursiveCombat(Players[FIRST_PLAYER].ToArray()[0.._lastPlayedCards.Item1],
-                                       Players[SECOND_PLAYER].ToArray()[0.._lastPlayedCards.Item2]);
+            var recursiveGame = new RecursiveCombat(
+                Players[FIRST_PLAYER].ToArray()[0.._lastPlayedCards.Item1],
+                Players[SECOND_PLAYER].ToArray()[0.._lastPlayedCards.Item2]);
 
             recursiveGame.Play();
             recursiveGame.HasPlayerOneWon(PlayerOneWinsRound, PlayerTwoWinsRound);
