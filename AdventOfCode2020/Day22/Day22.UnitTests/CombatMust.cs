@@ -1,7 +1,5 @@
-using System.Linq;
-using System;
-using System.Collections.Generic;
 using Xunit;
+using AdventOfCode2020.Day22.Logic;
 
 namespace AdventOfCode2020.Day22.UnitTests
 {
@@ -459,89 +457,718 @@ Player 2:
             sut.CalculatePoints();
             Assert.Equal(32495, sut.WinnerPoints);
         }
-    }
 
-    public class Combat
-    {
-        private const int FIRST_PLAYER = 0;
-        private const int SECOND_PLAYER = 1;
-
-        private readonly string _decks;
-
-        public List<int>[] Players { get; }
-        public long WinnerPoints { get; private set; }
-
-        public Combat(string decks)
+        [Fact]
+        public void CorrectlyModifyPlayerCards_AfterPlayingARecursiveTurn()
         {
-            _decks = decks;
-            Players = new List<int>[2];
+            const string decks = @"Player 1:
+9
+2
+6
+3
+1
 
-            ParseDecks();
+Player 2:
+5
+8
+4
+7
+10";
+
+            var sut = new Combat(decks);
+
+            sut.PlayRecursiveTurn();
+            Assert.Collection(sut.Players[0],
+                p1 => Assert.Equal(2, p1),
+                p2 => Assert.Equal(6, p2),
+                p3 => Assert.Equal(3, p3),
+                p4 => Assert.Equal(1, p4),
+                p5 => Assert.Equal(9, p5),
+                p6 => Assert.Equal(5, p6));
+            Assert.Collection(sut.Players[1],
+                p1 => Assert.Equal(8, p1),
+                p2 => Assert.Equal(4, p2),
+                p3 => Assert.Equal(7, p3),
+                p4 => Assert.Equal(10, p4));
         }
 
-        private void ParseDecks()
+        [Fact]
+        public void CorrectlyModifyPlayerCards_AfterPlayingTwoRecursiveTurns()
         {
-            LoadPlayerDeck(_decks.Split("\n\n")[0]);
-            LoadPlayerDeck(_decks.Split("\n\n")[1]);
+            const string decks = @"Player 1:
+9
+2
+6
+3
+1
+
+Player 2:
+5
+8
+4
+7
+10";
+
+            var sut = new Combat(decks);
+
+            sut.PlayRecursiveTurn();
+            sut.PlayRecursiveTurn();
+            Assert.Collection(sut.Players[0],
+                p1 => Assert.Equal(6, p1),
+                p2 => Assert.Equal(3, p2),
+                p3 => Assert.Equal(1, p3),
+                p4 => Assert.Equal(9, p4),
+                p5 => Assert.Equal(5, p5));
+            Assert.Collection(sut.Players[1],
+                p1 => Assert.Equal(4, p1),
+                p2 => Assert.Equal(7, p2),
+                p3 => Assert.Equal(10, p3),
+                p4 => Assert.Equal(8, p4),
+                p5 => Assert.Equal(2, p5));
         }
 
-        private void LoadPlayerDeck(string deck)
+        [Fact]
+        public void CorrectlyModifyPlayerCards_AfterPlayingThreeRecursiveTurns()
         {
-            var playerNumber = int.Parse(deck.Split(":")[0].Replace("Player ", string.Empty)) - 1;
-            Players[playerNumber] = deck
-                .Split(":\n")[1]
-                .Split("\n")
-                .Select(p => int.Parse(p))
-                .ToList();
+            const string decks = @"Player 1:
+9
+2
+6
+3
+1
+
+Player 2:
+5
+8
+4
+7
+10";
+
+            var sut = new Combat(decks);
+
+            sut.PlayRecursiveTurn();
+            sut.PlayRecursiveTurn();
+            sut.PlayRecursiveTurn();
+            Assert.Collection(sut.Players[0],
+                p1 => Assert.Equal(3, p1),
+                p2 => Assert.Equal(1, p2),
+                p3 => Assert.Equal(9, p3),
+                p4 => Assert.Equal(5, p4),
+                p5 => Assert.Equal(6, p5),
+                p6 => Assert.Equal(4, p6));
+            Assert.Collection(sut.Players[1],
+                p1 => Assert.Equal(7, p1),
+                p2 => Assert.Equal(10, p2),
+                p3 => Assert.Equal(8, p3),
+                p4 => Assert.Equal(2, p4));
         }
 
-        public void PlayTurn()
+        [Fact]
+        public void CorrectlyModifyPlayerCards_AfterPlayingFourRecursiveTurns()
         {
-            var playerOneCard = Players[FIRST_PLAYER][0];
-            var playerTwoCard = Players[SECOND_PLAYER][0];
+            const string decks = @"Player 1:
+9
+2
+6
+3
+1
 
-            Players[FIRST_PLAYER].Remove(playerOneCard);
-            Players[SECOND_PLAYER].Remove(playerTwoCard);
+Player 2:
+5
+8
+4
+7
+10";
 
-            if (playerOneCard > playerTwoCard)
-            {
-                Players[FIRST_PLAYER].Add(playerOneCard);
-                Players[FIRST_PLAYER].Add(playerTwoCard);
-            }
-            else
-            {
-                Players[SECOND_PLAYER].Add(playerTwoCard);
-                Players[SECOND_PLAYER].Add(playerOneCard);
-            }
+            var sut = new Combat(decks);
+
+            sut.PlayRecursiveTurns(4);
+            Assert.Collection(sut.Players[0],
+                p1 => Assert.Equal(1, p1),
+                p2 => Assert.Equal(9, p2),
+                p3 => Assert.Equal(5, p3),
+                p4 => Assert.Equal(6, p4),
+                p5 => Assert.Equal(4, p5));
+            Assert.Collection(sut.Players[1],
+                p1 => Assert.Equal(10, p1),
+                p2 => Assert.Equal(8, p2),
+                p3 => Assert.Equal(2, p3),
+                p4 => Assert.Equal(7, p4),
+                p5 => Assert.Equal(3, p5));
         }
 
-        public void PlayTurns(int turns)
+        [Fact]
+        public void CorrectlyModifyPlayerCards_AfterPlayingFiveRecursiveTurns()
         {
-            for (var index = 0; index < turns; index++)
-            {
-                PlayTurn();
-            }
+            const string decks = @"Player 1:
+9
+2
+6
+3
+1
+
+Player 2:
+5
+8
+4
+7
+10";
+
+            var sut = new Combat(decks);
+
+            sut.PlayRecursiveTurns(5);
+            Assert.Collection(sut.Players[0],
+                p1 => Assert.Equal(9, p1),
+                p2 => Assert.Equal(5, p2),
+                p3 => Assert.Equal(6, p3),
+                p4 => Assert.Equal(4, p4));
+            Assert.Collection(sut.Players[1],
+                p1 => Assert.Equal(8, p1),
+                p2 => Assert.Equal(2, p2),
+                p3 => Assert.Equal(7, p3),
+                p4 => Assert.Equal(3, p4),
+                p5 => Assert.Equal(10, p5),
+                p6 => Assert.Equal(1, p6));
         }
 
-        public void CalculatePoints()
+        [Fact]
+        public void CorrectlyModifyPlayerCards_AfterPlayingSixRecursiveTurns()
         {
-            var winnersDeck = Players[FIRST_PLAYER].Count == 0
-                ? Players[SECOND_PLAYER]
-                : Players[FIRST_PLAYER];
+            const string decks = @"Player 1:
+9
+2
+6
+3
+1
 
-            WinnerPoints = 0;
-            for (var i = 1; i <= winnersDeck.Count; i++)
-            {
-                WinnerPoints += i * winnersDeck[^i];
-            }
+Player 2:
+5
+8
+4
+7
+10";
+
+            var sut = new Combat(decks);
+
+            sut.PlayRecursiveTurns(6);
+            Assert.Collection(sut.Players[0],
+                p1 => Assert.Equal(5, p1),
+                p2 => Assert.Equal(6, p2),
+                p3 => Assert.Equal(4, p3),
+                p4 => Assert.Equal(9, p4),
+                p5 => Assert.Equal(8, p5));
+            Assert.Collection(sut.Players[1],
+                p2 => Assert.Equal(2, p2),
+                p3 => Assert.Equal(7, p3),
+                p4 => Assert.Equal(3, p4),
+                p5 => Assert.Equal(10, p5),
+                p6 => Assert.Equal(1, p6));
         }
 
-        public void PlayGame()
+        [Fact]
+        public void CorrectlyModifyPlayerCards_AfterPlayingSevenRecursiveTurns()
         {
-            while (Players[FIRST_PLAYER].Count > 0 && Players[SECOND_PLAYER].Count > 0)
-            {
-                PlayTurn();
-            }
+            const string decks = @"Player 1:
+9
+2
+6
+3
+1
+
+Player 2:
+5
+8
+4
+7
+10";
+
+            var sut = new Combat(decks);
+
+            sut.PlayRecursiveTurns(7);
+            Assert.Collection(sut.Players[0],
+                p1 => Assert.Equal(6, p1),
+                p2 => Assert.Equal(4, p2),
+                p3 => Assert.Equal(9, p3),
+                p4 => Assert.Equal(8, p4),
+                p5 => Assert.Equal(5, p5),
+                p6 => Assert.Equal(2, p6));
+            Assert.Collection(sut.Players[1],
+                p1 => Assert.Equal(7, p1),
+                p2 => Assert.Equal(3, p2),
+                p3 => Assert.Equal(10, p3),
+                p4 => Assert.Equal(1, p4));
+        }
+
+        [Fact]
+        public void CorrectlyModifyPlayerCards_AfterPlayingEightRecursiveTurns()
+        {
+            const string decks = @"Player 1:
+9
+2
+6
+3
+1
+
+Player 2:
+5
+8
+4
+7
+10";
+
+            var sut = new Combat(decks);
+
+            sut.PlayRecursiveTurns(8);
+            Assert.Collection(sut.Players[0],
+                p1 => Assert.Equal(4, p1),
+                p2 => Assert.Equal(9, p2),
+                p3 => Assert.Equal(8, p3),
+                p4 => Assert.Equal(5, p4),
+                p5 => Assert.Equal(2, p5));
+            Assert.Collection(sut.Players[1],
+                p1 => Assert.Equal(3, p1),
+                p2 => Assert.Equal(10, p2),
+                p3 => Assert.Equal(1, p3),
+                p4 => Assert.Equal(7, p4),
+                p5 => Assert.Equal(6, p5));
+        }
+
+        [Fact]
+        public void CorrectlyModifyPlayerCards_AfterPlayingNineRecursiveTurns()
+        {
+            const string decks = @"Player 1:
+9
+2
+6
+3
+1
+
+Player 2:
+5
+8
+4
+7
+10";
+
+            var sut = new Combat(decks);
+
+            sut.PlayRecursiveTurns(9);
+            Assert.Collection(sut.Players[0],
+                p1 => Assert.Equal(9, p1),
+                p2 => Assert.Equal(8, p2),
+                p3 => Assert.Equal(5, p3),
+                p4 => Assert.Equal(2, p4));
+            Assert.Collection(sut.Players[1],
+                p1 => Assert.Equal(10, p1),
+                p2 => Assert.Equal(1, p2),
+                p3 => Assert.Equal(7, p3),
+                p4 => Assert.Equal(6, p4),
+                p5 => Assert.Equal(3, p5),
+                p6 => Assert.Equal(4, p6));
+        }
+
+        [Fact]
+        public void CorrectlyModifyPlayerCards_AfterPlayingTenRecursiveTurns()
+        {
+            const string decks = @"Player 1:
+9
+2
+6
+3
+1
+
+Player 2:
+5
+8
+4
+7
+10";
+
+            var sut = new Combat(decks);
+
+            sut.PlayRecursiveTurns(10);
+            Assert.Collection(sut.Players[0],
+                p1 => Assert.Equal(8, p1),
+                p2 => Assert.Equal(5, p2),
+                p3 => Assert.Equal(2, p3));
+            Assert.Collection(sut.Players[1],
+                p1 => Assert.Equal(1, p1),
+                p2 => Assert.Equal(7, p2),
+                p3 => Assert.Equal(6, p3),
+                p4 => Assert.Equal(3, p4),
+                p5 => Assert.Equal(4, p5),
+                p6 => Assert.Equal(10, p6),
+                p7 => Assert.Equal(9, p7));
+        }
+
+        [Fact]
+        public void CorrectlyModifyPlayerCards_AfterPlayingElevenRecursiveTurns()
+        {
+            const string decks = @"Player 1:
+9
+2
+6
+3
+1
+
+Player 2:
+5
+8
+4
+7
+10";
+
+            var sut = new Combat(decks);
+
+            sut.PlayRecursiveTurns(11);
+            Assert.Collection(sut.Players[0],
+                p1 => Assert.Equal(5, p1),
+                p2 => Assert.Equal(2, p2),
+                p3 => Assert.Equal(8, p3),
+                p4 => Assert.Equal(1, p4));
+            Assert.Collection(sut.Players[1],
+                p1 => Assert.Equal(7, p1),
+                p2 => Assert.Equal(6, p2),
+                p3 => Assert.Equal(3, p3),
+                p4 => Assert.Equal(4, p4),
+                p5 => Assert.Equal(10, p5),
+                p6 => Assert.Equal(9, p6));
+        }
+
+        [Fact]
+        public void CorrectlyModifyPlayerCards_AfterPlayingTwelveRecursiveTurns()
+        {
+            const string decks = @"Player 1:
+9
+2
+6
+3
+1
+
+Player 2:
+5
+8
+4
+7
+10";
+
+            var sut = new Combat(decks);
+
+            sut.PlayRecursiveTurns(12);
+            Assert.Collection(sut.Players[0],
+                p1 => Assert.Equal(2, p1),
+                p2 => Assert.Equal(8, p2),
+                p3 => Assert.Equal(1, p3));
+            Assert.Collection(sut.Players[1],
+                p1 => Assert.Equal(6, p1),
+                p2 => Assert.Equal(3, p2),
+                p3 => Assert.Equal(4, p3),
+                p4 => Assert.Equal(10, p4),
+                p5 => Assert.Equal(9, p5),
+                p6 => Assert.Equal(7, p6),
+                p7 => Assert.Equal(5, p7));
+        }
+
+        [Fact]
+        public void CorrectlyModifyPlayerCards_AfterPlayingThirteenRecursiveTurns()
+        {
+            const string decks = @"Player 1:
+9
+2
+6
+3
+1
+
+Player 2:
+5
+8
+4
+7
+10";
+
+            var sut = new Combat(decks);
+
+            sut.PlayRecursiveTurns(13);
+            Assert.Collection(sut.Players[0],
+                p1 => Assert.Equal(8, p1),
+                p2 => Assert.Equal(1, p2));
+            Assert.Collection(sut.Players[1],
+                p1 => Assert.Equal(3, p1),
+                p2 => Assert.Equal(4, p2),
+                p3 => Assert.Equal(10, p3),
+                p4 => Assert.Equal(9, p4),
+                p7 => Assert.Equal(7, p7),
+                p8 => Assert.Equal(5, p8),
+                p9 => Assert.Equal(6, p9),
+                p10 => Assert.Equal(2, p10));
+        }
+
+        [Fact]
+        public void CorrectlyModifyPlayerCards_AfterPlayingFourteenRecursiveTurns()
+        {
+            const string decks = @"Player 1:
+9
+2
+6
+3
+1
+
+Player 2:
+5
+8
+4
+7
+10";
+
+            var sut = new Combat(decks);
+
+            sut.PlayRecursiveTurns(14);
+            Assert.Collection(sut.Players[0],
+                p2 => Assert.Equal(1, p2),
+                p1 => Assert.Equal(8, p1),
+                p1 => Assert.Equal(3, p1));
+            Assert.Collection(sut.Players[1],
+                p1 => Assert.Equal(4, p1),
+                p2 => Assert.Equal(10, p2),
+                p3 => Assert.Equal(9, p3),
+                p4 => Assert.Equal(7, p4),
+                p5 => Assert.Equal(5, p5),
+                p6 => Assert.Equal(6, p6),
+                p7 => Assert.Equal(2, p7));
+        }
+
+        [Fact]
+        public void CorrectlyModifyPlayerCards_AfterPlayingFifteenRecursiveTurns()
+        {
+            const string decks = @"Player 1:
+9
+2
+6
+3
+1
+
+Player 2:
+5
+8
+4
+7
+10";
+
+            var sut = new Combat(decks);
+
+            sut.PlayRecursiveTurns(15);
+            Assert.Collection(sut.Players[0],
+                p1 => Assert.Equal(8, p1),
+                p2 => Assert.Equal(3, p2));
+            Assert.Collection(sut.Players[1],
+                p1 => Assert.Equal(10, p1),
+                p2 => Assert.Equal(9, p2),
+                p3 => Assert.Equal(7, p3),
+                p4 => Assert.Equal(5, p4),
+                p5 => Assert.Equal(6, p5),
+                p6 => Assert.Equal(2, p6),
+                p7 => Assert.Equal(4, p7),
+                p8 => Assert.Equal(1, p8));
+        }
+
+        [Fact]
+        public void CorrectlyModifyPlayerCards_AfterPlayingSixteenRecursiveTurns()
+        {
+            const string decks = @"Player 1:
+9
+2
+6
+3
+1
+
+Player 2:
+5
+8
+4
+7
+10";
+
+            var sut = new Combat(decks);
+
+            sut.PlayRecursiveTurns(16);
+            Assert.Collection(sut.Players[0],
+                p1 => Assert.Equal(3, p1));
+            Assert.Collection(sut.Players[1],
+                p1 => Assert.Equal(9, p1),
+                p2 => Assert.Equal(7, p2),
+                p3 => Assert.Equal(5, p3),
+                p4 => Assert.Equal(6, p4),
+                p5 => Assert.Equal(2, p5),
+                p6 => Assert.Equal(4, p6),
+                p7 => Assert.Equal(1, p7),
+                p7 => Assert.Equal(10, p7),
+                p8 => Assert.Equal(8, p8));
+        }
+
+        [Fact]
+        public void CorrectlyModifyPlayerCards_AfterPlayingSeventeenRecursiveTurns()
+        {
+            const string decks = @"Player 1:
+9
+2
+6
+3
+1
+
+Player 2:
+5
+8
+4
+7
+10";
+
+            var sut = new Combat(decks);
+
+            sut.PlayRecursiveTurns(17);
+            Assert.Empty(sut.Players[0]);
+            Assert.Collection(sut.Players[1],
+                p1 => Assert.Equal(7, p1),
+                p2 => Assert.Equal(5, p2),
+                p3 => Assert.Equal(6, p3),
+                p4 => Assert.Equal(2, p4),
+                p5 => Assert.Equal(4, p5),
+                p6 => Assert.Equal(1, p6),
+                p7 => Assert.Equal(10, p7),
+                p8 => Assert.Equal(8, p8),
+                p9 => Assert.Equal(9, p9),
+                p10 => Assert.Equal(3, p10));
+        }
+
+        [Fact]
+        public void ReturnPoints_WhenCalculatingWinnerPointsAfterTheRecursiveGame()
+        {
+            const string decks = @"Player 1:
+9
+2
+6
+3
+1
+
+Player 2:
+5
+8
+4
+7
+10";
+
+            var sut = new Combat(decks);
+
+            sut.PlayRecursiveTurns(17);
+            sut.CalculatePoints();
+            Assert.Equal(291, sut.WinnerPoints);
+        }
+
+        [Fact]
+        public void PlayRecursiveGameCorrectly()
+        {
+            const string decks = @"Player 1:
+9
+2
+6
+3
+1
+
+Player 2:
+5
+8
+4
+7
+10";
+
+            var sut = new Combat(decks);
+
+            sut.PlayRecursiveGame();
+            sut.CalculatePoints();
+            Assert.Equal(291, sut.WinnerPoints);
+
+        }
+
+        [Fact]
+        public void PreventInfiniteRecursion()
+        {
+            const string decks = @"Player 1:
+43
+19
+
+Player 2:
+2
+29
+14";
+
+            var sut = new Combat(decks);
+            sut.PlayRecursiveGame();
+            sut.CalculatePoints();
+            Assert.Equal(105, sut.WinnerPoints);
+        }
+
+        [Fact]
+        public void SolveSecondPuzzle()
+        {
+            const string decks = @"Player 1:
+42
+29
+12
+40
+47
+26
+11
+39
+41
+13
+8
+50
+44
+33
+5
+27
+10
+25
+17
+1
+28
+22
+6
+32
+35
+
+Player 2:
+19
+34
+38
+21
+43
+14
+23
+46
+16
+3
+36
+31
+37
+45
+30
+15
+49
+48
+24
+9
+2
+18
+4
+7
+20";
+
+            var sut = new Combat(decks);
+
+            sut.PlayRecursiveGame();
+            sut.CalculatePoints();
+            Assert.Equal(32665, sut.WinnerPoints);
+            Assert.True(33701 > sut.WinnerPoints);
         }
     }
 }
