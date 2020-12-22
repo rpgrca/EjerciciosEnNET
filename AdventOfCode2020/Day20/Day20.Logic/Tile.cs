@@ -1,6 +1,4 @@
-#region
 using System;
-#endregion
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,8 +26,9 @@ namespace AdventOfCode2020.Day20.Logic
             FlippedVerticallyAndHorizontallyRotated270 = 15
         }
 
-        private readonly int Size = 10;
+        private const int Size = 10;
         private readonly string _data;
+        private int _size = Size;
 
         public bool IsCorner { get; private set; }
         public bool IsBorder { get; private set; }
@@ -57,7 +56,7 @@ namespace AdventOfCode2020.Day20.Logic
         public Tile(string data, int size)
         {
             _data = data;
-            Size = size;
+            _size = size;
             _borders = new List<string>();
             Position = CurrentPosition.Normal;
             Transformations = new List<Tile>();
@@ -84,6 +83,7 @@ namespace AdventOfCode2020.Day20.Logic
             GetIdFromData();
 
             GetImageFromData();
+            CalculateSizeFromData();
             GetBordersFromImage();
             ComputeVariants();
         }
@@ -172,12 +172,15 @@ namespace AdventOfCode2020.Day20.Logic
         private void GetImageFromData() =>
             Image = _data.Replace("\n", string.Empty).Split(":")[1];
 
+        private void CalculateSizeFromData() =>
+            _size = (int)Math.Sqrt(Image.Length);
+
         private void GetBordersFromImage()
         {
-            Top = Image[0..Size];
-            Right = new string(Image.Where((_, i) => (i + 1) % Size == 0).ToArray());
-            Bottom = Image[((Size * Size) - Size)..(Size*Size)];
-            Left = new string(Image.Where((_, i) => i % Size == 0).ToArray());
+            Top = Image[0.._size];
+            Right = new string(Image.Where((_, i) => (i + 1) % _size == 0).ToArray());
+            Bottom = Image[((_size * _size) - _size)..(_size * _size)];
+            Left = new string(Image.Where((_, i) => i % _size == 0).ToArray());
 /*
             Top = Image[0..Size];
             Right = new string(Image.Where((_, i) => (i + 1) % Size == 0).ToArray());
@@ -188,13 +191,13 @@ namespace AdventOfCode2020.Day20.Logic
 
         private void RotateAQuarterToTheRight()
         {
-            var newImage = new char[Size*Size];
+            var newImage = new char[_size * _size];
 
-            for (var y = 0; y < Size; y++)
+            for (var y = 0; y < _size; y++)
             {
-                for (var x = 0; x < Size; x++)
+                for (var x = 0; x < _size; x++)
                 {
-                    newImage[((x + 1) * Size) - (y + 1)] = Image[(y * Size) + x];
+                    newImage[((x + 1) * _size) - (y + 1)] = Image[(y * _size) + x];
                 }
             }
 
@@ -252,13 +255,13 @@ namespace AdventOfCode2020.Day20.Logic
 
         public void FlipHorizontally()
         {
-            var newImage = new char[Size*Size];
+            var newImage = new char[_size * _size];
 
-            for (var y = 0; y < Size; y++)
+            for (var y = 0; y < _size; y++)
             {
-                for (var x = 0; x < Size; x++)
+                for (var x = 0; x < _size; x++)
                 {
-                    newImage[((Size - 1 - y) * Size) + x] = Image[(y * Size) + x];
+                    newImage[((_size - 1 - y) * _size) + x] = Image[(y * _size) + x];
                 }
             }
 
@@ -271,13 +274,13 @@ namespace AdventOfCode2020.Day20.Logic
 
         public void FlipVertically()
         {
-             var newImage = new char[Size*Size];
+             var newImage = new char[_size * _size];
 
-            for (var y = 0; y < Size; y++)
+            for (var y = 0; y < _size; y++)
             {
-                for (var x = 0; x < Size; x++)
+                for (var x = 0; x < _size; x++)
                 {
-                    newImage[(y * Size) + (Size - 1 - x)] = Image[(y * Size) + x];
+                    newImage[(y * _size) + (_size - 1 - x)] = Image[(y * _size) + x];
                 }
             }
 
@@ -622,13 +625,16 @@ namespace AdventOfCode2020.Day20.Logic
         public void Crop()
         {
             Image = string.Join(string.Empty, _data.Split(":\n")[1].Split("\n").Skip(1).Take(8).Select(p => p[1..9]));
+            _size = 8;
         }
+
+        public int GetSize() => _size;
 
         public void Display()
         {
-            for (var y = 0; y < Size; y++)
+            for (var y = 0; y < _size; y++)
             {
-                Console.WriteLine($"{Image[(y*Size)..((y*Size)+Size)]}");
+                Console.WriteLine($"{Image[(y * _size)..((y * _size) + _size)]}");
             }
         }
     }
