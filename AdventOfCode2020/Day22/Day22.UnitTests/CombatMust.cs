@@ -1168,7 +1168,6 @@ Player 2:
             sut.PlayRecursiveGame();
             sut.CalculatePoints();
             Assert.Equal(32665, sut.WinnerPoints);
-            Assert.True(33701 > sut.WinnerPoints);
         }
     }
 }
