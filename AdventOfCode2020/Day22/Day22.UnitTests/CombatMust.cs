@@ -366,7 +366,7 @@ Player 2:
             var sut = new Combat(decks);
 
             sut.PlayTurns(29);
-            sut.CalculatePoints();
+            sut.CalculatePointsForWinner();
             Assert.Equal(306, sut.WinnerPoints);
         }
 
@@ -389,8 +389,8 @@ Player 2:
 
             var sut = new Combat(decks);
 
-            sut.PlayGame();
-            sut.CalculatePoints();
+            sut.Play();
+            sut.CalculatePointsForWinner();
             Assert.Equal(306, sut.WinnerPoints);
         }
 
@@ -453,8 +453,8 @@ Player 2:
 
             var sut = new Combat(decks);
 
-            sut.PlayGame();
-            sut.CalculatePoints();
+            sut.Play();
+            sut.CalculatePointsForWinner();
             Assert.Equal(32495, sut.WinnerPoints);
         }
 
@@ -475,9 +475,9 @@ Player 2:
 7
 10";
 
-            var sut = new Combat(decks);
+            var sut = new RecursiveCombat(decks);
 
-            sut.PlayRecursiveTurn();
+            sut.PlayTurn();
             Assert.Collection(sut.Players[0],
                 p1 => Assert.Equal(2, p1),
                 p2 => Assert.Equal(6, p2),
@@ -509,10 +509,10 @@ Player 2:
 7
 10";
 
-            var sut = new Combat(decks);
+            var sut = new RecursiveCombat(decks);
 
-            sut.PlayRecursiveTurn();
-            sut.PlayRecursiveTurn();
+            sut.PlayTurn();
+            sut.PlayTurn();
             Assert.Collection(sut.Players[0],
                 p1 => Assert.Equal(6, p1),
                 p2 => Assert.Equal(3, p2),
@@ -544,11 +544,11 @@ Player 2:
 7
 10";
 
-            var sut = new Combat(decks);
+            var sut =new RecursiveCombat(decks);
 
-            sut.PlayRecursiveTurn();
-            sut.PlayRecursiveTurn();
-            sut.PlayRecursiveTurn();
+            sut.PlayTurn();
+            sut.PlayTurn();
+            sut.PlayTurn();
             Assert.Collection(sut.Players[0],
                 p1 => Assert.Equal(3, p1),
                 p2 => Assert.Equal(1, p2),
@@ -580,9 +580,9 @@ Player 2:
 7
 10";
 
-            var sut = new Combat(decks);
+            var sut = new RecursiveCombat(decks);
 
-            sut.PlayRecursiveTurns(4);
+            sut.PlayTurns(4);
             Assert.Collection(sut.Players[0],
                 p1 => Assert.Equal(1, p1),
                 p2 => Assert.Equal(9, p2),
@@ -614,9 +614,9 @@ Player 2:
 7
 10";
 
-            var sut = new Combat(decks);
+            var sut = new RecursiveCombat(decks);
 
-            sut.PlayRecursiveTurns(5);
+            sut.PlayTurns(5);
             Assert.Collection(sut.Players[0],
                 p1 => Assert.Equal(9, p1),
                 p2 => Assert.Equal(5, p2),
@@ -648,9 +648,9 @@ Player 2:
 7
 10";
 
-            var sut = new Combat(decks);
+            var sut = new RecursiveCombat(decks);
 
-            sut.PlayRecursiveTurns(6);
+            sut.PlayTurns(6);
             Assert.Collection(sut.Players[0],
                 p1 => Assert.Equal(5, p1),
                 p2 => Assert.Equal(6, p2),
@@ -682,9 +682,9 @@ Player 2:
 7
 10";
 
-            var sut = new Combat(decks);
+            var sut = new RecursiveCombat(decks);
 
-            sut.PlayRecursiveTurns(7);
+            sut.PlayTurns(7);
             Assert.Collection(sut.Players[0],
                 p1 => Assert.Equal(6, p1),
                 p2 => Assert.Equal(4, p2),
@@ -716,9 +716,9 @@ Player 2:
 7
 10";
 
-            var sut = new Combat(decks);
+            var sut = new RecursiveCombat(decks);
 
-            sut.PlayRecursiveTurns(8);
+            sut.PlayTurns(8);
             Assert.Collection(sut.Players[0],
                 p1 => Assert.Equal(4, p1),
                 p2 => Assert.Equal(9, p2),
@@ -750,9 +750,9 @@ Player 2:
 7
 10";
 
-            var sut = new Combat(decks);
+            var sut = new RecursiveCombat(decks);
 
-            sut.PlayRecursiveTurns(9);
+            sut.PlayTurns(9);
             Assert.Collection(sut.Players[0],
                 p1 => Assert.Equal(9, p1),
                 p2 => Assert.Equal(8, p2),
@@ -784,9 +784,9 @@ Player 2:
 7
 10";
 
-            var sut = new Combat(decks);
+            var sut = new RecursiveCombat(decks);
 
-            sut.PlayRecursiveTurns(10);
+            sut.PlayTurns(10);
             Assert.Collection(sut.Players[0],
                 p1 => Assert.Equal(8, p1),
                 p2 => Assert.Equal(5, p2),
@@ -818,9 +818,9 @@ Player 2:
 7
 10";
 
-            var sut = new Combat(decks);
+            var sut = new RecursiveCombat(decks);
 
-            sut.PlayRecursiveTurns(11);
+            sut.PlayTurns(11);
             Assert.Collection(sut.Players[0],
                 p1 => Assert.Equal(5, p1),
                 p2 => Assert.Equal(2, p2),
@@ -852,9 +852,9 @@ Player 2:
 7
 10";
 
-            var sut = new Combat(decks);
+            var sut = new RecursiveCombat(decks);
 
-            sut.PlayRecursiveTurns(12);
+            sut.PlayTurns(12);
             Assert.Collection(sut.Players[0],
                 p1 => Assert.Equal(2, p1),
                 p2 => Assert.Equal(8, p2),
@@ -886,9 +886,9 @@ Player 2:
 7
 10";
 
-            var sut = new Combat(decks);
+            var sut = new RecursiveCombat(decks);
 
-            sut.PlayRecursiveTurns(13);
+            sut.PlayTurns(13);
             Assert.Collection(sut.Players[0],
                 p1 => Assert.Equal(8, p1),
                 p2 => Assert.Equal(1, p2));
@@ -920,9 +920,9 @@ Player 2:
 7
 10";
 
-            var sut = new Combat(decks);
+            var sut = new RecursiveCombat(decks);
 
-            sut.PlayRecursiveTurns(14);
+            sut.PlayTurns(14);
             Assert.Collection(sut.Players[0],
                 p2 => Assert.Equal(1, p2),
                 p1 => Assert.Equal(8, p1),
@@ -954,9 +954,9 @@ Player 2:
 7
 10";
 
-            var sut = new Combat(decks);
+            var sut = new RecursiveCombat(decks);
 
-            sut.PlayRecursiveTurns(15);
+            sut.PlayTurns(15);
             Assert.Collection(sut.Players[0],
                 p1 => Assert.Equal(8, p1),
                 p2 => Assert.Equal(3, p2));
@@ -988,9 +988,9 @@ Player 2:
 7
 10";
 
-            var sut = new Combat(decks);
+            var sut = new RecursiveCombat(decks);
 
-            sut.PlayRecursiveTurns(16);
+            sut.PlayTurns(16);
             Assert.Collection(sut.Players[0],
                 p1 => Assert.Equal(3, p1));
             Assert.Collection(sut.Players[1],
@@ -1022,9 +1022,9 @@ Player 2:
 7
 10";
 
-            var sut = new Combat(decks);
+            var sut = new RecursiveCombat(decks);
 
-            sut.PlayRecursiveTurns(17);
+            sut.PlayTurns(17);
             Assert.Empty(sut.Players[0]);
             Assert.Collection(sut.Players[1],
                 p1 => Assert.Equal(7, p1),
@@ -1056,10 +1056,10 @@ Player 2:
 7
 10";
 
-            var sut = new Combat(decks);
+            var sut = new RecursiveCombat(decks);
 
-            sut.PlayRecursiveTurns(17);
-            sut.CalculatePoints();
+            sut.PlayTurns(17);
+            sut.CalculatePointsForWinner();
             Assert.Equal(291, sut.WinnerPoints);
         }
 
@@ -1080,10 +1080,10 @@ Player 2:
 7
 10";
 
-            var sut = new Combat(decks);
+            var sut = new RecursiveCombat(decks);
 
-            sut.PlayRecursiveGame();
-            sut.CalculatePoints();
+            sut.Play();
+            sut.CalculatePointsForWinner();
             Assert.Equal(291, sut.WinnerPoints);
 
         }
@@ -1100,9 +1100,9 @@ Player 2:
 29
 14";
 
-            var sut = new Combat(decks);
-            sut.PlayRecursiveGame();
-            sut.CalculatePoints();
+            var sut = new RecursiveCombat(decks);
+            sut.Play();
+            sut.CalculatePointsForWinner();
             Assert.Equal(105, sut.WinnerPoints);
         }
 
@@ -1163,10 +1163,10 @@ Player 2:
 7
 20";
 
-            var sut = new Combat(decks);
+            var sut = new RecursiveCombat(decks);
 
-            sut.PlayRecursiveGame();
-            sut.CalculatePoints();
+            sut.Play();
+            sut.CalculatePointsForWinner();
             Assert.Equal(32665, sut.WinnerPoints);
         }
     }
