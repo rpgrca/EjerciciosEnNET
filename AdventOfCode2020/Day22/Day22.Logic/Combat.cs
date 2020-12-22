@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -70,20 +71,20 @@ namespace AdventOfCode2020.Day22.Logic
             Players[SECOND_PLAYER].Remove(_lastPlayedCards.Item2);
         }
 
-        protected void PlayerWithHighestCardWins()
+        protected void PlayerWithHighestCardWins() =>
+            CardFromFirstPlayerBeatsCardFromSecondPlayer(PlayerOneWinsRound, PlayerTwoWinsRound);
+
+        private void CardFromFirstPlayerBeatsCardFromSecondPlayer(Action whenPlayerOneBeatsPlayerTwo, Action whenPlayerTwoBeatsPlayerOne)
         {
-            if (CardFromFirstPlayerBeatsCardFromSecondPlayer())
+            if (_lastPlayedCards.Item1 > _lastPlayedCards.Item2)
             {
-                PlayerOneWinsRound();
+                whenPlayerOneBeatsPlayerTwo();
             }
             else
             {
-                PlayerTwoWinsRound();
+                whenPlayerTwoBeatsPlayerOne();
             }
         }
-
-        private bool CardFromFirstPlayerBeatsCardFromSecondPlayer() =>
-            _lastPlayedCards.Item1 > _lastPlayedCards.Item2;
 
         protected void PlayerOneWinsRound()
         {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace AdventOfCode2020.Day22.Logic
@@ -23,40 +24,33 @@ namespace AdventOfCode2020.Day22.Logic
             {
                 RecordThisGameConfiguration();
                 DealCards();
-
-                if (BothPlayersHaveEnoughCardsForMinigame())
-                {
-                    PlayMinigame();
-                }
-                else
-                {
-                    PlayerWithHighestCardWins();
-                }
+                BothPlayersHaveEnoughCardsForMinigame(PlayMinigame, PlayerWithHighestCardWins);
             }
         }
 
-        private bool HasThisGameOccurredBefore()
-        {
-            var firstPlayer = string.Join("-", Players[FIRST_PLAYER]);
-            var secondPlayer = string.Join("-", Players[SECOND_PLAYER]);
-            var gameConfiguration = string.Concat(firstPlayer, "|", secondPlayer);
-
-            return _previousTurns.Contains(gameConfiguration);
-        }
+        private bool HasThisGameOccurredBefore() =>
+            _previousTurns.Contains(GetGameConfiguration());
 
         private void SecondPlayerLosesTheGame() =>
             Players[SECOND_PLAYER].Clear();
 
-        private void RecordThisGameConfiguration()
+        private void RecordThisGameConfiguration() =>
+            _previousTurns.Add(GetGameConfiguration());
+
+        private void BothPlayersHaveEnoughCardsForMinigame(Action whenTheyHave, Action whenTheyDont)
         {
-            var firstPlayer = string.Join("-", Players[FIRST_PLAYER]);
-            var secondPlayer = string.Join("-", Players[SECOND_PLAYER]);
-            var gameConfiguration = string.Concat(firstPlayer, "|", secondPlayer);
-            _previousTurns.Add(gameConfiguration);
+            if (Players[FIRST_PLAYER].Count >= _lastPlayedCards.Item1 && Players[SECOND_PLAYER].Count >= _lastPlayedCards.Item2)
+            {
+                whenTheyHave();
+            }
+            else
+            {
+                whenTheyDont();
+            }
         }
 
-        private bool BothPlayersHaveEnoughCardsForMinigame() =>
-            Players[FIRST_PLAYER].Count >= _lastPlayedCards.Item1 && Players[SECOND_PLAYER].Count >= _lastPlayedCards.Item2;
+        private string GetGameConfiguration() =>
+            $"{string.Join("-", Players[FIRST_PLAYER])}|{string.Join("-", Players[SECOND_PLAYER])}";
 
         private void PlayMinigame()
         {
@@ -64,16 +58,19 @@ namespace AdventOfCode2020.Day22.Logic
                                        Players[SECOND_PLAYER].ToArray()[0.._lastPlayedCards.Item2]);
 
             recursiveGame.Play();
-            if (recursiveGame.HasPlayerOneWon())
+            recursiveGame.HasPlayerOneWon(PlayerOneWinsRound, PlayerTwoWinsRound);
+        }
+
+        private void HasPlayerOneWon(Action whenTheyHave, Action whenTheyHavent)
+        {
+            if (Players[SECOND_PLAYER].Count == 0)
             {
-                PlayerOneWinsRound();
+                whenTheyHave();
             }
             else
             {
-                PlayerTwoWinsRound();
+                whenTheyHavent();
             }
         }
-
-        private bool HasPlayerOneWon() => Players[SECOND_PLAYER].Count == 0;
     }
 }
