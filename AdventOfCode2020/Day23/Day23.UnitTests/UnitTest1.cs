@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System.Linq;
 using System;
 using System.Collections.Generic;
@@ -150,6 +151,17 @@ namespace AdventOfCode2020.Day23.UnitTests
             sut.Moves(3);
 
             Assert.Collection(sut.Cups,
+                c1 => Assert.Equal(3, c1),
+                c2 => Assert.Equal(4, c2),
+                c3 => Assert.Equal(6, c3),
+                c4 => Assert.Equal(7, c4),
+                c5 => Assert.Equal(2, c5),
+                c6 => Assert.Equal(5, c6),
+                c7 => Assert.Equal(8, c7),
+                c8 => Assert.Equal(9, c8),
+                c9 => Assert.Equal(1, c9));
+
+            /*Assert.Collection(sut.Cups,
                 c1 => Assert.Equal(7, c1),
                 c2 => Assert.Equal(2, c2),
                 c3 => Assert.Equal(5, c3),
@@ -158,7 +170,7 @@ namespace AdventOfCode2020.Day23.UnitTests
                 c6 => Assert.Equal(1, c6),
                 c7 => Assert.Equal(3, c7),
                 c8 => Assert.Equal(4, c8),
-                c9 => Assert.Equal(6, c9));
+                c9 => Assert.Equal(6, c9));*/
         }
 
         [Fact]
@@ -168,6 +180,17 @@ namespace AdventOfCode2020.Day23.UnitTests
             sut.Moves(4);
 
             Assert.Collection(sut.Cups,
+                c1 => Assert.Equal(8, c1),
+                c2 => Assert.Equal(4, c2),
+                c3 => Assert.Equal(6, c3),
+                c4 => Assert.Equal(7, c4),
+                c5 => Assert.Equal(9, c5),
+                c6 => Assert.Equal(1, c6),
+                c7 => Assert.Equal(3, c7),
+                c8 => Assert.Equal(2, c8),
+                c9 => Assert.Equal(5, c9));
+
+            /*Assert.Collection(sut.Cups,
                 c1 => Assert.Equal(3, c1),
                 c2 => Assert.Equal(2, c2),
                 c3 => Assert.Equal(5, c3),
@@ -176,7 +199,7 @@ namespace AdventOfCode2020.Day23.UnitTests
                 c6 => Assert.Equal(6, c6),
                 c7 => Assert.Equal(7, c7),
                 c8 => Assert.Equal(9, c8),
-                c9 => Assert.Equal(1, c9));
+                c9 => Assert.Equal(1, c9));*/
         }
 
         [Fact]
@@ -186,6 +209,17 @@ namespace AdventOfCode2020.Day23.UnitTests
             sut.Moves(5);
 
             Assert.Collection(sut.Cups,
+                c1 => Assert.Equal(8, c1),
+                c2 => Assert.Equal(4, c2),
+                c3 => Assert.Equal(1, c3),
+                c4 => Assert.Equal(3, c4),
+                c5 => Assert.Equal(6, c5),
+                c6 => Assert.Equal(7, c6),
+                c7 => Assert.Equal(9, c7),
+                c8 => Assert.Equal(2, c8),
+                c9 => Assert.Equal(5, c9));
+
+            /*Assert.Collection(sut.Cups,
                 c1 => Assert.Equal(9, c1),
                 c2 => Assert.Equal(2, c2),
                 c3 => Assert.Equal(5, c3),
@@ -194,7 +228,7 @@ namespace AdventOfCode2020.Day23.UnitTests
                 c6 => Assert.Equal(1, c6),
                 c7 => Assert.Equal(3, c7),
                 c8 => Assert.Equal(6, c8),
-                c9 => Assert.Equal(7, c9));
+                c9 => Assert.Equal(7, c9));*/
         }
 
         [Fact]
@@ -204,6 +238,17 @@ namespace AdventOfCode2020.Day23.UnitTests
             sut.Moves(6);
 
             Assert.Collection(sut.Cups,
+                c1 => Assert.Equal(8, c1),
+                c2 => Assert.Equal(4, c2),
+                c3 => Assert.Equal(1, c3),
+                c4 => Assert.Equal(9, c4),
+                c5 => Assert.Equal(3, c5),
+                c6 => Assert.Equal(6, c6),
+                c7 => Assert.Equal(7, c7),
+                c8 => Assert.Equal(2, c8),
+                c9 => Assert.Equal(5, c9));
+
+            /*Assert.Collection(sut.Cups,
                 c1 => Assert.Equal(7, c1),
                 c2 => Assert.Equal(2, c2),
                 c3 => Assert.Equal(5, c3),
@@ -212,7 +257,7 @@ namespace AdventOfCode2020.Day23.UnitTests
                 c6 => Assert.Equal(1, c6),
                 c7 => Assert.Equal(9, c7),
                 c8 => Assert.Equal(3, c8),
-                c9 => Assert.Equal(6, c9));
+                c9 => Assert.Equal(6, c9));*/
         }
 
         [Fact]
@@ -249,6 +294,17 @@ namespace AdventOfCode2020.Day23.UnitTests
                 c7 => Assert.Equal(9, c7),
                 c8 => Assert.Equal(2, c8),
                 c9 => Assert.Equal(6, c9));
+
+            /*Assert.Collection(sut.Cups,
+                c1 => Assert.Equal(7, c1),
+                c2 => Assert.Equal(4, c2),
+                c3 => Assert.Equal(1, c3),
+                c4 => Assert.Equal(5, c4),
+                c5 => Assert.Equal(8, c5),
+                c6 => Assert.Equal(3, c6),
+                c7 => Assert.Equal(9, c7),
+                c8 => Assert.Equal(2, c8),
+                c9 => Assert.Equal(6, c9));*/
         }
 
         [Fact]
@@ -267,6 +323,17 @@ namespace AdventOfCode2020.Day23.UnitTests
                 c7 => Assert.Equal(9, c7),
                 c8 => Assert.Equal(2, c8),
                 c9 => Assert.Equal(6, c9));
+
+            /*Assert.Collection(sut.Cups,
+                c1 => Assert.Equal(5, c1),
+                c2 => Assert.Equal(7, c2),
+                c3 => Assert.Equal(4, c3),
+                c4 => Assert.Equal(1, c4),
+                c5 => Assert.Equal(8, c5),
+                c6 => Assert.Equal(3, c6),
+                c7 => Assert.Equal(9, c7),
+                c8 => Assert.Equal(2, c8),
+                c9 => Assert.Equal(6, c9));*/
         }
 
         [Fact]
@@ -285,6 +352,17 @@ namespace AdventOfCode2020.Day23.UnitTests
                 c7 => Assert.Equal(9, c7),
                 c8 => Assert.Equal(2, c8),
                 c9 => Assert.Equal(6, c9));
+
+            /*Assert.Collection(sut.Cups,
+                c1 => Assert.Equal(5, c1),
+                c2 => Assert.Equal(8, c2),
+                c3 => Assert.Equal(3, c3),
+                c4 => Assert.Equal(7, c4),
+                c5 => Assert.Equal(4, c5),
+                c6 => Assert.Equal(1, c6),
+                c7 => Assert.Equal(9, c7),
+                c8 => Assert.Equal(2, c8),
+                c9 => Assert.Equal(6, c9));*/
         }
 
         [Fact]
@@ -321,12 +399,15 @@ namespace AdventOfCode2020.Day23.UnitTests
             Assert.Equal(1000000, sut.Cups.Length);
         }
 
-        [Fact]
+ /*       [Fact]
         public void Test20()
         {
             var sut = new CupGame(SAMPLE_DATA_2, 1000000);
-            sut.Moves(500);
-        }
+
+            sut.Moves(1000);
+            Assert.Equal(934001, sut.FirstNumberAfterOne);
+            Assert.Equal(159792, sut.SecondNumberAfterOne);
+        }*/
     }
 
     public class CupGame
@@ -338,7 +419,6 @@ namespace AdventOfCode2020.Day23.UnitTests
         private int _arrayStart;
         private int _arrayEnd;
 
-
         public int CurrentCup { get; private set; }
         public int CurrentCupIndex { get; private set; }
         public int DestinationCup { get; private set; }
@@ -346,6 +426,9 @@ namespace AdventOfCode2020.Day23.UnitTests
         public int[] Taken { get; }
         public int[] TakenIndex { get; }
         public Dictionary<int, int> Indexes { get; private set; }
+        public int FirstNumberAfterOne { get; private set; }
+        public int SecondNumberAfterOne { get; private set; }
+
         public string GetLabelsAfterCupOne()
         {
             var values = string.Concat(Cups.Select(p => $"{p}")).Split("1");
@@ -379,13 +462,14 @@ namespace AdventOfCode2020.Day23.UnitTests
 
                 var temp = Cups;
                 Cups = new int[until];
-                Array.Copy(temp, Cups, cups.Length);
+                Buffer.BlockCopy(temp, 0, Cups, 0, sizeof(int) * cups.Length);
+                //Array.Copy(temp, Cups, cups.Length);
 
                 for (var index = temp.Length; index < Cups.Length; index++)
                 {
-                    Cups[index] = index;
-                    Indexes[Cups[index]] = index;
-                    _arrayEnd = index;
+                    Cups[index] = index + 1;
+                    Indexes[Cups[index]] = index + 1;
+                    _arrayEnd = index + 1;
                 }
             }
         }
@@ -404,12 +488,25 @@ namespace AdventOfCode2020.Day23.UnitTests
         {
             var index = 0;
             var toTake = 0;
-            for (index = (CurrentCupIndex + 1) % Cups.Length; toTake < 3; index = ++index % Cups.Length)
+            if (CurrentCupIndex + 3 >= Cups.Length)
             {
-                Taken[toTake] = Cups[index];
-                TakenIndex[toTake++] = index;
-                //Indexes[Cups[index]] = -1;
-                Cups[index] = -1;
+                for (index = (CurrentCupIndex + 1) % Cups.Length; toTake < 3; index = ++index % Cups.Length)
+                {
+                    Taken[toTake] = Cups[index];
+                    TakenIndex[toTake++] = index;
+                    Cups[index] = -1;
+                }
+
+                Array.Sort(TakenIndex);
+            }
+            else
+            {
+                for (index = CurrentCupIndex + 1; toTake < 3; ++index)
+                {
+                    Taken[toTake] = Cups[index];
+                    TakenIndex[toTake++] = index;
+                    Cups[index] = -1;
+                }
             }
         }
 
@@ -426,7 +523,7 @@ namespace AdventOfCode2020.Day23.UnitTests
                     DestinationCup = _maximum;
                 }
             }
-            while (Taken.Contains(DestinationCup));
+            while (DestinationCup == Taken[0] || DestinationCup == Taken[1] || DestinationCup == Taken[2]); //  Taken.Contains(DestinationCup));
         }
 
         public void Step3()
@@ -449,9 +546,9 @@ namespace AdventOfCode2020.Day23.UnitTests
                     }
                     else
                     {
-                        Array.Copy(Cups, destinationCupIndex, Cups, destinationCupIndex + 1, Cups.Length - (destinationCupIndex + 1));
-                        Array.Copy(Cups, 2, Cups, 0, destinationCupIndex - 2);
-                        destinationCupIndex -= 2;
+                        Cups[^1] = Cups[2];
+                        Array.Copy(Cups, 3, Cups, 0, destinationCupIndex - 3);
+                        destinationCupIndex -= 3;
                         minChangedValue = 0;
                         maxChangedValue = Cups.Length;
                     }
@@ -469,16 +566,16 @@ namespace AdventOfCode2020.Day23.UnitTests
             {
                 if (destinationCupIndex > Cups.Length - 3)
                 {
-                    Array.Copy(Cups, TakenIndex.Max() + 1, Cups, TakenIndex.Min(), Cups.Length - (TakenIndex.Max() + 1));
-                    minChangedValue = TakenIndex.Min();
+                    Array.Copy(Cups, TakenIndex[2] + 1, Cups, TakenIndex[0], Cups.Length - (TakenIndex[2] + 1));
+                    minChangedValue = TakenIndex[0];
                     destinationCupIndex -= 3;
                 }
                 else
                 {
-                    if (destinationCupIndex < TakenIndex.Min() )
+                    if (destinationCupIndex < TakenIndex[0])
                     {
-                        var lengthToCopy = TakenIndex.Min() - destinationCupIndex;
-                        maxChangedValue = TakenIndex.Max() - lengthToCopy + 1;
+                        var lengthToCopy = TakenIndex[0] - destinationCupIndex;
+                        maxChangedValue = TakenIndex[2] - lengthToCopy + 1;
                         Array.Copy(Cups, destinationCupIndex, Cups, maxChangedValue, lengthToCopy);
                         maxChangedValue += lengthToCopy;
                         minChangedValue = destinationCupIndex;
@@ -487,10 +584,9 @@ namespace AdventOfCode2020.Day23.UnitTests
                     {
                         if (CurrentCupIndex + 1 < Cups.Length)
                         {
-                            //Array.Copy(Cups, TakenIndex.Min(), Cups, CurrentCupIndex + 1, destinationCupIndex - TakenIndex.Max() - 1);
-                            Array.Copy(Cups, TakenIndex.Max() + 1, Cups, CurrentCupIndex + 1, destinationCupIndex - TakenIndex.Max() - 1);
+                            Array.Copy(Cups, TakenIndex[2] + 1, Cups, CurrentCupIndex + 1, destinationCupIndex - TakenIndex[2] - 1);
                             minChangedValue = CurrentCupIndex + 1;
-                            destinationCupIndex = CurrentCupIndex + 1 + (destinationCupIndex - TakenIndex.Max() - 1);
+                            destinationCupIndex = CurrentCupIndex + 1 + (destinationCupIndex - TakenIndex[2] - 1);
                         }
                         else
                         {
@@ -510,73 +606,26 @@ namespace AdventOfCode2020.Day23.UnitTests
                 }
             }
 
-            /*minChangedValue = destinationCupIndex;
-            if (destinationCupIndex > TakenIndex.Min())
-            {
-                destinationCupIndex -= 4;
-                minChangedValue -= 4;
-            }*/
-
-/*            minChangedValue = destinationCupIndex + 1;
-            if (TakenIndex.Min() < minChangedValue)
-            {
-                minChangedValue = TakenIndex.Min();
-            }*/
             Array.Copy(Taken, 0, Cups, destinationCupIndex, 3);
 
-            for (var i = minChangedValue; i < maxChangedValue; i++)
+            if (minChangedValue == 0 && maxChangedValue >= Cups.Length)
             {
-                Indexes[Cups[i]] = i;
+                for (var i = minChangedValue; i < maxChangedValue; i++)
+                {
+                    Indexes[Cups[i]] = i;
+                }
+
+                System.Diagnostics.Debugger.Break();
             }
-
-            if (CurrentCupIndex < Indexes[CurrentCup])
+            else
             {
-                var mov = new int[Indexes[CurrentCup] - CurrentCupIndex];
-                Array.Copy(Cups, 0, mov, 0, Indexes[CurrentCup] - CurrentCupIndex);
-                Array.Copy(Cups, Indexes[CurrentCup] - CurrentCupIndex, Cups, 0, Cups.Length - (Indexes[CurrentCup] - CurrentCupIndex));
-                Array.Copy(mov, 0, Cups, Cups.Length - (Indexes[CurrentCup] - CurrentCupIndex), Indexes[CurrentCup] - CurrentCupIndex);
-
-                for (var i = 0; i < Cups.Length; i++)
+                for (var i = minChangedValue; i < maxChangedValue; i++)
                 {
                     Indexes[Cups[i]] = i;
                 }
             }
-            else
-            {
-                if (CurrentCupIndex > Indexes[CurrentCup])
-                {
-                    var mov = new int[CurrentCupIndex];
-                    Array.Copy(Cups, Cups.Length - CurrentCupIndex, mov, 0, CurrentCupIndex);
-                    Array.Copy(Cups, 0, Cups, Cups.Length - (Cups.Length - CurrentCupIndex), Cups.Length - CurrentCupIndex);
-                    Array.Copy(mov, 0, Cups, 0, CurrentCupIndex);
 
-                    for (var i = 0; i < Cups.Length; i++)
-                    {
-                        Indexes[Cups[i]] = i;
-                    }
-                }
-            }
-
-/*
-            Cups.InsertRange(Cups.IndexOf(DestinationCup) + 1, Taken);
-
-            var newCurrentCupIndex = Cups.IndexOf(CurrentCup);
-            if (newCurrentCupIndex > CurrentCupIndex)
-            {
-                for (var index = 0; index < newCurrentCupIndex - CurrentCupIndex; index++)
-                {
-                    Cups.Add(Cups[0]);
-                    Cups.RemoveAt(0);
-                }
-            }
-            else
-            {
-                for (var index = 0; index < CurrentCupIndex - newCurrentCupIndex; index++)
-                {
-                    Cups.Insert(0, Cups[^1]);
-                    Cups.RemoveAt(Cups.Count - 1);
-                }
-            }*/
+            CurrentCupIndex = Indexes[CurrentCup];
         }
 
         public void Step4()
@@ -599,7 +648,10 @@ namespace AdventOfCode2020.Day23.UnitTests
             {
                 Move();
             }
-        }
 
+            var oneIndex = Indexes[1];
+            FirstNumberAfterOne = Cups[(oneIndex + 1) % Cups.Length];
+            SecondNumberAfterOne = Cups[(oneIndex + 2) % Cups.Length];
+        }
     }
 }
