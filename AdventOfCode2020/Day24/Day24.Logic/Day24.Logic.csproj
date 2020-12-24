@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>AdventOfCode2020.Day24.Logic</RootNamespace>
   </PropertyGroup>
 
 </Project>
