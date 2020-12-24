@@ -335,6 +335,9 @@ namespace AdventOfCode2020.Day23.UnitTests
         private int _minimum;
         private int _maximum;
 
+        private int _arrayStart;
+        private int _arrayEnd;
+
 
         public int CurrentCup { get; private set; }
         public int CurrentCupIndex { get; private set; }
@@ -357,6 +360,7 @@ namespace AdventOfCode2020.Day23.UnitTests
             Taken = new int[3] { 0, 0, 0 };
             TakenIndex = new int[3] { -1, -1, -1 };
             Indexes = new Dictionary<int, int>();
+            _arrayStart = 0;
 
             ParseCups();
 
@@ -371,7 +375,9 @@ namespace AdventOfCode2020.Day23.UnitTests
 
             for (var index = 0; index < Cups.Length; index++)
             {
-                Indexes.Add(Cups[index], index);
+                Cups[index] = index;
+                Indexes[Cups[index]] = index;
+                _arrayEnd = index;
             }
         }
 
@@ -380,6 +386,7 @@ namespace AdventOfCode2020.Day23.UnitTests
             Cups = _cups.Select(c => int.Parse($"{c}")).ToArray();
             _minimum = Cups.Min();
             _maximum = Cups.Max();
+            _arrayEnd = _maximum - 1;
 
             CurrentCup = Cups[CurrentCupIndex];
         }
@@ -419,27 +426,58 @@ namespace AdventOfCode2020.Day23.UnitTests
             var minChangedValue = 0;
             var maxChangedValue = Cups.Length;
 
-            if (destinationCupIndex > Cups.Length - 3)
+            if (Cups[0] == -1 && Cups[^1] == -1)
             {
-                Array.Copy(Cups, TakenIndex.Max() + 1, Cups, TakenIndex.Min(), Cups.Length - (TakenIndex.Max() + 1));
-                minChangedValue = TakenIndex.Min();
-                destinationCupIndex -= 3;
-            }
-            else
-            {
-                if (destinationCupIndex < TakenIndex.Min() )
+                if (Cups[1] == -1)
                 {
-                    var lengthToCopy = TakenIndex.Min() - destinationCupIndex;
-                    maxChangedValue = TakenIndex.Max() - lengthToCopy + 1;
-                    Array.Copy(Cups, destinationCupIndex, Cups, maxChangedValue, lengthToCopy);
-                    maxChangedValue += lengthToCopy;
-                    minChangedValue = destinationCupIndex;
+                    if (destinationCupIndex == Cups.Length)
+                    {
+                        Cups[^1] = Cups[2];
+                        destinationCupIndex = 0;
+                        Indexes[Cups[^1]] = Cups.Length - 1;
+                        minChangedValue = 0;
+                        maxChangedValue = 2;
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debugger.Break();
+                    }
                 }
                 else
                 {
-                    Array.Copy(Cups, destinationCupIndex - 1, Cups, CurrentCupIndex + 1, 1);
-                    minChangedValue = CurrentCupIndex + 1;
-                    destinationCupIndex = minChangedValue + 1;
+                    Cups[0] = Cups[^3];
+                    Array.Copy(Cups, destinationCupIndex, Cups, Cups.Length - (Cups.Length - destinationCupIndex - 3), Cups.Length - destinationCupIndex - 3);
+                    Indexes[Cups[0]] = 0;
+                    minChangedValue = destinationCupIndex;
+                    maxChangedValue = Cups.Length;
+                }
+            }
+            else
+            {
+                if (destinationCupIndex > Cups.Length - 3)
+                {
+                    Array.Copy(Cups, TakenIndex.Max() + 1, Cups, TakenIndex.Min(), Cups.Length - (TakenIndex.Max() + 1));
+                    minChangedValue = TakenIndex.Min();
+                    destinationCupIndex -= 3;
+                }
+                else
+                {
+                    if (destinationCupIndex < TakenIndex.Min() )
+                    {
+                        var lengthToCopy = TakenIndex.Min() - destinationCupIndex;
+                        maxChangedValue = TakenIndex.Max() - lengthToCopy + 1;
+                        Array.Copy(Cups, destinationCupIndex, Cups, maxChangedValue, lengthToCopy);
+                        maxChangedValue += lengthToCopy;
+                        minChangedValue = destinationCupIndex;
+                    }
+                    else
+                    {
+                    {
+                            Array.Copy(Cups, destinationCupIndex - 1, Cups, CurrentCupIndex + 1, 1);
+                            minChangedValue = CurrentCupIndex + 1;
+                            destinationCupIndex = minChangedValue + 1;
+                        }
+                    }
                 }
             }
 
@@ -472,6 +510,16 @@ namespace AdventOfCode2020.Day23.UnitTests
                 for (var i = 0; i < Cups.Length; i++)
                 {
                     Indexes[Cups[i]] = i;
+                }
+            }
+            else
+            {
+                if (CurrentCupIndex > Indexes[CurrentCup])
+                {
+                    var mov = new int[CurrentCupIndex];
+                    Array.Copy(Cups, Cups.Length - CurrentCupIndex, mov, 0, CurrentCupIndex);
+                    Array.Copy(Cups, 0, Cups, Cups.Length - (Cups.Length - CurrentCupIndex), Cups.Length - CurrentCupIndex);
+                    Array.Copy(mov, 0, Cups, 0, CurrentCupIndex);
                 }
             }
 
