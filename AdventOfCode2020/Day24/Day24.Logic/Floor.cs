@@ -38,36 +38,9 @@ namespace AdventOfCode2020.Day24.Logic
 
         public void Flip()
         {
+            CreateSurroundingTilesAroundBlackTiles();
+
             var actions = new List<Action>();
-            var existingTiles = new HashSet<(double, double)>();
-            var offsets = new(double, double)[]
-            {
-                (-1, 0),   // w
-                (-0.5, 1), // nw
-                (0.5, 1),  // ne
-                (1, 0),    // e
-                (0.5, -1), // se
-                (-0.5, -1) // sw
-            };
-
-            foreach (var tile in _uniqueTiles.Values)
-            {
-                if (tile.IsBlack == 1)
-                {
-                    foreach (var offset in offsets)
-                    {
-                        var position = (tile.Position.X + offset.Item1, tile.Position.Y + offset.Item2);
-                        if (!_uniqueTiles.ContainsKey(position) && !existingTiles.Contains(position))
-                        {
-                            existingTiles.Add(position);
-                            actions.Add(() => _uniqueTiles.Add(position, new Tile(position.Item1, position.Item2)));
-                        }
-                    }
-                }
-            }
-            actions.ForEach(a => a());
-            actions.Clear();
-
             foreach (var tile in _uniqueTiles.Values)
             {
                 var count = CountBlackTilesAround(tile);
@@ -88,6 +61,36 @@ namespace AdventOfCode2020.Day24.Logic
                 }
             }
 
+            actions.ForEach(a => a());
+        }
+
+        private void CreateSurroundingTilesAroundBlackTiles()
+        {
+            var actions = new List<Action>();
+            var existingTiles = new HashSet<(double, double)>();
+            var offsets = new(double X, double Y)[]
+            {
+                (-1, 0),   // w
+                (-0.5, 1), // nw
+                (0.5, 1),  // ne
+                (1, 0),    // e
+                (0.5, -1), // se
+                (-0.5, -1) // sw
+            };
+
+            foreach (var tile in _uniqueTiles.Values.Where(t => t.IsBlack == 1))
+            {
+                foreach (var (x, y) in offsets)
+                {
+                    var position = (tile.Position.X + x, tile.Position.Y + y);
+
+                    if (!_uniqueTiles.ContainsKey(position) && !existingTiles.Contains(position))
+                    {
+                        existingTiles.Add(position);
+                        actions.Add(() => _uniqueTiles.Add(position, new Tile(position.Item1, position.Item2)));
+                    }
+                }
+            }
             actions.ForEach(a => a());
         }
 
