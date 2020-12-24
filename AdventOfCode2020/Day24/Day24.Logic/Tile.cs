@@ -41,8 +41,6 @@ namespace AdventOfCode2020.Day24.Logic
                 {
                     case "w": _position.X--; break;
                     case "e": _position.X++; break;
-                    case "n": _position.Y--; break;
-                    case "s": _position.Y++; break;
 
                     case "ne":
                         _position.X += 0.5;
