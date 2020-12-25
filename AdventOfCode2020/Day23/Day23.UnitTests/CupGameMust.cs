@@ -1,12 +1,9 @@
-using System.Threading.Tasks;
-using System.Linq;
-using System;
-using System.Collections.Generic;
 using Xunit;
+using AdventOfCode2020.Day23.Logic;
 
 namespace AdventOfCode2020.Day23.UnitTests
 {
-    public class CupGameWithLinkedListsMust
+    public class CupGameMust
     {
         private const string SAMPLE_DATA = "32415";
         private const string SAMPLE_DATA_2 = "389125467";
@@ -15,7 +12,7 @@ namespace AdventOfCode2020.Day23.UnitTests
         [Fact]
         public void Test1()
         {
-            var sut = new CupGameWithLinkedLists(SAMPLE_DATA);
+            var sut = new CupGame(SAMPLE_DATA);
             Assert.Collection(sut.GetCupsInOrder(),
                 c1 => Assert.Equal(3, c1),
                 c2 => Assert.Equal(2, c2),
@@ -27,9 +24,9 @@ namespace AdventOfCode2020.Day23.UnitTests
         [Fact]
         public void Test2()
         {
-            var sut = new CupGameWithLinkedLists(SAMPLE_DATA);
+            var sut = new CupGame(SAMPLE_DATA);
 
-            sut.Step1();
+            sut.RemoveThreeCupsAfterCurrentCup();
             Assert.Collection(sut.GetCupsInOrder(),
                 c1 => Assert.Equal(3, c1),
                 c5 => Assert.Equal(5, c5));
@@ -38,10 +35,10 @@ namespace AdventOfCode2020.Day23.UnitTests
         [Fact]
         public void Test4()
         {
-            var sut = new CupGameWithLinkedLists(SAMPLE_DATA);
-            sut.Step1();
-            sut.Step2();
-            sut.Step3();
+            var sut = new CupGame(SAMPLE_DATA);
+            sut.RemoveThreeCupsAfterCurrentCup();
+            sut.SelectDestinationCup();
+            sut.MoveSelectedCupsAfterDestinationCup();
 
             Assert.Collection(sut.GetCupsInOrder(),
                 c1 => Assert.Equal(3, c1),
@@ -54,8 +51,8 @@ namespace AdventOfCode2020.Day23.UnitTests
         [Fact]
         public void Test6()
         {
-            var sut = new CupGameWithLinkedLists(SAMPLE_DATA_2);
-            sut.Step1();
+            var sut = new CupGame(SAMPLE_DATA_2);
+            sut.RemoveThreeCupsAfterCurrentCup();
 
             Assert.Collection(sut.GetCupsInOrder(),
                 c1 => Assert.Equal(3, c1),
@@ -69,7 +66,7 @@ namespace AdventOfCode2020.Day23.UnitTests
         [Fact]
         public void Test7()
         {
-            var sut = new CupGameWithLinkedLists(SAMPLE_DATA_2);
+            var sut = new CupGame(SAMPLE_DATA_2);
             sut.Moves(1);
 
             Assert.Collection(sut.GetCupsInOrder(),
@@ -87,7 +84,7 @@ namespace AdventOfCode2020.Day23.UnitTests
         [Fact]
         public void Test8()
         {
-            var sut = new CupGameWithLinkedLists(SAMPLE_DATA_2);
+            var sut = new CupGame(SAMPLE_DATA_2);
             sut.Moves(2);
 
             Assert.Collection(sut.GetCupsInOrder(),
@@ -105,7 +102,7 @@ namespace AdventOfCode2020.Day23.UnitTests
         [Fact]
         public void Test9()
         {
-            var sut = new CupGameWithLinkedLists(SAMPLE_DATA_2);
+            var sut = new CupGame(SAMPLE_DATA_2);
             sut.Moves(3);
 
             Assert.Collection(sut.GetCupsInOrder(),
@@ -123,7 +120,7 @@ namespace AdventOfCode2020.Day23.UnitTests
         [Fact]
         public void Test10()
         {
-            var sut = new CupGameWithLinkedLists(SAMPLE_DATA_2);
+            var sut = new CupGame(SAMPLE_DATA_2);
             sut.Moves(4);
 
             Assert.Collection(sut.GetCupsInOrder(),
@@ -141,7 +138,7 @@ namespace AdventOfCode2020.Day23.UnitTests
         [Fact]
         public void Test11()
         {
-            var sut = new CupGameWithLinkedLists(SAMPLE_DATA_2);
+            var sut = new CupGame(SAMPLE_DATA_2);
             sut.Moves(5);
 
             Assert.Collection(sut.GetCupsInOrder(),
@@ -159,7 +156,7 @@ namespace AdventOfCode2020.Day23.UnitTests
         [Fact]
         public void Test12()
         {
-            var sut = new CupGameWithLinkedLists(SAMPLE_DATA_2);
+            var sut = new CupGame(SAMPLE_DATA_2);
             sut.Moves(6);
 
             Assert.Collection(sut.GetCupsInOrder(),
@@ -177,7 +174,7 @@ namespace AdventOfCode2020.Day23.UnitTests
         [Fact]
         public void Test13()
         {
-            var sut = new CupGameWithLinkedLists(SAMPLE_DATA_2);
+            var sut = new CupGame(SAMPLE_DATA_2);
             sut.Moves(7);
 
             Assert.Collection(sut.GetCupsInOrder(),
@@ -195,7 +192,7 @@ namespace AdventOfCode2020.Day23.UnitTests
         [Fact]
         public void Test14()
         {
-            var sut = new CupGameWithLinkedLists(SAMPLE_DATA_2);
+            var sut = new CupGame(SAMPLE_DATA_2);
             sut.Moves(8);
 
             Assert.Collection(sut.GetCupsInOrder(),
@@ -213,7 +210,7 @@ namespace AdventOfCode2020.Day23.UnitTests
         [Fact]
         public void Test15()
         {
-            var sut = new CupGameWithLinkedLists(SAMPLE_DATA_2);
+            var sut = new CupGame(SAMPLE_DATA_2);
             sut.Moves(9);
 
             Assert.Collection(sut.GetCupsInOrder(),
@@ -231,7 +228,7 @@ namespace AdventOfCode2020.Day23.UnitTests
         [Fact]
         public void Test16()
         {
-            var sut = new CupGameWithLinkedLists(SAMPLE_DATA_2);
+            var sut = new CupGame(SAMPLE_DATA_2);
 
             sut.Moves(10);
             Assert.Collection(sut.GetCupsInOrder(),
@@ -249,7 +246,7 @@ namespace AdventOfCode2020.Day23.UnitTests
         [Fact]
         public void Test17()
         {
-            var sut = new CupGameWithLinkedLists(SAMPLE_DATA_2);
+            var sut = new CupGame(SAMPLE_DATA_2);
 
             sut.Moves(10);
             Assert.Equal("92658374", sut.GetLabelsAfterCupOne());
@@ -258,7 +255,7 @@ namespace AdventOfCode2020.Day23.UnitTests
         [Fact]
         public void Test18()
         {
-            var sut = new CupGameWithLinkedLists(SAMPLE_DATA_2);
+            var sut = new CupGame(SAMPLE_DATA_2);
 
             sut.Moves(100);
             Assert.Equal("67384529", sut.GetLabelsAfterCupOne());
@@ -267,7 +264,7 @@ namespace AdventOfCode2020.Day23.UnitTests
         [Fact]
         public void SolveFirstPuzzle()
         {
-            var sut = new CupGameWithLinkedLists(PUZZLE_DATA);
+            var sut = new CupGame(PUZZLE_DATA);
 
             sut.Moves(100);
             Assert.Equal("97624853", sut.GetLabelsAfterCupOne());
@@ -276,14 +273,14 @@ namespace AdventOfCode2020.Day23.UnitTests
         [Fact]
         public void Test19()
         {
-            var sut = new CupGameWithLinkedLists(SAMPLE_DATA_2, 1000000);
+            var sut = new CupGame(SAMPLE_DATA_2, 1000000);
             Assert.Equal(1000000, sut.GetCupsInOrder().Count);
         }
 
         [Fact]
-        public void Test20()
+        public void SolveSecondPuzzle_WhenUsingSampleData()
         {
-            var sut = new CupGameWithLinkedLists(SAMPLE_DATA_2, 1000000);
+            var sut = new CupGame(SAMPLE_DATA_2, 1000000);
 
             sut.Moves(10000000);
             Assert.Equal(934001, sut.FirstNumberAfterOne);
@@ -294,7 +291,7 @@ namespace AdventOfCode2020.Day23.UnitTests
         [Fact]
         public void SolveSecondPuzzle()
         {
-            var sut = new CupGameWithLinkedLists(PUZZLE_DATA, 1000000);
+            var sut = new CupGame(PUZZLE_DATA, 1000000);
 
             sut.Moves(10000000);
             Assert.Equal(776819, sut.FirstNumberAfterOne);
