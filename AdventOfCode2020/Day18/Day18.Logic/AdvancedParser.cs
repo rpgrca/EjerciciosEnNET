@@ -1,105 +1,97 @@
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AdventOfCode2020.Day18.Logic
 {
     public class AdvancedParser
     {
         private readonly string _expression;
+        private readonly List<string> _stack;
+        private readonly List<List<string>> _operatorStack;
 
         public AdvancedParser(string expression)
         {
             _expression = expression;
+            _stack = new List<string>();
+            _operatorStack = new List<List<string>>
+            {
+                new List<string>()
+            };
         }
 
         public long Parse()
         {
-            var stack = new List<string>();
-            var operatorStack = new List<List<string>>
-            {
-                new List<string>()
-            };
             var tokens = _expression.Replace("(", "( ").Replace(")", " )").Split(" ");
 
             foreach (var token in tokens)
             {
-                if (token == "(")
+                switch (token)
                 {
-                    operatorStack.Add(new List<string>());
-                }
-                else
-                {
-                    if (token == ")")
-                    {
-                        operatorStack[^1].Reverse();
-                        foreach (var op in operatorStack[^1])
-                        {
-                            stack.Add(op);
-                        }
-                        operatorStack.RemoveAt(operatorStack.Count - 1);
-                    }
-                    else
-                    {
+                    case "(":
+                        _operatorStack.Add(new List<string>());
+                        break;
+
+                    case ")":
+                        MoveOperatorsFromSecondaryStackToStack();
+                        break;
+
+                    default:
                         if (long.TryParse(token, out var tokenizedValue))
                         {
-                            stack.Add(tokenizedValue.ToString());
+                            _stack.Add(tokenizedValue.ToString());
                         }
                         else
                         {
-                            if (operatorStack.Last().Count == 0)
+                            if (_operatorStack[^1].Count != 0)
                             {
-                                operatorStack.Last().Add(token);
-                            }
-                            else
-                            {
-                                if ((operatorStack.Last()[^1] == "+") || token == "*")
+                                if ((_operatorStack[^1][^1] == "+") || token == "*")
                                 {
-                                    var last = operatorStack.Last()[^1];
-                                    operatorStack.Last().RemoveAt(operatorStack.Last().Count - 1);
-                                    stack.Add(last);
-                                    operatorStack.Last().Add(token);
-                                }
-                                else
-                                {
-                                    operatorStack.Last().Add(token);
+                                    var last = _operatorStack[^1][^1];
+                                    _operatorStack[^1].RemoveAt(_operatorStack[^1].Count - 1);
+                                    _stack.Add(last);
                                 }
                             }
+
+                            _operatorStack[^1].Add(token);
                         }
-                    }
+
+                        break;
                 }
             }
 
-            if (operatorStack.Last().Count > 0)
+            if (_operatorStack[^1].Count > 0)
             {
-                operatorStack.Last().Reverse();
-                foreach (var op in operatorStack.Last())
-                {
-                    stack.Add(op);
-                }
+                MoveOperatorsFromSecondaryStackToStack();
             }
 
-            return Execute(stack);
+            return Execute();
         }
 
-        public long Execute(List<string> stack)
+        private void MoveOperatorsFromSecondaryStackToStack()
+        {
+            _operatorStack[^1].Reverse();
+            _operatorStack[^1].ForEach(o => _stack.Add(o));
+            _operatorStack.RemoveAt(_operatorStack.Count - 1);
+        }
+
+        public long Execute()
         {
             var ip = 0;
 
-            while (ip < stack.Count)
+            while (ip < _stack.Count)
             {
-                switch (stack[ip])
+                switch (_stack[ip])
                 {
                     case "+":
-                        stack[ip - 2] = $"{long.Parse(stack[ip - 2]) + long.Parse(stack[ip - 1])}";
-                        stack.RemoveAt(ip);
-                        stack.RemoveAt(ip - 1);
+                        _stack[ip - 2] = $"{long.Parse(_stack[ip - 2]) + long.Parse(_stack[ip - 1])}";
+                        _stack.RemoveAt(ip);
+                        _stack.RemoveAt(ip - 1);
                         ip--;
                         break;
 
                     case "*":
-                        stack[ip - 2] = $"{long.Parse(stack[ip - 2]) * long.Parse(stack[ip - 1])}";
-                        stack.RemoveAt(ip);
-                        stack.RemoveAt(ip - 1);
+                        _stack[ip - 2] = $"{long.Parse(_stack[ip - 2]) * long.Parse(_stack[ip - 1])}";
+                        _stack.RemoveAt(ip);
+                        _stack.RemoveAt(ip - 1);
                         ip--;
                         break;
 
@@ -109,7 +101,7 @@ namespace AdventOfCode2020.Day18.Logic
                 }
             }
 
-            return long.Parse(stack[0]);
+            return long.Parse(_stack[0]);
         }
     }
 }

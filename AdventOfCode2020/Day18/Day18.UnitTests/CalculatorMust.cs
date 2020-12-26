@@ -11,7 +11,7 @@ namespace AdventOfCode2020.Day18.UnitTests
         [InlineData("1 + 2 * 3 + 4", 13)]
         [InlineData("1 + 2 * 3 + 4 * 5", 65)]
         [InlineData("1 + 2 * 3 + 4 * 5 + 6", 71)]
-        public void Test1(string expression, int expectedResult)
+        public void CalculateEquationsWithoutPrecedence(string expression, int expectedResult)
         {
             var calculator = new Calculator(expression);
             Assert.Equal(expectedResult, calculator.Evaluate());
@@ -24,22 +24,16 @@ namespace AdventOfCode2020.Day18.UnitTests
         [InlineData("(5 + 6)", 11)]
         [InlineData("4 * (5 + 6)", 44)]
         [InlineData("(4 * (5 + 6))", 44)]
-        public void Test2(string expression, int expectedResult)
+        [InlineData("2 * 3 + (4 * 5)", 26)]
+        [InlineData("5 + (8 * 3 + 9 + 3 * 4 * 3)", 437)]
+        [InlineData("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", 12240)]
+        [InlineData("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", 13632)]
+        public void CalculateEquationsWithoutPrcedenceWithBrackets(string expression, int expectedResult)
         {
             var calculator = new Calculator(expression);
             Assert.Equal(expectedResult, calculator.Evaluate());
         }
 
-        [Theory]
-        [InlineData("2 * 3 + (4 * 5)", 26)]
-        [InlineData("5 + (8 * 3 + 9 + 3 * 4 * 3)", 437)]
-        [InlineData("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", 12240)]
-        [InlineData("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", 13632)]
-        public void Test3(string expression, int expectedResult)
-        {
-            var calculator = new Calculator(expression);
-            Assert.Equal(expectedResult, calculator.Evaluate());
-        }
 
         [Theory]
         [InlineData("9 * 2 + 3 + 9 * ((3 * 3 + 7 * 6 + 5 + 5) * 8 * (6 * 8 + 7 * 2) + 4)", 2798520)]

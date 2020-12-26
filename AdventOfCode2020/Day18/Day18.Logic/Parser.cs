@@ -5,14 +5,12 @@ namespace AdventOfCode2020.Day18.Logic
 {
     public class Parser
     {
+        private readonly string _expression;
         private string _number;
         private int _index;
-        private readonly string _expression;
 
-        public Parser(string expression)
-        {
+        public Parser(string expression) =>
             _expression = expression;
-        }
 
         public long Parse()
         {
