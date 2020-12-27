@@ -9,8 +9,6 @@ namespace AdventOfCode2020.Day20.Logic
         private readonly string _data;
         private List<Tile> _tiles;
         private readonly Tile[,] _reassembledMap;
-        private string[] _fullMap;
-
         public int Width { get; }
         public int Height { get; }
         public List<Tile> Corners { get; }
