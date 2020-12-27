@@ -16,7 +16,7 @@ namespace AdventOfCode2020.Day17.Logic
         }
 
         public override bool IsNeighbourOf(Cube neighbour) =>
-            base.IsNeighbourOf(neighbour) && Math.Abs(W - neighbour.W) <= 1;
+            Math.Abs(W - neighbour.W) <= 1 && base.IsNeighbourOf(neighbour);
 
         protected override bool SameWCoordinates(int[] coordinates) =>
             W == coordinates[3];
