@@ -179,25 +179,19 @@ namespace AdventOfCode2020.Day20.Logic
         }
 
         public void FindMonsters()
-        {/*
- 3 ->  6
- 4 -> 14
-12 -> 78
-
-
-
-6 + (Width -3) * 8*/
-
-
-            static bool monsterVerifierNormal(string m, int x) =>
-                m[x] == '#' && m[x + 78] == '#' && m[x + 83] == '#' && m[x + 84] == '#' &&
-                m[x + 89] == '#' && m[x + 90] == '#' && m[x + 95] == '#' && m[x + 96] == '#' &&
-                m[x + 97] == '#' && m[x + 175] == '#' && m[x + 178] == '#' && m[x + 181] == '#' &&
-                m[x + 184] == '#' && m[x + 187] == '#' && m[x + 190] == '#';
+        {
+            static bool monsterVerifierNormal(string m, int spacer, int x) =>
+                m[x] == '#' && m[x + spacer] == '#' && m[x + spacer + 5] == '#' && m[x + spacer + 6] == '#' &&
+                m[x + spacer + 11] == '#' && m[x + spacer + 12] == '#' && m[x + spacer + 17] == '#' &&
+                m[x + spacer + 18] == '#' && m[x + spacer + 19] == '#' && m[x + (spacer * 2) + 19] == '#' &&
+                m[x + (spacer * 2) + 22] == '#' && m[x + (spacer * 2) + 25] == '#' && m[x + (spacer * 2) + 28] == '#' &&
+                m[x + (spacer * 2) + 31] == '#' && m[x + (spacer * 2) + 34] == '#';
 
             var fullMap = string.Empty;
-            var size = _reassembledMap[0,0].GetSize() * Width;
-            var lastPosition = (size * size) - 190;
+            var squareSize = _reassembledMap[0,0].GetSize();
+            var size = squareSize * Width;
+            var spacer = 6 + (size - 24);
+            var lastPosition = (size * size) - ((spacer * 2) + 37);
             var actions = new List<Action>
             {
                 () => RotateRight(90),    // →
@@ -231,7 +225,7 @@ namespace AdventOfCode2020.Day20.Logic
 
                         if (position < lastPosition)
                         {
-                            if (monsterVerifierNormal(fullMap, position))
+                            if (monsterVerifierNormal(fullMap, spacer, position))
                             {
                                 MonstersFoundInMap++;
                             }

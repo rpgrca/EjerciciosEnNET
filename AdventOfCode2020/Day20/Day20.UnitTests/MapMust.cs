@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 using AdventOfCode2020.Day20.Logic;
 
@@ -96,7 +95,7 @@ namespace AdventOfCode2020.Day20.UnitTests
         }
 
         [Fact]
-        public void Test7()
+        public void GenerateCornersCorrectly_WhenUsingSampleData()
         {
             var map = new Map(PuzzleData.SAMPLE_DATA, 3, 3);
             map.ClassifyEdge();
@@ -117,7 +116,7 @@ namespace AdventOfCode2020.Day20.UnitTests
         }
 
         [Fact]
-        public void Test8()
+        public void GenerateBordersCorrectly_WhenUsingSampleData()
         {
             var map = new Map(PuzzleData.SAMPLE_DATA, 3, 3);
             map.ClassifyEdge();
@@ -141,7 +140,7 @@ namespace AdventOfCode2020.Day20.UnitTests
         }
 
         [Fact]
-        public void Test9()
+        public void ReassembleSampleMapCorrectly()
         {
             var map = new Map(PuzzleData.SAMPLE_DATA, 3, 3);
             map.ClassifyEdge();
@@ -159,8 +158,8 @@ namespace AdventOfCode2020.Day20.UnitTests
             Assert.Equal(1171, reassembledMap[2,2].Id);
         }
 
-        [Fact(Skip = "add vertical, horizontal and flipped serpents")]
-        public void Test90()
+        [Fact]
+        public void FindAllMonstersInSampleData()
         {
             var sut = new Map(PuzzleData.SAMPLE_DATA, 3, 3);
             sut.ClassifyEdge();
@@ -171,7 +170,7 @@ namespace AdventOfCode2020.Day20.UnitTests
         }
 
         [Fact]
-        public void Test91()
+        public void FindWaterRoughnessInSampleData()
         {
             var map = new Map(PuzzleData.SAMPLE_DATA, 3, 3);
             map.ClassifyEdge();
@@ -182,7 +181,7 @@ namespace AdventOfCode2020.Day20.UnitTests
         }
 
         [Fact]
-        public void Test11()
+        public void FindAllMonstersInSecondPuzzle_WhenPuzzleFitsInASingleTile()
         {
             var sut = new Map(PuzzleData.SECOND_PUZZLE_SOLUTION_MAP_WITH_HEADER, 1, 1);
             sut.ClassifyEdge();
@@ -192,7 +191,7 @@ namespace AdventOfCode2020.Day20.UnitTests
         }
 
         [Fact]
-        public void Test12()
+        public void FindWaterRoughnessInPuzzle_WhenPuzzleFitsInASingleTile()
         {
             var sut = new Map(PuzzleData.SECOND_PUZZLE_SOLUTION_MAP_WITH_HEADER, 1, 1);
             sut.ClassifyEdge();
@@ -202,14 +201,27 @@ namespace AdventOfCode2020.Day20.UnitTests
         }
 
         [Fact]
+        public void FindAllMonstersInSecondPuzzle()
+        {
+            var sut = new Map(PuzzleData.PUZZLE_DATA, 12, 12);
+            sut.ClassifyEdge();
+            sut.ReformEdge();
+            sut.Crop();
+
+            sut.FindMonsters();
+            Assert.Equal(22, sut.MonstersFoundInMap);
+        }
+
+        [Fact]
         public void SolveSecondPuzzle()
         {
             var sut = new Map(PuzzleData.PUZZLE_DATA, 12, 12);
             sut.ClassifyEdge();
             sut.ReformEdge();
             sut.Crop();
+
             sut.FindMonsters();
-            Assert.Equal(22, sut.MonstersFoundInMap);
+            Assert.Equal(2129, sut.WaterRoughness);
         }
     }
 }
