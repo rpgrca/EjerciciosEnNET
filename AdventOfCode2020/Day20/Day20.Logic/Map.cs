@@ -192,22 +192,25 @@ namespace AdventOfCode2020.Day20.Logic
             var lastPosition = (size * size) - ((spacer * 2) + 37);
             var actions = new List<Action>
             {
-                () => RotateRight(90),    // →
-                () => RotateRight(90),    // ↓
-                () => RotateRight(90),    // ←
-                () => FlipVertically(),   // ←V
-                () => RotateRight(90),    // ↑V
-                () => RotateRight(90),    // →V
-                () => RotateRight(90),    // ↓V
-                () => FlipHorizontally(), // ↓VH
-                () => RotateRight(90),    // ←VH
-                () => RotateRight(90),    // ↑VH
-                () => RotateRight(90),    // →VH
-                () => FlipVertically(),   // →H
-                () => RotateRight(90),    // ↓H
-                () => RotateRight(90),    // ←H
-                () => RotateRight(90),    // ↑H
-                () => FlipHorizontally()  // ↑
+                () => RotateAQuarterToTheRight(),   // →
+                () => RotateAQuarterToTheRight(),   // ↓
+                () => RotateAQuarterToTheRight(),   // ←
+                () => FlipVertically(),             // ←V
+                () => RotateAQuarterToTheRight(),   // ↑V
+                () => RotateAQuarterToTheRight(),   // →V
+                () => RotateAQuarterToTheRight(),   // ↓V
+                () => RotateAQuarterToTheRight()
+
+                // Not needed, horizontally flipping is rotating right 180
+                //() => FlipHorizontally(),           // ↓VH
+                //() => RotateAQuarterToTheRight(),   // ←VH
+                //() => RotateAQuarterToTheRight(),   // ↑VH
+                //() => RotateAQuarterToTheRight(),   // →VH
+                //() => FlipVertically(),             // →H
+                //() => RotateAQuarterToTheRight(),   // ↓H
+                //() => RotateAQuarterToTheRight(),   // ←H
+                //() => RotateAQuarterToTheRight(),   // ↑H
+                //() => FlipHorizontally()          // ↑
             };
 
             MonstersFoundInMap = 0;
@@ -244,7 +247,7 @@ namespace AdventOfCode2020.Day20.Logic
             WaterRoughness = fullMap.Count(p => p == '#') - (MonstersFoundInMap * 15);
         }
 
-        private void FlipVertically()
+        public void FlipVertically()
         {
             var newMap = new Tile[Height, Width];
 
@@ -266,7 +269,7 @@ namespace AdventOfCode2020.Day20.Logic
             }
         }
 
-        private void FlipHorizontally()
+        /*public void FlipHorizontally()
         {
             var newMap = new Tile[Height, Width];
 
@@ -286,30 +289,9 @@ namespace AdventOfCode2020.Day20.Logic
                     _reassembledMap[y, x] = newMap[y, x];
                 }
             }
-        }
+        }*/
 
-        public void RotateRight(int degrees)
-        {
-            switch (degrees)
-            {
-                case 90:
-                    RotateAQuarterToTheRight();
-                    break;
-
-                case 180:
-                    RotateAQuarterToTheRight();
-                    RotateAQuarterToTheRight();
-                    break;
-
-                case 270:
-                    RotateAQuarterToTheRight();
-                    RotateAQuarterToTheRight();
-                    RotateAQuarterToTheRight();
-                    break;
-            }
-        }
-
-        private void RotateAQuarterToTheRight()
+        public void RotateAQuarterToTheRight()
         {
             var newMap = new Tile[Height,Width];
 

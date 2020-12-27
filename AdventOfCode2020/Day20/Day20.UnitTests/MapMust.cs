@@ -181,11 +181,23 @@ namespace AdventOfCode2020.Day20.UnitTests
         }
 
         [Fact]
-        public void FindAllMonstersInSecondPuzzle_WhenPuzzleFitsInASingleTile()
+        public void FindAllMonstersInSecondPuzzle_WhenMapIsCorrectlyAligned()
         {
             var sut = new Map(PuzzleData.SECOND_PUZZLE_SOLUTION_MAP_WITH_HEADER, 1, 1);
             sut.ClassifyEdge();
             sut.ReformEdge();
+            sut.FindMonsters();
+            Assert.Equal(22, sut.MonstersFoundInMap);
+        }
+
+        [Fact]
+        public void FindAllMonstersInSecondPuzzle_WhenMapIsCompletelyShuffled()
+        {
+            var sut = new Map(PuzzleData.SECOND_PUZZLE_SOLUTION_MAP_WITH_HEADER, 1, 1);
+            sut.ClassifyEdge();
+            sut.ReformEdge();
+            sut.FlipVertically();
+
             sut.FindMonsters();
             Assert.Equal(22, sut.MonstersFoundInMap);
         }
