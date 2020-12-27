@@ -53,17 +53,6 @@ namespace AdventOfCode2020.Day20.Logic
             ParseTile();
         }
 
-        public Tile(string data, int size)
-        {
-            _data = data;
-            _size = size;
-            _borders = new List<string>();
-            Position = CurrentPosition.Normal;
-            Transformations = new List<Tile>();
-
-            ParseTile();
-        }
-
         private Tile(Tile tile)
         {
             _data = tile._data;
@@ -479,6 +468,7 @@ namespace AdventOfCode2020.Day20.Logic
 
                 if (Left == side)
                 {
+                    undo.Clear();
                     break;
                 }
                 else
@@ -489,72 +479,6 @@ namespace AdventOfCode2020.Day20.Logic
             }
 
             return Left == side;
-
-
-
-
-
-/*
-            var undo = new List<Action<Tile>>();
-            ComputeVariants();
-
-            foreach (var index in _borders.Select((p,i) => new { Index = i, Side = p }).Where(p => p.Side == side).Select(p => p.Index))
-            {
-                var rotation = (CurrentPosition)(index & 3);
-                var flippedHorizontally = (index & (int)CurrentPosition.FlippedHorizontally) == (int)CurrentPosition.FlippedHorizontally;
-                var flippedVertically = (index & (int)CurrentPosition.FlippedVertically) == (int)CurrentPosition.FlippedVertically;
-
-                if (flippedHorizontally)
-                {
-                    FlipHorizontally(); // unverified
-                    undo.Add(t => t.FlipHorizontally());
-                }
-
-                if (flippedVertically)
-                {
-                    FlipVertically(); // unverified
-                    undo.Add(t => t.FlipVertically());
-                }
-
-                switch (rotation)
-                {
-                    case CurrentPosition.Normal:
-                        RotateLeft(90); // unverified
-                        undo.Add(t => t.RotateRight(90));
-                        break;
-
-                    case CurrentPosition.Rotated90:
-                        RotateLeft(180); // unverified
-                        undo.Add(t => t.RotateLeft(180));
-                        break;
-
-                    case CurrentPosition.Rotated180:
-                        RotateRight(90); // verified
-                        undo.Add(t => t.RotateLeft(90));
-                        break;
-
-                    case CurrentPosition.Rotated270:
-                        // ok
-                        break;
-                }
-
-                if (new string(Left.Reverse().ToArray()) == side)
-                {
-                    break;
-                }
-                else
-                {
-                    undo.ForEach(a => a(this));
-                    undo.Clear();
-                }
-            }
-
-            if (new string (Left.Reverse().ToArray()) != side)
-            {
-                System.Diagnostics.Debugger.Break();
-            }
-
-            return new string(Left.Reverse().ToArray()) == side;*/
         }
 
         public bool MakeTopSideBe(string side)
@@ -635,12 +559,12 @@ namespace AdventOfCode2020.Day20.Logic
 
         public int GetSize() => _size;
 
-        public void Display()
-        {
-            for (var y = 0; y < _size; y++)
-            {
-                Console.WriteLine($"{Image[(y * _size)..((y * _size) + _size)]}");
-            }
-        }
+        //public void Display()
+        //{
+        //    for (var y = 0; y < _size; y++)
+        //    {
+        //        Console.WriteLine($"{Image[(y * _size)..((y * _size) + _size)]}");
+        //    }
+        //}
     }
 }
