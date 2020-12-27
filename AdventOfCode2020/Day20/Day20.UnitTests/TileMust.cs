@@ -94,7 +94,7 @@ namespace AdventOfCode2020.Day20.UnitTests
         [InlineData(TILE_2311, TILE_3079)]
         [InlineData(TILE_1951, TILE_2311)]
         [InlineData(TILE_3079, TILE_2311)]
-        public void Test1(string tileData, string adjacentTileData)
+        public void ReturnTrue_WhenCheckingIfAdjacentTilesAreAdjacent(string tileData, string adjacentTileData)
         {
             var adjacentTile = new Tile(adjacentTileData);
             var sut = new Tile(tileData);
@@ -103,7 +103,7 @@ namespace AdventOfCode2020.Day20.UnitTests
         }
 
         [Fact]
-        public void Test2()
+        public void ReturnFalse_WhenCheckingIfNonAdjacentTilesAreAdjacent()
         {
             var nonAdjacentTile = new Tile(TILE_3079);
             var sut = new Tile(TILE_1951);
@@ -112,7 +112,7 @@ namespace AdventOfCode2020.Day20.UnitTests
         }
 
         [Fact]
-        public void Test4()
+        public void ReturnTrue_WhenFlippedAdjacentTileIsFirstFlipped()
         {
            var flippedAdjacentTile = new Tile(TILE_2311);
            var sut = new Tile(TILE_3079);
@@ -122,7 +122,7 @@ namespace AdventOfCode2020.Day20.UnitTests
         }
 
         [Fact]
-        public void Test5()
+        public void ReturnTrue_WhenCheckingIfFlippedAdjacentTileCouldBeAdjacent()
         {
             var flippedAdjacentTile = new Tile(TILE_2311);
             var sut = new Tile(TILE_3079);
@@ -131,7 +131,7 @@ namespace AdventOfCode2020.Day20.UnitTests
         }
 
         [Fact]
-        public void Test6()
+        public void ReturnFalse_WhenCheckingIfNonAdjacentTileCouldBeAdjacent()
         {
             var nonAdjacentTile = new Tile(TILE_3079);
             var sut = new Tile(TILE_1951);
