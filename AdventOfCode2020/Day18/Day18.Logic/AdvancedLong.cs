@@ -6,8 +6,6 @@ namespace AdventOfCode2020.Day18.Logic
 
         private readonly long _value;
 
-        public AdvancedLong(string value) => _value = long.Parse(value);
-
         public AdvancedLong(long value) => _value = value;
 
         public static AdvancedLong operator + (AdvancedLong lhs, AdvancedLong rhs) =>
