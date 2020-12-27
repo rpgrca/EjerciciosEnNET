@@ -98,17 +98,17 @@ namespace AdventOfCode2020.Day20.Logic
                 else
                 if (corner.InnerSide.ContainsKey(corner.Right) && corner.InnerSide.ContainsKey(corner.Top))
                 {
-                    corner.RotateRight(90); // o flip horizontal
+                    corner.RotateRight(90);
                 }
                 else
                 if (corner.InnerSide.ContainsKey(corner.Left) && corner.InnerSide.ContainsKey(corner.Bottom))
                 {
-                    corner.RotateLeft(90); // o flip vertical
+                    corner.RotateRight(270);
                 }
                 else
                 if (corner.InnerSide.ContainsKey(corner.Left) && corner.InnerSide.ContainsKey(corner.Top))
                 {
-                    corner.RotateRight(180); // o flip + rotate / rotate + flip
+                    corner.RotateRight(180);
                 }
 
                 for (var y = 0; y < Height; y++)
@@ -306,16 +306,6 @@ namespace AdventOfCode2020.Day20.Logic
                     RotateAQuarterToTheRight();
                     RotateAQuarterToTheRight();
                     break;
-            }
-        }
-
-        public void RotateLeft(int degrees)
-        {
-            switch (degrees)
-            {
-                case 90: RotateRight(270); break;
-                case 180: RotateRight(180); break;
-                case 270: RotateRight(90); break;
             }
         }
 

@@ -30,8 +30,6 @@ namespace AdventOfCode2020.Day20.Logic
         private readonly string _data;
         private int _size = Size;
 
-        public bool IsCorner { get; private set; }
-        public bool IsBorder { get; private set; }
         public Dictionary<string, Tile> InnerSide { get; private set; }
         public int Id { get; private set; }
         public string Image { get; private set; }
@@ -42,16 +40,6 @@ namespace AdventOfCode2020.Day20.Logic
         public string Left { get; private set; }
         public string Right { get; private set; }
         public string Bottom { get; private set; }
-
-        public Tile(string data)
-        {
-            _data = data;
-            _borders = new List<string>();
-            Position = CurrentPosition.Normal;
-            Transformations = new List<Tile>();
-
-            ParseTile();
-        }
 
         private Tile(Tile tile)
         {
@@ -67,6 +55,16 @@ namespace AdventOfCode2020.Day20.Logic
             _borders = new List<string>(tile._borders);
         }
 
+        public Tile(string data)
+        {
+            _data = data;
+            _borders = new List<string>();
+            Position = CurrentPosition.Normal;
+            Transformations = new List<Tile>();
+
+            ParseTile();
+        }
+
         private void ParseTile()
         {
             GetIdFromData();
@@ -76,6 +74,22 @@ namespace AdventOfCode2020.Day20.Logic
             GetBordersFromImage();
             ComputeVariants();
         }
+
+        private void GetIdFromData() =>
+            Id = int.Parse(_data.Replace("\n", string.Empty).Split(":")[0].Replace("Tile ", string.Empty));
+
+        private void GetImageFromData() =>
+            Image = _data.Replace("\n", string.Empty).Split(":")[1];
+
+        private void CalculateSizeFromData() =>
+            _size = (int)Math.Sqrt(Image.Length);
+
+        private void GetBordersFromImage() =>
+            (Top, Right, Bottom, Left) =
+                (Image[0.._size],
+                 new string(Image.Where((_, i) => (i + 1) % _size == 0).ToArray()),
+                 Image[((_size * _size) - _size)..(_size * _size)],
+                 new string(Image.Where((_, i) => i % _size == 0).ToArray()));
 
         private void ComputeVariants()
         {
@@ -155,29 +169,6 @@ namespace AdventOfCode2020.Day20.Logic
             FlipHorizontally();
         }
 
-        private void GetIdFromData() =>
-            Id = int.Parse(_data.Replace("\n", string.Empty).Split(":")[0].Replace("Tile ", string.Empty));
-
-        private void GetImageFromData() =>
-            Image = _data.Replace("\n", string.Empty).Split(":")[1];
-
-        private void CalculateSizeFromData() =>
-            _size = (int)Math.Sqrt(Image.Length);
-
-        private void GetBordersFromImage()
-        {
-            Top = Image[0.._size];
-            Right = new string(Image.Where((_, i) => (i + 1) % _size == 0).ToArray());
-            Bottom = Image[((_size * _size) - _size)..(_size * _size)];
-            Left = new string(Image.Where((_, i) => i % _size == 0).ToArray());
-/*
-            Top = Image[0..Size];
-            Right = new string(Image.Where((_, i) => (i + 1) % Size == 0).ToArray());
-            Bottom = new string(Image[((Size * Size) - Size)..(Size*Size)].Reverse().ToArray());
-            Left = new string(Image.Where((_, i) => i % Size == 0).Reverse().ToArray());
-*/
-        }
-
         private void RotateAQuarterToTheRight()
         {
             var newImage = new char[_size * _size];
@@ -220,25 +211,11 @@ namespace AdventOfCode2020.Day20.Logic
             }
         }
 
-        public void RotateLeft(int degrees)
-        {
-            switch (degrees)
-            {
-                case 90: RotateRight(270); break;
-                case 180: RotateRight(180); break;
-                case 270: RotateRight(90); break;
-            }
-        }
-
-        public bool IsAdjacentOf(Tile adjacentTile)
-        {
-            var sameSides = GetBorders().Join(adjacentTile.GetBorders(),
+        public bool IsAdjacentOf(Tile adjacentTile) =>
+            GetBorders().Join(adjacentTile.GetBorders(),
                 p => p,
                 q => q,
-                (r, s) => r == s).Count();
-
-            return sameSides > 0;
-        }
+               (r, s) => r == s).Any();
 
         private List<string> GetBorders() => new() { Top, Right, Bottom, Left };
 
@@ -280,19 +257,14 @@ namespace AdventOfCode2020.Day20.Logic
             Position ^= CurrentPosition.FlippedVertically;
         }
 
-        public bool CouldBeAdjacentOf(Tile possibleAdjacentTile)
-        {
-            var sameSides = _borders.Join(possibleAdjacentTile._borders,
+        public bool CouldBeAdjacentOf(Tile possibleAdjacentTile) =>
+            _borders.Join(possibleAdjacentTile._borders,
                 p => p,
                 q => q,
-                (r, s) => r == s).Count();
-
-            return sameSides > 0;
-        }
+                (r, s) => r == s).Any();
 
         public void MarkAsCorner(List<Tile> adjacentTiles)
         {
-            IsCorner = true;
             InnerSide = new Dictionary<string, Tile>();
 
             var adjacentTile = adjacentTiles.SingleOrDefault(t => t._borders.Contains(Top));
@@ -322,7 +294,6 @@ namespace AdventOfCode2020.Day20.Logic
 
         public void MarkAsBorder(List<Tile> adjacentTiles)
         {
-            IsBorder = true;
             InnerSide = new Dictionary<string, Tile>();
 
             var adjacentTile = adjacentTiles.SingleOrDefault(t => t._borders.Contains(Top));
@@ -352,12 +323,13 @@ namespace AdventOfCode2020.Day20.Logic
 
         public void MarkAsInsidePiece(List<Tile> adjacentTiles)
         {
-            InnerSide = new Dictionary<string, Tile>();
-
-            InnerSide.Add(Top, adjacentTiles.Single(t => t._borders.Contains(Top)));
-            InnerSide.Add(Right, adjacentTiles.Single(t => t._borders.Contains(Right)));
-            InnerSide.Add(Bottom, adjacentTiles.Single(t => t._borders.Contains(Bottom)));
-            InnerSide.Add(Left, adjacentTiles.Single(t => t._borders.Contains(Left)));
+            InnerSide = new Dictionary<string, Tile>
+            {
+                { Top, adjacentTiles.Single(t => t._borders.Contains(Top)) },
+                { Right, adjacentTiles.Single(t => t._borders.Contains(Right)) },
+                { Bottom, adjacentTiles.Single(t => t._borders.Contains(Bottom)) },
+                { Left, adjacentTiles.Single(t => t._borders.Contains(Left)) }
+            };
         }
 
         private void ReadjustInnerSide()
@@ -422,129 +394,66 @@ namespace AdventOfCode2020.Day20.Logic
             }
         }
 
-        public bool MakeLeftSideBe(string side)
+        public bool MakeLeftSideBe(string side) =>
+            MakeASideBe(t => t.Left == side);
+
+        private bool MakeASideBe(Func<Tile, bool> checkIfSideIsAsExpected)
         {
-            var undo = new List<Action<Tile>>();
-            foreach (var (rotation, flippedHorizontally, flippedVertically) in from index in Transformations.Select((t, i) => new { Index = i, Tile = t }).Where(t => t.Tile.Left == side).Select(t => t.Index)
-                                                                               let position = Transformations[index].Position
-                                                                               let rotation = (CurrentPosition)((int)position & 3)
-                                                                               let flippedHorizontally = (position & CurrentPosition.FlippedHorizontally) == CurrentPosition.FlippedHorizontally
-                                                                               let flippedVertically = (position & CurrentPosition.FlippedVertically) == CurrentPosition.FlippedVertically
-                                                                               select (rotation, flippedHorizontally, flippedVertically))
-            {
-                if (flippedHorizontally)
-                {
-                    FlipHorizontally(); // unverified
-                    undo.Add(t => t.FlipHorizontally());
-                }
+            var transformation = Transformations.First(t => checkIfSideIsAsExpected(t));
 
-                if (flippedVertically)
-                {
-                    FlipVertically(); // unverified
-                    undo.Add(t => t.FlipVertically());
-                }
+            FlipHorizontallyIfNeeded(transformation);
+            FlipVerticallyIfNeeded(transformation);
+            RotateIfNeeded(transformation);
 
-                switch (rotation)
-                {
-                    case CurrentPosition.Normal:
-                        // ok
-                        break;
-
-                    case CurrentPosition.Rotated90:
-                        RotateRight(90);
-                        undo.Add(t => t.RotateLeft(90));
-                        break;
-
-                    case CurrentPosition.Rotated180:
-                        RotateRight(180);
-                        undo.Add(t => t.RotateRight(180));
-                        break;
-
-                    case CurrentPosition.Rotated270:
-                        RotateRight(270);
-                        undo.Add(t => t.RotateRight(90));
-                        break;
-                }
-
-                if (Left == side)
-                {
-                    undo.Clear();
-                    break;
-                }
-                else
-                {
-                    undo.ForEach(a => a(this));
-                    undo.Clear();
-                }
-            }
-
-            return Left == side;
+            return checkIfSideIsAsExpected(this);
         }
 
-        public bool MakeTopSideBe(string side)
+        private void FlipHorizontallyIfNeeded(Tile transformation)
         {
-            var undo = new List<Action<Tile>>();
-            foreach (var index in Transformations.Select((t, i) => new { Index = i, Tile = t }).Where(t => t.Tile.Top == side).Select(t => t.Index))
+            if (IsFlippedHorizontally(transformation))
             {
-                var position = Transformations[index].Position;
-                var rotation = (CurrentPosition)((int)position & 3);
-                var flippedHorizontally = (position & CurrentPosition.FlippedHorizontally) == CurrentPosition.FlippedHorizontally;
-                var flippedVertically = (position & CurrentPosition.FlippedVertically) == CurrentPosition.FlippedVertically;
-
-            //ComputeVariants();
-            //foreach (var index in _borders.Select((p,i) => new { Index = i, Side = p }).Where(p => p.Side == side).Select(p => p.Index))
-            //{
-                //var rotation = (CurrentPosition)(index & 3);
-                //var flippedHorizontally = (index & (int)CurrentPosition.FlippedHorizontally) == (int)CurrentPosition.FlippedHorizontally;
-                //var flippedVertically = (index & (int)CurrentPosition.FlippedVertically) == (int)CurrentPosition.FlippedVertically;
-
-                if (flippedHorizontally)
-                {
-                    FlipHorizontally(); // unverified
-                    undo.Add(t => t.FlipHorizontally());
-                }
-
-                if (flippedVertically)
-                {
-                    FlipVertically(); // unverified
-                    undo.Add(t => t.FlipVertically());
-                }
-
-                switch (rotation)
-                {
-                    case CurrentPosition.Normal:
-                        // ok
-                        break;
-
-                    case CurrentPosition.Rotated90:
-                        RotateRight(90);
-                        undo.Add(t => t.RotateLeft(90));
-                        break;
-
-                    case CurrentPosition.Rotated180:
-                        RotateRight(180); // unverified
-                        undo.Add(t => t.RotateRight(180));
-                        break;
-
-                    case CurrentPosition.Rotated270:
-                        RotateRight(270);
-                        undo.Add(t => t.RotateRight(90));
-                        break;
-                }
-
-                if (Top == side)
-                {
-                    break;
-                }
-                else
-                {
-                    undo.ForEach(a => a(this));
-                    undo.Clear();
-                }
+                FlipHorizontally();
             }
-
-            return Top == side;
         }
+
+        private void FlipVerticallyIfNeeded(Tile transformation)
+        {
+            if (IsFlippedVertically(transformation))
+            {
+                FlipVertically();
+            }
+        }
+
+        private static bool IsFlippedHorizontally(Tile transformation) =>
+            (transformation.Position & CurrentPosition.FlippedHorizontally) == CurrentPosition.FlippedHorizontally;
+
+        private static bool IsFlippedVertically(Tile transformation) =>
+            (transformation.Position & CurrentPosition.FlippedVertically) == CurrentPosition.FlippedVertically;
+
+        private void RotateIfNeeded(Tile transformation)
+        {
+            switch ((CurrentPosition)((int)transformation.Position & 3))
+            {
+                case CurrentPosition.Normal:
+                    // ok
+                    break;
+
+                case CurrentPosition.Rotated90:
+                    RotateRight(90);
+                    break;
+
+                case CurrentPosition.Rotated180:
+                    RotateRight(180);
+                    break;
+
+                case CurrentPosition.Rotated270:
+                    RotateRight(270);
+                    break;
+            }
+        }
+
+        public bool MakeTopSideBe(string side) =>
+            MakeASideBe(t => t.Top == side);
 
         public void Crop()
         {
