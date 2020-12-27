@@ -624,7 +624,12 @@ namespace AdventOfCode2020.Day20.Logic
 
         public void Crop()
         {
-            Image = string.Join(string.Empty, _data.Split(":\n")[1].Split("\n").Skip(1).Take(8).Select(p => p[1..9]));
+            Image = string.Concat(Enumerable
+                .Range(0, 10)
+                .Select(i => Image.Substring(i * 10, 10))
+                .Skip(1)
+                .Take(8)
+                .Select(p => p[1..9]));
             _size = 8;
         }
 

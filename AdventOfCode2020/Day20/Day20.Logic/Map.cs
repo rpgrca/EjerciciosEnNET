@@ -152,35 +152,10 @@ namespace AdventOfCode2020.Day20.Logic
 
         public void Crop()
         {
-            var fullMap1 = string.Empty;
-            for (var y = 0; y < Height; y++)
-            {
-                for (var h = 0; h < 10; h++)
-                {
-                    for (var x = 0; x < Width; x++)
-                    {
-                        fullMap1 += _reassembledMap[y, x].Image[(h * 10)..((h * 10) + 10)];
-                    }
-                    fullMap1 += "\n";
-                }
-            }
-
-            var map1 = new Tile($"Tile 9998:\n{fullMap1}", 120);
-            map1.Display();
-
             foreach (var tile in _reassembledMap)
             {
                 tile.Crop();
             }
-
-            var fullMap = BuildGraphicalMap();
-            _fullMap = fullMap.Split("\n");
-            var map = new Tile($"Tile 9999:\n{fullMap}", 96);
-
-            map.FlipVertically();
-            map.FlipHorizontally();
-            map.RotateRight(270);
-            map.Display();
         }
 
         private string BuildGraphicalMap()
@@ -204,34 +179,174 @@ namespace AdventOfCode2020.Day20.Logic
         }
 
         public void FindMonsters()
-        {
+        {/*
+ 3 ->  6
+ 4 -> 14
+12 -> 78
+
+
+
+6 + (Width -3) * 8*/
+
+
             static bool monsterVerifierNormal(string m, int x) =>
                 m[x] == '#' && m[x + 78] == '#' && m[x + 83] == '#' && m[x + 84] == '#' &&
                 m[x + 89] == '#' && m[x + 90] == '#' && m[x + 95] == '#' && m[x + 96] == '#' &&
                 m[x + 97] == '#' && m[x + 175] == '#' && m[x + 178] == '#' && m[x + 181] == '#' &&
                 m[x + 184] == '#' && m[x + 187] == '#' && m[x + 190] == '#';
 
-            var fullMap = BuildGraphicalMap().Replace("\n", string.Empty);
-            var size = _reassembledMap[0,0].GetSize();
+            var fullMap = string.Empty;
+            var size = _reassembledMap[0,0].GetSize() * Width;
             var lastPosition = (size * size) - 190;
+            var actions = new List<Action>
+            {
+                () => RotateRight(90),    // →
+                () => RotateRight(90),    // ↓
+                () => RotateRight(90),    // ←
+                () => FlipVertically(),   // ←V
+                () => RotateRight(90),    // ↑V
+                () => RotateRight(90),    // →V
+                () => RotateRight(90),    // ↓V
+                () => FlipHorizontally(), // ↓VH
+                () => RotateRight(90),    // ←VH
+                () => RotateRight(90),    // ↑VH
+                () => RotateRight(90),    // →VH
+                () => FlipVertically(),   // →H
+                () => RotateRight(90),    // ↓H
+                () => RotateRight(90),    // ←H
+                () => RotateRight(90),    // ↑H
+                () => FlipHorizontally()  // ↑
+            };
 
             MonstersFoundInMap = 0;
-            for (var y = 0; y < size; y++)
+            foreach (var action in actions)
             {
-                for (var x = 0; x <= size - 2; x++)
+                fullMap = BuildGraphicalMap().Replace("\n", string.Empty);
+
+                for (var y = 0; y < size; y++)
                 {
-                    var position = (y * size) + x;
-                    if (position < lastPosition)
+                    for (var x = 0; x <= size - 2; x++)
                     {
-                       if (monsterVerifierNormal(fullMap, position))
-                       {
-                            MonstersFoundInMap++;
-                       }
+                        var position = (y * size) + x;
+
+                        if (position < lastPosition)
+                        {
+                            if (monsterVerifierNormal(fullMap, position))
+                            {
+                                MonstersFoundInMap++;
+                            }
+                        }
                     }
+                }
+
+                if (MonstersFoundInMap > 0)
+                {
+                    break;
+                }
+                else
+                {
+                    action.Invoke();
                 }
             }
 
             WaterRoughness = fullMap.Count(p => p == '#') - (MonstersFoundInMap * 15);
+        }
+
+        private void FlipVertically()
+        {
+            var newMap = new Tile[Height, Width];
+
+            for (var y = 0; y < Height; y++)
+            {
+                for (var x = 0; x < Width; x++)
+                {
+                    newMap[y, Width - x - 1] = _reassembledMap[y, x];
+                    newMap[y, Width - x - 1].FlipVertically();
+                }
+            }
+
+            for (var y = 0; y < Height; y++)
+            {
+                for (var x = 0; x < Width; x++)
+                {
+                    _reassembledMap[y, x] = newMap[y, x];
+                }
+            }
+        }
+
+        private void FlipHorizontally()
+        {
+            var newMap = new Tile[Height, Width];
+
+            for (var y = 0; y < Height; y++)
+            {
+                for (var x = 0; x < Width; x++)
+                {
+                    newMap[Height - y - 1, x] = _reassembledMap[y, x];
+                    newMap[Height - y - 1, x].FlipHorizontally();
+                }
+            }
+
+            for (var y = 0; y < Height; y++)
+            {
+                for (var x = 0; x < Width; x++)
+                {
+                    _reassembledMap[y, x] = newMap[y, x];
+                }
+            }
+        }
+
+        public void RotateRight(int degrees)
+        {
+            switch (degrees)
+            {
+                case 90:
+                    RotateAQuarterToTheRight();
+                    break;
+
+                case 180:
+                    RotateAQuarterToTheRight();
+                    RotateAQuarterToTheRight();
+                    break;
+
+                case 270:
+                    RotateAQuarterToTheRight();
+                    RotateAQuarterToTheRight();
+                    RotateAQuarterToTheRight();
+                    break;
+            }
+        }
+
+        public void RotateLeft(int degrees)
+        {
+            switch (degrees)
+            {
+                case 90: RotateRight(270); break;
+                case 180: RotateRight(180); break;
+                case 270: RotateRight(90); break;
+            }
+        }
+
+        private void RotateAQuarterToTheRight()
+        {
+            var newMap = new Tile[Height,Width];
+
+            for (var y = 0; y < Height; y++)
+            {
+                for (var x = 0; x < Width; x++)
+                {
+                    newMap[x, Width-1-y] = _reassembledMap[y, x];
+                    newMap[x, Width-1-y].RotateRight(90);
+                }
+            }
+
+            for (var y = 0; y < Height; y++)
+            {
+                for (var x = 0; x < Width; x++)
+                {
+                    _reassembledMap[y, x] = newMap[y, x];
+                }
+            }
         }
     }
 }
