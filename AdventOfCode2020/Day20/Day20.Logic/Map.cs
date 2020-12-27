@@ -192,6 +192,7 @@ namespace AdventOfCode2020.Day20.Logic
             var lastPosition = (size * size) - ((spacer * 2) + 37);
             var actions = new List<Action>
             {
+                () => {},                           // ↑
                 () => RotateAQuarterToTheRight(),   // →
                 () => RotateAQuarterToTheRight(),   // ↓
                 () => RotateAQuarterToTheRight(),   // ←
@@ -199,7 +200,6 @@ namespace AdventOfCode2020.Day20.Logic
                 () => RotateAQuarterToTheRight(),   // ↑V
                 () => RotateAQuarterToTheRight(),   // →V
                 () => RotateAQuarterToTheRight(),   // ↓V
-                () => RotateAQuarterToTheRight()
 
                 // Not needed, horizontally flipping is rotating right 180
                 //() => FlipHorizontally(),           // ↓VH
@@ -216,6 +216,8 @@ namespace AdventOfCode2020.Day20.Logic
             MonstersFoundInMap = 0;
             foreach (var action in actions)
             {
+                action.Invoke();
+
                 fullMap = BuildGraphicalMap().Replace("\n", string.Empty);
 
                 for (var y = 0; y < size; y++)
@@ -237,10 +239,6 @@ namespace AdventOfCode2020.Day20.Logic
                 if (MonstersFoundInMap > 0)
                 {
                     break;
-                }
-                else
-                {
-                    action.Invoke();
                 }
             }
 
@@ -268,28 +266,6 @@ namespace AdventOfCode2020.Day20.Logic
                 }
             }
         }
-
-        /*public void FlipHorizontally()
-        {
-            var newMap = new Tile[Height, Width];
-
-            for (var y = 0; y < Height; y++)
-            {
-                for (var x = 0; x < Width; x++)
-                {
-                    newMap[Height - y - 1, x] = _reassembledMap[y, x];
-                    newMap[Height - y - 1, x].FlipHorizontally();
-                }
-            }
-
-            for (var y = 0; y < Height; y++)
-            {
-                for (var x = 0; x < Width; x++)
-                {
-                    _reassembledMap[y, x] = newMap[y, x];
-                }
-            }
-        }*/
 
         public void RotateAQuarterToTheRight()
         {
