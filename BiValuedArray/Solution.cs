@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+
 namespace BiValuedArray
 {
     public class Solution
@@ -10,6 +12,8 @@ namespace BiValuedArray
         {
             var maximumLength = 0;
             var currentLength = 2;
+            var repeatedValue = 0;
+            var repeatedValueCount = 0;
 
             if (A.Length >= 2)
             {
@@ -20,6 +24,11 @@ namespace BiValuedArray
                     if (values.Item1 == A[index] || values.Item2 == A[index])
                     {
                         currentLength++;
+                        if (A[index] == A[index - 1])
+                        {
+                            repeatedValue = A[index];
+                            repeatedValueCount++;
+                        }
                     }
                     else
                     {
@@ -27,13 +36,21 @@ namespace BiValuedArray
                         {
                             values = (values.Item2, A[index]);
                             currentLength++;
+
+                            if (A[index] == A[index - 1])
+                            {
+                                repeatedValue = A[index];
+                                repeatedValueCount++;
+                            }
                         }
                         else
                         {
                             maximumLength = ObtainLargerValue(currentLength, maximumLength);
-
                             values = (A[index - 1], A[index]);
-                            currentLength = 2;
+
+                            currentLength = 2 + (values.Item1 == repeatedValue? repeatedValue - 1 : 0);
+                            repeatedValue = 0;
+                            repeatedValueCount = 0;
                         }
                     }
                 }
@@ -53,65 +70,73 @@ namespace BiValuedArray
         private (int, int) _pair;
         private int _index;
 
+        public int Result => _maximumLength;
+
         public SolutionAsObjectOriented(int[] array)
         {
             _array = array;
-            InitializeCurrentLength();
+            _maximumLength = 0;
+            InitializeCurrentLengthOfAPair();
+            InitializeIndexToStartWithFirstElementOfPair();
         }
 
-        public int UpdateMaximumValue() =>
-            _maximumLength = _currentLength > _maximumLength
-                ? _currentLength
-                : _maximumLength;
+        private void InitializeCurrentLengthOfAPair() => _currentLength = 2;
 
-        public int Calculate()
+        private void InitializeIndexToStartWithFirstElementOfPair() => _index = 1;
+
+        public void Calculate()
         {
-            if (InputArrayHasMinimumLength())
+            if (! InputArrayHasMinimumLength())
             {
-                ExtractFirstPairOfValues();
+                return;
+            }
 
-                for (_index = 2; _index < _array.Length; _index++)
+            ExtractFirstPairOfValues();
+
+            while (ThereAreValuesToProcess())
+            {
+                if (CurrentValueBelongsToPair())
                 {
-                    if (CurrentValueBelongsToPair())
+                    AddOneToCurrentLength();
+                }
+                else
+                {
+                    if (PairMembersAreIdentical())
                     {
+                        AddCurrentValueToPair();
                         AddOneToCurrentLength();
                     }
                     else
                     {
-                        if (PairMembersAreIdentical())
-                        {
-                            AddCurrentValueToPair();
-                            AddOneToCurrentLength();
-                        }
-                        else
-                        {
-                            UpdateMaximumValue();
-                            AddCurrentValueShiftingValuesInPair();
-                            InitializeCurrentLength();
-                        }
+                        UpdateMaximumValueWhenNecessary();
+                        AddCurrentValueShiftingValuesInPair();
+                        InitializeCurrentLengthOfAPair();
                     }
                 }
-
-                UpdateMaximumValue();
             }
 
-            return _maximumLength;
+            UpdateMaximumValueWhenNecessary();
         }
 
-        private void InitializeCurrentLength() => _currentLength = 2;
-
-        private void AddCurrentValueShiftingValuesInPair() => _pair = (_array[_index - 1], _array[_index]);
-
-        private void AddCurrentValueToPair() => _pair = (_pair.Item2, _array[_index]);
-
-        private bool PairMembersAreIdentical() => _pair.Item1 == _pair.Item2;
-
-        private void AddOneToCurrentLength() => _currentLength++;
-
-        private bool CurrentValueBelongsToPair() => _pair.Item1 == _array[_index] || _pair.Item2 == _array[_index];
+        private bool InputArrayHasMinimumLength() => _array.Length >= 2;
 
         private void ExtractFirstPairOfValues() => _pair = (_array[0], _array[1]);
 
-        private bool InputArrayHasMinimumLength() => _array.Length >= 2;
+        private bool ThereAreValuesToProcess() => ++_index < _array.Length;
+
+        private bool CurrentValueBelongsToPair() => _pair.Item1 == _array[_index] || _pair.Item2 == _array[_index];
+
+        private void AddOneToCurrentLength() => _currentLength++;
+
+        private bool PairMembersAreIdentical() => _pair.Item1 == _pair.Item2;
+
+        private void AddCurrentValueToPair() => _pair = (_pair.Item2, _array[_index]);
+
+        public int UpdateMaximumValueWhenNecessary() =>
+            _maximumLength = _currentLength > _maximumLength
+                ? _currentLength
+                : _maximumLength;
+
+        private void AddCurrentValueShiftingValuesInPair() => _pair = (_array[_index - 1], _array[_index]);
     }
 }

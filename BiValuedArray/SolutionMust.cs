@@ -16,6 +16,7 @@ namespace BiValuedArray
 
         public static IEnumerable<object[]> SolutionFeeder()
         {
+            yield return new object[] { new int[] { 1, 2, 2, 3, 3 }, 4 };
             yield return new object[] { new int[] { 4, 2, 2, 4, 2 }, 5 };
             yield return new object[] { new int[] { 1, 2, 3, 2 }, 3 };
             yield return new object[] { new int[] { 0, 5, 4, 4, 5, 12 }, 4 };
@@ -32,12 +33,13 @@ namespace BiValuedArray
         public void ReturnCorrectLength(int[] sampleArray, int expectedLength)
         {
             var sut = new SolutionAsObjectOriented(sampleArray);
-            var length = sut.Calculate();
-            Assert.Equal(expectedLength, length);
+            sut.Calculate();
+            Assert.Equal(expectedLength, sut.Result);
         }
 
         public static IEnumerable<object[]> SolutionFeeder()
         {
+            yield return new object[] { new int[] { 1, 2, 2, 3, 3 }, 4 };
             yield return new object[] { new int[] { 4, 2, 2, 4, 2 }, 5 };
             yield return new object[] { new int[] { 1, 2, 3, 2 }, 3 };
             yield return new object[] { new int[] { 0, 5, 4, 4, 5, 12 }, 4 };
