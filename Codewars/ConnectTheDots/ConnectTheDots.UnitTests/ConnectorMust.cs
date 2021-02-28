@@ -1,31 +1,26 @@
-using System.Reflection;
-using System;
 using Xunit;
-using ConnectTheDots.Logic;
+using Codewars.ConnectTheDots.Logic;
 
-namespace ConnectTheDots.UnitTests
+namespace Codewars.ConnectTheDots.UnitTests
 {
     public class ConnectorMust
     {
         [Theory]
-        [InlineData()]
-        public void Test1()
+        [InlineData(
+            "           \n" +
+            " a       b \n" +
+            " e         \n" +
+            "           \n" +
+            " d       c \n" +
+            "           \n",
+            "           \n" +
+            " ********* \n" +
+            " *       * \n" +
+            " *       * \n" +
+            " ********* \n" +
+            "           \n")]
+        public void Test1(string input, string expectedValue)
         {
-            var input = @" 
- a       b 
- e         
-            
- d       c 
- 
-";
-
-            var expectedValue = @"          
- *********
- *       *
- *       *
- *********
- ";
-
             var sut = new Connector(input);
             sut.Connect();
             Assert.Equal(expectedValue, sut.Picture);
