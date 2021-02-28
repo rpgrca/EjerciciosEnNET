@@ -65,20 +65,10 @@ namespace Codewars.ConnectTheDots.Logic
         private void ConvertCanvasToPicture() =>
             Picture = string.Join("\n", _canvas.Select(c => new string(c)));
 
-        private void CalculateCoordinatesFrom((char From, char To) points)
-        {
-            var source = _coordinates[points.From];
-            var target = _coordinates[points.To];
-
-            var horizontalOffset = target.X - source.X;
-            var verticalOffset = target.Y - source.Y;
-
-            var line = new LineFactory().Create(source, target);
-            if (line != null)
-            {
-                line.TraceTo(_dots);
-            }
-        }
+        private void CalculateCoordinatesFrom((char From, char To) points) =>
+            new LineFactory()
+                .Create(_coordinates[points.From], _coordinates[points.To])
+                .TraceTo(_dots);
     }
 
     public class LineFactory
@@ -90,82 +80,62 @@ namespace Codewars.ConnectTheDots.Logic
 
             if (horizontalOffset > 0 && verticalOffset == 0)
             {
-                return new HorizontalLine(
+                return new Line(
                     source,
                     target,
                     horizontalOffset,
                     verticalOffset,
-                    (s, _, h, _) => Enumerable.Range(s.X, h + 1));
+                    (s, _, h, _) => Enumerable.Range(s.X, h + 1),
+                    (dots, s, p) => dots.Add((s.Y, p)));
             }
             else
             if (horizontalOffset < 0 && verticalOffset == 0)
             {
-                return new HorizontalLine(
+                return new Line(
                     source,
                     target,
                     horizontalOffset,
                     verticalOffset,
-                    (_, t, h, _) => Enumerable.Range(t.X, -h + 1).Reverse());
+                    (_, t, h, _) => Enumerable.Range(t.X, -h + 1).Reverse(),
+                    (dots, s, p) => dots.Add((s.Y, p)));
             }
             else
             if (verticalOffset > 0 && horizontalOffset == 0)
             {
-                return new VerticalLine(
+                return new Line(
                     source,
                     target,
                     horizontalOffset,
                     verticalOffset,
-                    (s, _, _, v) => Enumerable.Range(s.Y, v + 1));
+                    (s, _, _, v) => Enumerable.Range(s.Y, v + 1),
+                    (dots, s, p) => dots.Add((p, s.X)));
             }
             else
             if (verticalOffset < 0 && horizontalOffset == 0)
             {
-                return new VerticalLine(
+                return new Line(
                     source,
                     target,
                     horizontalOffset,
                     verticalOffset,
-                    (_, t, _, v) => Enumerable.Range(t.Y, -v + 1).Reverse());
+                    (_, t, _, v) => Enumerable.Range(t.Y, -v + 1).Reverse(),
+                    (dots, s, p) => dots.Add((p, s.X)));
             }
             else
-            if (horizontalOffset > 0 && verticalOffset > 0)
+            if (horizontalOffset > 0)
             {
                 return new DiagonalLine(
-                    source,
-                    target,
-                    horizontalOffset,
-                    verticalOffset,
-                    (s, _, h, _) => Enumerable.Range(s.X, h + 1));
+                    source, target,
+                    horizontalOffset, verticalOffset,
+                    1, (s, _, h, _) => Enumerable.Range(s.X, h + 1));
             }
             else
-            if (horizontalOffset > 0 && verticalOffset < 0)
+            if (horizontalOffset < 0)
             {
                 return new DiagonalLine(
-                    source,
-                    target,
-                    horizontalOffset,
-                    verticalOffset,
-                    (s, _, h, _) => Enumerable.Range(s.X, h + 1));
-            }
-            else
-            if (horizontalOffset < 0 && verticalOffset > 0)
-            {
-                return new InversedDiagonalLine(
-                    source,
-                    target,
-                    horizontalOffset,
-                    verticalOffset,
-                    (_, t, h, _) => Enumerable.Range(t.X, -h + 1).Reverse());
-            }
-            else
-            if (horizontalOffset < 0 && verticalOffset < 0)
-            {
-                return new InversedDiagonalLine(
-                    source,
-                    target,
-                    horizontalOffset,
-                    verticalOffset,
-                    (_, t, h, _) => Enumerable.Range(t.X, -h + 1).Reverse());
+                    source, target,
+                    horizontalOffset, verticalOffset,
+                    -1, (_, t, h, _) => Enumerable.Range(t.X, -h + 1).Reverse());
             }
 
             return null;
@@ -177,56 +147,33 @@ namespace Codewars.ConnectTheDots.Logic
         void TraceTo(List<(int Y, int X)> dots);
     }
 
-    public class HorizontalLine : ILine
+    public class Line : ILine
     {
         private readonly (int Y, int X) _source;
         private readonly (int Y, int X) _target;
         private readonly int _horizontalOffset;
         private readonly int _verticalOffset;
         private readonly Func<(int Y, int X), (int Y, int X), int, int, IEnumerable<int>> Steps;
+        private readonly Action<List<(int Y, int X)>, (int Y, int X), int> Adding;
 
-        public HorizontalLine((int Y, int X) source, (int Y, int X) target, int horizontalOffset, int verticalOffset, Func<(int Y, int X), (int Y, int X), int, int, IEnumerable<int>> steps)
+        public Line(
+            (int Y, int X) source, (int Y, int X) target,
+            int horizontalOffset, int verticalOffset,
+            Func<(int Y, int X), (int Y, int X), int, int, IEnumerable<int>> steps,
+            Action<List<(int Y, int X)>, (int Y, int X), int> adding)
         {
             _source = source;
             _target = target;
             _horizontalOffset = horizontalOffset;
             _verticalOffset = verticalOffset;
             Steps = steps;
+            Adding = adding;
         }
 
-        public void TraceTo(List<(int Y, int X)> dots)
-        {
-            foreach (var horizontalStep in Steps(_source, _target, _horizontalOffset, _verticalOffset))
-            {
-                dots.Add((_source.Y, horizontalStep));
-            }
-        }
-    }
-
-    public class VerticalLine : ILine
-    {
-        protected readonly (int Y, int X) _source;
-        protected readonly (int Y, int X) _target;
-        protected readonly int _horizontalOffset;
-        protected readonly int _verticalOffset;
-        private readonly Func<(int Y, int X), (int Y, int X), int, int, IEnumerable<int>> Steps;
-
-        public VerticalLine((int Y, int X) source, (int Y, int X) target, int horizontalOffset, int verticalOffset, Func<(int Y, int X), (int Y, int X), int, int, IEnumerable<int>> steps)
-        {
-            _source = source;
-            _target = target;
-            _horizontalOffset = horizontalOffset;
-            _verticalOffset = verticalOffset;
-            Steps = steps;
-        }
-
-        public void TraceTo(List<(int Y, int X)> dots)
-        {
-            foreach (var verticalStep in Steps(_source, _target, _horizontalOffset, _verticalOffset))
-            {
-                dots.Add((verticalStep, _source.X));
-            }
-        }
+        public void TraceTo(List<(int Y, int X)> dots) =>
+            Steps(_source, _target, _horizontalOffset, _verticalOffset)
+                .ToList()
+                .ForEach(p => Adding(dots, _source, p) );
     }
 
     public class DiagonalLine : ILine
@@ -235,54 +182,27 @@ namespace Codewars.ConnectTheDots.Logic
         protected readonly (int Y, int X) _target;
         protected readonly int _horizontalOffset;
         protected readonly int _verticalOffset;
+        private readonly int _multiplier;
         private readonly Func<(int Y, int X), (int Y, int X), int, int, IEnumerable<int>> Steps;
 
-        public DiagonalLine((int Y, int X) source, (int Y, int X) target, int horizontalOffset, int verticalOffset, Func<(int Y, int X), (int Y, int X), int, int, IEnumerable<int>> steps)
+        public DiagonalLine((int Y, int X) source, (int Y, int X) target, int horizontalOffset, int verticalOffset, int multiplier, Func<(int Y, int X), (int Y, int X), int, int, IEnumerable<int>> steps)
         {
             _source = source;
             _target = target;
             _horizontalOffset = horizontalOffset;
             _verticalOffset = verticalOffset;
+            _multiplier = multiplier;
             Steps = steps;
         }
 
         public void TraceTo(List<(int Y, int X)> dots)
         {
-            var verticalStep = _verticalOffset / _horizontalOffset;
+            var verticalStep = _verticalOffset / (_multiplier * _horizontalOffset);
             var step = 0;
-            foreach (var horizontalStep in Steps(_source, _target, _horizontalOffset, _verticalOffset))
-            {
-                dots.Add((_source.Y + (step++ * verticalStep), horizontalStep));
-            }
+
+            Steps(_source, _target, _horizontalOffset, _verticalOffset)
+                .ToList()
+                .ForEach(p => dots.Add((_source.Y + (step++ * verticalStep), p)));
         }
     }
-
-    public class InversedDiagonalLine : ILine
-    {
-        protected readonly (int Y, int X) _source;
-        protected readonly (int Y, int X) _target;
-        protected readonly int _horizontalOffset;
-        protected readonly int _verticalOffset;
-        private readonly Func<(int Y, int X), (int Y, int X), int, int, IEnumerable<int>> Steps;
-
-        public InversedDiagonalLine((int Y, int X) source, (int Y, int X) target, int horizontalOffset, int verticalOffset, Func<(int Y, int X), (int Y, int X), int, int, IEnumerable<int>> steps)
-        {
-            _source = source;
-            _target = target;
-            _horizontalOffset = horizontalOffset;
-            _verticalOffset = verticalOffset;
-            Steps = steps;
-        }
-
-        public void TraceTo(List<(int Y, int X)> dots)
-        {
-            var verticalStep = _verticalOffset / -_horizontalOffset;
-            var step = 0;
-            foreach (var horizontalStep in Steps(_source, _target, _horizontalOffset, _verticalOffset))
-            {
-                dots.Add((_source.Y + (step++ * verticalStep), horizontalStep));
-            }
-        }
-    }
-
 }
