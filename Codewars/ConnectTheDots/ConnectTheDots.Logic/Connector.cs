@@ -61,38 +61,75 @@ namespace Codewars.ConnectTheDots.Logic
             var horizontalOffset = target.X - source.X;
             var verticalOffset = target.Y - source.Y;
 
-            if (horizontalOffset != 0)
+            if (horizontalOffset > 0 && verticalOffset == 0)
             {
-                IEnumerable<int> range;
-                if (source.X <= target.X)
+                foreach (var horizontalStep in Enumerable.Range(source.X, horizontalOffset + 1))
                 {
-                    range = Enumerable.Range(source.X, target.X - source.X + 1);
-                }
-                else
-                {
-                    range = Enumerable.Range(target.X, source.X - target.X + 1).Reverse();
-                }
-
-                foreach (var horizontalStep in range)
-                {
-                    _dots.Add((source.Y + (verticalOffset / horizontalOffset), horizontalStep));
+                    _dots.Add((source.Y, horizontalStep));
                 }
             }
             else
+            if (horizontalOffset < 0 && verticalOffset == 0)
             {
-                IEnumerable<int> range;
-                if (source.Y <= target.Y)
+                foreach (var horizontalStep in Enumerable.Range(target.X, -horizontalOffset + 1).Reverse())
                 {
-                    range = Enumerable.Range(source.Y, target.Y - source.Y + 1);
+                    _dots.Add((source.Y, horizontalStep));
                 }
-                else
+            }
+            else
+            if (verticalOffset > 0 && horizontalOffset == 0)
+            {
+                foreach (var verticalStep in Enumerable.Range(source.Y, verticalOffset + 1))
                 {
-                    range = Enumerable.Range(target.Y, source.Y - target.Y + 1).Reverse();
+                    _dots.Add((verticalStep, source.X));
                 }
-
-                foreach (var verticalStep in range)
+            }
+            else
+            if (verticalOffset < 0 && horizontalOffset == 0)
+            {
+                foreach (var verticalStep in Enumerable.Range(target.Y, -verticalOffset + 1).Reverse())
                 {
-                    _dots.Add((verticalStep, source.X + (horizontalOffset / verticalOffset)));
+                    _dots.Add((verticalStep, source.X));
+                }
+            }
+            else
+            if (horizontalOffset > 0 && verticalOffset > 0)
+            {
+                var verticalStep = verticalOffset / horizontalOffset;
+                var step = 0;
+                foreach (var horizontalStep in Enumerable.Range(source.X, horizontalOffset + 1))
+                {
+                    _dots.Add((source.Y + (step++ * verticalStep), horizontalStep));
+                }
+            }
+            else
+            if (horizontalOffset < 0 && verticalOffset > 0)
+            {
+                var verticalStep = verticalOffset / -horizontalOffset;
+                var step = 0;
+                foreach (var horizontalStep in Enumerable.Range(target.X, -horizontalOffset + 1).Reverse())
+                {
+                    _dots.Add((source.Y + (step++ * verticalStep), horizontalStep));
+                }
+            }
+            else
+            if (horizontalOffset < 0 && verticalOffset < 0)
+            {
+                var verticalStep = verticalOffset / -horizontalOffset;
+                var step = 0;
+                foreach (var horizontalStep in Enumerable.Range(target.X, -horizontalOffset + 1).Reverse())
+                {
+                    _dots.Add((source.Y + (step++ * verticalStep), horizontalStep));
+                }
+            }
+            else
+            if (horizontalOffset > 0 && verticalOffset < 0)
+            {
+                var verticalStep = verticalOffset / horizontalOffset;
+                var step = 0;
+                foreach (var horizontalStep in Enumerable.Range(source.X, horizontalOffset + 1))
+                {
+                    _dots.Add((source.Y + (step++ * verticalStep), horizontalStep));
                 }
             }
         }
