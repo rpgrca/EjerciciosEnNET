@@ -27,7 +27,7 @@ jobs:
     - name: Restore packages
       run: |
            dotnet restore
-           for s in SistemaDeAparcamiento AdventOfCode2020; do
+           for s in SistemaDeAparcamiento AdventOfCode2020 Anaconda Palindromo MostRepeatedLetter; do
                dotnet restore $s/$s.sln
            done
 
@@ -37,7 +37,7 @@ jobs:
     - name: Build solutions
       run: |
            dotnet build --configuration Debug --no-restore
-           for s in SistemaDeAparcamiento AdventOfCode2020; do
+           for s in SistemaDeAparcamiento AdventOfCode2020 Anaconda Palindromo MostRepeatedLetter; do
                dotnet build --configuration Debug --no-restore $s/$s.sln
            done
 
