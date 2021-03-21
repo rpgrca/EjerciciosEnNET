@@ -46,7 +46,7 @@ jobs:
            coverlet SistemaDeAparcamiento/SistemaDeAparcamiento.Tests/bin/Debug/net5.0/SistemaDeAparcamiento.Tests.dll --target "dotnet" --targetargs "test SistemaDeAparcamiento/SistemaDeAparcamiento.Tests/SistemaDeAparcamiento.Tests.csproj --no-build --verbosity quiet" --format OpenCover --output sistemadeaparcamiento.coverage.xml
 
     - name: Testing NET5 Standalone Programs
-    - run: |
+      run: |
            for s in MostRepeatedLetter; do
                coverlet EjerciciosEnNET/$s/$s.UnitTests/bin/Debug/net5.0/$s.UnitTests.dll --target "dotnet" --targetargs "test $s/$s.UnitTests/$s.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output $s.coverage.xml
            done
