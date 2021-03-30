@@ -26,7 +26,7 @@ namespace PrimeNumber.UnitTests
         [InlineData(4)]
         [InlineData(6)]
         [InlineData(1048574)]
-        public void ReturnFalse_WhenAskingIfACompoundNumberIsPrime(int compoundNumber) =>
+        public void ReturnFalse_WhenAskingIfACompositeNumberIsPrime(int compoundNumber) =>
             Assert.False(new Number(compoundNumber).CanBeClassifiedAs(A.PrimeNumber));
     }
 }

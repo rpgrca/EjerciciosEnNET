@@ -1,6 +1,6 @@
 namespace PrimeNumber.Logic
 {
-    public class CompoundNumber : IClassifier
+    public class CompositeNumber : IClassifier
     {
         public bool IsClassificationOf(int _value)
         {
