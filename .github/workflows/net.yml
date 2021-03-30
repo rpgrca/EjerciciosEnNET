@@ -22,7 +22,7 @@ jobs:
     - name: Restore packages
       run: |
            dotnet restore
-           for s in SistemaDeAparcamiento AdventOfCode2020 Anaconda Palindromo MostRepeatedLetter; do
+           for s in SistemaDeAparcamiento AdventOfCode2020 Anaconda Palindromo MostRepeatedLetter PrimeNumber; do
                dotnet restore $s/$s.sln
            done
 
@@ -32,7 +32,7 @@ jobs:
     - name: Build solutions
       run: |
            dotnet build --configuration Debug --no-restore
-           for s in SistemaDeAparcamiento AdventOfCode2020 Anaconda Palindromo MostRepeatedLetter; do
+           for s in SistemaDeAparcamiento AdventOfCode2020 Anaconda Palindromo MostRepeatedLetter PrimeNumber; do
                dotnet build --configuration Debug --no-restore $s/$s.sln
            done
 
@@ -42,7 +42,7 @@ jobs:
 
     - name: Testing NET5 Standalone Programs
       run: |
-           for s in Anaconda Palindromo MostRepeatedLetter; do
+           for s in Anaconda Palindromo MostRepeatedLetter PrimeNumber; do
                coverlet $s/$s.UnitTests/bin/Debug/net5.0/$s.UnitTests.dll --target "dotnet" --targetargs "test $s/$s.UnitTests/$s.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output $s.coverage.xml
            done
 
