@@ -17,6 +17,7 @@ namespace PrimeNumber.UnitTests
         [InlineData(7919)]
         [InlineData(1043857)]
         [InlineData(1048573)]
+        [InlineData(2134232117)]
         public void ReturnTrue_WhenAskingIfAPrimeIsAPrime(int primeNumber) =>
             Assert.True(new Number(primeNumber).CanBeClassifiedAs(A.PrimeNumber));
 
