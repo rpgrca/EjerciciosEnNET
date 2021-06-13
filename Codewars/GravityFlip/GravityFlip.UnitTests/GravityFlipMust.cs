@@ -20,5 +20,14 @@ namespace GravityFlip.UnitTests
             sut.Flip('R', new int[] { 3, 2, 1, 2 });
             Assert.Equal(expectedResult, sut.State);
         }
+
+        [Fact]
+        public void Test2()
+        {
+            var expectedResult = new int[] { 1 };
+            var sut = new Logic.GravityFlip();
+            sut.Flip('R', new int[] { 1 });
+            Assert.Equal(expectedResult, sut.State);
+        }
     }
 }
