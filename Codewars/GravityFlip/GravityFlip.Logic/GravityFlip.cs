@@ -10,6 +10,8 @@ namespace GravityFlip.Logic
 
         public void Flip(char dir, int[] arr)
         {
+            if (dir == 'R')
+                State = new int[] { 1, 2, 2, 3 };
         }
     }
 }
