@@ -11,7 +11,10 @@ namespace GravityFlip.Logic
 
         public void Flip(char dir, int[] arr)
         {
-            State = arr.OrderBy(p => p).ToArray();
+            if (dir == 'R')
+                State = arr.OrderBy(p => p).ToArray();
+            if (dir == 'L')
+                State = arr.OrderByDescending(p => p).ToArray();
         }
     }
 }
