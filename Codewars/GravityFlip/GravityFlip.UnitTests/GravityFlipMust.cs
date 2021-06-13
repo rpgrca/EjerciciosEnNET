@@ -1,5 +1,6 @@
 using System;
 using Xunit;
+using GravityFlip.Logic;
 
 namespace GravityFlip.UnitTests
 {
@@ -8,8 +9,11 @@ namespace GravityFlip.UnitTests
         [Fact]
         public void ReturnEmptyConfiguration_WhenFlipConfigurationIsNotRequired()
         {
-            var sut = new Logic.GravityFlip();
-            Assert.Equal(Array.Empty<int>(), sut.State);
+            var sut = new Logic.GravityFlip.Builder()
+                .For(Array.Empty<int>())
+                .Build();
+
+            Assert.Equal(Array.Empty<int>(), sut.Configuration);
         }
 
         [Theory]
@@ -21,27 +25,39 @@ namespace GravityFlip.UnitTests
         [InlineData('R', new int[] { 3, 3, 3 })]
         public void ReturnSameConfiguration_WhenThereAreSameAmountOfBoxesOnBothSides(char direction, int[] values)
         {
-            var sut = new Logic.GravityFlip();
-            sut.Flip(direction, values);
-            Assert.Equal(values, sut.State);
+            var sut = new Logic.GravityFlip.Builder()
+                .For(values)
+                .To(direction)
+                .Build();
+
+            sut.Flip();
+            Assert.Equal(values, sut.Configuration);
         }
 
         [Fact]
         public void ReturnValuesOrderedDescending_WhenBoxesAreFlippedRight()
         {
             var expectedResult = new int[] { 1, 2, 2, 3 };
-            var sut = new Logic.GravityFlip();
-            sut.Flip('R', new int[] { 3, 2, 1, 2 });
-            Assert.Equal(expectedResult, sut.State);
+            var sut = new Logic.GravityFlip.Builder()
+                .For(new int[] { 3, 2, 1, 2 })
+                .To('R')
+                .Build();
+
+            sut.Flip();
+            Assert.Equal(expectedResult, sut.Configuration);
         }
 
         [Fact]
         public void ReturnValuesOrderedAscending_WhenBoxesAreFlippedLeft()
         {
             var expectedResult = new int[] { 5, 5, 4, 3, 1 };
-            var sut = new Logic.GravityFlip();
-            sut.Flip('L', new int[] { 1, 4, 5, 3, 5 });
-            Assert.Equal(expectedResult, sut.State);
+            var sut = new Logic.GravityFlip.Builder()
+                .For(new int[] { 1, 4, 5, 3, 5 })
+                .To('L')
+                .Build();
+
+            sut.Flip();
+            Assert.Equal(expectedResult, sut.Configuration);
         }
     }
 }
