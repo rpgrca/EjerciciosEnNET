@@ -3,28 +3,22 @@ using System.Linq;
 
 namespace GravityFlip.Logic
 {
-    public class GravityFlip
+    public sealed class GravityFlip
     {
-        public class Builder
+        public class ChangeGravityFor
         {
-            private int[] _values;
-            private Func<int[], int[]> _turningDirection;
+            private readonly int[] _values;
+            private Func<int[], int[]> _flipAction;
 
-            public Builder()
-            {
-                _values = Array.Empty<int>();
-                _turningDirection = _ => Array.Empty<int>();
-            }
-
-            public Builder For(int[] values)
+            public ChangeGravityFor(int[] values)
             {
                 _values = values;
-                return this;
+                _flipAction = _ => Array.Empty<int>();
             }
 
-            public Builder To(char direction)
+            public ChangeGravityFor To(char direction)
             {
-                _turningDirection = direction switch
+                _flipAction = direction switch
                 {
                     'R' => p => p.OrderBy(n => n).ToArray(),
                     'L' => p => p.OrderByDescending(n => n).ToArray(),
@@ -34,25 +28,26 @@ namespace GravityFlip.Logic
                 return this;
             }
 
-            public GravityFlip Build()
-            {
-                return new GravityFlip(_values, _turningDirection);
-            }
+            public GravityFlip Build() =>
+                new(_values, _flipAction);
         }
 
-        public int[] Configuration { get; set; }
+        public static ChangeGravityFor For(int[] values) => new(values);
+
         private readonly int[] _values;
-        private readonly Func<int[], int[]> _turningDirection;
+        private readonly Func<int[], int[]> _flipAction;
 
-        private GravityFlip(int[] values, Func<int[], int[]> turningDirection)
+        public int[] NewConfiguration { get; set; }
+
+        private GravityFlip(int[] values, Func<int[], int[]> flipAction)
         {
-            Configuration = _values = values;
-            _turningDirection = turningDirection;
+            _values = values;
+            _flipAction = flipAction;
+
+            Flip();
         }
 
-        public void Flip()
-        {
-            Configuration = _turningDirection.Invoke(_values);
-       }
+        private void Flip() =>
+            NewConfiguration = _flipAction(_values);
     }
 }
