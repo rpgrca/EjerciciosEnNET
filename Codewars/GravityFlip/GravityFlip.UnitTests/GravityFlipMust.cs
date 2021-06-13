@@ -12,8 +12,22 @@ namespace GravityFlip.UnitTests
             Assert.Equal(Array.Empty<int>(), sut.State);
         }
 
+        [Theory]
+        [InlineData('L', new int[] { 1 })]
+        [InlineData('L', new int[] { 2, 2 })]
+        [InlineData('L', new int[] { 3, 3, 3 })]
+        [InlineData('R', new int[] { 1 })]
+        [InlineData('R', new int[] { 2, 2 })]
+        [InlineData('R', new int[] { 3, 3, 3 })]
+        public void ReturnSameConfiguration_WhenThereAreSameAmountOfBoxesOnBothSides(char direction, int[] values)
+        {
+            var sut = new Logic.GravityFlip();
+            sut.Flip(direction, values);
+            Assert.Equal(values, sut.State);
+        }
+
         [Fact]
-        public void Test1()
+        public void ReturnValuesOrderedDescending_WhenBoxesAreFlippedRight()
         {
             var expectedResult = new int[] { 1, 2, 2, 3 };
             var sut = new Logic.GravityFlip();
@@ -22,16 +36,7 @@ namespace GravityFlip.UnitTests
         }
 
         [Fact]
-        public void Test2()
-        {
-            var expectedResult = new int[] { 1 };
-            var sut = new Logic.GravityFlip();
-            sut.Flip('R', new int[] { 1 });
-            Assert.Equal(expectedResult, sut.State);
-        }
-
-        [Fact]
-        public void Test3()
+        public void ReturnValuesOrderedAscending_WhenBoxesAreFlippedLeft()
         {
             var expectedResult = new int[] { 5, 5, 4, 3, 1 };
             var sut = new Logic.GravityFlip();
