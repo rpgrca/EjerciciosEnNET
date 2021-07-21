@@ -11,6 +11,6 @@ namespace SquareAndSum.UnitTests
         [InlineData(new int[] { 1, 2 }, 5)]
         [InlineData(new int[] { 5, 3, 4 }, 50)]
         public void ReturnSumOfSquaredValues(int[] values, int expectedValue) =>
-            Assert.Equal(expectedValue, new Logic.SquareAndSum().SquareSum(values));
+            Assert.Equal(expectedValue, new Logic.SquareAndSum(values).Value);
     }
 }
