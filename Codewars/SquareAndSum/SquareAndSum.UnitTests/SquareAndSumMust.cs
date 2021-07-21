@@ -1,5 +1,6 @@
-using System.Linq;
+using System.IO;
 using Xunit;
+using SquareAndSum.Logic;
 
 namespace SquareAndSum.UnitTests
 {
@@ -10,8 +11,6 @@ namespace SquareAndSum.UnitTests
         [InlineData(new int[] { 1, 2 }, 5)]
         [InlineData(new int[] { 5, 3, 4 }, 50)]
         public void ReturnSumOfSquaredValues(int[] values, int expectedValue) =>
-            Assert.Equal(expectedValue, SquareSum(values));
-
-        private int SquareSum(int[] values) => values.Sum(p => p * p);
+            Assert.Equal(expectedValue, new Logic.SquareAndSum().SquareSum(values));
     }
 }
