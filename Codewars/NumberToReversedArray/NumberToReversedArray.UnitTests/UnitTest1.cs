@@ -4,12 +4,13 @@ using NumberToReversedArray.Logic;
 
 namespace NumberToReversedArray.UnitTests
 {
-    public class UnitTest1
+    public class DigitalizerMust
     {
-        [Fact]
-        public void Test1()
+        [Theory]
+        [InlineData(35231, new long[] { 1, 3, 2, 5, 3 })]
+        public void Test1(long originalNumber, long[] expectedOutput)
         {
-            Assert.Equal(new long[] { 1, 3, 2, 5, 3 }, Digitalizer.Digitalize(35231));
+            Assert.Equal(expectedOutput, Digitalizer.Digitalize(originalNumber));
         }
     }
 }
