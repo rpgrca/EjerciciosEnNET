@@ -12,6 +12,7 @@ namespace BreakCamelCase.UnitTests
             {
                 yield return new object[] { "camelCasing", "camel Casing" };
                 yield return new object[] { "camelCasingTest", "camel Casing Test" };
+                yield return new object[] { "CJxy", "C Jxy" };
             }
         }
 

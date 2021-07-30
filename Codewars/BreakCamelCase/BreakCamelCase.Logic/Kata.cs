@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace BreakCamelCase.Logic
 {
@@ -8,17 +8,26 @@ namespace BreakCamelCase.Logic
         public static string BreakCamelCase(string str)
         {
             var words = new List<string>();
-            var index = 0;
-            var lastIndex = 0;
+            var word = string.Empty;
 
-            while ((index + 1 < str.Length) && (lastIndex = str.IndexOfAny("ABCDEFGHIKLMNOPQRSTUVWXYZ".ToCharArray(), index + 1)) > -1)
+            foreach (var character in str)
             {
-                words.Add(str[index..lastIndex]);
-                index = lastIndex;
+                if (char.IsUpper(character))
+                {
+                    if (! string.IsNullOrEmpty(word))
+                    {
+                        words.Add(word);
+                    }
+
+                    word = character.ToString();
+                }
+                else
+                {
+                    word += character;
+                }
             }
 
-            words.Add(str[index..]);
-
+            words.Add(word);
             return string.Join(" ", words);
         }
     }
