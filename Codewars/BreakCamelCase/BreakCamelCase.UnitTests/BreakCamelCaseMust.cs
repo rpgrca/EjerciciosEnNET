@@ -1,5 +1,3 @@
-using System.Reflection;
-using System;
 using System.Collections.Generic;
 using Xunit;
 using BreakCamelCase.Logic;
@@ -8,7 +6,7 @@ namespace BreakCamelCase.UnitTests
 {
     public class BreakCamelCaseMust
     {
-        public static IEnumerable<object[]> TestCases
+        public static IEnumerable<object[]> CommonTestCasesFeeder
         {
             get
             {
@@ -18,10 +16,16 @@ namespace BreakCamelCase.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(TestCases))]
-        public void Test(string source, string expectedResult)
-        {
+        [MemberData(nameof(CommonTestCasesFeeder))]
+        public void SplitCorrectlyWords_WhenCommonPhrasesAreUsed(string source, string expectedResult) =>
             Assert.Equal(expectedResult, Kata.BreakCamelCase(source));
-        }
+
+        [Fact]
+        public void ReturnEmptyString_WhenSourceTextIsEmpty() =>
+            Assert.Equal(string.Empty, Kata.BreakCamelCase(string.Empty));
+
+        [Fact]
+        public void ReturnOneLetterWords_WhenUppercaseLettersAreConsecutive() =>
+            Assert.Equal("A B C", Kata.BreakCamelCase("ABC"));
     }
 }
