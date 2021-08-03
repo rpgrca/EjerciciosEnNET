@@ -22,7 +22,7 @@ jobs:
     - name: Restore packages
       run: |
            dotnet restore
-           for s in SistemaDeAparcamiento AdventOfCode2020 Anaconda Palindromo MostRepeatedLetter PrimeNumber; do
+           for s in SistemaDeAparcamiento AdventOfCode2020 Anaconda Palindromo MostRepeatedLetter PrimeNumber Codewars; do
                dotnet restore $s/$s.sln
            done
 
