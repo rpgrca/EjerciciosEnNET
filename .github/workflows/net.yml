@@ -32,7 +32,7 @@ jobs:
     - name: Build solutions
       run: |
            dotnet build --configuration Debug --no-restore
-           for s in SistemaDeAparcamiento AdventOfCode2020 Anaconda Palindromo MostRepeatedLetter PrimeNumber; do
+           for s in SistemaDeAparcamiento AdventOfCode2020 Anaconda Palindromo MostRepeatedLetter PrimeNumber Codewars; do
                dotnet build --configuration Debug --no-restore $s/$s.sln
            done
 
@@ -50,6 +50,12 @@ jobs:
       run: |
            for d in `seq 25`; do
                coverlet AdventOfCode2020/Day$d/Day$d.UnitTests/bin/Debug/net5.0/Day$d.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day$d/Day$d.UnitTests/bin/Debug/net5.0/Day$d.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day$d.coverage.xml
+           done
+
+    - name: Testing Codewars
+      run: |
+           for s in `find ./Codewars -maxdepth 1 -type d -printf "%f\n" | grep -v "Codewars"`; do
+               coverlet Codewars/$s/$s.UnitTests/bin/Debug/net5.0/$s.UnitTests.dll --target "dotnet" --targetargs "test Codewars/$s/$s.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output $s.coverage.xml
            done
 
     - name: Upload coverage to CodeCov
