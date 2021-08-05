@@ -4,7 +4,7 @@ using WellOfIdeas.Logic;
 
 namespace WellOfIdeas.UnitTests
 {
-    public class UnitTest1
+    public class WellOfIdeasMust
     {
         [Fact]
         public void ReturnFail_WhenThereAreNoGoodAndAtLeastTwoBads() =>
