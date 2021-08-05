@@ -5,20 +5,12 @@ namespace WellOfIdeas.Logic
 {
     public class Kata
     {
-        public static string Well(string[] x)
-        {
-            var goods = x.Count(p => p == "good");
-            if (goods == 0)
+        public static string Well(string[] x) =>
+            x.Count(p => p == "good") switch
             {
-                return "Fail!";
-            }
-
-            if (goods > 2)
-            {
-                return "I smell a series!";
-            }
-
-            return "Publish!";
-        }
+                0 => "Fail!",
+                > 2 => "I smell a series!",
+                _ => "Publish!"
+            };
     }
 }
