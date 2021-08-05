@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace WellOfIdeas.Logic
 {
@@ -6,6 +7,7 @@ namespace WellOfIdeas.Logic
     {
         public static string Well(string[] x)
         {
+            if (x.Count(p => p == "bad") >= 2) return "Fail!";
             return "";
         }
     }
