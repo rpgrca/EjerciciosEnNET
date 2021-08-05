@@ -10,7 +10,7 @@ namespace WellOfIdeas.Logic
             if (x.Count(p => p == "good") >= 1 && x.Count(p => p == "good") <= 2) return "Publish!";
             if (x.Count(p => p == "good") > 2) return "I smell a series!";
             if (x.Count(p => p == "bad") >= 2) return "Fail!";
-            return "";
+            return "Fail!";
         }
     }
 }
