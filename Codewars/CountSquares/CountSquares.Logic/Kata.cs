@@ -6,19 +6,8 @@ namespace CountSquares.Logic
     {
         public static int CountSquares(int cuts)
         {
-            if (cuts == 1)
-                return (int)Math.Pow(cuts + 1, 3);
-
-            if (cuts == 2)
-                return (int)Math.Pow(cuts + 1, 3) - 1;
-
-            if (cuts == 4)
-                return (int)Math.Pow(cuts + 1, 3) - (int)Math.Pow(cuts - 1, 3);
-
-            if (cuts == 5)
-                return (int)Math.Pow(cuts + 1, 3) - (int)Math.Pow(cuts - 1, 3);
-
-            return 1;
+            if (cuts == 0) return 1;
+            return (int)(Math.Pow(cuts + 1, 3) - Math.Pow(cuts - 1, 3));
         }
     }
 }
