@@ -13,6 +13,24 @@ namespace CountSquares.UnitTests
         }
 
         [Fact]
+        public void Test10()
+        {
+            Assert.Equal(8, Kata.CountSquares(1));
+        }
+
+        [Fact]
+        public void Test11()
+        {
+            Assert.Equal(26, Kata.CountSquares(2));
+        }
+
+        [Fact]
+        public void Test12()
+        {
+            Assert.Equal(98, Kata.CountSquares(4));
+        }
+
+        [Fact]
         public void Test2()
         {
             Assert.Equal(152,Kata.CountSquares(5));
