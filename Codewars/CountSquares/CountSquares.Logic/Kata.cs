@@ -6,7 +6,7 @@ namespace CountSquares.Logic
     {
         public static int CountSquares(int cuts)
         {
-            return 0;
+            return 1;
         }
     }
 }
