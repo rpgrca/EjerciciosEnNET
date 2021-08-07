@@ -15,6 +15,9 @@ namespace CountSquares.Logic
             if (cuts == 4)
                 return (int)Math.Pow(cuts + 1, 3) - (int)Math.Pow(cuts - 1, 3);
 
+            if (cuts == 5)
+                return (int)Math.Pow(cuts + 1, 3) - (int)Math.Pow(cuts - 1, 3);
+
             return 1;
         }
     }
