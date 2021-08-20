@@ -6,7 +6,11 @@ namespace HumanReadableTime.Logic
     {
         public static string GetReadableTime(int seconds)
         {
-            return $"00:{seconds / 60:00}:{seconds % 60:00}";
+            var hours = seconds / 3600;
+            var minutes = seconds % 3600 / 60;
+            var leftovers = seconds % 60;
+
+            return $"{hours:00}:{minutes:00}:{leftovers:00}";
         }
     }
 }
