@@ -28,11 +28,11 @@ namespace HumanReadableTime.UnitTests
         {
             Assert.Equal("23:59:59", TimeFormat.GetReadableTime(86399));
         }
-/*
+
         [Fact]
         public void HumanReadableTest5()
         {
             Assert.Equal("99:59:59", TimeFormat.GetReadableTime(359999));
-        }*/
+        }
     }
 }
