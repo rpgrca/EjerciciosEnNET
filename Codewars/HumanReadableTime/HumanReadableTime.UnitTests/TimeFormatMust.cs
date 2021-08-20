@@ -11,13 +11,13 @@ namespace HumanReadableTime.UnitTests
             Assert.Equal("00:00:00", TimeFormat.GetReadableTime(0));
         }
 
-/*
         [Fact]
         public void HumanReadableTest2()
         {
             Assert.Equal("00:00:05", TimeFormat.GetReadableTime(5));
         }
 
+/*
         [Fact]
         public void HumanReadableTest3()
         {
