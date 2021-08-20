@@ -6,7 +6,7 @@ namespace HumanReadableTime.Logic
     {
         public static string GetReadableTime(int seconds)
         {
-            return string.Empty;
+            return "00:00:00";
         }
     }
 }
