@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Xunit;
 using DivisorsAndSum.Logic;
-using System.Collections.Generic;
 
 namespace DivisorsAndSum.UnitTests
 {
