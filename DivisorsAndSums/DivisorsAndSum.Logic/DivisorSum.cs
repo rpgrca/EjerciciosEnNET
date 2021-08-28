@@ -1,20 +1,46 @@
-using System;
 using System.Linq;
 using System.Collections.Generic;
+using System;
 
 namespace DivisorsAndSum.Logic
 {
     public class DivisorSum
     {
+        public class Builder
+        {
+            private int _amount;
+            private Func<int, IEnumerable<int>> _divisorCalculator;
+
+            public Builder UsingDivisorAlgorithm(Func<int, IEnumerable<int>> algorithm)
+            {
+                _divisorCalculator = algorithm;
+                return this;
+            }
+
+            public Builder UpTo(int amount)
+            {
+                _amount = amount;
+                return this;
+            }
+
+            public DivisorSum Build()
+            {
+                _divisorCalculator ??= v => Enumerable.Range(1, v / 2).Where(p => v % p == 0);
+                return new DivisorSum(_amount, _divisorCalculator);
+            }
+        }
+
         private readonly int _amount;
         private readonly List<string> _equations;
         private IEnumerable<int> _divisors;
+        private readonly Func<int, IEnumerable<int>> _calculateDivisorsFor;
 
         public string Result { get; private set; }
 
-        public DivisorSum(int amount)
+        private DivisorSum(int amount, Func<int, IEnumerable<int>> divisorCalculator)
         {
             _amount = amount;
+            _calculateDivisorsFor = divisorCalculator;
             _equations = new List<string>();
             Calculate();
         }
@@ -39,9 +65,7 @@ namespace DivisorsAndSum.Logic
         }
 
         private void CalculateDivisorsFor(int possibleValue) =>
-            _divisors = Enumerable
-                .Range(1, possibleValue / 2)
-                .Where(p => possibleValue % p == 0);
+            _divisors = _calculateDivisorsFor(possibleValue);
 
         private void GenerateResult() => Result = string.Join("\n", _equations);
     }
