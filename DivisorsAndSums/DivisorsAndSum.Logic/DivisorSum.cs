@@ -6,7 +6,7 @@ namespace DivisorsAndSum.Logic
 {
     public class DivisorSum
     {
-        private static IEnumerable<int> ValuesGenerator()
+        private static IEnumerable<int> DefaultValuesGenerator()
         {
             for (var index = 6; ; index++) yield return index;
         }
@@ -38,7 +38,7 @@ namespace DivisorsAndSum.Logic
             public DivisorSum Build()
             {
                 _divisorCalculator ??= v => Enumerable.Range(1, v / 2).Where(p => v % p == 0);
-                _valuesGenerator ??= ValuesGenerator;
+                _valuesGenerator ??= DefaultValuesGenerator;
                 return new DivisorSum(_amount, _valuesGenerator, _divisorCalculator);
             }
         }
@@ -57,6 +57,7 @@ namespace DivisorsAndSum.Logic
             _divisorCalculator = divisorCalculator;
             _valuesToTry = valuesGenerator();
             _equations = new List<string>();
+
             Calculate();
         }
 
