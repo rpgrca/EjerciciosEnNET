@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -39,7 +40,7 @@ namespace DivisorsAndSum.Logic
 
         private void CalculateDivisorsFor(int possibleValue) =>
             _divisors = Enumerable
-                .Range(1, possibleValue - 1)
+                .Range(1, possibleValue / 2)
                 .Where(p => possibleValue % p == 0);
 
         private void GenerateResult() => Result = string.Join("\n", _equations);
