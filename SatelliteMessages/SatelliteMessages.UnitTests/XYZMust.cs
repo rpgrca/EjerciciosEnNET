@@ -4,7 +4,7 @@ using Xunit;
 
 namespace SatelliteMessages.UnitTests
 {
-    public class UnitTest1
+    public class XYZMust
     {
         [Fact]
         public void Test4()
