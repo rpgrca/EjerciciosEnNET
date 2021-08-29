@@ -7,37 +7,41 @@ namespace SatelliteMessages.UnitTests
     public class XYZMust
     {
         [Fact]
-        public void Test4()
+        public void ThrowException_WhenSatelliteListIsNull()
         {
             var exception = Assert.Throws<ArgumentException>(() => new XYZ(null));
             Assert.Equal("No satellites", exception.Message);
         }
 
         [Fact]
-        public void Test5()
+        public void ThrowException_WhenSatelliteListIsEmpty()
         {
             var exception = Assert.Throws<ArgumentException>(() => new XYZ(new()));
             Assert.Equal("No satellites", exception.Message);
         }
 
         [Fact]
-        public void Test1()
+        public void ThrowException_WhenDistanceListIsEmpty()
         {
+            var satellites = new List<(double X, double Y)>() { (1, 1) };
             var distances = new List<double>();
-            var sut = new XYZ();
+
+            var sut = new XYZ(satellites);
             var exception = Assert.Throws<ArgumentException>(() => sut.GetLocation(distances));
             Assert.Equal("No distances", exception.Message);
         }
 
         [Fact]
-        public void Test3()
+        public void ThrowException_WhenDistanceListIsNull()
         {
-            var sut = new XYZ();
+            var satellites = new List<(double X, double Y)>() { (1, 1) };
+
+            var sut = new XYZ(satellites);
             Assert.Throws<ArgumentException>(() => sut.GetLocation(null));
         }
 
         [Fact]
-        public void Test2()
+        public void ReturnSameCoordinatesAsSatellite_WhenDistanceIsZero()
         {
             var distances = new List<double>() { 0 };
             var satellites = new List<(double X, double Y)>() { (1, 1) };
@@ -45,16 +49,11 @@ namespace SatelliteMessages.UnitTests
             var result = sut.GetLocation(distances);
             Assert.Equal((1, 1), result);
         }
-
     }
 
     public class XYZ
     {
         private readonly List<(double X, double Y)> _satellites;
-
-        public XYZ()
-        {
-        }
 
         public XYZ(List<(double X, double Y)> satellites)
         {
