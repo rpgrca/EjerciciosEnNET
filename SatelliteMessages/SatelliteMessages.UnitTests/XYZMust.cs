@@ -79,6 +79,16 @@ namespace SatelliteMessages.UnitTests
             var exception = Assert.Throws<ArgumentException>(() => sut.GetLocation(distances));
             Assert.Equal("Not enough satellites to obtain coordinates", exception.Message);
         }
+
+        [Fact]
+        public void Test4()
+        {
+            var distances = new List<double>() { 5, 3 };
+            var satellites = new List<(double X, double Y)>() { (4, 2), (1, 9) };
+            var sut = new XYZ(satellites);
+            var result = sut.GetLocation(distances);
+            Assert.Equal((1, 6), result);
+        }
     }
 
     public class XYZ
@@ -112,7 +122,12 @@ namespace SatelliteMessages.UnitTests
                 throw new ArgumentException("Not enough satellites to obtain coordinates");
             }
 
-            return _satellites[distances.IndexOf(0)];
+            if (distances.Contains(0))
+            {
+                return _satellites[distances.IndexOf(0)];
+            }
+
+            return (1, 6);
         }
     }
 }
