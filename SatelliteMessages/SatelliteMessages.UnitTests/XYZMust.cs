@@ -41,6 +41,16 @@ namespace SatelliteMessages.UnitTests
         }
 
         [Fact]
+        public void Test1()
+        {
+            var distances = new List<double>() { 10, 20 };
+            var satellites = new List<(double X, double Y)>() { (1, 1) };
+            var sut = new XYZ(satellites);
+            var exception = Assert.Throws<ArgumentException>(() => sut.GetLocation(distances));
+            Assert.Equal("Satellite count and distance count do not match", exception.Message);
+        }
+
+        [Fact]
         public void ReturnSameCoordinatesAsSatellite_WhenDistanceIsZero()
         {
             var distances = new List<double>() { 0 };
@@ -70,6 +80,11 @@ namespace SatelliteMessages.UnitTests
             if (distances is null || distances.Count == 0)
             {
                 throw new ArgumentException("No distances");
+            }
+
+            if (_satellites.Count != distances.Count)
+            {
+                throw new ArgumentException("Satellite count and distance count do not match");
             }
 
             return _satellites[0];
