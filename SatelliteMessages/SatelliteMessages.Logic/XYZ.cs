@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
 
 namespace SatelliteMessages.Logic
@@ -7,6 +6,11 @@ namespace SatelliteMessages.Logic
     public class XYZ
     {
         private readonly List<(double X, double Y)> _satellites;
+        private double _formulaeA;
+        private double _formulaeB;
+        private double _formulaeC;
+
+        private (double X, double Y) _guessedSource;
 
         public XYZ(List<(double X, double Y)> satellites)
         {
@@ -40,50 +44,54 @@ namespace SatelliteMessages.Logic
                 return _satellites[distances.IndexOf(0)];
             }
 
-            var number = (Math.Pow(distances[1], 2) - Math.Pow(_satellites[1].Y, 2) + Math.Pow(_satellites[0].Y, 2) - Math.Pow(distances[0], 2) - Math.Pow(_satellites[0].X - _satellites[1].X, 2)) / 2 / (_satellites[0].X - _satellites[1].X);
-            var number2 = (_satellites[0].Y / (_satellites[0].X - _satellites[1].X)) - (_satellites[1].Y / (_satellites[0].X - _satellites[1].X));
-            var number3 = -Math.Pow(_satellites[0].Y, 2) + Math.Pow(distances[0], 2) - Math.Pow(number, 2);
-
-            var a = Math.Pow(number2, 2) + 1;
-            var b = -2 * (number * number2 + _satellites[0].Y);
-            var c = -number3;
-
-            var y1 = (-b + Math.Sqrt(b * b - 4 * a * c)) / (2 * a);
-            var x1 = Math.Sqrt(Math.Pow(distances[0], 2) - Math.Pow(y1 - _satellites[0].Y, 2)) + _satellites[0].X;
-            var index = 0;
-
-            for (index = 0; index < distances.Count; index++)
+            CalculateDiscriminantValues(distances);
+            foreach (var adder in new Func<double, double, double>[] { (a, b) => a + b, (a, b) => a - b })
             {
-                var distance = Math.Sqrt(Math.Pow(x1 - _satellites[index].X, 2) + Math.Pow(y1 - _satellites[index].Y, 2));
-                if (Math.Abs(distance - distances[index]) > 0.00001)
+                if (GuessedPositionValidatesAllSatellites(distances, adder))
                 {
-                    break;
+                    return _guessedSource;
                 }
-            }
-
-            if (index == distances.Count)
-            {
-                return (x1, y1);
-            }
-
-            var y2 = (-b - Math.Sqrt(b * b - 4 * a * c)) / (2 * a);
-            var x2 = Math.Sqrt(Math.Pow(distances[0], 2) - Math.Pow(y2 - _satellites[0].Y, 2)) + _satellites[0].X;
-
-            for (index = 0; index < distances.Count; index++)
-            {
-                var distance = Math.Sqrt(Math.Pow(x2 - _satellites[index].X, 2) + Math.Pow(y2 - _satellites[index].Y, 2));
-                if (Math.Abs(distance - distances[index]) > 0.00001)
-                {
-                    break;
-                }
-            }
-
-            if (index == distances.Count)
-            {
-                return (x2, y2);
             }
 
             throw new Exception("Could not locate source");
         }
+
+        private void CalculateDiscriminantValues(List<double> distances)
+        {
+            var number = (Math.Pow(distances[1], 2) - Math.Pow(_satellites[1].Y, 2) + Math.Pow(_satellites[0].Y, 2) - Math.Pow(distances[0], 2) - Math.Pow(_satellites[0].X - _satellites[1].X, 2)) / 2 / (_satellites[0].X - _satellites[1].X);
+            var number2 = (_satellites[0].Y - _satellites[1].Y) / (_satellites[0].X - _satellites[1].X);
+            var number3 = -Math.Pow(_satellites[0].Y, 2) + Math.Pow(distances[0], 2) - Math.Pow(number, 2);
+
+            _formulaeA = Math.Pow(number2, 2) + 1;
+            _formulaeB = -2 * ((number * number2) + _satellites[0].Y);
+            _formulaeC = -number3;
+        }
+
+        private bool GuessedPositionValidatesAllSatellites(List<double> distances, Func<double, double, double> adder)
+        {
+            GuessCoordinates(distances, adder);
+
+            int index;
+            for (index = 0; index < distances.Count; index++)
+            {
+                var distance = Math.Sqrt(Math.Pow(_guessedSource.X - _satellites[index].X, 2) + Math.Pow(_guessedSource.Y - _satellites[index].Y, 2));
+                if (Math.Abs(distance - distances[index]) > 0.00001)
+                {
+                    break;
+                }
+            }
+
+            return index == distances.Count;
+        }
+
+        private void GuessCoordinates(List<double> distances, Func<double, double, double> adder)
+        {
+            var y = adder(-_formulaeB, GetSquareRootedDiscriminant()) / (2 * _formulaeA);
+            var x = Math.Sqrt(Math.Pow(distances[0], 2) - Math.Pow(y - _satellites[0].Y, 2)) + _satellites[0].X;
+            _guessedSource = (x, y);
+        }
+
+        private double GetSquareRootedDiscriminant() =>
+            Math.Sqrt((_formulaeB * _formulaeB) - (4 * _formulaeA * _formulaeC));
     }
 }
