@@ -82,14 +82,25 @@ namespace SatelliteMessages.UnitTests
         }
 
         [Fact]
+        public void Test4()
+        {
+            var distances = new List<double>() { 5, 16.031220000000015, 21.023796437981545 };
+            var satellites = new List<(double X, double Y)>() {  (4, 2), (6, 22), (8, 27) };
+            var sut = new XYZ(satellites);
+            var result = sut.GetLocation(distances);
+            Assert.Equal(7, result.X, 5);
+            Assert.Equal(6, result.Y, 5);
+        }
+
+        [Fact]
         public void Test5()
         {
             var distances = new List<double>() { 854.4003745317531, 282.842712474619, 200 };
             var satellites = new List<(double X, double Y)>() { (-500, -200), (100, -100), (500, 100) };
             var sut = new XYZ(satellites);
             var result = sut.GetLocation(distances);
-            Assert.Equal(300, result.X, 7);
-            Assert.Equal(100, result.Y, 7);
+            Assert.Equal(300, result.X, 5);
+            Assert.Equal(100, result.Y, 5);
         }
     }
 
@@ -138,42 +149,43 @@ namespace SatelliteMessages.UnitTests
             var c = -number3;
 
             var y1 = (-b + Math.Sqrt(b * b - 4 * a * c)) / (2 * a);
-            var x11 = Math.Round(Math.Sqrt(Math.Pow(distances[0], 2) - Math.Pow(y1 - _satellites[0].Y, 2)) + _satellites[0].X);
+            var x11 = Math.Sqrt(Math.Pow(distances[0], 2) - Math.Pow(y1 - _satellites[0].Y, 2)) + _satellites[0].X;
 
             double distanceBetweenFirstSatelliteAndSource;
             double distanceBetweenSecondSatelliteAndSource;
             double distanceBetweenThirdSatelliteAndSource;
 
             distanceBetweenFirstSatelliteAndSource = Math.Sqrt(Math.Pow(x11 - _satellites[0].X, 2) + Math.Pow(y1 - _satellites[0].Y, 2));
-            if (Math.Abs(distanceBetweenFirstSatelliteAndSource - distances[0]) < 0.0000001)
+            if (Math.Abs(distanceBetweenFirstSatelliteAndSource - distances[0]) < 0.00001)
             {
                 distanceBetweenSecondSatelliteAndSource = Math.Sqrt(Math.Pow(x11 - _satellites[1].X, 2) + Math.Pow(y1 - _satellites[1].Y, 2));
-                if (Math.Abs(distanceBetweenSecondSatelliteAndSource - distances[1]) < 0.0000001)
+                if (Math.Abs(distanceBetweenSecondSatelliteAndSource - distances[1]) < 0.00001)
                 {
                     distanceBetweenThirdSatelliteAndSource = Math.Sqrt(Math.Pow(x11 - _satellites[2].X, 2) + Math.Pow(y1 - _satellites[2].Y, 2));
-                    if (Math.Abs(distanceBetweenThirdSatelliteAndSource - distances[2]) < 0.0000001)
+                    if (Math.Abs(distanceBetweenThirdSatelliteAndSource - distances[2]) < 0.00001)
                     {
                         return (x11, y1);
                     }
                 }
             }
 
-            var y2 = (-b + Math.Sqrt(b * b - 4 * a * c)) / (2 * a);
-            var x12 = Math.Round(Math.Sqrt(Math.Pow(distances[0], 2) - Math.Pow(y2 - _satellites[0].Y, 2)) + _satellites[0].X);
+            var y2 = (-b - Math.Sqrt(b * b - 4 * a * c)) / (2 * a);
+            var x12 = Math.Sqrt(Math.Pow(distances[0], 2) - Math.Pow(y2 - _satellites[0].Y, 2)) + _satellites[0].X;
 
             distanceBetweenFirstSatelliteAndSource = Math.Sqrt(Math.Pow(x12 - _satellites[0].X, 2) + Math.Pow(y2 - _satellites[0].Y, 2));
-            if (Math.Abs(distanceBetweenFirstSatelliteAndSource - distances[0]) < 0.0000001)
+            if (Math.Abs(distanceBetweenFirstSatelliteAndSource - distances[0]) < 0.00001)
             {
                 distanceBetweenSecondSatelliteAndSource = Math.Sqrt(Math.Pow(x12 - _satellites[1].X, 2) + Math.Pow(y2 - _satellites[1].Y, 2));
-                if (Math.Abs(distanceBetweenSecondSatelliteAndSource - distances[1]) < 0.0000001)
+                if (Math.Abs(distanceBetweenSecondSatelliteAndSource - distances[1]) < 0.00001)
                 {
                     distanceBetweenThirdSatelliteAndSource = Math.Sqrt(Math.Pow(x12 - _satellites[2].X, 2) + Math.Pow(y2 - _satellites[2].Y, 2));
-                    if (Math.Abs(distanceBetweenThirdSatelliteAndSource - distances[2]) < 0.0000001)
+                    if (Math.Abs(distanceBetweenThirdSatelliteAndSource - distances[2]) < 0.00001)
                     {
                         return (x12, y2);
                     }
                 }
             }
+
 
             throw new Exception("Could not locate source");
         }
