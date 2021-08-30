@@ -40,52 +40,48 @@ namespace SatelliteMessages.Logic
                 return _satellites[distances.IndexOf(0)];
             }
 
-            var number = ((Math.Pow(distances[1], 2) - Math.Pow(_satellites[1].Y, 2) + Math.Pow(_satellites[0].Y, 2) - Math.Pow(distances[0], 2) - Math.Pow(_satellites[0].X - _satellites[1].X, 2)) / 2) / (_satellites[0].X - _satellites[1].X);
-            var number2 = (_satellites[0].Y / (_satellites[0].X - _satellites[1].X) - _satellites[1].Y / (_satellites[0].X - _satellites[1].X));
-            var number3 = (-Math.Pow(_satellites[0].Y, 2) + Math.Pow(distances[0], 2) - Math.Pow(number, 2));
+            var number = (Math.Pow(distances[1], 2) - Math.Pow(_satellites[1].Y, 2) + Math.Pow(_satellites[0].Y, 2) - Math.Pow(distances[0], 2) - Math.Pow(_satellites[0].X - _satellites[1].X, 2)) / 2 / (_satellites[0].X - _satellites[1].X);
+            var number2 = (_satellites[0].Y / (_satellites[0].X - _satellites[1].X)) - (_satellites[1].Y / (_satellites[0].X - _satellites[1].X));
+            var number3 = -Math.Pow(_satellites[0].Y, 2) + Math.Pow(distances[0], 2) - Math.Pow(number, 2);
 
             var a = Math.Pow(number2, 2) + 1;
             var b = -2 * (number * number2 + _satellites[0].Y);
             var c = -number3;
 
             var y1 = (-b + Math.Sqrt(b * b - 4 * a * c)) / (2 * a);
-            var x11 = Math.Sqrt(Math.Pow(distances[0], 2) - Math.Pow(y1 - _satellites[0].Y, 2)) + _satellites[0].X;
+            var x1 = Math.Sqrt(Math.Pow(distances[0], 2) - Math.Pow(y1 - _satellites[0].Y, 2)) + _satellites[0].X;
+            var index = 0;
 
-            double distanceBetweenFirstSatelliteAndSource;
-            double distanceBetweenSecondSatelliteAndSource;
-            double distanceBetweenThirdSatelliteAndSource;
-
-            distanceBetweenFirstSatelliteAndSource = Math.Sqrt(Math.Pow(x11 - _satellites[0].X, 2) + Math.Pow(y1 - _satellites[0].Y, 2));
-            if (Math.Abs(distanceBetweenFirstSatelliteAndSource - distances[0]) < 0.00001)
+            for (index = 0; index < distances.Count; index++)
             {
-                distanceBetweenSecondSatelliteAndSource = Math.Sqrt(Math.Pow(x11 - _satellites[1].X, 2) + Math.Pow(y1 - _satellites[1].Y, 2));
-                if (Math.Abs(distanceBetweenSecondSatelliteAndSource - distances[1]) < 0.00001)
+                var distance = Math.Sqrt(Math.Pow(x1 - _satellites[index].X, 2) + Math.Pow(y1 - _satellites[index].Y, 2));
+                if (Math.Abs(distance - distances[index]) > 0.00001)
                 {
-                    distanceBetweenThirdSatelliteAndSource = Math.Sqrt(Math.Pow(x11 - _satellites[2].X, 2) + Math.Pow(y1 - _satellites[2].Y, 2));
-                    if (Math.Abs(distanceBetweenThirdSatelliteAndSource - distances[2]) < 0.00001)
-                    {
-                        return (x11, y1);
-                    }
+                    break;
                 }
+            }
+
+            if (index == distances.Count)
+            {
+                return (x1, y1);
             }
 
             var y2 = (-b - Math.Sqrt(b * b - 4 * a * c)) / (2 * a);
-            var x12 = Math.Sqrt(Math.Pow(distances[0], 2) - Math.Pow(y2 - _satellites[0].Y, 2)) + _satellites[0].X;
+            var x2 = Math.Sqrt(Math.Pow(distances[0], 2) - Math.Pow(y2 - _satellites[0].Y, 2)) + _satellites[0].X;
 
-            distanceBetweenFirstSatelliteAndSource = Math.Sqrt(Math.Pow(x12 - _satellites[0].X, 2) + Math.Pow(y2 - _satellites[0].Y, 2));
-            if (Math.Abs(distanceBetweenFirstSatelliteAndSource - distances[0]) < 0.00001)
+            for (index = 0; index < distances.Count; index++)
             {
-                distanceBetweenSecondSatelliteAndSource = Math.Sqrt(Math.Pow(x12 - _satellites[1].X, 2) + Math.Pow(y2 - _satellites[1].Y, 2));
-                if (Math.Abs(distanceBetweenSecondSatelliteAndSource - distances[1]) < 0.00001)
+                var distance = Math.Sqrt(Math.Pow(x2 - _satellites[index].X, 2) + Math.Pow(y2 - _satellites[index].Y, 2));
+                if (Math.Abs(distance - distances[index]) > 0.00001)
                 {
-                    distanceBetweenThirdSatelliteAndSource = Math.Sqrt(Math.Pow(x12 - _satellites[2].X, 2) + Math.Pow(y2 - _satellites[2].Y, 2));
-                    if (Math.Abs(distanceBetweenThirdSatelliteAndSource - distances[2]) < 0.00001)
-                    {
-                        return (x12, y2);
-                    }
+                    break;
                 }
             }
 
+            if (index == distances.Count)
+            {
+                return (x2, y2);
+            }
 
             throw new Exception("Could not locate source");
         }
