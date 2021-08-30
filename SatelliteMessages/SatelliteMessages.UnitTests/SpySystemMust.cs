@@ -161,5 +161,13 @@ namespace SatelliteMessages.UnitTests
             Assert.Equal("esta es una prueba con delay", message);
         }
 
+        [Fact]
+        public void Test5()
+        {
+            var satellites = new List<(double X, double Y)>() { (-500, -200), (100, -100), (500, 100) };
+            var sut = new SpySystem(satellites);
+            var exception = Assert.Throws<ArgumentException>(() => sut.GetMessage(null));
+            Assert.Equal("Satellite and message count mismatch", exception.Message);
+        }
     }
 }

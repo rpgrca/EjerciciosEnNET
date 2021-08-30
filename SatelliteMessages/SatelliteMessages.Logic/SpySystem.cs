@@ -106,7 +106,7 @@ namespace SatelliteMessages.Logic
 
         public string GetMessage(List<string[]> brokenMessages)
         {
-            if (brokenMessages.Count != _satellites.Count)
+            if (brokenMessages is null || brokenMessages.Count != _satellites.Count)
             {
                 throw new ArgumentException("Satellite and message count mismatch");
             }
