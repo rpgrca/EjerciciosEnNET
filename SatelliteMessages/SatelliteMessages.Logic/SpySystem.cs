@@ -69,10 +69,6 @@ namespace SatelliteMessages.Logic
             }
         }
 
-        private bool CanLocateSourceWithSatellites() =>
-            new Func<double, double, double>[] { (a, b) => a + b, (a, b) => a - b }
-                .Any(GuessedPositionValidatesAllSatellites);
-
         private void BuildSatelliteLocations(List<double> distances) =>
             _locations = _satellites.Select((p, i) => new SatelliteLocation(p.X, p.Y, distances[i])).ToList();
 
@@ -86,14 +82,15 @@ namespace SatelliteMessages.Logic
             _formulaeC = Math.Pow(_locations[0].Y, 2) - Math.Pow(_locations[0].Distance, 2) + Math.Pow(number, 2);
         }
 
+        private bool CanLocateSourceWithSatellites() =>
+            new Func<double, double, double>[] { (a, b) => a + b, (a, b) => a - b }
+                .Any(GuessedPositionValidatesAllSatellites);
+
         private bool GuessedPositionValidatesAllSatellites(Func<double, double, double> adder)
         {
             GuessCoordinates(adder);
             return _locations.All(l => NegligibleDifferenceBetweenGuessedPointAnd(l));
         }
-
-        private bool NegligibleDifferenceBetweenGuessedPointAnd(SatelliteLocation location) =>
-            location.GetDifferenceInDistanceTo(_guessedSource) < 0.00001;
 
         private void GuessCoordinates(Func<double, double, double> adder)
         {
@@ -101,6 +98,9 @@ namespace SatelliteMessages.Logic
             var x =  _locations[0].SolveXfor(y);
             _guessedSource = (x, y);
         }
+
+        private bool NegligibleDifferenceBetweenGuessedPointAnd(SatelliteLocation location) =>
+            location.GetDifferenceInDistanceTo(_guessedSource) < 0.00001;
 
         private double GetSquareRootedDiscriminant() =>
             Math.Sqrt((_formulaeB * _formulaeB) - (4 * _formulaeA * _formulaeC));
