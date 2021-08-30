@@ -22,6 +22,14 @@ namespace SatelliteMessages.UnitTests
         }
 
         [Fact]
+        public void ThrowException_WhenPrecisionIsInvalid()
+        {
+            var satellites = new List<(double X, double Y)>() { (1, 1) };
+            var exception = Assert.Throws<ArgumentException>(() => new SpySystem(satellites, -1));
+            Assert.Equal("Invalid precision", exception.Message);
+        }
+
+        [Fact]
         public void ThrowException_WhenDistanceListIsEmpty()
         {
             var satellites = new List<(double X, double Y)>() { (1, 1) };
@@ -101,6 +109,27 @@ namespace SatelliteMessages.UnitTests
             var (x, y) = sut.GetLocation(distances);
             Assert.Equal(300, x, 5);
             Assert.Equal(100, y, 5);
+        }
+
+        [Fact]
+        public void CorrectCoordinates_WhenPrecisionIsAdjusted()
+        {
+            var distances = new List<double>() { 424.26, 360.56, 700 };
+            var satellites = new List<(double X, double Y)>() { (-500, -200), (100, -100), (500, 100) };
+            var sut = new SpySystem(satellites, 0.01);
+            var (x, y) = sut.GetLocation(distances);
+            Assert.Equal(-200.01, x, 2);
+            Assert.Equal(100, y, 2);
+        }
+
+        [Fact]
+        public void ThrowException_WhenPrecisionLeavesAnswerOut()
+        {
+            var distances = new List<double>() { 424.26, 360.56, 700 };
+            var satellites = new List<(double X, double Y)>() { (-500, -200), (100, -100), (500, 100) };
+            var sut = new SpySystem(satellites, 0.001);
+            var exception = Assert.Throws<Exception>(() => sut.GetLocation(distances));
+            Assert.Equal("Could not locate source", exception.Message);
         }
 
         [Fact]

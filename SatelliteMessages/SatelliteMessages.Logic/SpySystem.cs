@@ -10,15 +10,22 @@ namespace SatelliteMessages.Logic
         private (double A, double B, double C) Discriminant { get; set; }
         private (double X, double Y) GuessedSource { get; set; }
         private List<SatelliteLocation> _locations;
+        private readonly double _acceptedOffset;
 
-        public SpySystem(List<(double X, double Y)> satellites)
+        public SpySystem(List<(double X, double Y)> satellites, double acceptedOffset = 0.00001)
         {
             if (satellites is null || satellites.Count == 0)
             {
                 throw new ArgumentException("No satellites");
             }
 
+            if (acceptedOffset < 0)
+            {
+                throw new ArgumentException("Invalid precision");
+            }
+
             _satellites = satellites;
+            _acceptedOffset = acceptedOffset;
         }
 
         public (double X, double Y) GetLocation(List<double> distances)
@@ -99,7 +106,7 @@ namespace SatelliteMessages.Logic
         }
 
         private bool NegligibleDifferenceBetweenGuessedPointAnd(SatelliteLocation location) =>
-            location.GetDifferenceInDistanceTo(GuessedSource) < 0.00001;
+            location.GetDifferenceInDistanceTo(GuessedSource) < _acceptedOffset;
 
         private double GetSquareRootedDiscriminant() =>
             Math.Sqrt((Discriminant.B * Discriminant.B) - (4 * Discriminant.A * Discriminant.C));
