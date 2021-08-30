@@ -103,5 +103,10 @@ namespace SatelliteMessages.Logic
 
         private double GetSquareRootedDiscriminant() =>
             Math.Sqrt((Discriminant.B * Discriminant.B) - (4 * Discriminant.A * Discriminant.C));
+
+        public object GetMessage(List<string[]> brokenMessages)
+        {
+            throw new ArgumentException("Received more messages than satellites");
+        }
     }
 }

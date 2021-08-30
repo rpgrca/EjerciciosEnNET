@@ -102,5 +102,21 @@ namespace SatelliteMessages.UnitTests
             Assert.Equal(300, x, 5);
             Assert.Equal(100, y, 5);
         }
+
+        [Fact]
+        public void Test1()
+        {
+            var satellites = new List<(double X, double Y)>() { (-500, -200) };
+            var brokenMessages = new List<string[]>()
+            {
+                new string[] { "", "este", "es", "un", "mensaje" },
+                new string[] { "este", "", "un", "mensaje" },
+                new string[] { "", "", "es", "", "mensaje" }
+            };
+
+            var sut = new SpySystem(satellites);
+            var exception = Assert.Throws<ArgumentException>(() => sut.GetMessage(brokenMessages));
+            Assert.Equal("Received more messages than satellites", exception.Message);
+        }
     }
 }
