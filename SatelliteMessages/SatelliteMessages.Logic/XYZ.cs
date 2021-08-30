@@ -69,18 +69,9 @@ namespace SatelliteMessages.Logic
             }
         }
 
-        private bool CanLocateSourceWithSatellites()
-        {
-            foreach (var adder in new Func<double, double, double>[] { (a, b) => a + b, (a, b) => a - b })
-            {
-                if (GuessedPositionValidatesAllSatellites(adder))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        private bool CanLocateSourceWithSatellites() =>
+            new Func<double, double, double>[] { (a, b) => a + b, (a, b) => a - b }
+                .Any(GuessedPositionValidatesAllSatellites);
 
         private void BuildSatelliteLocations(List<double> distances) =>
             _locations = _satellites.Select((p, i) => new SatelliteLocation(p.X, p.Y, distances[i])).ToList();
