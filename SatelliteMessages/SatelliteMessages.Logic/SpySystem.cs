@@ -111,6 +111,12 @@ namespace SatelliteMessages.Logic
                 throw new ArgumentException("Satellite and message count mismatch");
             }
 
+            var completeMessage = brokenMessages.Find(p => p.All(x => !string.IsNullOrEmpty(x)));
+            if (completeMessage is not null)
+            {
+                return string.Join(" ", completeMessage);
+            }
+
             return brokenMessages[0].Where(p => !string.IsNullOrEmpty(p)).Aggregate((t, i) => t = string.Concat(t, " ", i));
         }
     }
