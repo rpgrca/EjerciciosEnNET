@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SatelliteMessages.Logic
 {
-    public class XYZ
+    public class SpySystem
     {
         private readonly List<(double X, double Y)> _satellites;
         private double _formulaeA;
@@ -13,7 +13,7 @@ namespace SatelliteMessages.Logic
         private (double X, double Y) _guessedSource;
         private List<SatelliteLocation> _locations;
 
-        public XYZ(List<(double X, double Y)> satellites)
+        public SpySystem(List<(double X, double Y)> satellites)
         {
             if (satellites is null || satellites.Count == 0)
             {
