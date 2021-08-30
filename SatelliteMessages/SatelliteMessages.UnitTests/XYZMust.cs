@@ -81,38 +81,6 @@ namespace SatelliteMessages.UnitTests
             Assert.Equal("Not enough satellites to obtain coordinates", exception.Message);
         }
 
-        /*[Fact]
-        public void Test4()
-        {
-            var distances = new List<double>() { 5, 3, 5 };
-            var satellites = new List<(double X, double Y)>() { (4, 2), (1, 9), (4, 10) };
-            var sut = new XYZ(satellites);
-            var result = sut.GetLocation(distances);
-            Assert.Equal((1, 6), result);
-
-
-            (1, 9) trasladado (4, 2) = (-3, 7) 
-            (4, 2) trasladado (4, 2) =  (0, 0)
-
-            calcular distancia de centro a (-3, 7)
-            ((0 + 3)^2 + (0 - 7)^2)^1/2 → (9 + 49)^1/2 → 7.61577310586
-
-            (x^2 + y^2)^1/2 = 7.61577310586 → x^2 + y^2 = 58 con y = 0 → x^2 = 58 → 7.61577310586
-
-            - circulo con centro en (0, 0) y radio 5
-            - circulo con centro en (-7.61577310586, 0) y radio 3
-
-            entonces
-
-            d = ((0 - -3)^2 + (0 - 7)^2)^1/2 → d = (9 + 49)^1/2 → d = 7.61577310586
-            l = (5^2 - 3^2 + 58) / (2 * 7.61577310586) → 74 / 15.2315462117 → l = 4.85833801582
-            h = (5^2 - 4.85833801582)^1/2 → 20.1416619842^1/2 → 4.48794629917
-
-            x = (4.85833801582 / 7.61577310586) * (-3 - 0)) +- (4.48794629917 / 7.61577310586) * (7 - 0) + 0 → 0.63793103448 * -3 +- ... → -1.91379310345 +- 0.58929621941 * 7 → -1.91379310345 +- 4.12507353587 ()
-
-
-        }*/
-
         [Fact]
         public void Test5()
         {
@@ -161,95 +129,9 @@ namespace SatelliteMessages.UnitTests
                 return _satellites[distances.IndexOf(0)];
             }
 
-            //var x = 300;
-            var y = 100;
-            //var distanceBetweenFirstSatelliteAndSource = Math.Sqrt(Math.Pow(x - _satellites[0].X, 2) + Math.Pow(y - _satellites[0].Y, 2));
-            //var distanceBetweenSecondSatelliteAndSource = Math.Sqrt(Math.Pow(x - _satellites[1].X, 2) + Math.Pow(y - _satellites[1].Y, 2));
-
-            //Math.Pow(distances[0], 2) == Math.Pow(x - _satellites[0].X, 2) + Math.Pow(y - _satellites[0].Y, 2))
-
-            //Assert.Equal(Math.Pow(distances[0], 2) - Math.Pow(y - _satellites[0].Y, 2), Math.Pow(x - _satellites[0].X, 2));
-            //Assert.Equal(Math.Sqrt(Math.Pow(distances[0], 2) - Math.Pow(y - _satellites[0].Y, 2)), x - _satellites[0].X, 2);
-            //Assert.Equal(Math.Sqrt(Math.Pow(distances[0], 2) - Math.Pow(y - _satellites[0].Y, 2)) + _satellites[0].X, x);
-
-            var x1 = Math.Round(Math.Sqrt(Math.Pow(distances[0], 2) - Math.Pow(y - _satellites[0].Y, 2)) + _satellites[0].X);
-            //Assert.Equal(Math.Pow(distances[1], 2), Math.Pow(x - _satellites[1].X, 2) + Math.Pow(y - _satellites[1].Y, 2));
-            Assert.Equal(Math.Pow(distances[1], 2), Math.Pow(Math.Round(Math.Sqrt(Math.Pow(distances[0], 2) - Math.Pow(y - _satellites[0].Y, 2)) + _satellites[0].X) - _satellites[1].X, 2) + Math.Pow(y - _satellites[1].Y, 2));
-            Assert.Equal(Math.Pow(distances[1], 2) - Math.Pow(y - _satellites[1].Y, 2), Math.Pow(Math.Round(Math.Sqrt(Math.Pow(distances[0], 2) - Math.Pow(y - _satellites[0].Y, 2)) + _satellites[0].X) - _satellites[1].X, 2));
-            Assert.Equal(Math.Pow(distances[1], 2) - Math.Pow(y, 2) + (2 * y * _satellites[1].Y) - Math.Pow(_satellites[1].Y, 2), Math.Pow(Math.Round(Math.Sqrt(Math.Pow(distances[0], 2) - Math.Pow(y - _satellites[0].Y, 2)) + _satellites[0].X) - _satellites[1].X, 2));
-            Assert.Equal(Math.Pow(distances[1], 2) - Math.Pow(y, 2) + (2 * y * _satellites[1].Y) - Math.Pow(_satellites[1].Y, 2), Math.Pow(Math.Round(Math.Sqrt(Math.Pow(distances[0], 2) - (Math.Pow(y, 2) - (2 * y * _satellites[0].Y) + Math.Pow(_satellites[0].Y, 2))) + _satellites[0].X) - _satellites[1].X, 2));
-            Assert.Equal(Math.Pow(distances[1], 2) - Math.Pow(y, 2) + (2 * y * _satellites[1].Y) - Math.Pow(_satellites[1].Y, 2), Math.Pow(Math.Round(Math.Sqrt(Math.Pow(distances[0], 2) + (- Math.Pow(y, 2) + (2 * y * _satellites[0].Y) - Math.Pow(_satellites[0].Y, 2))) + _satellites[0].X) - _satellites[1].X, 2));
-            Assert.Equal(Math.Pow(distances[1], 2) - Math.Pow(y, 2) + (2 * y * _satellites[1].Y) - Math.Pow(_satellites[1].Y, 2), Math.Pow(Math.Round(Math.Sqrt(Math.Pow(distances[0], 2) - Math.Pow(y, 2) + (2 * y * _satellites[0].Y) - Math.Pow(_satellites[0].Y, 2)) + _satellites[0].X) - _satellites[1].X, 2));
-            Assert.Equal(Math.Pow(distances[1], 2), Math.Pow(Math.Round(Math.Sqrt(Math.Pow(distances[0], 2) - Math.Pow(y, 2) + (2 * y * _satellites[0].Y) - Math.Pow(_satellites[0].Y, 2)) + _satellites[0].X) - _satellites[1].X, 2) + Math.Pow(y, 2) - (2 * y * _satellites[1].Y) + Math.Pow(_satellites[1].Y, 2));
-            Assert.Equal(Math.Pow(distances[1], 2) - Math.Pow(_satellites[1].Y, 2), Math.Pow(Math.Round(Math.Sqrt(Math.Pow(distances[0], 2) - Math.Pow(y, 2) + (2 * y * _satellites[0].Y) - Math.Pow(_satellites[0].Y, 2)) + _satellites[0].X) - _satellites[1].X, 2) + Math.Pow(y, 2) - (2 * y * _satellites[1].Y));
-            Assert.Equal(Math.Pow(distances[1], 2) - Math.Pow(_satellites[1].Y, 2),
-                Math.Pow(Math.Round(Math.Sqrt(Math.Pow(distances[0], 2) - Math.Pow(y, 2) + (2 * y * _satellites[0].Y) - Math.Pow(_satellites[0].Y, 2)) + _satellites[0].X) - _satellites[1].X, 2) + Math.Pow(y, 2) - (2 * y * _satellites[1].Y));
-
-            /*Assert.Equal(Math.Pow(distances[1], 2) - Math.Pow(_satellites[1].Y, 2),
-                ((Math.Sqrt(Math.Pow(distances[0], 2) - Math.Pow(y, 2) + (2 * y * _satellites[0].Y) - Math.Pow(_satellites[0].Y, 2)) + _satellites[0].X - _satellites[1].X) * (Math.Sqrt(Math.Pow(distances[0], 2) - Math.Pow(y, 2) + (2 * y * _satellites[0].Y) - Math.Pow(_satellites[0].Y, 2)) + _satellites[0].X - _satellites[1].X))
-                + Math.Pow(y, 2) - (2 * y * _satellites[1].Y));*/
-
-            /*Assert.Equal(Math.Pow(distances[1], 2) - Math.Pow(_satellites[1].Y, 2),
-                (
-                    ((-Math.Pow(y, 2) + (2 * y * _satellites[0].Y) - Math.Pow(_satellites[0].Y, 2) + Math.Pow(distances[0], 2))) + 2 * Math.Sqrt(-Math.Pow(y, 2) + (2 * y * _satellites[0].Y) - Math.Pow(_satellites[0].Y, 2) + Math.Pow(distances[0], 2)) * (_satellites[0].X - _satellites[1].X) + Math.Pow(_satellites[0].X - _satellites[1].X, 2))
-                + Math.Pow(y, 2) - (2 * y * _satellites[1].Y));*/
-
-            /*Assert.Equal(Math.Pow(distances[1], 2) - Math.Pow(_satellites[1].Y, 2),
-                -Math.Pow(y, 2) + (2 * y * _satellites[0].Y) - Math.Pow(_satellites[0].Y, 2) + Math.Pow(distances[0], 2) + (2 * Math.Sqrt(-Math.Pow(y, 2) + (2 * y * _satellites[0].Y) - Math.Pow(_satellites[0].Y, 2) + Math.Pow(distances[0], 2)) * (_satellites[0].X - _satellites[1].X)) + Math.Pow(_satellites[0].X - _satellites[1].X, 2) + Math.Pow(y, 2) - (2 * y * _satellites[1].Y));*/
-
-            /*Assert.Equal(Math.Pow(distances[1], 2) - Math.Pow(_satellites[1].Y, 2) + Math.Pow(_satellites[0].Y, 2) - Math.Pow(distances[0], 2) - Math.Pow(_satellites[0].X - _satellites[1].X, 2),
-                +(2 * y * _satellites[0].Y)
-                +(2 * Math.Sqrt(-Math.Pow(y, 2) + (2 * y * _satellites[0].Y) - Math.Pow(_satellites[0].Y, 2) + Math.Pow(distances[0], 2)) * (_satellites[0].X - _satellites[1].X))
-                -(2 * y * _satellites[1].Y));*/
-
-            /*Assert.Equal((Math.Pow(distances[1], 2) - Math.Pow(_satellites[1].Y, 2) + Math.Pow(_satellites[0].Y, 2) - Math.Pow(distances[0], 2) - Math.Pow(_satellites[0].X - _satellites[1].X, 2)) / 2,
-                  y * _satellites[0].Y
-                + Math.Sqrt(-Math.Pow(y, 2) + (2 * y * _satellites[0].Y) - Math.Pow(_satellites[0].Y, 2) + Math.Pow(distances[0], 2)) * (_satellites[0].X - _satellites[1].X)
-                - y * _satellites[1].Y);*/
-
-            /*Assert.Equal(((Math.Pow(distances[1], 2) - Math.Pow(_satellites[1].Y, 2) + Math.Pow(_satellites[0].Y, 2) - Math.Pow(distances[0], 2) - Math.Pow(_satellites[0].X - _satellites[1].X, 2)) / 2) / (_satellites[0].X - _satellites[1].X),
-                     Math.Sqrt(-Math.Pow(y, 2) + (2 * y * _satellites[0].Y) - Math.Pow(_satellites[0].Y, 2) + Math.Pow(distances[0], 2))
-                    + y * (_satellites[0].Y / (_satellites[0].X - _satellites[1].X) - _satellites[1].Y / (_satellites[0].X - _satellites[1].X))
-            );*/
-
-            /*Assert.Equal((((Math.Pow(distances[1], 2) - Math.Pow(_satellites[1].Y, 2) + Math.Pow(_satellites[0].Y, 2) - Math.Pow(distances[0], 2) - Math.Pow(_satellites[0].X - _satellites[1].X, 2)) / 2) / (_satellites[0].X - _satellites[1].X)) - (y * (_satellites[0].Y / (_satellites[0].X - _satellites[1].X) - _satellites[1].Y / (_satellites[0].X - _satellites[1].X))),
-                     Math.Sqrt(-Math.Pow(y, 2) + (2 * y * _satellites[0].Y) - Math.Pow(_satellites[0].Y, 2) + Math.Pow(distances[0], 2))
-            );*/
-
-            /*var number = (((Math.Pow(distances[1], 2) - Math.Pow(_satellites[1].Y, 2) + Math.Pow(_satellites[0].Y, 2) - Math.Pow(distances[0], 2) - Math.Pow(_satellites[0].X - _satellites[1].X, 2)) / 2) / (_satellites[0].X - _satellites[1].X));
-            Assert.Equal(
-                Math.Pow(number - (y * (_satellites[0].Y / (_satellites[0].X - _satellites[1].X) - _satellites[1].Y / (_satellites[0].X - _satellites[1].X))), 2),
-                     -Math.Pow(y, 2) + (2 * y * _satellites[0].Y) - Math.Pow(_satellites[0].Y, 2) + Math.Pow(distances[0], 2)
-            );*/
-
-            /*var number = (((Math.Pow(distances[1], 2) - Math.Pow(_satellites[1].Y, 2) + Math.Pow(_satellites[0].Y, 2) - Math.Pow(distances[0], 2) - Math.Pow(_satellites[0].X - _satellites[1].X, 2)) / 2) / (_satellites[0].X - _satellites[1].X));
-            Assert.Equal(
-                Math.Pow(number, 2) - 2 * number * (y * (_satellites[0].Y / (_satellites[0].X - _satellites[1].X) - _satellites[1].Y / (_satellites[0].X - _satellites[1].X))) + Math.Pow(y * (_satellites[0].Y / (_satellites[0].X - _satellites[1].X) - _satellites[1].Y / (_satellites[0].X - _satellites[1].X)), 2),
-                -Math.Pow(y, 2) + (2 * y * _satellites[0].Y) - Math.Pow(_satellites[0].Y, 2) + Math.Pow(distances[0], 2)
-            );*/
-
-            /*var number = (((Math.Pow(distances[1], 2) - Math.Pow(_satellites[1].Y, 2) + Math.Pow(_satellites[0].Y, 2) - Math.Pow(distances[0], 2) - Math.Pow(_satellites[0].X - _satellites[1].X, 2)) / 2) / (_satellites[0].X - _satellites[1].X));
-            double number2 = (_satellites[0].Y / (_satellites[0].X - _satellites[1].X) - _satellites[1].Y / (_satellites[0].X - _satellites[1].X));
-            Assert.Equal(
-                Math.Pow(number, 2) - 2 * number * y * number2 - 2 * y * _satellites[0].Y + Math.Pow(y, 2) * (Math.Pow(number2, 2) + 1),
-                - Math.Pow(_satellites[0].Y, 2) + Math.Pow(distances[0], 2)
-            );*/
-
-            /*
-            var number = (((Math.Pow(distances[1], 2) - Math.Pow(_satellites[1].Y, 2) + Math.Pow(_satellites[0].Y, 2) - Math.Pow(distances[0], 2) - Math.Pow(_satellites[0].X - _satellites[1].X, 2)) / 2) / (_satellites[0].X - _satellites[1].X));
-            var number2 = (_satellites[0].Y / (_satellites[0].X - _satellites[1].X) - _satellites[1].Y / (_satellites[0].X - _satellites[1].X));
-            var number3 = - Math.Pow(_satellites[0].Y, 2) + Math.Pow(distances[0], 2) - Math.Pow(number, 2);
-            Assert.Equal(
-                Math.Pow(y, 2) * (Math.Pow(number2, 2) + 1) - 2 * y * (number * number2 + _satellites[0].Y),
-                number3
-            );
-            */
-
             var number = ((Math.Pow(distances[1], 2) - Math.Pow(_satellites[1].Y, 2) + Math.Pow(_satellites[0].Y, 2) - Math.Pow(distances[0], 2) - Math.Pow(_satellites[0].X - _satellites[1].X, 2)) / 2) / (_satellites[0].X - _satellites[1].X);
             var number2 = (_satellites[0].Y / (_satellites[0].X - _satellites[1].X) - _satellites[1].Y / (_satellites[0].X - _satellites[1].X));
             var number3 = (-Math.Pow(_satellites[0].Y, 2) + Math.Pow(distances[0], 2) - Math.Pow(number, 2));
-
-            //Assert.Equal(0, Math.Pow(y, 2) * (Math.Pow(number2, 2) + 1) - 2 * y * (number * number2 + _satellites[0].Y) - number3);
 
             var a = Math.Pow(number2, 2) + 1;
             var b = -2 * (number * number2 + _satellites[0].Y);
