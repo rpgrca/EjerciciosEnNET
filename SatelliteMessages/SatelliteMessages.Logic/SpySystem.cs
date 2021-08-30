@@ -74,12 +74,13 @@ namespace SatelliteMessages.Logic
 
         private void CalculateDiscriminantValues()
         {
-            var number = (Math.Pow(_locations[1].Distance, 2) - Math.Pow(_locations[1].Y, 2) + Math.Pow(_locations[0].Y, 2) - Math.Pow(_locations[0].Distance, 2) - Math.Pow(_locations[0].X - _locations[1].X, 2)) / 2 / (_locations[0].X - _locations[1].X);
-            var number2 = (_locations[0].Y - _locations[1].Y) / (_locations[0].X - _locations[1].X);
+            var firstLocationYsquaredMinusDistance = Math.Pow(_locations[0].Y, 2) - Math.Pow(_locations[0].Distance, 2);
+            var number = (Math.Pow(_locations[1].Distance, 2) - Math.Pow(_locations[1].Y, 2) + firstLocationYsquaredMinusDistance - Math.Pow(_locations[0].X - _locations[1].X, 2)) / 2 / (_locations[0].X - _locations[1].X);
+            var locationsDiffYdividedBydiffX = (_locations[0].Y - _locations[1].Y) / (_locations[0].X - _locations[1].X);
 
-            _formulaeA = Math.Pow(number2, 2) + 1;
-            _formulaeB = -2 * ((number * number2) + _locations[0].Y);
-            _formulaeC = Math.Pow(_locations[0].Y, 2) - Math.Pow(_locations[0].Distance, 2) + Math.Pow(number, 2);
+            _formulaeA = Math.Pow(locationsDiffYdividedBydiffX, 2) + 1;
+            _formulaeB = -2 * ((number * locationsDiffYdividedBydiffX) + _locations[0].Y);
+            _formulaeC = firstLocationYsquaredMinusDistance + Math.Pow(number, 2);
         }
 
         private bool CanLocateSourceWithSatellites() =>

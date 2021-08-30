@@ -8,10 +8,8 @@ namespace SatelliteMessages.Logic
         public double Y { get; }
         public double Distance { get; }
 
-        public SatelliteLocation(double x, double y, double distance)
-        {
+        public SatelliteLocation(double x, double y, double distance) =>
             (X, Y, Distance) = (x, y, distance);
-        }
 
         public double SolveXfor(double y) =>
             Math.Sqrt((Distance * Distance) - Math.Pow(y - Y, 2)) + X;
@@ -19,7 +17,7 @@ namespace SatelliteMessages.Logic
         public double GetDistanceTo((double X, double Y) point) =>
             Math.Sqrt(Math.Pow(point.X - X, 2) + Math.Pow(point.Y - Y, 2));
 
-        internal double GetDifferenceInDistanceTo((double X, double Y) guessedSource) =>
-            Math.Abs(GetDistanceTo(guessedSource) - Distance);
+        public double GetDifferenceInDistanceTo((double X, double Y) guessedPoint) =>
+            Math.Abs(GetDistanceTo(guessedPoint) - Distance);
     }
 }
