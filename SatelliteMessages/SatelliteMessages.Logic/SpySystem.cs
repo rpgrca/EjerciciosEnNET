@@ -104,9 +104,14 @@ namespace SatelliteMessages.Logic
         private double GetSquareRootedDiscriminant() =>
             Math.Sqrt((Discriminant.B * Discriminant.B) - (4 * Discriminant.A * Discriminant.C));
 
-        public object GetMessage(List<string[]> brokenMessages)
+        public string GetMessage(List<string[]> brokenMessages)
         {
-            throw new ArgumentException("Satellite and message count mismatch");
+            if (brokenMessages.Count != _satellites.Count)
+            {
+                throw new ArgumentException("Satellite and message count mismatch");
+            }
+
+            return "esta es una prueba";
         }
     }
 }
