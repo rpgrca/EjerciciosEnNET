@@ -104,7 +104,7 @@ namespace SatelliteMessages.UnitTests
         }
 
         [Fact]
-        public void Test1()
+        public void ThrowException_WhenMoreMessagesThanSatellitesAreReceived()
         {
             var satellites = new List<(double X, double Y)>() { (-500, -200) };
             var brokenMessages = new List<string[]>()
@@ -120,7 +120,7 @@ namespace SatelliteMessages.UnitTests
         }
 
         [Fact]
-        public void Test2()
+        public void ThrowException_WhenSatelliteDoNotReportMessage()
         {
             var satellites = new List<(double X, double Y)>() { (-500, -200), (100, -100), (500, 100) };
             var brokenMessages = new List<string[]>()
@@ -134,7 +134,7 @@ namespace SatelliteMessages.UnitTests
         }
 
         [Fact]
-        public void Test3()
+        public void ReturnMessage_WhenInterceptedMessageHasNoDelayNorEmptySlots()
         {
             var satellites = new List<(double X, double Y)>() { (-500, -200) };
             var brokenMessages = new List<string[]>()
@@ -148,7 +148,7 @@ namespace SatelliteMessages.UnitTests
         }
 
         [Fact]
-        public void Test4()
+        public void ReturnMessage_WhenMessageComesWithDelay()
         {
             var satellites = new List<(double X, double Y)>() { (-500, -200) };
             var brokenMessages = new List<string[]>()
@@ -162,7 +162,7 @@ namespace SatelliteMessages.UnitTests
         }
 
         [Fact]
-        public void Test5()
+        public void ThrowException_WhenMessagesNullListIsSupplied()
         {
             var satellites = new List<(double X, double Y)>() { (-500, -200), (100, -100), (500, 100) };
             var sut = new SpySystem(satellites);
@@ -171,7 +171,7 @@ namespace SatelliteMessages.UnitTests
         }
 
         [Fact]
-        public void Test6()
+        public void ReturnMessage_WhenThereIsAFullMessageAlready()
         {
             var satellites = new List<(double X, double Y)>() { (-500, -200), (100, -100) };
             var brokenMessages = new List<string[]>()
@@ -186,13 +186,29 @@ namespace SatelliteMessages.UnitTests
         }
 
         [Fact]
-        public void Test7()
+        public void ReturnMessage_WhenThereAreBrokenMessagesAndNoDelay()
         {
             var satellites = new List<(double X, double Y)>() { (-500, -200), (100, -100) };
             var brokenMessages = new List<string[]>()
             {
                 new string[] { "este", "", "un", "mensaje" },
                 new string[] { "este", "es", "", "mensaje" }
+            };
+
+            var sut = new SpySystem(satellites);
+            var message = sut.GetMessage(brokenMessages);
+            Assert.Equal("este es un mensaje", message);
+        }
+
+        [Fact]
+        public void ReturnMessage_WhenThereAreBrokenMessagesAndDelay()
+        {
+            var satellites = new List<(double X, double Y)>() { (-500, -200), (100, -100), (500, 100) };
+            var brokenMessages = new List<string[]>()
+            {
+                new string[] { "este", "", "un", "" },
+                new string[] { "", "es", "", "mensaje" },
+                new string[] { "", "", "", "este", "es", "", "" }
             };
 
             var sut = new SpySystem(satellites);
