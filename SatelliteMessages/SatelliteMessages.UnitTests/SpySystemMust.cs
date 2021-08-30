@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using Xunit;
 using SatelliteMessages.Logic;
@@ -43,7 +42,7 @@ namespace SatelliteMessages.UnitTests
         }
 
         [Fact]
-        public void Test1()
+        public void ThrowException_WhenDistanceCountIsDifferentFromSatelliteCount()
         {
             var distances = new List<double>() { 10, 20 };
             var satellites = new List<(double X, double Y)>() { (1, 1) };
@@ -63,7 +62,7 @@ namespace SatelliteMessages.UnitTests
         }
 
         [Fact]
-        public void Test2()
+        public void SatelliteCoordinate_WhenSatelliteIsExactlyAboveSource()
         {
             var distances = new List<double>() { 5, 0 };
             var satellites = new List<(double X, double Y)>() { (4, 2), (1, 6) };
@@ -73,7 +72,7 @@ namespace SatelliteMessages.UnitTests
         }
 
         [Fact]
-        public void Test3()
+        public void ThrowException_WhenThereAreNotEnoughSatelliteWorking()
         {
             var distances = new List<double>() { 5 };
             var satellites = new List<(double X, double Y)>() { (4, 2) };
@@ -83,25 +82,25 @@ namespace SatelliteMessages.UnitTests
         }
 
         [Fact]
-        public void Test4()
+        public void CorrectCoordinates_WhenSatellitePositionAndDistanceIntersectInSinglePoint()
         {
             var distances = new List<double>() { 5, 16.031220000000015, 21.023796437981545 };
-            var satellites = new List<(double X, double Y)>() {  (4, 2), (6, 22), (8, 27) };
+            var satellites = new List<(double X, double Y)>() { (4, 2), (6, 22), (8, 27) };
             var sut = new SpySystem(satellites);
-            var result = sut.GetLocation(distances);
-            Assert.Equal(7, result.X, 5);
-            Assert.Equal(6, result.Y, 5);
+            var (x, y) = sut.GetLocation(distances);
+            Assert.Equal(7, x, 5);
+            Assert.Equal(6, y, 5);
         }
 
         [Fact]
-        public void Test5()
+        public void CorrectCoordinates_WhenSatelliteAreInDesignedPositionsAndIntersectInSinglePoint()
         {
             var distances = new List<double>() { 854.4003745317531, 282.842712474619, 200 };
             var satellites = new List<(double X, double Y)>() { (-500, -200), (100, -100), (500, 100) };
             var sut = new SpySystem(satellites);
-            var result = sut.GetLocation(distances);
-            Assert.Equal(300, result.X, 5);
-            Assert.Equal(100, result.Y, 5);
+            var (x, y) = sut.GetLocation(distances);
+            Assert.Equal(300, x, 5);
+            Assert.Equal(100, y, 5);
         }
     }
 }
