@@ -118,12 +118,6 @@ namespace SatelliteMessages.Logic
                 throw new ArgumentException("Satellite and message count mismatch");
             }
 
-            var completeMessage = brokenMessages.Find(p => p.All(x => !string.IsNullOrEmpty(x)));
-            if (completeMessage is not null)
-            {
-                return string.Join(" ", completeMessage);
-            }
-
             var reversedBrokenMessages = brokenMessages.OrderBy(p => p.Length).Select(p => p.Reverse().ToArray()).ToList();
             var message = new List<string>();
             for (var index = 0; index < reversedBrokenMessages[0].Length; index++)
