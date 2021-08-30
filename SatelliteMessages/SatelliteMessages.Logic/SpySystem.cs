@@ -7,10 +7,8 @@ namespace SatelliteMessages.Logic
     public class SpySystem
     {
         private readonly List<(double X, double Y)> _satellites;
-        private double _formulaeA;
-        private double _formulaeB;
-        private double _formulaeC;
-        private (double X, double Y) _guessedSource;
+        private (double A, double B, double C) Discriminant { get; set; }
+        private (double X, double Y) GuessedSource { get; set; }
         private List<SatelliteLocation> _locations;
 
         public SpySystem(List<(double X, double Y)> satellites)
@@ -39,7 +37,7 @@ namespace SatelliteMessages.Logic
 
             if (CanLocateSourceWithSatellites())
             {
-                return _guessedSource;
+                return GuessedSource;
             }
 
             throw new Exception("Could not locate source");
@@ -78,9 +76,9 @@ namespace SatelliteMessages.Logic
             var number = (Math.Pow(_locations[1].Distance, 2) - Math.Pow(_locations[1].Y, 2) + firstLocationYsquaredMinusDistance - Math.Pow(_locations[0].X - _locations[1].X, 2)) / 2 / (_locations[0].X - _locations[1].X);
             var locationsDiffYdividedBydiffX = (_locations[0].Y - _locations[1].Y) / (_locations[0].X - _locations[1].X);
 
-            _formulaeA = Math.Pow(locationsDiffYdividedBydiffX, 2) + 1;
-            _formulaeB = -2 * ((number * locationsDiffYdividedBydiffX) + _locations[0].Y);
-            _formulaeC = firstLocationYsquaredMinusDistance + Math.Pow(number, 2);
+            Discriminant = (A: Math.Pow(locationsDiffYdividedBydiffX, 2) + 1,
+                            B: -2 * ((number * locationsDiffYdividedBydiffX) + _locations[0].Y),
+                            C: firstLocationYsquaredMinusDistance + Math.Pow(number, 2));
         }
 
         private bool CanLocateSourceWithSatellites() =>
@@ -95,15 +93,15 @@ namespace SatelliteMessages.Logic
 
         private void GuessCoordinates(Func<double, double, double> adder)
         {
-            var y = adder(-_formulaeB, GetSquareRootedDiscriminant()) / (2 * _formulaeA);
+            var y = adder(-Discriminant.B, GetSquareRootedDiscriminant()) / (2 * Discriminant.A);
             var x =  _locations[0].SolveXfor(y);
-            _guessedSource = (x, y);
+            GuessedSource = (x, y);
         }
 
         private bool NegligibleDifferenceBetweenGuessedPointAnd(SatelliteLocation location) =>
-            location.GetDifferenceInDistanceTo(_guessedSource) < 0.00001;
+            location.GetDifferenceInDistanceTo(GuessedSource) < 0.00001;
 
         private double GetSquareRootedDiscriminant() =>
-            Math.Sqrt((_formulaeB * _formulaeB) - (4 * _formulaeA * _formulaeC));
+            Math.Sqrt((Discriminant.B * Discriminant.B) - (4 * Discriminant.A * Discriminant.C));
     }
 }
