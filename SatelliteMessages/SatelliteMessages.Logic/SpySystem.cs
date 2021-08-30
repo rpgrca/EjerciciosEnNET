@@ -111,7 +111,7 @@ namespace SatelliteMessages.Logic
                 throw new ArgumentException("Satellite and message count mismatch");
             }
 
-            return "esta es una prueba";
+            return brokenMessages[0].Where(p => !string.IsNullOrEmpty(p)).Aggregate((t, i) => t = string.Concat(t, " ", i));
         }
     }
 }

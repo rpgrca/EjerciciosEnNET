@@ -146,5 +146,20 @@ namespace SatelliteMessages.UnitTests
             var message = sut.GetMessage(brokenMessages);
             Assert.Equal("esta es una prueba", message);
         }
+
+        [Fact]
+        public void Test4()
+        {
+            var satellites = new List<(double X, double Y)>() { (-500, -200) };
+            var brokenMessages = new List<string[]>()
+            {
+                new string[] { "", "", "esta", "es", "una", "prueba", "con", "delay" },
+            };
+
+            var sut = new SpySystem(satellites);
+            var message = sut.GetMessage(brokenMessages);
+            Assert.Equal("esta es una prueba con delay", message);
+        }
+
     }
 }
