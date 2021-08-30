@@ -116,7 +116,22 @@ namespace SatelliteMessages.UnitTests
 
             var sut = new SpySystem(satellites);
             var exception = Assert.Throws<ArgumentException>(() => sut.GetMessage(brokenMessages));
-            Assert.Equal("Received more messages than satellites", exception.Message);
+            Assert.Equal("Satellite and message count mismatch", exception.Message);
+        }
+
+        [Fact]
+        public void Test2()
+        {
+            var satellites = new List<(double X, double Y)>() { (-500, -200), (100, -100), (500, 100) };
+            var brokenMessages = new List<string[]>()
+            {
+                new string[] { "", "este", "es", "un", "mensaje" },
+            };
+
+            var sut = new SpySystem(satellites);
+            var exception = Assert.Throws<ArgumentException>(() => sut.GetMessage(brokenMessages));
+            Assert.Equal("Satellite and message count mismatch", exception.Message);
+
         }
     }
 }

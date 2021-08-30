@@ -106,7 +106,7 @@ namespace SatelliteMessages.Logic
 
         public object GetMessage(List<string[]> brokenMessages)
         {
-            throw new ArgumentException("Received more messages than satellites");
+            throw new ArgumentException("Satellite and message count mismatch");
         }
     }
 }
