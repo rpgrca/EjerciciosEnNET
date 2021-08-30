@@ -117,7 +117,21 @@ namespace SatelliteMessages.Logic
                 return string.Join(" ", completeMessage);
             }
 
-            return brokenMessages[0].Where(p => !string.IsNullOrEmpty(p)).Aggregate((t, i) => t = string.Concat(t, " ", i));
+            var reversedBrokenMessages = brokenMessages.OrderBy(p => p.Length).Select(p => p.Reverse().ToArray()).ToList();
+            var message = new List<string>();
+            for (var index = 0; index < reversedBrokenMessages[0].Length; index++)
+            {
+                for (var subIndex = 0; subIndex < reversedBrokenMessages.Count; subIndex++)
+                {
+                    if (!string.IsNullOrEmpty(reversedBrokenMessages[subIndex][index]))
+                    {
+                        message.Insert(0, reversedBrokenMessages[subIndex][index]);
+                        break;
+                    }
+                }
+            }
+
+            return string.Join(" ", message);
         }
     }
 }
