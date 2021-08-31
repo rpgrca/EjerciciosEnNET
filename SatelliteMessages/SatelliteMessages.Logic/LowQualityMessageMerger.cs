@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SatelliteMessages.Logic
 {
-    public class LowQualityMessageMerger : IMessageMerger
+    internal class LowQualityMessageMerger : IMessageMerger
     {
         public string Message { get; internal set; }
 

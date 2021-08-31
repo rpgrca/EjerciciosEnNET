@@ -2,13 +2,13 @@ using System;
 
 namespace SatelliteMessages.Logic
 {
-    internal class SatelliteLocation
+    public class SatelliteLocation
     {
         public double X { get; }
         public double Y { get; }
         public double Distance { get; }
 
-        public SatelliteLocation(double x, double y, double distance) =>
+        internal SatelliteLocation(double x, double y, double distance) =>
             (X, Y, Distance) = (x, y, distance);
 
         public double SolveXfor(double y) =>

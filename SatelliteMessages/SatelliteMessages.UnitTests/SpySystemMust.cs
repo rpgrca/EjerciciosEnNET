@@ -72,7 +72,11 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ReturnSameCoordinatesAsSatellite_WhenDistanceIsZero()
         {
-            var sut = CreateSubjectUnderTest();
+            var sut = SpySystem.With
+                .StandardConfiguration()
+                .ConnectingTo(new List<(double X, double Y)>() { (1, 1) })
+                .Build();
+
             var distances = new List<double>() { 0 };
             var result = sut.GetLocation(distances);
             Assert.Equal((1, 1), result);
@@ -81,8 +85,8 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void SatelliteCoordinate_WhenSatelliteIsExactlyAboveSource()
         {
-            var sut = new SpySystem.Builder()
-                .WithToleranceOf(0.00001)
+            var sut = SpySystem.With
+                .StandardConfiguration()
                 .ConnectingTo(new List<(double X, double Y)>() { (4, 2), (1, 6) })
                 .Build();
 
@@ -107,8 +111,8 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void CorrectCoordinates_WhenSatellitePositionAndDistanceIntersectInSinglePoint()
         {
-            var sut = new SpySystem.Builder()
-                .WithToleranceOf(0.00001)
+            var sut = SpySystem.With
+                .StandardConfiguration()
                 .ConnectingTo(new List<(double X, double Y)>() { (4, 2), (6, 22), (8, 27) })
                 .Build();
 
@@ -121,9 +125,8 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void CorrectCoordinates_WhenSatelliteAreInDesignedPositionsAndIntersectInSinglePoint()
         {
-            var sut = new SpySystem.Builder()
-                .WithToleranceOf(0.00001)
-                .ConnectingTo(new List<(double X, double Y)>() { (-500, -200), (100, -100), (500, 100) })
+            var sut = SpySystem.With
+                .StandardConfiguration()
                 .Build();
 
             var distances = new List<double>() { 854.4003745317531, 282.842712474619, 200 };
@@ -135,7 +138,7 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void CorrectCoordinates_WhenPrecisionIsAdjusted()
         {
-            var sut = SpySystemWith
+            var sut = SpySystem.With
                 .MoreTolerantConfiguration()
                 .Build();
 
@@ -148,9 +151,9 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ThrowException_WhenPrecisionLeavesAnswerOut()
         {
-            var sut = new SpySystem.Builder()
+            var sut = SpySystem.With
+                .StandardConfiguration()
                 .WithToleranceOf(0.001)
-                .ConnectingTo(new List<(double X, double Y)>() { (-500, -200), (100, -100), (500, 100) })
                 .Build();
 
             var distances = new List<double>() { 424.26, 360.56, 700 };
@@ -179,7 +182,7 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ThrowException_WhenSatelliteDoNotReportMessage()
         {
-            var sut = SpySystemWith
+            var sut = SpySystem.With
                 .StandardConfiguration(new SpySystem.Builder())
                 .Build();
 
@@ -195,7 +198,7 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ReturnMessage_WhenInterceptedMessageHasNoDelayNorEmptySlots()
         {
-            var sut = SpySystemWith
+            var sut = SpySystem.With
                 .StandardConfiguration(new SpySystem.Builder())
                 .ConnectingTo(new List<(double X, double Y)>() { (-500, -200) })
                 .Build();
@@ -212,7 +215,7 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ReturnMessage_WhenMessageComesWithDelay()
         {
-            var sut = SpySystemWith
+            var sut = SpySystem.With
                 .StandardConfiguration(new SpySystem.Builder())
                 .ConnectingTo(new List<(double X, double Y)>() { (-500, -200) })
                 .Build();
@@ -229,7 +232,7 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ThrowException_WhenMessagesNullListIsSupplied()
         {
-            var sut = SpySystemWith
+            var sut = SpySystem.With
                 .StandardConfiguration(new SpySystem.Builder())
                 .Build();
 
@@ -240,7 +243,7 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ReturnMessage_WhenThereIsAFullMessageAlready()
         {
-            var sut = SpySystemWith
+            var sut = SpySystem.With
                 .StandardConfiguration()
                 .ConnectingTo(new List<(double X, double Y)>() { (-500, -200), (100, -100) })
                 .Build();
@@ -258,7 +261,7 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ReturnMessage_WhenThereAreBrokenMessagesAndNoDelay()
         {
-            var sut = SpySystemWith
+            var sut = SpySystem.With
                 .StandardConfiguration()
                 .ConnectingTo(new List<(double X, double Y)>() { (-500, -200), (100, -100) })
                 .Build();
@@ -276,7 +279,7 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ReturnMessage_WhenThereAreBrokenMessagesAndDelay()
         {
-            var sut = SpySystemWith
+            var sut = SpySystem.With
                 .StandardConfiguration()
                 .Build();
 
