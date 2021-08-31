@@ -30,6 +30,5 @@ Consideraciones:
     - Sat2: ["este", "", "un", "mensaje"]
     - Sat3: ["", "", "es", "", "mensaje"]
 
-<hr>
 Consideraciones propias:
 - Las transmisiones de mensajes del satélite terminan inmediatamente luego de la última palabra, no existe desfasaje al final.
