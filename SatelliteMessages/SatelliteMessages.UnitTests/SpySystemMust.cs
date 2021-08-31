@@ -10,51 +10,61 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ThrowException_WhenSatelliteListIsNull()
         {
-            var exception = Assert.Throws<ArgumentException>(() => new SpySystem(null));
+            var builder = new SpySystem.Builder()
+                .ConnectingTo(null);
+
+            var exception = Assert.Throws<ArgumentException>(() => builder.Build());
             Assert.Equal("No satellites", exception.Message);
         }
 
         [Fact]
         public void ThrowException_WhenSatelliteListIsEmpty()
         {
-            var exception = Assert.Throws<ArgumentException>(() => new SpySystem(new()));
+            var builder = new SpySystem.Builder()
+                .ConnectingTo(new());
+
+            var exception = Assert.Throws<ArgumentException>(() => builder.Build());
             Assert.Equal("No satellites", exception.Message);
         }
 
         [Fact]
         public void ThrowException_WhenPrecisionIsInvalid()
         {
-            var satellites = new List<(double X, double Y)>() { (1, 1) };
-            var exception = Assert.Throws<ArgumentException>(() => new SpySystem(satellites, -1));
+            var builder = new SpySystem.Builder()
+                .WithToleranceOf(-1)
+                .ConnectingTo(new List<(double X, double Y)>() { (1, 1) });
+
+            var exception = Assert.Throws<ArgumentException>(() => builder.Build());
             Assert.Equal("Invalid precision", exception.Message);
         }
 
         [Fact]
         public void ThrowException_WhenDistanceListIsEmpty()
         {
-            var satellites = new List<(double X, double Y)>() { (1, 1) };
+            var sut = CreateSubjectUnderTest();
             var distances = new List<double>();
-
-            var sut = new SpySystem(satellites);
             var exception = Assert.Throws<ArgumentException>(() => sut.GetLocation(distances));
             Assert.Equal("No distances", exception.Message);
         }
 
+        private static SpySystem CreateSubjectUnderTest() =>
+            new SpySystem.Builder()
+                .WithToleranceOf(0.00001)
+                .ConnectingTo(new List<(double X, double Y)>() { (1, 1) })
+                .Build();
+
         [Fact]
         public void ThrowException_WhenDistanceListIsNull()
         {
-            var satellites = new List<(double X, double Y)>() { (1, 1) };
-
-            var sut = new SpySystem(satellites);
+            var sut = CreateSubjectUnderTest();
             Assert.Throws<ArgumentException>(() => sut.GetLocation(null));
         }
 
         [Fact]
         public void ThrowException_WhenDistanceCountIsDifferentFromSatelliteCount()
         {
+            var sut = CreateSubjectUnderTest();
             var distances = new List<double>() { 10, 20 };
-            var satellites = new List<(double X, double Y)>() { (1, 1) };
-            var sut = new SpySystem(satellites);
             var exception = Assert.Throws<ArgumentException>(() => sut.GetLocation(distances));
             Assert.Equal("Satellite count and distance count do not match", exception.Message);
         }
@@ -62,9 +72,8 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ReturnSameCoordinatesAsSatellite_WhenDistanceIsZero()
         {
+            var sut = CreateSubjectUnderTest();
             var distances = new List<double>() { 0 };
-            var satellites = new List<(double X, double Y)>() { (1, 1) };
-            var sut = new SpySystem(satellites);
             var result = sut.GetLocation(distances);
             Assert.Equal((1, 1), result);
         }
@@ -72,9 +81,12 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void SatelliteCoordinate_WhenSatelliteIsExactlyAboveSource()
         {
+            var sut = new SpySystem.Builder()
+                .WithToleranceOf(0.00001)
+                .ConnectingTo(new List<(double X, double Y)>() { (4, 2), (1, 6) })
+                .Build();
+
             var distances = new List<double>() { 5, 0 };
-            var satellites = new List<(double X, double Y)>() { (4, 2), (1, 6) };
-            var sut = new SpySystem(satellites);
             var result = sut.GetLocation(distances);
             Assert.Equal((1, 6), result);
         }
@@ -82,9 +94,12 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ThrowException_WhenThereAreNotEnoughSatelliteWorking()
         {
+            var sut = new SpySystem.Builder()
+                .WithToleranceOf(0.00001)
+                .ConnectingTo(new List<(double X, double Y)>() { (4, 2) })
+                .Build();
+
             var distances = new List<double>() { 5 };
-            var satellites = new List<(double X, double Y)>() { (4, 2) };
-            var sut = new SpySystem(satellites);
             var exception = Assert.Throws<ArgumentException>(() => sut.GetLocation(distances));
             Assert.Equal("Not enough satellites to obtain coordinates", exception.Message);
         }
@@ -92,9 +107,12 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void CorrectCoordinates_WhenSatellitePositionAndDistanceIntersectInSinglePoint()
         {
+            var sut = new SpySystem.Builder()
+                .WithToleranceOf(0.00001)
+                .ConnectingTo(new List<(double X, double Y)>() { (4, 2), (6, 22), (8, 27) })
+                .Build();
+
             var distances = new List<double>() { 5, 16.031220000000015, 21.023796437981545 };
-            var satellites = new List<(double X, double Y)>() { (4, 2), (6, 22), (8, 27) };
-            var sut = new SpySystem(satellites);
             var (x, y) = sut.GetLocation(distances);
             Assert.Equal(7, x, 5);
             Assert.Equal(6, y, 5);
@@ -103,9 +121,12 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void CorrectCoordinates_WhenSatelliteAreInDesignedPositionsAndIntersectInSinglePoint()
         {
+            var sut = new SpySystem.Builder()
+                .WithToleranceOf(0.00001)
+                .ConnectingTo(new List<(double X, double Y)>() { (-500, -200), (100, -100), (500, 100) })
+                .Build();
+
             var distances = new List<double>() { 854.4003745317531, 282.842712474619, 200 };
-            var satellites = new List<(double X, double Y)>() { (-500, -200), (100, -100), (500, 100) };
-            var sut = new SpySystem(satellites);
             var (x, y) = sut.GetLocation(distances);
             Assert.Equal(300, x, 5);
             Assert.Equal(100, y, 5);
@@ -114,9 +135,11 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void CorrectCoordinates_WhenPrecisionIsAdjusted()
         {
+            var sut = SpySystemWith
+                .MoreTolerantConfiguration()
+                .Build();
+
             var distances = new List<double>() { 424.26, 360.56, 700 };
-            var satellites = new List<(double X, double Y)>() { (-500, -200), (100, -100), (500, 100) };
-            var sut = new SpySystem(satellites, 0.01);
             var (x, y) = sut.GetLocation(distances);
             Assert.Equal(-200.01, x, 2);
             Assert.Equal(100, y, 2);
@@ -125,9 +148,12 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ThrowException_WhenPrecisionLeavesAnswerOut()
         {
+            var sut = new SpySystem.Builder()
+                .WithToleranceOf(0.001)
+                .ConnectingTo(new List<(double X, double Y)>() { (-500, -200), (100, -100), (500, 100) })
+                .Build();
+
             var distances = new List<double>() { 424.26, 360.56, 700 };
-            var satellites = new List<(double X, double Y)>() { (-500, -200), (100, -100), (500, 100) };
-            var sut = new SpySystem(satellites, 0.001);
             var exception = Assert.Throws<Exception>(() => sut.GetLocation(distances));
             Assert.Equal("Could not locate source", exception.Message);
         }
@@ -135,7 +161,10 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ThrowException_WhenMoreMessagesThanSatellitesAreReceived()
         {
-            var satellites = new List<(double X, double Y)>() { (-500, -200) };
+            var sut = new SpySystem.Builder()
+                .ConnectingTo(new List<(double X, double Y)>() { (-500, -200) })
+                .Build();
+
             var brokenMessages = new List<string[]>()
             {
                 new string[] { "", "este", "es", "un", "mensaje" },
@@ -143,7 +172,6 @@ namespace SatelliteMessages.UnitTests
                 new string[] { "", "", "es", "", "mensaje" }
             };
 
-            var sut = new SpySystem(satellites);
             var exception = Assert.Throws<ArgumentException>(() => sut.GetMessage(brokenMessages));
             Assert.Equal("Satellite and message count mismatch", exception.Message);
         }
@@ -151,13 +179,15 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ThrowException_WhenSatelliteDoNotReportMessage()
         {
-            var satellites = new List<(double X, double Y)>() { (-500, -200), (100, -100), (500, 100) };
+            var sut = SpySystemWith
+                .StandardConfiguration(new SpySystem.Builder())
+                .Build();
+
             var brokenMessages = new List<string[]>()
             {
                 new string[] { "", "este", "es", "un", "mensaje" },
             };
 
-            var sut = new SpySystem(satellites);
             var exception = Assert.Throws<ArgumentException>(() => sut.GetMessage(brokenMessages));
             Assert.Equal("Satellite and message count mismatch", exception.Message);
         }
@@ -165,13 +195,16 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ReturnMessage_WhenInterceptedMessageHasNoDelayNorEmptySlots()
         {
-            var satellites = new List<(double X, double Y)>() { (-500, -200) };
+            var sut = SpySystemWith
+                .StandardConfiguration(new SpySystem.Builder())
+                .ConnectingTo(new List<(double X, double Y)>() { (-500, -200) })
+                .Build();
+
             var brokenMessages = new List<string[]>()
             {
                 new string[] { "esta", "es", "una", "prueba" },
             };
 
-            var sut = new SpySystem(satellites);
             var message = sut.GetMessage(brokenMessages);
             Assert.Equal("esta es una prueba", message);
         }
@@ -179,13 +212,16 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ReturnMessage_WhenMessageComesWithDelay()
         {
-            var satellites = new List<(double X, double Y)>() { (-500, -200) };
+            var sut = SpySystemWith
+                .StandardConfiguration(new SpySystem.Builder())
+                .ConnectingTo(new List<(double X, double Y)>() { (-500, -200) })
+                .Build();
+
             var brokenMessages = new List<string[]>()
             {
                 new string[] { "", "", "esta", "es", "una", "prueba", "con", "delay" },
             };
 
-            var sut = new SpySystem(satellites);
             var message = sut.GetMessage(brokenMessages);
             Assert.Equal("esta es una prueba con delay", message);
         }
@@ -193,8 +229,10 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ThrowException_WhenMessagesNullListIsSupplied()
         {
-            var satellites = new List<(double X, double Y)>() { (-500, -200), (100, -100), (500, 100) };
-            var sut = new SpySystem(satellites);
+            var sut = SpySystemWith
+                .StandardConfiguration(new SpySystem.Builder())
+                .Build();
+
             var exception = Assert.Throws<ArgumentException>(() => sut.GetMessage(null));
             Assert.Equal("Satellite and message count mismatch", exception.Message);
         }
@@ -202,14 +240,17 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ReturnMessage_WhenThereIsAFullMessageAlready()
         {
-            var satellites = new List<(double X, double Y)>() { (-500, -200), (100, -100) };
+            var sut = SpySystemWith
+                .StandardConfiguration()
+                .ConnectingTo(new List<(double X, double Y)>() { (-500, -200), (100, -100) })
+                .Build();
+
             var brokenMessages = new List<string[]>()
             {
                 new string[] { "este", "", "un", "mensaje" },
                 new string[] { "este", "es", "un", "mensaje" }
             };
 
-            var sut = new SpySystem(satellites);
             var message = sut.GetMessage(brokenMessages);
             Assert.Equal("este es un mensaje", message);
         }
@@ -217,14 +258,17 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ReturnMessage_WhenThereAreBrokenMessagesAndNoDelay()
         {
-            var satellites = new List<(double X, double Y)>() { (-500, -200), (100, -100) };
+            var sut = SpySystemWith
+                .StandardConfiguration()
+                .ConnectingTo(new List<(double X, double Y)>() { (-500, -200), (100, -100) })
+                .Build();
+
             var brokenMessages = new List<string[]>()
             {
                 new string[] { "este", "", "un", "mensaje" },
                 new string[] { "este", "es", "", "mensaje" }
             };
 
-            var sut = new SpySystem(satellites);
             var message = sut.GetMessage(brokenMessages);
             Assert.Equal("este es un mensaje", message);
         }
@@ -232,7 +276,10 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ReturnMessage_WhenThereAreBrokenMessagesAndDelay()
         {
-            var satellites = new List<(double X, double Y)>() { (-500, -200), (100, -100), (500, 100) };
+            var sut = SpySystemWith
+                .StandardConfiguration()
+                .Build();
+
             var brokenMessages = new List<string[]>()
             {
                 new string[] { "este", "", "un", "" },
@@ -240,7 +287,6 @@ namespace SatelliteMessages.UnitTests
                 new string[] { "", "", "", "este", "es", "", "" }
             };
 
-            var sut = new SpySystem(satellites);
             var message = sut.GetMessage(brokenMessages);
             Assert.Equal("este es un mensaje", message);
         }

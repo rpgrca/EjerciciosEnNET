@@ -6,13 +6,42 @@ namespace SatelliteMessages.Logic
 {
     public class SpySystem
     {
+        public class Builder
+        {
+            private List<(double X, double Y)> _satellites;
+            private double _acceptedOffset;
+
+            private IMessageMerger _messageMerger;
+
+            public Builder WithToleranceOf(double offset)
+            {
+                _acceptedOffset = offset;
+                return this;
+            }
+
+            public Builder Using(IMessageMerger messageMerger)
+            {
+                _messageMerger = messageMerger;
+                return this;
+            }
+
+            public Builder ConnectingTo(List<(double X, double Y)> satellites)
+            {
+                _satellites = satellites;
+                return this;
+            }
+
+            public SpySystem Build() => new(_satellites, _messageMerger, _acceptedOffset);
+        }
+
         private readonly List<(double X, double Y)> _satellites;
         private (double A, double B, double C) Discriminant { get; set; }
         private (double X, double Y) GuessedSource { get; set; }
         private List<SatelliteLocation> _locations;
         private readonly double _acceptedOffset;
+        private readonly IMessageMerger _messageMerger;
 
-        public SpySystem(List<(double X, double Y)> satellites, double acceptedOffset = 0.00001)
+        private SpySystem(List<(double X, double Y)> satellites, IMessageMerger messageMerger, double acceptedOffset = 0.00001)
         {
             if (satellites is null || satellites.Count == 0)
             {
@@ -25,6 +54,7 @@ namespace SatelliteMessages.Logic
             }
 
             _satellites = satellites;
+            _messageMerger = messageMerger;
             _acceptedOffset = acceptedOffset;
         }
 
@@ -118,21 +148,7 @@ namespace SatelliteMessages.Logic
                 throw new ArgumentException("Satellite and message count mismatch");
             }
 
-            var reversedBrokenMessages = brokenMessages.OrderBy(p => p.Length).Select(p => p.Reverse().ToArray()).ToList();
-            var message = new List<string>();
-            for (var index = 0; index < reversedBrokenMessages[0].Length; index++)
-            {
-                for (var subIndex = 0; subIndex < reversedBrokenMessages.Count; subIndex++)
-                {
-                    if (!string.IsNullOrEmpty(reversedBrokenMessages[subIndex][index]))
-                    {
-                        message.Insert(0, reversedBrokenMessages[subIndex][index]);
-                        break;
-                    }
-                }
-            }
-
-            return string.Join(" ", message);
+            return _messageMerger.Merge(brokenMessages);
         }
     }
 }
