@@ -6,8 +6,6 @@ namespace SatelliteMessages.Logic
 {
     internal class LowQualityMessageMerger : IMessageMerger
     {
-        public string Message { get; internal set; }
-
         public string Merge(List<string[]> brokenMessages)
         {
             var reversedBrokenMessages = brokenMessages
