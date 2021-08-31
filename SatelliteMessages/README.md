@@ -10,7 +10,7 @@ Posición de los satélites actualmente en servicio
 
 ## Nivel 1
 Crear un programa con las siguientes firmas:
-
+```go
   // input: distancia al emisor tal cual se recibe en cada satélite
   // output: las coordenadas 'x' e 'y' del emisor del mensaje
   func GetLocation(distances ...float32) (x, y float32)
@@ -18,7 +18,7 @@ Crear un programa con las siguientes firmas:
   // input: el mensaje tal cual es recibido en cada satélite
   // output: el mensaje tal cual lo genera el emisor del mensaje
   func GetMessage(messages ...[]string(msg string)
-  
+```
 Consideraciones:
 - La unidad de distancia en los parámetros de GetLocation es la misma que la que se utiliza para indicar la posición de cada satélite.
 - El mensaje recibido en cada satélite se recibe en forma de arreglo de strings.
