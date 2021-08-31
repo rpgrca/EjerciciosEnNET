@@ -30,9 +30,9 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ThrowException_WhenPrecisionIsInvalid()
         {
-            var builder = new SpySystem.Builder()
-                .WithToleranceOf(-1)
-                .ConnectingTo(new List<(double X, double Y)>() { (1, 1) });
+            var builder = SpySystem.With
+                .StandardConfiguration()
+                .WithToleranceOf(-1);
 
             var exception = Assert.Throws<ArgumentException>(() => builder.Build());
             Assert.Equal("Invalid precision", exception.Message);
@@ -47,9 +47,30 @@ namespace SatelliteMessages.UnitTests
             Assert.Equal("No distances", exception.Message);
         }
 
-        private static SpySystem CreateSubjectUnderTest() =>
-            new SpySystem.Builder()
+        [Fact]
+        public void ThrowException_WhenNoLocationGuesserIsSupplied()
+        {
+            var builder = new SpySystem.Builder()
                 .WithToleranceOf(0.00001)
+                .ConnectingTo(new List<(double X, double Y)>() { (1, 1) });
+            var exception = Assert.Throws<ArgumentException>(() => builder.Build());
+            Assert.Equal("No location guesser supplied", exception.Message);
+        }
+
+        [Fact]
+        public void ThrowException_WhenNoMessageMergerIsSupplied()
+        {
+            var builder = SpySystem.With
+                .StandardConfiguration()
+                .Using(null as IMessageMerger);
+
+            var exception = Assert.Throws<ArgumentException>(() => builder.Build());
+            Assert.Equal("No message merger supplied", exception.Message);
+        }
+
+        private static SpySystem CreateSubjectUnderTest() =>
+            SpySystem.With
+                .StandardConfiguration()
                 .ConnectingTo(new List<(double X, double Y)>() { (1, 1) })
                 .Build();
 
@@ -98,8 +119,8 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ThrowException_WhenThereAreNotEnoughSatelliteWorking()
         {
-            var sut = new SpySystem.Builder()
-                .WithToleranceOf(0.00001)
+            var sut = SpySystem.With
+                .StandardConfiguration()
                 .ConnectingTo(new List<(double X, double Y)>() { (4, 2) })
                 .Build();
 
@@ -164,7 +185,8 @@ namespace SatelliteMessages.UnitTests
         [Fact]
         public void ThrowException_WhenMoreMessagesThanSatellitesAreReceived()
         {
-            var sut = new SpySystem.Builder()
+            var sut = SpySystem.With
+                .StandardConfiguration()
                 .ConnectingTo(new List<(double X, double Y)>() { (-500, -200) })
                 .Build();
 

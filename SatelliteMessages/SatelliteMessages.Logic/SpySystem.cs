@@ -19,6 +19,16 @@ namespace SatelliteMessages.Logic
                 throw new ArgumentException("No satellites");
             }
 
+            if (locationGuesser is null)
+            {
+                throw new ArgumentException("No location guesser supplied");
+            }
+
+            if (messageMerger is null)
+            {
+                throw new ArgumentException("No message merger supplied");
+            }
+
             if (acceptedOffset < 0)
             {
                 throw new ArgumentException("Invalid precision");
