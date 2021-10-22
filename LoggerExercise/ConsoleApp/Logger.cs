@@ -44,7 +44,7 @@ namespace ConsoleApp
                     throw new Exception("Error or Warning or Message must be specified");
                 }
 
-                string connectionString = "Data Source=" + dbParams["serverName"] + "; InitialCatalog=" + dbParams["DataBaseName"] + "; UserID=" + dbParams["userName"] + ";Password=" + dbParams["password"] + ";";
+                string connectionString = "Server=" + dbParams["serverName"] + ";Initial Catalog=" + dbParams["DataBaseName"] + ";User ID=" + dbParams["userName"] + ";Password=" + dbParams["password"] + ";";
                 SqlConnection sqlConnection = new SqlConnection(connectionString);
 
                 int t = 0;
@@ -123,7 +123,7 @@ namespace ConsoleApp
 
                 if (logToDatabase)
                 {
-                    string insertStatement = "insert into Log_Values('" + messageText + "', " + t.ToString() + ")";
+                    string insertStatement = "insert into Log_Values values('" + messageText + "', " + t.ToString() + ")";
                     SqlCommand sqlCommand = new SqlCommand(insertStatement, sqlConnection);
                     sqlConnection.Open();
                     sqlCommand.ExecuteNonQuery();
