@@ -13,7 +13,7 @@ namespace ConsoleApp
             dbParamsMap.Add("DataBaseName", "logger");
             dbParamsMap.Add("userName", "");
             dbParamsMap.Add("password", "");
-            dbParamsMap.Add("logFileFolder", @"./Temp");
+            dbParamsMap.Add("logFileFolder", "./Temp");
 
             logger = new Logger(true, true, true, true, true, true, dbParamsMap);
 
