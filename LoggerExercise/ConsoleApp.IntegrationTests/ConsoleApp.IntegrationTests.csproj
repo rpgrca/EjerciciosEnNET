@@ -20,4 +20,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ConsoleApp.Logic\ConsoleApp.Logic.csproj" />
+  </ItemGroup>
+
 </Project>

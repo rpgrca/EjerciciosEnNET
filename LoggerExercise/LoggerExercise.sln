@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp.UnitTests", "Con
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp.IntegrationTests", "ConsoleApp.IntegrationTests\ConsoleApp.IntegrationTests.csproj", "{ABFD2EED-CCBD-4C48-A662-FE448E8AA2BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp.Logic", "ConsoleApp.Logic\ConsoleApp.Logic.csproj", "{03C69ABA-67D4-477B-8280-2CEECFB2A8EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,5 +60,17 @@ Global
 		{ABFD2EED-CCBD-4C48-A662-FE448E8AA2BA}.Release|x64.Build.0 = Release|Any CPU
 		{ABFD2EED-CCBD-4C48-A662-FE448E8AA2BA}.Release|x86.ActiveCfg = Release|Any CPU
 		{ABFD2EED-CCBD-4C48-A662-FE448E8AA2BA}.Release|x86.Build.0 = Release|Any CPU
+		{03C69ABA-67D4-477B-8280-2CEECFB2A8EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03C69ABA-67D4-477B-8280-2CEECFB2A8EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03C69ABA-67D4-477B-8280-2CEECFB2A8EC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{03C69ABA-67D4-477B-8280-2CEECFB2A8EC}.Debug|x64.Build.0 = Debug|Any CPU
+		{03C69ABA-67D4-477B-8280-2CEECFB2A8EC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{03C69ABA-67D4-477B-8280-2CEECFB2A8EC}.Debug|x86.Build.0 = Debug|Any CPU
+		{03C69ABA-67D4-477B-8280-2CEECFB2A8EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03C69ABA-67D4-477B-8280-2CEECFB2A8EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03C69ABA-67D4-477B-8280-2CEECFB2A8EC}.Release|x64.ActiveCfg = Release|Any CPU
+		{03C69ABA-67D4-477B-8280-2CEECFB2A8EC}.Release|x64.Build.0 = Release|Any CPU
+		{03C69ABA-67D4-477B-8280-2CEECFB2A8EC}.Release|x86.ActiveCfg = Release|Any CPU
+		{03C69ABA-67D4-477B-8280-2CEECFB2A8EC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

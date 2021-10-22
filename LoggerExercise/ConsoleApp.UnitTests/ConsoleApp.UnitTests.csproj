@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ConsoleApp\ConsoleApp.csproj" />
+    <ProjectReference Include="..\ConsoleApp.Logic\ConsoleApp.Logic.csproj" />
   </ItemGroup>
 
 </Project>
