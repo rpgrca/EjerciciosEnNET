@@ -26,7 +26,7 @@ namespace ConsoleApp.IntegrationTests
         {
             var sut = new Logger(false, false, false, true, true, true, null);
             var exception = Assert.Throws<Exception>(() => sut.LogMessage("test", true, true, true));
-            Assert.Equal("Invalid configuration", exception.Message);
+            Assert.Equal(Logger.INVALID_CONFIGURATION, exception.Message);
         }
 
         [Theory]

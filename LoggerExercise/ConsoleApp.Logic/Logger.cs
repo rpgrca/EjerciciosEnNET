@@ -7,6 +7,7 @@ namespace ConsoleApp
 {
     public class Logger
     {
+        public const string INVALID_CONFIGURATION = "Invalid configuration";
         private static bool logToFile;
         private static bool logToConsole;
         private static bool logMessage;
@@ -36,7 +37,7 @@ namespace ConsoleApp
                 }
                 if (!logToConsole && !logToFile && !logToDatabase)
                 {
-                    throw new Exception("Invalid configuration");
+                    throw new Exception(INVALID_CONFIGURATION);
                 }
                 if ((!logError && !logMessage && !logWarning) || (!message && !warning && !error))
                 {
