@@ -8,6 +8,7 @@ namespace ConsoleApp
     public class Logger
     {
         public const string INVALID_CONFIGURATION = "Invalid configuration";
+        public const string MUST_SPECIFY_MESSAGE_WARNING_ERROR = "Error or Warning or Message must be specified";
         private static bool logToFile;
         private static bool logToConsole;
         private static bool logMessage;
@@ -41,7 +42,7 @@ namespace ConsoleApp
                 }
                 if ((!logError && !logMessage && !logWarning) || (!message && !warning && !error))
                 {
-                    throw new Exception("Error or Warning or Message must be specified");
+                    throw new Exception(MUST_SPECIFY_MESSAGE_WARNING_ERROR);
                 }
 
                 messageText = messageText.Trim();

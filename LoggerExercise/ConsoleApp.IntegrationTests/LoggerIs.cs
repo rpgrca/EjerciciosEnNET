@@ -41,6 +41,14 @@ namespace ConsoleApp.IntegrationTests
             Assert.False(System.IO.File.Exists(LOGFILE_PATH));
         }
 
+        [Fact]
+        public void ThrowingException_WhenNoneOfMessageWarningErrorIsSpecified()
+        {
+            var sut = new Logger(true, true, true, false, false, false, null);
+            var exception = Assert.Throws<Exception>(() => sut.LogMessage("test", true, true, true));
+            Assert.Equal(Logger.MUST_SPECIFY_MESSAGE_WARNING_ERROR, exception.Message);
+        }
+
 #region Disposing code
         protected virtual void Dispose(bool disposing)
         {
