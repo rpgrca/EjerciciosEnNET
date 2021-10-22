@@ -8,7 +8,7 @@ namespace ConsoleApp.IntegrationTests
     {
         private const string DEFAULT_LOG_FILE = "logFile.txt";
         private const string DEFAULT_LOG_PATH = "./Temp";
-        private const string LOGFILE_PATH = DEFAULT_LOG_PATH + "/" + DEFAULT_LOG_FILE;
+        private const string DEFAULT_LOG = DEFAULT_LOG_PATH + "/" + DEFAULT_LOG_FILE;
 
         private bool disposedValue;
 
@@ -28,9 +28,9 @@ namespace ConsoleApp.IntegrationTests
 
         private static void DeleteLogFile()
         {
-            if (System.IO.File.Exists(LOGFILE_PATH))
+            if (System.IO.File.Exists(DEFAULT_LOG))
             {
-                System.IO.File.Delete(LOGFILE_PATH);
+                System.IO.File.Delete(DEFAULT_LOG);
             }
         }
 
@@ -50,9 +50,11 @@ namespace ConsoleApp.IntegrationTests
         {
             var sut = new Logger(false, false, false, true, true, true, null);
             sut.LogMessage(invalidMessage, true, true, true);
-
-            Assert.False(System.IO.File.Exists(LOGFILE_PATH));
+            AssertThatThereIsNoLogFileCreated();
         }
+
+        private static void AssertThatThereIsNoLogFileCreated() =>
+            Assert.False(System.IO.File.Exists(DEFAULT_LOG));
 
         [Fact]
         public void ThrowingException_WhenNoneOfMessageWarningErrorIsSpecifiedInConstructor()
@@ -71,7 +73,7 @@ namespace ConsoleApp.IntegrationTests
         }
 
         [Fact]
-        public void Test1()
+        public void LoggingAmessage()
         {
             var sut = new Logger(true, false, false, true, false, false, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
             sut.LogMessage("sample message", true, false, false);
@@ -80,11 +82,24 @@ namespace ConsoleApp.IntegrationTests
 
         private static void VerifyThatLogFileHas(string expectedType, string expectedText)
         {
-            if (! System.IO.File.Exists(LOGFILE_PATH)) Assert.True(false, "expected log file does not exist");
-            var loggedText = System.IO.File.ReadAllLines(LOGFILE_PATH);
+            if (! System.IO.File.Exists(DEFAULT_LOG)) Assert.True(false, "expected log file does not exist");
+            var loggedText = System.IO.File.ReadAllText(DEFAULT_LOG);
 
-            Assert.Single(loggedText);
-            Assert.Matches($"{expectedType}.+{expectedText}", loggedText[0]);
+            Assert.Matches($"^{expectedType}.+{expectedText}$", loggedText);
+        }
+
+        [Fact]
+        public void NotLoggingAmessage_WhenConstructorIsSetNotToLogMessages()
+        {
+            var sut = new Logger(true, false, false, false, true, false, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
+            sut.LogMessage("sample message", true, false, false);
+            AssertThatLogFileIsEmpty();
+        }
+
+        private static void AssertThatLogFileIsEmpty()
+        {
+            Assert.True(System.IO.File.Exists(DEFAULT_LOG));
+            Assert.Equal("\n", System.IO.File.ReadAllText(DEFAULT_LOG));
         }
 
 #region Disposing code
