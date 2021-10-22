@@ -1,16 +1,29 @@
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace ConsoleApp.IntegrationTests
 {
     public class LoggerIs : IDisposable
     {
-        private const string LOGFILE_PATH = "./Temp/logFile.txt";
+        private const string DEFAULT_LOG_FILE = "logFile.txt";
+        private const string DEFAULT_LOG_PATH = "./Temp";
+        private const string LOGFILE_PATH = DEFAULT_LOG_PATH + "/" + DEFAULT_LOG_FILE;
+
         private bool disposedValue;
 
         public LoggerIs()
         {
+            CreateDirectoryIfNecessary();
             DeleteLogFile();
+        }
+
+        private static void CreateDirectoryIfNecessary()
+        {
+            if (! System.IO.Directory.Exists(DEFAULT_LOG_PATH))
+            {
+                System.IO.Directory.CreateDirectory(DEFAULT_LOG_PATH);
+            }
         }
 
         private static void DeleteLogFile()
@@ -57,6 +70,22 @@ namespace ConsoleApp.IntegrationTests
             Assert.Equal(Logger.MUST_SPECIFY_MESSAGE_WARNING_ERROR, exception.Message);
         }
 
+        [Fact]
+        public void Test1()
+        {
+            var sut = new Logger(true, false, false, true, false, false, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
+            sut.LogMessage("sample message", true, false, false);
+            VerifyThatLogFileHas("message", "sample message");
+        }
+
+        private static void VerifyThatLogFileHas(string expectedType, string expectedText)
+        {
+            if (! System.IO.File.Exists(LOGFILE_PATH)) Assert.True(false, "expected log file does not exist");
+            var loggedText = System.IO.File.ReadAllLines(LOGFILE_PATH);
+
+            Assert.Single(loggedText);
+            Assert.Matches($"{expectedType}.+{expectedText}", loggedText[0]);
+        }
 
 #region Disposing code
         protected virtual void Dispose(bool disposing)
