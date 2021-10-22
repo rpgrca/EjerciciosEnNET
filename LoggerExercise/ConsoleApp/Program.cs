@@ -12,7 +12,7 @@ namespace ConsoleApp
         static void Main(string[] args)
         {
             Dictionary<string, string> dbParamsMap = new Dictionary<string, string>();
-            dbParamsMap.Add("logFileFolder", @"C:\Temp");
+            dbParamsMap.Add("logFileFolder", @"./Temp");
 
             logger = new Logger(true, true, true, true, true, true, dbParamsMap);
 
