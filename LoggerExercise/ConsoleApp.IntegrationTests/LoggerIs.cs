@@ -22,13 +22,6 @@ namespace ConsoleApp.IntegrationTests
         }
 
         [Fact]
-        public void ThrowingNullReferenceException_WhenMessageIsNull()
-        {
-            var sut = new Logger(true, true, true, false, false, false, null);
-            var exception = Assert.Throws<NullReferenceException>(() => sut.LogMessage(null, true, true, true));
-        }
-
-        [Fact]
         public void ThrowingException_WhenConfigurationIsInvalid()
         {
             var sut = new Logger(false, false, false, true, true, true, null);

@@ -30,8 +30,7 @@ namespace ConsoleApp
         {
             try
             {
-                messageText = messageText.Trim();
-                if (messageText == null || messageText.Length == 0)
+                if (string.IsNullOrWhiteSpace(messageText))
                 {
                     return;
                 }
@@ -44,6 +43,7 @@ namespace ConsoleApp
                     throw new Exception("Error or Warning or Message must be specified");
                 }
 
+                messageText = messageText.Trim();
                 string connectionString = "Server=" + dbParams["serverName"] + ";Initial Catalog=" + dbParams["DataBaseName"] + ";User ID=" + dbParams["userName"] + ";Password=" + dbParams["password"] + ";";
                 SqlConnection sqlConnection = new SqlConnection(connectionString);
 
