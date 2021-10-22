@@ -39,7 +39,6 @@ namespace ConsoleApp.IntegrationTests
         [Theory]
         [InlineData("")]
         [InlineData("     ")]
-        [InlineData(null)]
         public void StoppingProcess_WhenConfigurationIsInvalidAndMessageIsEmpty(string invalidMessage)
         {
             var sut = new Logger(false, false, false, true, true, true, null);
@@ -48,6 +47,7 @@ namespace ConsoleApp.IntegrationTests
             Assert.False(System.IO.File.Exists(LOGFILE_PATH));
         }
 
+#region Disposing code
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -76,5 +76,6 @@ namespace ConsoleApp.IntegrationTests
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+#endregion
     }
 }

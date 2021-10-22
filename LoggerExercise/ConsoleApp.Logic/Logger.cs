@@ -30,7 +30,7 @@ namespace ConsoleApp
         {
             try
             {
-                messageText.Trim();
+                messageText = messageText.Trim();
                 if (messageText == null || messageText.Length == 0)
                 {
                     return;
