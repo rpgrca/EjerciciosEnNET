@@ -9,7 +9,7 @@ namespace ConsoleApp.IntegrationTests
         private const string DEFAULT_LOG_FILE = "logFile.txt";
         private const string DEFAULT_LOG_PATH = "./Temp";
         private const string DEFAULT_LOG = DEFAULT_LOG_PATH + "/" + DEFAULT_LOG_FILE;
-
+        private const string SAMPLE_LOG_TEXT = "this is a sample text";
         private bool disposedValue;
 
         public LoggerIs()
@@ -80,8 +80,8 @@ namespace ConsoleApp.IntegrationTests
         public void LoggingAmessage_WhenAmessageArrivesAndLoggerIsConfiguredToLogThem(bool logWarnings, bool logErrors)
         {
             var sut = new Logger(true, false, false, true, logWarnings, logErrors, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
-            sut.LogMessage("sample message", true, false, false);
-            VerifyThatLogFileHas("message", "sample message");
+            sut.LogMessage(SAMPLE_LOG_TEXT, true, false, false);
+            VerifyThatLogFileHas("message", SAMPLE_LOG_TEXT);
         }
 
         private static void VerifyThatLogFileHas(string expectedType, string expectedText)
@@ -99,7 +99,30 @@ namespace ConsoleApp.IntegrationTests
         public void NotLoggingAmessage_WhenConstructorIsSetNotToLogMessages(bool logWarnings, bool logErrors)
         {
             var sut = new Logger(true, false, false, false, logWarnings, logErrors, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
-            sut.LogMessage("sample message", true, false, false);
+            sut.LogMessage(SAMPLE_LOG_TEXT, true, false, false);
+            AssertThatLogFileIsEmpty();
+        }
+
+        [Theory]
+        [InlineData(true, true)]
+        [InlineData(true, false)]
+        [InlineData(false, true)]
+        [InlineData(false, false)]
+        public void LoggingAwarning_WhenAwarningArrivesAndLoggerIsConfiguredToLogThem(bool logMessages, bool logErrors)
+        {
+            var sut = new Logger(true, false, false, logMessages, true, logErrors, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
+            sut.LogMessage(SAMPLE_LOG_TEXT, false, true, false);
+            VerifyThatLogFileHas("warning", SAMPLE_LOG_TEXT);
+        }
+
+        [Theory]
+        [InlineData(true, true)]
+        [InlineData(true, false)]
+        [InlineData(false, true)]
+        public void NotLoggingAwarning_WhenConstructorIsSetNotToLogWarnings(bool logMessages, bool logErrors)
+        {
+            var sut = new Logger(true, false, false, logMessages, false, logErrors, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
+            sut.LogMessage(SAMPLE_LOG_TEXT, false, true, false);
             AssertThatLogFileIsEmpty();
         }
 
