@@ -72,10 +72,14 @@ namespace ConsoleApp.IntegrationTests
             Assert.Equal(Logger.MUST_SPECIFY_MESSAGE_WARNING_ERROR, exception.Message);
         }
 
-        [Fact]
-        public void LoggingAmessage()
+        [Theory]
+        [InlineData(true, true)]
+        [InlineData(true, false)]
+        [InlineData(false, true)]
+        [InlineData(false, false)]
+        public void LoggingAmessage_WhenAmessageArrivesAndLoggerIsConfiguredToLogThem(bool logWarnings, bool logErrors)
         {
-            var sut = new Logger(true, false, false, true, false, false, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
+            var sut = new Logger(true, false, false, true, logWarnings, logErrors, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
             sut.LogMessage("sample message", true, false, false);
             VerifyThatLogFileHas("message", "sample message");
         }
@@ -88,10 +92,13 @@ namespace ConsoleApp.IntegrationTests
             Assert.Matches($"^{expectedType}.+{expectedText}$", loggedText);
         }
 
-        [Fact]
-        public void NotLoggingAmessage_WhenConstructorIsSetNotToLogMessages()
+        [Theory]
+        [InlineData(true, true)]
+        [InlineData(true, false)]
+        [InlineData(false, true)]
+        public void NotLoggingAmessage_WhenConstructorIsSetNotToLogMessages(bool logWarnings, bool logErrors)
         {
-            var sut = new Logger(true, false, false, false, true, false, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
+            var sut = new Logger(true, false, false, false, logWarnings, logErrors, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
             sut.LogMessage("sample message", true, false, false);
             AssertThatLogFileIsEmpty();
         }
