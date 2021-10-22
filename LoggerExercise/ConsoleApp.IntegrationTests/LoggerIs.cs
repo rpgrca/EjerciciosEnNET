@@ -32,6 +32,7 @@ namespace ConsoleApp.IntegrationTests
         [Theory]
         [InlineData("")]
         [InlineData("     ")]
+        [InlineData(null)]
         public void StoppingProcess_WhenConfigurationIsInvalidAndMessageIsEmpty(string invalidMessage)
         {
             var sut = new Logger(false, false, false, true, true, true, null);

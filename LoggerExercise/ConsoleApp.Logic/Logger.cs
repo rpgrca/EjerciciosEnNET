@@ -131,7 +131,6 @@ namespace ConsoleApp
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
