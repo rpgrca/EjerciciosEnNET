@@ -13,3 +13,6 @@ Pasos de exploración realizados
   1. Primero se explora el logging a archivo, combinando las distintas entradas en distintas pruebas para forzar la ejecucion de cada camino.
   1. Se descubre un bug donde todas las lineas salen una a continuacion de la otra, se soluciona para que cada log salga en una linea distinta.
   1. Una vez cubierta la totalidad de la funcionalidad del log, se la encapsula en un método para eventualmente convertirse en una clase.
+  1. Se continúa con un refactoreo del código separando en funciones, se convierten variables estáticas en atributos de instancia, se mueven chequeos al constructor para que no se pueda construir instancias inválidas.
+  1. Luego del refactoreo se empieza a generar casos de prueba para el logging a base de datos.
+  1. Se detecta un funcionamiento cuestionable: si un mensaje no está para ser procesado (por ejemplo, se va a loguear mensajes y llega un warning) se graba igual con nivel 0. Desde mi punto de vista es un bug, se por un lado se graba siempre en base de datos (contrario al logging por archivo donde no se graban los textos de los mensajes no queridos) sino también se pierde el tipo y no es posible recuperarlo. Los logs deben tener consistencia.

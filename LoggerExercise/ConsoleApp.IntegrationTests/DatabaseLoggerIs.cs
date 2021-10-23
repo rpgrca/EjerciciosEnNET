@@ -23,6 +23,41 @@ namespace ConsoleApp.IntegrationTests
             validator.EnsureThatPoppedLineIs(SAMPLE_LOG_TEXT, 1);
         }
 
+        [Fact]
+        public void AddingArecord_WhenAwarningArrivesAndLoggerIsConfiguredToLogThem()
+        {
+            var sut = new Logger(false, false, true, false, true, false, GetDatabaseParameters());
+            sut.LogMessage(SAMPLE_LOG_TEXT, false, true, false);
+
+            var validator = new LoggerTableValidator();
+            validator.EnsureRegisterCountIs(1);
+            validator.EnsureThatPoppedLineIs(SAMPLE_LOG_TEXT, 3);
+        }
+
+        [Fact]
+        public void AddingArecord_WhenAnErrorArrivesAndLoggerIsConfiguredToLogThem()
+        {
+            var sut = new Logger(false, false, true, false, false, true, GetDatabaseParameters());
+            sut.LogMessage(SAMPLE_LOG_TEXT, false, false, true);
+
+            var validator = new LoggerTableValidator();
+            validator.EnsureRegisterCountIs(1);
+            validator.EnsureThatPoppedLineIs(SAMPLE_LOG_TEXT, 2);
+        }
+
+        [Theory]
+        [InlineData(false, true, true)]
+        [InlineData(true, false, true)]
+        [InlineData(true, true, false)]
+        public void AddingNoRecord_WhenSomethingArrivesAndItsNotConfiguredToLogThem(bool message, bool warning, bool error)
+        {
+            var sut = new Logger(false, false, true, message, warning, error, GetDatabaseParameters());
+            sut.LogMessage(SAMPLE_LOG_TEXT, !message, !warning, !error);
+
+            var validator = new LoggerTableValidator();
+            validator.EnsureItIsEmpty();
+        }
+
         private static Dictionary<string, string> GetDatabaseParameters() =>
             new()
             {

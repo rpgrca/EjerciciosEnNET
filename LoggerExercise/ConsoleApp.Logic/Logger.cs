@@ -99,9 +99,6 @@ namespace ConsoleApp
 
         private void LogToDatabase(string messageText, bool message, bool warning, bool error)
         {
-            string connectionString = "Server=" + dbParams["serverName"] + ";Initial Catalog=" + dbParams["DataBaseName"] + ";User ID=" + dbParams["userName"] + ";Password=" + dbParams["password"] + ";";
-            SqlConnection sqlConnection = new SqlConnection(connectionString);
-
             int t = 0;
             if (message && logMessage)
             {
@@ -118,10 +115,16 @@ namespace ConsoleApp
                 t = 3;
             }
 
-            string insertStatement = "insert into Log_Values values('" + messageText + "', " + t.ToString() + ")";
-            SqlCommand sqlCommand = new SqlCommand(insertStatement, sqlConnection);
-            sqlConnection.Open();
-            sqlCommand.ExecuteNonQuery();
+            if (t != 0)
+            {
+                string connectionString = "Server=" + dbParams["serverName"] + ";Initial Catalog=" + dbParams["DataBaseName"] + ";User ID=" + dbParams["userName"] + ";Password=" + dbParams["password"] + ";";
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+                string insertStatement = "insert into Log_Values values('" + messageText + "', " + t.ToString() + ")";
+                SqlCommand sqlCommand = new SqlCommand(insertStatement, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.ExecuteNonQuery();
+            }
         }
 
         private string BuildLogText(string messageText, bool message, bool warning, bool error)
