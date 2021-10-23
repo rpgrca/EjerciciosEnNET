@@ -30,44 +30,37 @@ namespace ConsoleApp
 
         public void LogMessage(string messageText, bool message, bool warning, bool error)
         {
-            try
+            if (string.IsNullOrWhiteSpace(messageText))
             {
-                if (string.IsNullOrWhiteSpace(messageText))
-                {
-                    return;
-                }
-                if (!logToConsole && !logToFile && !logToDatabase)
-                {
-                    throw new Exception(INVALID_CONFIGURATION);
-                }
-                if ((!logError && !logMessage && !logWarning) || (!message && !warning && !error))
-                {
-                    throw new Exception(MUST_SPECIFY_MESSAGE_WARNING_ERROR);
-                }
-
-                string connectionString = "Server=" + dbParams["serverName"] + ";Initial Catalog=" + dbParams["DataBaseName"] + ";User ID=" + dbParams["userName"] + ";Password=" + dbParams["password"] + ";";
-                SqlConnection sqlConnection = new SqlConnection(connectionString);
-
-                string l = BuildLogText(messageText.Trim(), message, warning, error);
-
-                if (logToFile)
-                {
-                    LogToFile(dbParams["logFileFolder"] + "/logFile.txt", l);
-                }
-
-                if (logToConsole)
-                {
-                    LogToConsole(message, warning, error, l);
-                }
-
-                if (logToDatabase)
-                {
-                    LogToDatabase(messageText, message, warning, error, sqlConnection);
-                }
+                return;
             }
-            catch (Exception)
+            if (!logToConsole && !logToFile && !logToDatabase)
             {
-                throw;
+                throw new Exception(INVALID_CONFIGURATION);
+            }
+            if ((!logError && !logMessage && !logWarning) || (!message && !warning && !error))
+            {
+                throw new Exception(MUST_SPECIFY_MESSAGE_WARNING_ERROR);
+            }
+
+            string connectionString = "Server=" + dbParams["serverName"] + ";Initial Catalog=" + dbParams["DataBaseName"] + ";User ID=" + dbParams["userName"] + ";Password=" + dbParams["password"] + ";";
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+            string l = BuildLogText(messageText.Trim(), message, warning, error);
+
+            if (logToFile)
+            {
+                LogToFile(dbParams["logFileFolder"] + "/logFile.txt", l);
+            }
+
+            if (logToConsole)
+            {
+                LogToConsole(message, warning, error, l);
+            }
+
+            if (logToDatabase)
+            {
+                LogToDatabase(messageText, message, warning, error, sqlConnection);
             }
         }
 
