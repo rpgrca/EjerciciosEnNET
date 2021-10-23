@@ -75,17 +75,17 @@ namespace ConsoleApp
 
                 if (error && logError)
                 {
-                    l = l + "error " + DateTime.Now + " " + messageText;
+                    l = l + "error " + DateTime.Now + " " + messageText + "\n";
                 }
 
                 if (warning && logWarning)
                 {
-                    l = l + "warning " + DateTime.Now + " " + messageText;
+                    l = l + "warning " + DateTime.Now + " " + messageText + "\n";
                 }
 
                 if (message && logMessage)
                 {
-                    l = l + "message " + DateTime.Now + " " + messageText;
+                    l = l + "message " + DateTime.Now + " " + messageText + "\n";
                 }
 
                 if (logToFile)
@@ -95,7 +95,7 @@ namespace ConsoleApp
                         file = File.CreateText(dbParams["logFileFolder"] + "/logFile.txt");
                     }
 
-                    file.WriteLine(l);
+                    file.WriteLine(l.Trim());
                     file.Close();
                 }
 

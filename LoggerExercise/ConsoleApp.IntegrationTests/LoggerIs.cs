@@ -86,10 +86,19 @@ namespace ConsoleApp.IntegrationTests
 
         private static void VerifyThatLogFileHas(string expectedType, string expectedText)
         {
-            if (! System.IO.File.Exists(DEFAULT_LOG)) Assert.True(false, "expected log file does not exist");
-            var loggedText = System.IO.File.ReadAllText(DEFAULT_LOG);
-
+            AssertThatLogFileExists();
+            var loggedText = GetOneLineOrAssert();
             Assert.Matches($"^{expectedType}.+{expectedText}$", loggedText);
+        }
+
+        private static void AssertThatLogFileExists() =>
+            Assert.True(System.IO.File.Exists(DEFAULT_LOG), "expected log file does not exist");
+
+        private static string GetOneLineOrAssert()
+        {
+            var loggedLines = System.IO.File.ReadAllLines(DEFAULT_LOG);
+            Assert.Single(loggedLines);
+            return loggedLines[0];
         }
 
         [Theory]
@@ -153,6 +162,32 @@ namespace ConsoleApp.IntegrationTests
             var sut = new Logger(true, false, false, logMessages, logWarnings, false, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
             sut.LogMessage(SAMPLE_LOG_TEXT, false, false, true);
             AssertThatLogFileIsEmpty();
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void LoggingMessageAndWarning_WhenAmessageAndWarningArrivesAndLoggerIsConfiguredToLogThem(bool logErrors)
+        {
+            var sut = new Logger(true, false, false, true, true, logErrors, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
+            sut.LogMessage(SAMPLE_LOG_TEXT, true, true, false);
+            AssertThatLogFileHasTwoLines(new[] { ("warning", SAMPLE_LOG_TEXT), ("message", SAMPLE_LOG_TEXT) });
+        }
+
+        private static void AssertThatLogFileHasTwoLines((string Type, string Text)[] expectedLine)
+        {
+            AssertThatLogFileExists();
+            var loggedText = GetTwoLinesOrAssert();
+
+            Assert.Matches($"^{expectedLine[0].Type}.+{expectedLine[0].Text}$", loggedText[0]);
+            Assert.Matches($"^{expectedLine[1].Type}.+{expectedLine[1].Text}$", loggedText[1]);
+        }
+
+        private static string[] GetTwoLinesOrAssert()
+        {
+            var loggedLines = System.IO.File.ReadAllLines(DEFAULT_LOG);
+            Assert.Equal(2, loggedLines.Length);
+            return loggedLines;
         }
 
 
