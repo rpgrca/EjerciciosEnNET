@@ -200,6 +200,16 @@ namespace ConsoleApp.IntegrationTests
             AssertThatLogFileHasTwoLines(new[] { ("error", SAMPLE_LOG_TEXT), ("message", SAMPLE_LOG_TEXT) });
         }
 
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void LoggingWarningAndError_WhenTheyArriveAndLoggerIsConfiguredToLogThem(bool logMessages)
+        {
+            var sut = new Logger(true, false, false, logMessages, true, true, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
+            sut.LogMessage(SAMPLE_LOG_TEXT, false, true, true);
+            AssertThatLogFileHasTwoLines(new[] { ("error", SAMPLE_LOG_TEXT), ("warning", SAMPLE_LOG_TEXT) });
+        }
+
 
 #region Disposing code
         protected virtual void Dispose(bool disposing)
