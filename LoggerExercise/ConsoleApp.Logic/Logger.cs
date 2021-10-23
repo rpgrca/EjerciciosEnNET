@@ -25,6 +25,11 @@ namespace ConsoleApp
                 throw new Exception(INVALID_CONFIGURATION);
             }
 
+            if (!logErrorParam && !logMessageParam && !logWarningParam)
+            {
+                throw new Exception(MUST_SPECIFY_MESSAGE_WARNING_ERROR);
+            }
+
             if (dbParamsMap is null)
             {
                 throw new Exception(INVALID_CONFIGURATION_VARIABLES);
@@ -45,7 +50,7 @@ namespace ConsoleApp
             {
                 return;
             }
-            if ((!logError && !logMessage && !logWarning) || (!message && !warning && !error))
+            if (!message && !warning && !error)
             {
                 throw new Exception(MUST_SPECIFY_MESSAGE_WARNING_ERROR);
             }

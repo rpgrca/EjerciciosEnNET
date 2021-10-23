@@ -29,15 +29,6 @@ namespace ConsoleApp.IntegrationTests
         }
 
         [Fact]
-        public void ThrowingException_WhenNoneOfMessageWarningErrorIsSpecifiedInConstructor()
-        {
-            var sut = new Logger(true, true, true, false, false, false, new Dictionary<string, string>());
-
-            var exception = Assert.Throws<Exception>(() => sut.LogMessage("test", true, true, true));
-            Assert.Equal(Logger.MUST_SPECIFY_MESSAGE_WARNING_ERROR, exception.Message);
-        }
-
-        [Fact]
         public void ThrowingException_WhenNoneOfMessageWarningErrorIsSpecifiedInMethod()
         {
             var sut = new Logger(true, true, true, true, true, true, new Dictionary<string, string>());
