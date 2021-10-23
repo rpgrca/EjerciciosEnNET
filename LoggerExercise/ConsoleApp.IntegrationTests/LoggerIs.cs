@@ -167,7 +167,7 @@ namespace ConsoleApp.IntegrationTests
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public void LoggingMessageAndWarning_WhenAmessageAndWarningArrivesAndLoggerIsConfiguredToLogThem(bool logErrors)
+        public void LoggingMessageAndWarning_WhenTheyArriveAndLoggerIsConfiguredToLogThem(bool logErrors)
         {
             var sut = new Logger(true, false, false, true, true, logErrors, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
             sut.LogMessage(SAMPLE_LOG_TEXT, true, true, false);
@@ -188,6 +188,16 @@ namespace ConsoleApp.IntegrationTests
             var loggedLines = System.IO.File.ReadAllLines(DEFAULT_LOG);
             Assert.Equal(2, loggedLines.Length);
             return loggedLines;
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void LoggingMessageAndError_WhenTheyArriveAndLoggerIsConfiguredToLogThem(bool logWarnings)
+        {
+            var sut = new Logger(true, false, false, true, logWarnings, true, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
+            sut.LogMessage(SAMPLE_LOG_TEXT, true, false, true);
+            AssertThatLogFileHasTwoLines(new[] { ("error", SAMPLE_LOG_TEXT), ("message", SAMPLE_LOG_TEXT) });
         }
 
 
