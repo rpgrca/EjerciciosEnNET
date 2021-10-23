@@ -57,26 +57,7 @@ namespace ConsoleApp
 
                 if (logToConsole)
                 {
-                    if (message)
-                    {
-                        Console.BackgroundColor = ConsoleColor.DarkBlue;
-                        Console.WriteLine(l);
-                        Console.ResetColor();
-                    }
-
-                    if (warning)
-                    {
-                        Console.BackgroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine(l);
-                        Console.ResetColor();
-                    }
-
-                    if (error)
-                    {
-                        Console.BackgroundColor = ConsoleColor.Red;
-                        Console.WriteLine(l);
-                        Console.ResetColor();
-                    }
+                    LogToConsole(message, warning, error, l);
                 }
 
                 if (logToDatabase)
@@ -87,6 +68,30 @@ namespace ConsoleApp
             catch (Exception)
             {
                 throw;
+            }
+        }
+
+        private static void LogToConsole(bool message, bool warning, bool error, string l)
+        {
+            if (message)
+            {
+                Console.BackgroundColor = ConsoleColor.DarkBlue;
+                Console.WriteLine(l);
+                Console.ResetColor();
+            }
+
+            if (warning)
+            {
+                Console.BackgroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(l);
+                Console.ResetColor();
+            }
+
+            if (error)
+            {
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.WriteLine(l);
+                Console.ResetColor();
             }
         }
 
