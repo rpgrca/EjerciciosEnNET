@@ -9,16 +9,21 @@ namespace ConsoleApp
     {
         public const string INVALID_CONFIGURATION = "Invalid configuration";
         public const string MUST_SPECIFY_MESSAGE_WARNING_ERROR = "Error or Warning or Message must be specified";
-        private static bool logToFile;
-        private static bool logToConsole;
+        private readonly bool logToFile;
+        private readonly bool logToConsole;
         private static bool logMessage;
         private static bool logWarning;
         private static bool logError;
-        private static bool logToDatabase;
+        private readonly bool logToDatabase;
         private static IDictionary dbParams;
 
         public Logger(bool logToFileParam, bool logToConsoleParam, bool logToDatabaseParam, bool logMessageParam, bool logWarningParam, bool logErrorParam, IDictionary dbParamsMap)
         {
+            if (!logToConsoleParam && !logToFileParam && !logToDatabaseParam)
+            {
+                throw new Exception(INVALID_CONFIGURATION);
+            }
+
             logError = logErrorParam;
             logMessage = logMessageParam;
             logWarning = logWarningParam;
@@ -33,10 +38,6 @@ namespace ConsoleApp
             if (string.IsNullOrWhiteSpace(messageText))
             {
                 return;
-            }
-            if (!logToConsole && !logToFile && !logToDatabase)
-            {
-                throw new Exception(INVALID_CONFIGURATION);
             }
             if ((!logError && !logMessage && !logWarning) || (!message && !warning && !error))
             {

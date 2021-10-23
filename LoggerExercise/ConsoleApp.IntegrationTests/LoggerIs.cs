@@ -16,22 +16,13 @@ namespace ConsoleApp.IntegrationTests
             LoggerDirectory.DeleteLogFile();
         }
 
-        [Fact]
-        public void ThrowingException_WhenConfigurationIsInvalid()
-        {
-            var sut = new Logger(false, false, false, true, true, true, null);
-
-            var exception = Assert.Throws<Exception>(() => sut.LogMessage("test", true, true, true));
-            Assert.Equal(Logger.INVALID_CONFIGURATION, exception.Message);
-        }
-
         [Theory]
         [InlineData("")]
         [InlineData("     ")]
         [InlineData(null)]
-        public void StoppingProcess_WhenConfigurationIsInvalidAndMessageIsEmpty(string invalidMessage)
+        public void StoppingProcess_WhenMessageIsEmpty(string invalidMessage)
         {
-            var sut = new Logger(false, false, false, true, true, true, null);
+            var sut = new Logger(true, false, false, true, true, true, null);
 
             sut.LogMessage(invalidMessage, true, true, true);
             Assert.False(LoggerDirectory.LogFileExists());
