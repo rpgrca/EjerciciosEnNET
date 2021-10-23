@@ -81,32 +81,37 @@ namespace ConsoleApp
 
                 if (logToDatabase)
                 {
-                    int t = 0;
-                    if (message && logMessage)
-                    {
-                        t = 1;
-                    }
-
-                    if (error && logError)
-                    {
-                        t = 2;
-                    }
-
-                    if (warning && logWarning)
-                    {
-                        t = 3;
-                    }
-
-                    string insertStatement = "insert into Log_Values values('" + messageText + "', " + t.ToString() + ")";
-                    SqlCommand sqlCommand = new SqlCommand(insertStatement, sqlConnection);
-                    sqlConnection.Open();
-                    sqlCommand.ExecuteNonQuery();
+                    LogToDatabase(messageText, message, warning, error, sqlConnection);
                 }
             }
             catch (Exception)
             {
                 throw;
             }
+        }
+
+        private static void LogToDatabase(string messageText, bool message, bool warning, bool error, SqlConnection sqlConnection)
+        {
+            int t = 0;
+            if (message && logMessage)
+            {
+                t = 1;
+            }
+
+            if (error && logError)
+            {
+                t = 2;
+            }
+
+            if (warning && logWarning)
+            {
+                t = 3;
+            }
+
+            string insertStatement = "insert into Log_Values values('" + messageText + "', " + t.ToString() + ")";
+            SqlCommand sqlCommand = new SqlCommand(insertStatement, sqlConnection);
+            sqlConnection.Open();
+            sqlCommand.ExecuteNonQuery();
         }
 
         private static string BuildLogText(string messageText, bool message, bool warning, bool error)
