@@ -5,6 +5,41 @@ using System.IO;
 
 namespace ConsoleApp
 {
+    public class Summary
+    {
+        private readonly bool _logError;
+        private readonly bool _logWarning;
+        private readonly bool _logMessage;
+
+        public Summary(bool logMessage, bool logWarning, bool logError)
+        {
+            _logMessage = logMessage;
+            _logWarning = logWarning;
+            _logError = logError;
+        }
+
+        public string Build(string messageText, bool message, bool warning, bool error)
+        {
+            string l = string.Empty;
+            if (error && _logError)
+            {
+                l = l + "error " + DateTime.Now + " " + messageText + "\n";
+            }
+
+            if (warning && _logWarning)
+            {
+                l = l + "warning " + DateTime.Now + " " + messageText + "\n";
+            }
+
+            if (message && _logMessage)
+            {
+                l = l + "message " + DateTime.Now + " " + messageText + "\n";
+            }
+
+            return l.Trim();
+        }
+    }
+
     public class Logger
     {
         public const string INVALID_CONFIGURATION = "Invalid configuration";
@@ -55,7 +90,7 @@ namespace ConsoleApp
                 throw new Exception(MUST_SPECIFY_MESSAGE_WARNING_ERROR);
             }
 
-            string l = BuildLogText(messageText.Trim(), message, warning, error);
+            string l = new Summary(logMessage, logWarning, logError).Build(messageText.Trim(), message, warning, error);
 
             if (logToFile)
             {
@@ -125,27 +160,6 @@ namespace ConsoleApp
                 sqlConnection.Open();
                 sqlCommand.ExecuteNonQuery();
             }
-        }
-
-        private string BuildLogText(string messageText, bool message, bool warning, bool error)
-        {
-            string l = string.Empty;
-            if (error && logError)
-            {
-                l = l + "error " + DateTime.Now + " " + messageText + "\n";
-            }
-
-            if (warning && logWarning)
-            {
-                l = l + "warning " + DateTime.Now + " " + messageText + "\n";
-            }
-
-            if (message && logMessage)
-            {
-                l = l + "message " + DateTime.Now + " " + messageText + "\n";
-            }
-
-            return l.Trim();
         }
 
         private static void LogToFile(string logFile, string l)
