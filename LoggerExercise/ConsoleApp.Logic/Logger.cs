@@ -11,10 +11,10 @@ namespace ConsoleApp
         public const string MUST_SPECIFY_MESSAGE_WARNING_ERROR = "Error or Warning or Message must be specified";
         private readonly bool logToFile;
         private readonly bool logToConsole;
+        private readonly bool logToDatabase;
         private static bool logMessage;
         private static bool logWarning;
         private static bool logError;
-        private readonly bool logToDatabase;
         private static IDictionary dbParams;
 
         public Logger(bool logToFileParam, bool logToConsoleParam, bool logToDatabaseParam, bool logMessageParam, bool logWarningParam, bool logErrorParam, IDictionary dbParamsMap)

@@ -184,6 +184,13 @@ namespace ConsoleApp.IntegrationTests
             validator.EnsureThatPoppedLineIs("message", SAMPLE_LOG_TEXT);
         }
 
+        [Fact]
+        public void ThrowingNullReferenceException_WhenNullDictionaryIsSupplied()
+        {
+            var sut = new Logger(true, false, false, true, true, true, null);
+            var exception = Assert.Throws<NullReferenceException>(() => sut.LogMessage(SAMPLE_LOG_TEXT, true, false, false));
+        }
+
 #region Disposing code
         protected virtual void Dispose(bool disposing)
         {
