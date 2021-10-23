@@ -48,22 +48,6 @@ namespace ConsoleApp
                 string connectionString = "Server=" + dbParams["serverName"] + ";Initial Catalog=" + dbParams["DataBaseName"] + ";User ID=" + dbParams["userName"] + ";Password=" + dbParams["password"] + ";";
                 SqlConnection sqlConnection = new SqlConnection(connectionString);
 
-                int t = 0;
-                if (message && logMessage)
-                {
-                    t = 1;
-                }
-
-                if (error && logError)
-                {
-                    t = 2;
-                }
-
-                if (warning && logWarning)
-                {
-                    t = 3;
-                }
-
                 string l = BuildLogText(messageText.Trim(), message, warning, error);
 
                 if (logToFile)
@@ -97,6 +81,22 @@ namespace ConsoleApp
 
                 if (logToDatabase)
                 {
+                    int t = 0;
+                    if (message && logMessage)
+                    {
+                        t = 1;
+                    }
+
+                    if (error && logError)
+                    {
+                        t = 2;
+                    }
+
+                    if (warning && logWarning)
+                    {
+                        t = 3;
+                    }
+
                     string insertStatement = "insert into Log_Values values('" + messageText + "', " + t.ToString() + ")";
                     SqlCommand sqlCommand = new SqlCommand(insertStatement, sqlConnection);
                     sqlConnection.Open();
