@@ -81,17 +81,11 @@ namespace ConsoleApp
                     l = l + "message " + DateTime.Now + " " + messageText + "\n";
                 }
 
+                l = l.Trim();
+
                 if (logToFile)
                 {
-                    bool exists = File.Exists(dbParams["logFileFolder"] + "/logFile.txt");
-                    StreamWriter file = null;
-                    if (!exists)
-                    {
-                        file = File.CreateText(dbParams["logFileFolder"] + "/logFile.txt");
-                    }
-
-                    file.WriteLine(l.Trim());
-                    file.Close();
+                    LogToFile(dbParams["logFileFolder"] + "/logFile.txt", l);
                 }
 
                 if (logToConsole)
@@ -130,6 +124,19 @@ namespace ConsoleApp
             {
                 throw;
             }
+        }
+
+        private void LogToFile(string logFile, string l)
+        {
+            bool exists = File.Exists(logFile);
+            StreamWriter file = null;
+            if (!exists)
+            {
+                file = File.CreateText(logFile);
+            }
+
+            file.WriteLine(l.Trim());
+            file.Close();
         }
     }
 }
