@@ -22,7 +22,7 @@ namespace ConsoleApp.IntegrationTests
         [InlineData(null)]
         public void StoppingProcess_WhenMessageIsEmpty(string invalidMessage)
         {
-            var sut = new Logger(true, false, false, true, true, true, new Dictionary<string, string>());
+            var sut = new Logger(true, true, true, true, true, true, new Dictionary<string, string>());
 
             sut.LogMessage(invalidMessage, true, true, true);
             Assert.False(LoggerDirectory.LogFileExists());
