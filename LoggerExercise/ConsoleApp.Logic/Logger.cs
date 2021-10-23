@@ -66,13 +66,6 @@ namespace ConsoleApp
                 }
 
                 string l = string.Empty;
-                bool exists = File.Exists(dbParams["logFileFolder"] + "/logFile.txt");
-                StreamWriter file = null;
-                if (!exists)
-                {
-                    file = File.CreateText(dbParams["logFileFolder"] + "/logFile.txt");
-                }
-
                 if (error && logError)
                 {
                     l = l + "error " + DateTime.Now + " " + messageText + "\n";
@@ -90,7 +83,9 @@ namespace ConsoleApp
 
                 if (logToFile)
                 {
-                    if(file == null)
+                    bool exists = File.Exists(dbParams["logFileFolder"] + "/logFile.txt");
+                    StreamWriter file = null;
+                    if (!exists)
                     {
                         file = File.CreateText(dbParams["logFileFolder"] + "/logFile.txt");
                     }

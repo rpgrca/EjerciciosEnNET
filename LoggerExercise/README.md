@@ -10,3 +10,6 @@ Pasos de preparación realizados
 Pasos de exploración realizados
 
   1. Con el proyecto en funcionamiento se empieza a explorar la aplicación creando pruebas sin modificar el código fuente actual buscando bugs, forzando las excepciones existentes, etc.
+  1. Primero se explora el logging a archivo, combinando las distintas entradas en distintas pruebas para forzar la ejecucion de cada camino.
+  1. Se descubre un bug donde todas las lineas salen una a continuacion de la otra, se soluciona para que cada log salga en una linea distinta.
+  1. Una vez cubierta la totalidad de la funcionalidad del log, se la encapsula en un método para eventualmente convertirse en una clase.
