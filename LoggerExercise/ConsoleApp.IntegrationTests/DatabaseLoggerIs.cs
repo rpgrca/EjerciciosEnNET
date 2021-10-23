@@ -1,46 +1,36 @@
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using Xunit;
 using ConsoleApp.IntegrationTests.Helpers;
 using static ConsoleApp.IntegrationTests.Constants;
 
 namespace ConsoleApp.IntegrationTests
 {
-
-    public static class LoggerDatabase
-    {
-        private static SqlConnection ObtainConnection()
-        {
-            var connectionString = $"Server={DATABASE_SERVER};Initial Catalog={DATABASE_NAME};User ID={DATABASE_USERNAME};Password={DATABASE_PASSWORD};";
-            var sqlConnection = new SqlConnection(connectionString);
-            sqlConnection.Open();
-            return sqlConnection;
-        }
-
-        public static void Empty()
-        {
-            using var sqlConnection = ObtainConnection();
-            var sqlCommand = new SqlCommand("DELETE FROM Log_Values", sqlConnection);
-            sqlCommand.ExecuteNonQuery();
-            sqlConnection.Close();
-        }
-    }
-
     public class DatabaseLoggerIs : IDisposable
     {
         private bool _disposedValue;
 
-        public DatabaseLoggerIs()
-        {
-            LoggerDatabase.Empty();
-        }
+        public DatabaseLoggerIs() => LoggerDatabase.Empty();
 
         [Fact]
-        public void Test1()
+        public void AddingArecord_WhenAmessageArrivesAndLoggerIsConfiguredToLogThem()
         {
+            var sut = new Logger(false, false, true, true, false, false, GetDatabaseParameters());
+            sut.LogMessage(SAMPLE_LOG_TEXT, true, false, false);
 
+            var validator = new LoggerTableValidator();
+            validator.EnsureRegisterCountIs(1);
+            validator.EnsureThatPoppedLineIs(SAMPLE_LOG_TEXT, 1);
         }
+
+        private static Dictionary<string, string> GetDatabaseParameters() =>
+            new()
+            {
+                { "serverName", DATABASE_SERVER },
+                { "DataBaseName", DATABASE_NAME },
+                { "userName", DATABASE_USERNAME },
+                { "password", DATABASE_PASSWORD }
+            };
 
 #region Disposing code
         protected virtual void Dispose(bool disposing)
