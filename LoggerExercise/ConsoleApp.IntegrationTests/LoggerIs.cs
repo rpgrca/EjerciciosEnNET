@@ -22,7 +22,7 @@ namespace ConsoleApp.IntegrationTests
         [InlineData(null)]
         public void StoppingProcess_WhenMessageIsEmpty(string invalidMessage)
         {
-            var sut = new Logger(true, false, false, true, true, true, null);
+            var sut = new Logger(true, false, false, true, true, true, new Dictionary<string, string>());
 
             sut.LogMessage(invalidMessage, true, true, true);
             Assert.False(LoggerDirectory.LogFileExists());
@@ -31,7 +31,7 @@ namespace ConsoleApp.IntegrationTests
         [Fact]
         public void ThrowingException_WhenNoneOfMessageWarningErrorIsSpecifiedInConstructor()
         {
-            var sut = new Logger(true, true, true, false, false, false, null);
+            var sut = new Logger(true, true, true, false, false, false, new Dictionary<string, string>());
 
             var exception = Assert.Throws<Exception>(() => sut.LogMessage("test", true, true, true));
             Assert.Equal(Logger.MUST_SPECIFY_MESSAGE_WARNING_ERROR, exception.Message);
@@ -40,7 +40,7 @@ namespace ConsoleApp.IntegrationTests
         [Fact]
         public void ThrowingException_WhenNoneOfMessageWarningErrorIsSpecifiedInMethod()
         {
-            var sut = new Logger(true, true, true, true, true, true, null);
+            var sut = new Logger(true, true, true, true, true, true, new Dictionary<string, string>());
 
             var exception = Assert.Throws<Exception>(() => sut.LogMessage("test", false, false, false));
             Assert.Equal(Logger.MUST_SPECIFY_MESSAGE_WARNING_ERROR, exception.Message);
@@ -182,13 +182,6 @@ namespace ConsoleApp.IntegrationTests
             validator.EnsureThatPoppedLineIs("error", SAMPLE_LOG_TEXT);
             validator.EnsureThatPoppedLineIs("warning", SAMPLE_LOG_TEXT);
             validator.EnsureThatPoppedLineIs("message", SAMPLE_LOG_TEXT);
-        }
-
-        [Fact]
-        public void ThrowingNullReferenceException_WhenNullDictionaryIsSupplied()
-        {
-            var sut = new Logger(true, false, false, true, true, true, null);
-            var exception = Assert.Throws<NullReferenceException>(() => sut.LogMessage(SAMPLE_LOG_TEXT, true, false, false));
         }
 
 #region Disposing code

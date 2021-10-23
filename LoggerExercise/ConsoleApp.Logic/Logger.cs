@@ -9,6 +9,7 @@ namespace ConsoleApp
     {
         public const string INVALID_CONFIGURATION = "Invalid configuration";
         public const string MUST_SPECIFY_MESSAGE_WARNING_ERROR = "Error or Warning or Message must be specified";
+        public const string INVALID_CONFIGURATION_VARIABLES = "Invalid configuration variables";
         private readonly bool logToFile;
         private readonly bool logToConsole;
         private readonly bool logToDatabase;
@@ -22,6 +23,11 @@ namespace ConsoleApp
             if (!logToConsoleParam && !logToFileParam && !logToDatabaseParam)
             {
                 throw new Exception(INVALID_CONFIGURATION);
+            }
+
+            if (dbParamsMap is null)
+            {
+                throw new Exception(INVALID_CONFIGURATION_VARIABLES);
             }
 
             logError = logErrorParam;
