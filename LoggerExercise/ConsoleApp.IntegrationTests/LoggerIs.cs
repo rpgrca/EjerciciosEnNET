@@ -87,18 +87,18 @@ namespace ConsoleApp.IntegrationTests
         private static void VerifyThatLogFileHas(string expectedType, string expectedText)
         {
             AssertThatLogFileExists();
-            var loggedText = GetOneLineOrAssert();
-            Assert.Matches($"^{expectedType}.+{expectedText}$", loggedText);
+            var loggedText = GetAmountOfLinesOrAssert(1);
+            Assert.Matches($"^{expectedType}.+{expectedText}$", loggedText[0]);
         }
 
         private static void AssertThatLogFileExists() =>
             Assert.True(System.IO.File.Exists(DEFAULT_LOG), "expected log file does not exist");
 
-        private static string GetOneLineOrAssert()
+        private static string[] GetAmountOfLinesOrAssert(int amount)
         {
             var loggedLines = System.IO.File.ReadAllLines(DEFAULT_LOG);
-            Assert.Single(loggedLines);
-            return loggedLines[0];
+            Assert.Equal(amount, loggedLines.Length);
+            return loggedLines;
         }
 
         [Theory]
@@ -177,17 +177,10 @@ namespace ConsoleApp.IntegrationTests
         private static void AssertThatLogFileHasTwoLines((string Type, string Text)[] expectedLine)
         {
             AssertThatLogFileExists();
-            var loggedText = GetTwoLinesOrAssert();
+            var loggedText = GetAmountOfLinesOrAssert(2);
 
             Assert.Matches($"^{expectedLine[0].Type}.+{expectedLine[0].Text}$", loggedText[0]);
             Assert.Matches($"^{expectedLine[1].Type}.+{expectedLine[1].Text}$", loggedText[1]);
-        }
-
-        private static string[] GetTwoLinesOrAssert()
-        {
-            var loggedLines = System.IO.File.ReadAllLines(DEFAULT_LOG);
-            Assert.Equal(2, loggedLines.Length);
-            return loggedLines;
         }
 
         [Theory]
@@ -221,21 +214,12 @@ namespace ConsoleApp.IntegrationTests
         private static void AssertThatLogFileHasThreeLines((string Type, string Text)[] expectedLine)
         {
             AssertThatLogFileExists();
-            var loggedText = GetThreeLinesOrAssert();
+            var loggedText = GetAmountOfLinesOrAssert(3);
 
             Assert.Matches($"^{expectedLine[0].Type}.+{expectedLine[0].Text}$", loggedText[0]);
             Assert.Matches($"^{expectedLine[1].Type}.+{expectedLine[1].Text}$", loggedText[1]);
             Assert.Matches($"^{expectedLine[2].Type}.+{expectedLine[2].Text}$", loggedText[2]);
         }
-
-        private static string[] GetThreeLinesOrAssert()
-        {
-            var loggedLines = System.IO.File.ReadAllLines(DEFAULT_LOG);
-            Assert.Equal(3, loggedLines.Length);
-            return loggedLines;
-        }
-
-
 
 #region Disposing code
         protected virtual void Dispose(bool disposing)
