@@ -103,6 +103,12 @@ namespace ConsoleApp.IntegrationTests
             AssertThatLogFileIsEmpty();
         }
 
+        private static void AssertThatLogFileIsEmpty()
+        {
+            Assert.True(System.IO.File.Exists(DEFAULT_LOG));
+            Assert.Equal("\n", System.IO.File.ReadAllText(DEFAULT_LOG));
+        }
+
         [Theory]
         [InlineData(true, true)]
         [InlineData(true, false)]
@@ -126,11 +132,29 @@ namespace ConsoleApp.IntegrationTests
             AssertThatLogFileIsEmpty();
         }
 
-        private static void AssertThatLogFileIsEmpty()
+        [Theory]
+        [InlineData(true, true)]
+        [InlineData(true, false)]
+        [InlineData(false, true)]
+        [InlineData(false, false)]
+        public void LoggingAnError_WhenAnErrorArrivesAndLoggerIsConfiguredToLogThem(bool logMessages, bool logWarnings)
         {
-            Assert.True(System.IO.File.Exists(DEFAULT_LOG));
-            Assert.Equal("\n", System.IO.File.ReadAllText(DEFAULT_LOG));
+            var sut = new Logger(true, false, false, logMessages, logWarnings, true, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
+            sut.LogMessage(SAMPLE_LOG_TEXT, false, false, true);
+            VerifyThatLogFileHas("error", SAMPLE_LOG_TEXT);
         }
+
+        [Theory]
+        [InlineData(true, true)]
+        [InlineData(true, false)]
+        [InlineData(false, true)]
+        public void NotLoggingAnError_WhenConstructorIsSetNotToLogErrors(bool logMessages, bool logWarnings)
+        {
+            var sut = new Logger(true, false, false, logMessages, logWarnings, false, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
+            sut.LogMessage(SAMPLE_LOG_TEXT, false, false, true);
+            AssertThatLogFileIsEmpty();
+        }
+
 
 #region Disposing code
         protected virtual void Dispose(bool disposing)
