@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
 using Xunit;
+using static ConsoleApp.IntegrationTests.Constants;
 
 namespace ConsoleApp.IntegrationTests
 {
     public class LoggerIs : IDisposable
     {
-        private const string DEFAULT_LOG_FILE = "logFile.txt";
-        private const string DEFAULT_LOG_PATH = "./Temp";
-        private const string DEFAULT_LOG = DEFAULT_LOG_PATH + "/" + DEFAULT_LOG_FILE;
-        private const string SAMPLE_LOG_TEXT = "this is a sample text";
         private bool disposedValue;
 
         public LoggerIs()
@@ -20,9 +17,9 @@ namespace ConsoleApp.IntegrationTests
 
         private static void CreateDirectoryIfNecessary()
         {
-            if (! System.IO.Directory.Exists(DEFAULT_LOG_PATH))
+            if (! System.IO.Directory.Exists(Constants.DEFAULT_LOG_PATH))
             {
-                System.IO.Directory.CreateDirectory(DEFAULT_LOG_PATH);
+                System.IO.Directory.CreateDirectory(Constants.DEFAULT_LOG_PATH);
             }
         }
 
@@ -54,7 +51,7 @@ namespace ConsoleApp.IntegrationTests
         }
 
         private static void AssertThatThereIsNoLogFileCreated() =>
-            Assert.False(System.IO.File.Exists(DEFAULT_LOG));
+            Assert.False(System.IO.File.Exists(Constants.DEFAULT_LOG));
 
         [Fact]
         public void ThrowingException_WhenNoneOfMessageWarningErrorIsSpecifiedInConstructor()
