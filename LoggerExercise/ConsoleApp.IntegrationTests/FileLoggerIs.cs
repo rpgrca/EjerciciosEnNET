@@ -6,11 +6,11 @@ using static ConsoleApp.IntegrationTests.Constants;
 
 namespace ConsoleApp.IntegrationTests
 {
-    public class LoggerIs : IDisposable
+    public class FileLoggerIs : IDisposable
     {
         private bool _disposedValue;
 
-        public LoggerIs()
+        public FileLoggerIs()
         {
             LoggerDirectory.Create();
             LoggerDirectory.DeleteLogFile();
