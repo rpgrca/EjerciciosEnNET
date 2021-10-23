@@ -81,15 +81,18 @@ namespace ConsoleApp.IntegrationTests
         {
             var sut = new Logger(true, false, false, true, logWarnings, logErrors, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
             sut.LogMessage(SAMPLE_LOG_TEXT, true, false, false);
-            VerifyThatLogFileHas("message", SAMPLE_LOG_TEXT);
+            AssertThatLogFileHasOneLine(new[] {("message", SAMPLE_LOG_TEXT)});
         }
 
-        private static void VerifyThatLogFileHas(string expectedType, string expectedText)
+        private static void AssertThatLogFileHasOneLine((string Type, string Text)[] expectedLine)
         {
             AssertThatLogFileExists();
             var loggedText = GetAmountOfLinesOrAssert(1);
-            Assert.Matches($"^{expectedType}.+{expectedText}$", loggedText[0]);
+            AssertThatLineIs(0, expectedLine, loggedText);
         }
+
+        private static void AssertThatLineIs(int number, (string Type, string Text)[] expectedLine, string[] loggedText) =>
+            Assert.Matches($"^{expectedLine[number].Type}.+{expectedLine[number].Text}$", loggedText[number]);
 
         private static void AssertThatLogFileExists() =>
             Assert.True(System.IO.File.Exists(DEFAULT_LOG), "expected log file does not exist");
@@ -127,7 +130,7 @@ namespace ConsoleApp.IntegrationTests
         {
             var sut = new Logger(true, false, false, logMessages, true, logErrors, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
             sut.LogMessage(SAMPLE_LOG_TEXT, false, true, false);
-            VerifyThatLogFileHas("warning", SAMPLE_LOG_TEXT);
+            AssertThatLogFileHasOneLine(new[] { ("warning", SAMPLE_LOG_TEXT) });
         }
 
         [Theory]
@@ -150,7 +153,7 @@ namespace ConsoleApp.IntegrationTests
         {
             var sut = new Logger(true, false, false, logMessages, logWarnings, true, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
             sut.LogMessage(SAMPLE_LOG_TEXT, false, false, true);
-            VerifyThatLogFileHas("error", SAMPLE_LOG_TEXT);
+            AssertThatLogFileHasOneLine(new[] { ("error", SAMPLE_LOG_TEXT) });
         }
 
         [Theory]
@@ -179,8 +182,8 @@ namespace ConsoleApp.IntegrationTests
             AssertThatLogFileExists();
             var loggedText = GetAmountOfLinesOrAssert(2);
 
-            Assert.Matches($"^{expectedLine[0].Type}.+{expectedLine[0].Text}$", loggedText[0]);
-            Assert.Matches($"^{expectedLine[1].Type}.+{expectedLine[1].Text}$", loggedText[1]);
+            AssertThatLineIs(0, expectedLine, loggedText);
+            AssertThatLineIs(1, expectedLine, loggedText);
         }
 
         [Theory]
@@ -216,9 +219,9 @@ namespace ConsoleApp.IntegrationTests
             AssertThatLogFileExists();
             var loggedText = GetAmountOfLinesOrAssert(3);
 
-            Assert.Matches($"^{expectedLine[0].Type}.+{expectedLine[0].Text}$", loggedText[0]);
-            Assert.Matches($"^{expectedLine[1].Type}.+{expectedLine[1].Text}$", loggedText[1]);
-            Assert.Matches($"^{expectedLine[2].Type}.+{expectedLine[2].Text}$", loggedText[2]);
+            AssertThatLineIs(0, expectedLine, loggedText);
+            AssertThatLineIs(1, expectedLine, loggedText);
+            AssertThatLineIs(2, expectedLine, loggedText);
         }
 
 #region Disposing code
