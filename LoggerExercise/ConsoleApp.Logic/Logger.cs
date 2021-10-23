@@ -45,7 +45,6 @@ namespace ConsoleApp
                     throw new Exception(MUST_SPECIFY_MESSAGE_WARNING_ERROR);
                 }
 
-                messageText = messageText.Trim();
                 string connectionString = "Server=" + dbParams["serverName"] + ";Initial Catalog=" + dbParams["DataBaseName"] + ";User ID=" + dbParams["userName"] + ";Password=" + dbParams["password"] + ";";
                 SqlConnection sqlConnection = new SqlConnection(connectionString);
 
@@ -65,23 +64,7 @@ namespace ConsoleApp
                     t = 3;
                 }
 
-                string l = string.Empty;
-                if (error && logError)
-                {
-                    l = l + "error " + DateTime.Now + " " + messageText + "\n";
-                }
-
-                if (warning && logWarning)
-                {
-                    l = l + "warning " + DateTime.Now + " " + messageText + "\n";
-                }
-
-                if (message && logMessage)
-                {
-                    l = l + "message " + DateTime.Now + " " + messageText + "\n";
-                }
-
-                l = l.Trim();
+                string l = BuildLogText(messageText.Trim(), message, warning, error);
 
                 if (logToFile)
                 {
@@ -126,7 +109,28 @@ namespace ConsoleApp
             }
         }
 
-        private void LogToFile(string logFile, string l)
+        private static string BuildLogText(string messageText, bool message, bool warning, bool error)
+        {
+            string l = string.Empty;
+            if (error && logError)
+            {
+                l = l + "error " + DateTime.Now + " " + messageText + "\n";
+            }
+
+            if (warning && logWarning)
+            {
+                l = l + "warning " + DateTime.Now + " " + messageText + "\n";
+            }
+
+            if (message && logMessage)
+            {
+                l = l + "message " + DateTime.Now + " " + messageText + "\n";
+            }
+
+            return l.Trim();
+        }
+
+        private static void LogToFile(string logFile, string l)
         {
             bool exists = File.Exists(logFile);
             StreamWriter file = null;
