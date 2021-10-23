@@ -43,9 +43,6 @@ namespace ConsoleApp
                 throw new Exception(MUST_SPECIFY_MESSAGE_WARNING_ERROR);
             }
 
-            string connectionString = "Server=" + dbParams["serverName"] + ";Initial Catalog=" + dbParams["DataBaseName"] + ";User ID=" + dbParams["userName"] + ";Password=" + dbParams["password"] + ";";
-            SqlConnection sqlConnection = new SqlConnection(connectionString);
-
             string l = BuildLogText(messageText.Trim(), message, warning, error);
 
             if (logToFile)
@@ -60,7 +57,7 @@ namespace ConsoleApp
 
             if (logToDatabase)
             {
-                LogToDatabase(messageText, message, warning, error, sqlConnection);
+                LogToDatabase(messageText, message, warning, error);
             }
         }
 
@@ -88,8 +85,11 @@ namespace ConsoleApp
             }
         }
 
-        private static void LogToDatabase(string messageText, bool message, bool warning, bool error, SqlConnection sqlConnection)
+        private static void LogToDatabase(string messageText, bool message, bool warning, bool error)
         {
+            string connectionString = "Server=" + dbParams["serverName"] + ";Initial Catalog=" + dbParams["DataBaseName"] + ";User ID=" + dbParams["userName"] + ";Password=" + dbParams["password"] + ";";
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+
             int t = 0;
             if (message && logMessage)
             {
