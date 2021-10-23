@@ -210,6 +210,32 @@ namespace ConsoleApp.IntegrationTests
             AssertThatLogFileHasTwoLines(new[] { ("error", SAMPLE_LOG_TEXT), ("warning", SAMPLE_LOG_TEXT) });
         }
 
+        [Fact]
+        public void LoggingMessageWarningAndError_WhenTheyArriveAndLoggerIsConfiguredToLogThem()
+        {
+            var sut = new Logger(true, false, false, true, true, true, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
+            sut.LogMessage(SAMPLE_LOG_TEXT, true, true, true);
+            AssertThatLogFileHasThreeLines(new[] { ("error", SAMPLE_LOG_TEXT), ("warning", SAMPLE_LOG_TEXT), ("message", SAMPLE_LOG_TEXT)});
+        }
+
+        private static void AssertThatLogFileHasThreeLines((string Type, string Text)[] expectedLine)
+        {
+            AssertThatLogFileExists();
+            var loggedText = GetThreeLinesOrAssert();
+
+            Assert.Matches($"^{expectedLine[0].Type}.+{expectedLine[0].Text}$", loggedText[0]);
+            Assert.Matches($"^{expectedLine[1].Type}.+{expectedLine[1].Text}$", loggedText[1]);
+            Assert.Matches($"^{expectedLine[2].Type}.+{expectedLine[2].Text}$", loggedText[2]);
+        }
+
+        private static string[] GetThreeLinesOrAssert()
+        {
+            var loggedLines = System.IO.File.ReadAllLines(DEFAULT_LOG);
+            Assert.Equal(3, loggedLines.Length);
+            return loggedLines;
+        }
+
+
 
 #region Disposing code
         protected virtual void Dispose(bool disposing)
