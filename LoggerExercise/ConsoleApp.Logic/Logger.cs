@@ -13,9 +13,9 @@ namespace ConsoleApp
         private readonly bool logToFile;
         private readonly bool logToConsole;
         private readonly bool logToDatabase;
-        private static bool logMessage;
-        private static bool logWarning;
-        private static bool logError;
+        private readonly bool logMessage;
+        private readonly bool logWarning;
+        private readonly bool logError;
         private static IDictionary dbParams;
 
         public Logger(bool logToFileParam, bool logToConsoleParam, bool logToDatabaseParam, bool logMessageParam, bool logWarningParam, bool logErrorParam, IDictionary dbParamsMap)
@@ -97,7 +97,7 @@ namespace ConsoleApp
             }
         }
 
-        private static void LogToDatabase(string messageText, bool message, bool warning, bool error)
+        private void LogToDatabase(string messageText, bool message, bool warning, bool error)
         {
             string connectionString = "Server=" + dbParams["serverName"] + ";Initial Catalog=" + dbParams["DataBaseName"] + ";User ID=" + dbParams["userName"] + ";Password=" + dbParams["password"] + ";";
             SqlConnection sqlConnection = new SqlConnection(connectionString);
@@ -124,7 +124,7 @@ namespace ConsoleApp
             sqlCommand.ExecuteNonQuery();
         }
 
-        private static string BuildLogText(string messageText, bool message, bool warning, bool error)
+        private string BuildLogText(string messageText, bool message, bool warning, bool error)
         {
             string l = string.Empty;
             if (error && logError)
