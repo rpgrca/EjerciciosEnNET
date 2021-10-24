@@ -16,7 +16,7 @@ namespace ConsoleApp.IntegrationTests
         public void AddingArecord_WhenAmessageArrivesAndLoggerIsConfiguredToLogThem()
         {
             var sut = new Logger(false, false, true, true, false, false, GetDatabaseParameters());
-            sut.LogMessage(SAMPLE_LOG_TEXT, true, false, false);
+            sut.LogMessage(new Entry(SAMPLE_LOG_TEXT, true, false, false));
 
             var validator = new LoggerTableValidator();
             validator.EnsureRegisterCountIs(1);
@@ -27,7 +27,7 @@ namespace ConsoleApp.IntegrationTests
         public void AddingArecord_WhenAwarningArrivesAndLoggerIsConfiguredToLogThem()
         {
             var sut = new Logger(false, false, true, false, true, false, GetDatabaseParameters());
-            sut.LogMessage(SAMPLE_LOG_TEXT, false, true, false);
+            sut.LogMessage(new Entry(SAMPLE_LOG_TEXT, false, true, false));
 
             var validator = new LoggerTableValidator();
             validator.EnsureRegisterCountIs(1);
@@ -38,7 +38,7 @@ namespace ConsoleApp.IntegrationTests
         public void AddingArecord_WhenAnErrorArrivesAndLoggerIsConfiguredToLogThem()
         {
             var sut = new Logger(false, false, true, false, false, true, GetDatabaseParameters());
-            sut.LogMessage(SAMPLE_LOG_TEXT, false, false, true);
+            sut.LogMessage(new Entry(SAMPLE_LOG_TEXT, false, false, true));
 
             var validator = new LoggerTableValidator();
             validator.EnsureRegisterCountIs(1);
@@ -52,7 +52,7 @@ namespace ConsoleApp.IntegrationTests
         public void AddingNoRecord_WhenSomethingArrivesAndItsNotConfiguredToLogThem(bool message, bool warning, bool error)
         {
             var sut = new Logger(false, false, true, message, warning, error, GetDatabaseParameters());
-            sut.LogMessage(SAMPLE_LOG_TEXT, !message, !warning, !error);
+            sut.LogMessage(new Entry(SAMPLE_LOG_TEXT, !message, !warning, !error));
 
             var validator = new LoggerTableValidator();
             validator.EnsureItIsEmpty();

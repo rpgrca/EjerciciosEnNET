@@ -17,7 +17,9 @@ namespace ConsoleApp
 
             logger = new Logger(true, true, true, true, true, true, dbParamsMap);
 
-            logger.LogMessage("Log message text", true, false, false);
+            var entry = new Entry("Log message text", message: true);
+
+            logger.LogMessage(entry);
             Console.ReadKey();
         }
     }

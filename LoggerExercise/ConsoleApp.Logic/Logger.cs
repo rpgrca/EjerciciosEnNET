@@ -42,19 +42,19 @@ namespace ConsoleApp
             dbParams = dbParamsMap;
         }
 
-        public void LogMessage(string messageText, bool message, bool warning, bool error)
+        public void LogMessage(Entry entry)
         {
-            if (string.IsNullOrWhiteSpace(messageText))
+            if (string.IsNullOrWhiteSpace(entry.Text))
             {
                 return;
             }
 
-            if (!message && !warning && !error)
+            if (!entry.Message && !entry.Warning && !entry.Error)
             {
                 throw new Exception(MUST_SPECIFY_MESSAGE_WARNING_ERROR);
             }
 
-            string l = new Summary(logMessage, logWarning, logError).Build(messageText.Trim(), message, warning, error);
+            string l = new Summary(logMessage, logWarning, logError).Build(entry.Text.Trim(), entry.Message, entry.Warning, entry.Error);
 
             if (logToFile)
             {
@@ -63,12 +63,12 @@ namespace ConsoleApp
 
             if (logToConsole)
             {
-                new ConsoleLogging().Log(message, warning, error, l);
+                new ConsoleLogging().Log(entry.Message, entry.Warning, entry.Error, l);
             }
 
             if (logToDatabase)
             {
-                new DatabaseLogging(logMessage, logWarning, logError, dbParams).Log(messageText, message, warning, error);
+                new DatabaseLogging(logMessage, logWarning, logError, dbParams).Log(entry.Text, entry.Message, entry.Warning, entry.Error);
             }
         }
     }
