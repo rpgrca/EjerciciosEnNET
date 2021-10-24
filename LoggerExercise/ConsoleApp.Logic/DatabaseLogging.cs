@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 
 namespace ConsoleApp
@@ -8,9 +8,9 @@ namespace ConsoleApp
         private readonly bool _logMessage;
         private readonly bool _logWarning;
         private readonly bool _logError;
-        private readonly IDictionary _dbParams;
+        private readonly IDictionary<string, string> _dbParams;
 
-        public DatabaseLogging(bool logMessage, bool logWarning, bool logError, IDictionary dbParams)
+        public DatabaseLogging(bool logMessage, bool logWarning, bool logError, IDictionary<string, string> dbParams)
         {
             _logMessage = logMessage;
             _logWarning = logWarning;

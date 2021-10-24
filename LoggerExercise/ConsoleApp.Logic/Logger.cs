@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace ConsoleApp
 {
@@ -14,9 +14,9 @@ namespace ConsoleApp
         private readonly bool logMessage;
         private readonly bool logWarning;
         private readonly bool logError;
-        private static IDictionary dbParams;
+        private static IDictionary<string, string> dbParams;
 
-        public Logger(bool logToFileParam, bool logToConsoleParam, bool logToDatabaseParam, bool logMessageParam, bool logWarningParam, bool logErrorParam, IDictionary dbParamsMap)
+        public Logger(bool logToFileParam, bool logToConsoleParam, bool logToDatabaseParam, bool logMessageParam, bool logWarningParam, bool logErrorParam, IDictionary<string, string> dbParamsMap)
         {
             if (!logToConsoleParam && !logToFileParam && !logToDatabaseParam)
             {
