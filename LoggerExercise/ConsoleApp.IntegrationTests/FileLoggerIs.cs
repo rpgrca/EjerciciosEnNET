@@ -29,15 +29,6 @@ namespace ConsoleApp.IntegrationTests
             Assert.False(LoggerDirectory.LogFileExists());
         }
 
-        [Fact]
-        public void ThrowingException_WhenNoneOfMessageWarningErrorIsSpecifiedInMethod()
-        {
-            var sut = new Logger(true, true, true, true, true, true, new Dictionary<string, string>());
-            var entry = new Entry.Builder().WithText("test").Build();
-            var exception = Assert.Throws<Exception>(() => sut.LogMessage(entry));
-            Assert.Equal(Logger.MUST_SPECIFY_MESSAGE_WARNING_ERROR, exception.Message);
-        }
-
         [Theory]
         [InlineData(true, true)]
         [InlineData(true, false)]

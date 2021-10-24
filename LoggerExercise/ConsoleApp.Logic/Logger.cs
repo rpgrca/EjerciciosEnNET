@@ -42,17 +42,9 @@ namespace ConsoleApp
             dbParams = dbParamsMap;
         }
 
-        public void LogMessage(Entry entry)
+        public void LogMessage(IEntry entry)
         {
-            if (string.IsNullOrWhiteSpace(entry.Text))
-            {
-                return;
-            }
-
-            if (!entry.Message && !entry.Warning && !entry.Error)
-            {
-                throw new Exception(MUST_SPECIFY_MESSAGE_WARNING_ERROR);
-            }
+            if (entry is NullEntry) return;
 
             string l = new Summary(logMessage, logWarning, logError).Build(entry.Text.Trim(), entry.Message, entry.Warning, entry.Error);
 

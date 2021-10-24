@@ -1,6 +1,16 @@
+using System;
+
 namespace ConsoleApp
 {
-    public class Entry
+    public interface IEntry
+    {
+        string Text { get; }
+        bool Message { get; }
+        bool Warning { get; }
+        bool Error { get; }
+    }
+
+    public class Entry : IEntry
     {
         public static class Director
         {
@@ -64,8 +74,15 @@ namespace ConsoleApp
                 return this;
             }
 
-            public Entry Build() =>
-                new Entry(_text, _message, _warning, _error);
+            public IEntry Build()
+            {
+                if (string.IsNullOrWhiteSpace(_text))
+                {
+                    return new NullEntry();
+                }
+
+                return new Entry(_text, _message, _warning, _error);
+            }
         }
 
         public string Text { get; }
@@ -73,7 +90,29 @@ namespace ConsoleApp
         public bool Warning { get; }
         public bool Error { get; }
 
-        private Entry(string text, bool message = false, bool warning = false, bool error = false) =>
+        protected Entry(string text, bool message, bool warning, bool error)
+        {
+            if (!message && !warning && !error)
+            {
+                throw new Exception(Logger.MUST_SPECIFY_MESSAGE_WARNING_ERROR);
+            }
+
             (Text, Message, Warning, Error) = (text, message, warning, error);
+        }
+    }
+
+    public class NullEntry : IEntry
+    {
+        public NullEntry()
+        {
+        }
+
+        public string Text => "";
+
+        public bool Message => false;
+
+        public bool Warning => false;
+
+        public bool Error => false;
     }
 }

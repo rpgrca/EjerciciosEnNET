@@ -18,7 +18,7 @@ namespace ConsoleApp
             _dbParams = dbParams;
         }
 
-        public void Log(Entry entry)
+        public void Log(IEntry entry)
         {
             int t = 0;
             if (entry.Message && _logMessage)
