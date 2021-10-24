@@ -17,7 +17,7 @@ namespace ConsoleApp
 
             logger = new Logger(true, true, true, true, true, true, dbParamsMap);
 
-            var entry = new Entry("Log message text", message: true);
+            var entry = Entry.Director.ConfigureToBuildMessage("Log message text").Build();
 
             logger.LogMessage(entry);
             Console.ReadKey();

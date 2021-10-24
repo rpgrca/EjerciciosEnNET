@@ -68,7 +68,7 @@ namespace ConsoleApp
 
             if (logToDatabase)
             {
-                new DatabaseLogging(logMessage, logWarning, logError, dbParams).Log(entry.Text, entry.Message, entry.Warning, entry.Error);
+                new DatabaseLogging(logMessage, logWarning, logError, dbParams).Log(entry);
             }
         }
     }

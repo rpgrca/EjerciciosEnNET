@@ -18,20 +18,20 @@ namespace ConsoleApp
             _dbParams = dbParams;
         }
 
-        public void Log(string messageText, bool message, bool warning, bool error)
+        public void Log(Entry entry)
         {
             int t = 0;
-            if (message && _logMessage)
+            if (entry.Message && _logMessage)
             {
                 t = 1;
             }
 
-            if (error && _logError)
+            if (entry.Error && _logError)
             {
                 t = 2;
             }
 
-            if (warning && _logWarning)
+            if (entry.Warning && _logWarning)
             {
                 t = 3;
             }
@@ -41,7 +41,7 @@ namespace ConsoleApp
                 string connectionString = "Server=" + _dbParams["serverName"] + ";Initial Catalog=" + _dbParams["DataBaseName"] + ";User ID=" + _dbParams["userName"] + ";Password=" + _dbParams["password"] + ";";
                 SqlConnection sqlConnection = new SqlConnection(connectionString);
 
-                string insertStatement = "insert into Log_Values values('" + messageText + "', " + t.ToString() + ")";
+                string insertStatement = "insert into Log_Values values('" + entry.Text + "', " + t.ToString() + ")";
                 SqlCommand sqlCommand = new SqlCommand(insertStatement, sqlConnection);
                 sqlConnection.Open();
                 sqlCommand.ExecuteNonQuery();

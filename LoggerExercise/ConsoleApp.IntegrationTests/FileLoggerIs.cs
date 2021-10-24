@@ -23,8 +23,9 @@ namespace ConsoleApp.IntegrationTests
         public void StoppingProcess_WhenMessageIsEmpty(string invalidMessage)
         {
             var sut = new Logger(true, true, true, true, true, true, new Dictionary<string, string>());
+            var entry = Entry.Director.ConfigureToBuildFullLog(invalidMessage).Build();
 
-            sut.LogMessage(new Entry(invalidMessage, true, true, true));
+            sut.LogMessage(entry);
             Assert.False(LoggerDirectory.LogFileExists());
         }
 
@@ -32,8 +33,8 @@ namespace ConsoleApp.IntegrationTests
         public void ThrowingException_WhenNoneOfMessageWarningErrorIsSpecifiedInMethod()
         {
             var sut = new Logger(true, true, true, true, true, true, new Dictionary<string, string>());
-
-            var exception = Assert.Throws<Exception>(() => sut.LogMessage(new Entry("test", false, false, false)));
+            var entry = new Entry.Builder().WithText("test").Build();
+            var exception = Assert.Throws<Exception>(() => sut.LogMessage(entry));
             Assert.Equal(Logger.MUST_SPECIFY_MESSAGE_WARNING_ERROR, exception.Message);
         }
 
@@ -45,7 +46,8 @@ namespace ConsoleApp.IntegrationTests
         public void LoggingAmessage_WhenAmessageArrivesAndLoggerIsConfiguredToLogThem(bool logWarnings, bool logErrors)
         {
             var sut = new Logger(true, false, false, true, logWarnings, logErrors, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
-            sut.LogMessage(new Entry(SAMPLE_LOG_TEXT, true, false, false));
+            var entry = Entry.Director.ConfigureToBuildMessage(SAMPLE_LOG_TEXT).Build();
+            sut.LogMessage(entry);
 
             var loggerFile = new LoggerFileValidator();
             loggerFile.EnsureThatPoppedLineIs("message", SAMPLE_LOG_TEXT);
@@ -58,7 +60,8 @@ namespace ConsoleApp.IntegrationTests
         public void NotLoggingAmessage_WhenConstructorIsSetNotToLogMessages(bool logWarnings, bool logErrors)
         {
             var sut = new Logger(true, false, false, false, logWarnings, logErrors, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
-            sut.LogMessage(new Entry(SAMPLE_LOG_TEXT, true, false, false));
+            var entry = Entry.Director.ConfigureToBuildMessage(SAMPLE_LOG_TEXT).Build();
+            sut.LogMessage(entry);
 
             var validator = new LoggerFileValidator();
             validator.EnsureItIsEmpty();
@@ -72,7 +75,8 @@ namespace ConsoleApp.IntegrationTests
         public void LoggingAwarning_WhenAwarningArrivesAndLoggerIsConfiguredToLogThem(bool logMessages, bool logErrors)
         {
             var sut = new Logger(true, false, false, logMessages, true, logErrors, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
-            sut.LogMessage(new Entry(SAMPLE_LOG_TEXT, false, true, false));
+            var entry = Entry.Director.ConfigureToBuildWarning(SAMPLE_LOG_TEXT).Build();
+            sut.LogMessage(entry);
 
             var validator = new LoggerFileValidator();
             validator.EnsureLineCountIs(1);
@@ -86,7 +90,8 @@ namespace ConsoleApp.IntegrationTests
         public void NotLoggingAwarning_WhenConstructorIsSetNotToLogWarnings(bool logMessages, bool logErrors)
         {
             var sut = new Logger(true, false, false, logMessages, false, logErrors, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
-            sut.LogMessage(new Entry(SAMPLE_LOG_TEXT, false, true, false));
+            var entry = Entry.Director.ConfigureToBuildWarning(SAMPLE_LOG_TEXT).Build();
+            sut.LogMessage(entry);
 
             var validator = new LoggerFileValidator();
             validator.EnsureItIsEmpty();
@@ -100,7 +105,8 @@ namespace ConsoleApp.IntegrationTests
         public void LoggingAnError_WhenAnErrorArrivesAndLoggerIsConfiguredToLogThem(bool logMessages, bool logWarnings)
         {
             var sut = new Logger(true, false, false, logMessages, logWarnings, true, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
-            sut.LogMessage(new Entry(SAMPLE_LOG_TEXT, false, false, true));
+            var entry = Entry.Director.ConfigureToBuildError(SAMPLE_LOG_TEXT).Build();
+            sut.LogMessage(entry);
 
             var validator = new LoggerFileValidator();
             validator.EnsureLineCountIs(1);
@@ -114,7 +120,8 @@ namespace ConsoleApp.IntegrationTests
         public void NotLoggingAnError_WhenConstructorIsSetNotToLogErrors(bool logMessages, bool logWarnings)
         {
             var sut = new Logger(true, false, false, logMessages, logWarnings, false, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
-            sut.LogMessage(new Entry(SAMPLE_LOG_TEXT, false, false, true));
+            var entry = Entry.Director.ConfigureToBuildError(SAMPLE_LOG_TEXT).Build();
+            sut.LogMessage(entry);
 
             var validator = new LoggerFileValidator();
             validator.EnsureItIsEmpty();
@@ -126,7 +133,12 @@ namespace ConsoleApp.IntegrationTests
         public void LoggingMessageAndWarning_WhenTheyArriveAndLoggerIsConfiguredToLogThem(bool logErrors)
         {
             var sut = new Logger(true, false, false, true, true, logErrors, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
-            sut.LogMessage(new Entry(SAMPLE_LOG_TEXT, true, true, false));
+            var entry = new Entry.Builder()
+                .WithText(SAMPLE_LOG_TEXT)
+                .AsMessage()
+                .AsWarning()
+                .Build();
+            sut.LogMessage(entry);
 
             var validator = new LoggerFileValidator();
             validator.EnsureLineCountIs(2);
@@ -140,7 +152,12 @@ namespace ConsoleApp.IntegrationTests
         public void LoggingMessageAndError_WhenTheyArriveAndLoggerIsConfiguredToLogThem(bool logWarnings)
         {
             var sut = new Logger(true, false, false, true, logWarnings, true, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
-            sut.LogMessage(new Entry(SAMPLE_LOG_TEXT, true, false, true));
+            var entry = new Entry.Builder()
+                .WithText(SAMPLE_LOG_TEXT)
+                .AsMessage()
+                .AsError()
+                .Build();
+            sut.LogMessage(entry);
 
             var validator = new LoggerFileValidator();
             validator.EnsureLineCountIs(2);
@@ -154,7 +171,8 @@ namespace ConsoleApp.IntegrationTests
         public void LoggingWarningAndError_WhenTheyArriveAndLoggerIsConfiguredToLogThem(bool logMessages)
         {
             var sut = new Logger(true, false, false, logMessages, true, true, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
-            sut.LogMessage(new Entry(SAMPLE_LOG_TEXT, false, true, true));
+            var entry = Entry.Director.ConfigureToBuildProblem(SAMPLE_LOG_TEXT).Build();
+            sut.LogMessage(entry);
 
             var validator = new LoggerFileValidator();
             validator.EnsureLineCountIs(2);
@@ -166,7 +184,9 @@ namespace ConsoleApp.IntegrationTests
         public void LoggingMessageWarningAndError_WhenTheyArriveAndLoggerIsConfiguredToLogThem()
         {
             var sut = new Logger(true, false, false, true, true, true, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
-            sut.LogMessage(new Entry(SAMPLE_LOG_TEXT, true, true, true));
+            var entry = Entry.Director.ConfigureToBuildFullLog(SAMPLE_LOG_TEXT).Build();
+
+            sut.LogMessage(entry);
 
             var validator = new LoggerFileValidator();
             validator.EnsureLineCountIs(3);

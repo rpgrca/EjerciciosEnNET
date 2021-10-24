@@ -16,7 +16,8 @@ namespace ConsoleApp.IntegrationTests
         public void AddingArecord_WhenAmessageArrivesAndLoggerIsConfiguredToLogThem()
         {
             var sut = new Logger(false, false, true, true, false, false, GetDatabaseParameters());
-            sut.LogMessage(new Entry(SAMPLE_LOG_TEXT, true, false, false));
+            var entry = Entry.Director.ConfigureToBuildMessage(SAMPLE_LOG_TEXT).Build();
+            sut.LogMessage(entry);
 
             var validator = new LoggerTableValidator();
             validator.EnsureRegisterCountIs(1);
@@ -27,7 +28,8 @@ namespace ConsoleApp.IntegrationTests
         public void AddingArecord_WhenAwarningArrivesAndLoggerIsConfiguredToLogThem()
         {
             var sut = new Logger(false, false, true, false, true, false, GetDatabaseParameters());
-            sut.LogMessage(new Entry(SAMPLE_LOG_TEXT, false, true, false));
+            var entry = Entry.Director.ConfigureToBuildWarning(SAMPLE_LOG_TEXT).Build();
+            sut.LogMessage(entry);
 
             var validator = new LoggerTableValidator();
             validator.EnsureRegisterCountIs(1);
@@ -38,25 +40,47 @@ namespace ConsoleApp.IntegrationTests
         public void AddingArecord_WhenAnErrorArrivesAndLoggerIsConfiguredToLogThem()
         {
             var sut = new Logger(false, false, true, false, false, true, GetDatabaseParameters());
-            sut.LogMessage(new Entry(SAMPLE_LOG_TEXT, false, false, true));
+            var entry = Entry.Director.ConfigureToBuildError(SAMPLE_LOG_TEXT).Build();
+            sut.LogMessage(entry);
 
             var validator = new LoggerTableValidator();
             validator.EnsureRegisterCountIs(1);
             validator.EnsureThatPoppedLineIs(SAMPLE_LOG_TEXT, 2);
         }
 
-        [Theory]
-        [InlineData(false, true, true)]
-        [InlineData(true, false, true)]
-        [InlineData(true, true, false)]
-        public void AddingNoRecord_WhenSomethingArrivesAndItsNotConfiguredToLogThem(bool message, bool warning, bool error)
+        [Fact]
+        public void AddingNoRecord_WhenMessageArrivesAndItsNotConfiguredToLogThem()
         {
-            var sut = new Logger(false, false, true, message, warning, error, GetDatabaseParameters());
-            sut.LogMessage(new Entry(SAMPLE_LOG_TEXT, !message, !warning, !error));
+            var sut = new Logger(false, false, true, false, true, true, GetDatabaseParameters());
+            var entry = Entry.Director.ConfigureToBuildMessage(SAMPLE_LOG_TEXT).Build();
+            sut.LogMessage(entry);
 
             var validator = new LoggerTableValidator();
             validator.EnsureItIsEmpty();
         }
+
+        [Fact]
+        public void AddingNoRecord_WhenWarningArrivesAndItsNotConfiguredToLogThem()
+        {
+            var sut = new Logger(false, false, true, true, false, true, GetDatabaseParameters());
+            var entry = Entry.Director.ConfigureToBuildWarning(SAMPLE_LOG_TEXT).Build();
+            sut.LogMessage(entry);
+
+            var validator = new LoggerTableValidator();
+            validator.EnsureItIsEmpty();
+        }
+
+        [Fact]
+        public void AddingNoRecord_WhenErrorArrivesAndItsNotConfiguredToLogThem()
+        {
+            var sut = new Logger(false, false, true, true, true, false, GetDatabaseParameters());
+            var entry = Entry.Director.ConfigureToBuildError(SAMPLE_LOG_TEXT).Build();
+            sut.LogMessage(entry);
+
+            var validator = new LoggerTableValidator();
+            validator.EnsureItIsEmpty();
+        }
+
 
         private static Dictionary<string, string> GetDatabaseParameters() =>
             new()
