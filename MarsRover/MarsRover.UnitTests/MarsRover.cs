@@ -51,6 +51,11 @@ namespace MarsRover.UnitTests
                     {
                         _x--;
                     }
+
+                    if (command == 'B')
+                    {
+                        _x++;
+                    }
                 }
                 else if (_direction == 'S')
                 {
@@ -58,12 +63,22 @@ namespace MarsRover.UnitTests
                     {
                         _y--;
                     }
+
+                    if (command == 'B')
+                    {
+                        _y++;
+                    }
                 }
                 else
                 {
                     if (command == 'F')
                     {
                         _x++;
+                    }
+
+                    if (command == 'B')
+                    {
+                        _x--;
                     }
                 }
 
