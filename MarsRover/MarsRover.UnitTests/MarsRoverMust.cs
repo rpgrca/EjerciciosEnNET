@@ -71,7 +71,7 @@ namespace MarsRover.UnitTests
         [Theory]
         [InlineData("LF", 1)]
         [InlineData("LFF", 0)]
-        [InlineData("LFFF", -1)]
+        [InlineData("LFFF", 9)]
         public void Test1(string commands, int expectedX)
         {
             var rover = new MarsRover('N', 2, 2);
@@ -83,7 +83,7 @@ namespace MarsRover.UnitTests
         [Theory]
         [InlineData("LLF", 1)]
         [InlineData("LLFF", 0)]
-        [InlineData("LLFFF", -1)]
+        [InlineData("LLFFF", 9)]
         public void Test2(string commands, int expectedY)
         {
             var rover = new MarsRover('N', 2, 2);
@@ -131,7 +131,7 @@ namespace MarsRover.UnitTests
         [Theory]
         [InlineData("LLLB", 1)]
         [InlineData("LLLBB", 0)]
-        [InlineData("LLLBBB", -1)]
+        [InlineData("LLLBBB", 9)]
         [InlineData("RRRBBB", 5)]
         public void Test6(string commands, int expectedX)
         {
@@ -139,6 +139,78 @@ namespace MarsRover.UnitTests
             rover.SendCommand(commands);
             Assert.Equal(2, rover.GetY());
             Assert.Equal(expectedX, rover.GetX());
+        }
+
+        [Fact]
+        public void Test7()
+        {
+            var rover = new MarsRover('N', 0, 0);
+            rover.SendCommand("B");
+            Assert.Equal(9, rover.GetY());
+            Assert.Equal(0, rover.GetX());
+        }
+
+        [Fact]
+        public void Test8()
+        {
+            var rover = new MarsRover('W', 9, 0);
+            rover.SendCommand("B");
+            Assert.Equal(0, rover.GetY());
+            Assert.Equal(0, rover.GetX());
+        }
+
+        [Fact]
+        public void Test9()
+        {
+            var rover = new MarsRover('E', 0, 0);
+            rover.SendCommand("B");
+            Assert.Equal(0, rover.GetY());
+            Assert.Equal(9, rover.GetX());
+        }
+
+        [Fact]
+        public void Test10()
+        {
+            var rover = new MarsRover('S', 0, 9);
+            rover.SendCommand("B");
+            Assert.Equal(0, rover.GetY());
+            Assert.Equal(0, rover.GetX());
+        }
+
+        [Fact]
+        public void Test11()
+        {
+            var rover = new MarsRover('N', 0, 9);
+            rover.SendCommand("F");
+            Assert.Equal(0, rover.GetY());
+            Assert.Equal(0, rover.GetX());
+        }
+
+        [Fact]
+        public void Test12()
+        {
+            var rover = new MarsRover('W', 0, 0);
+            rover.SendCommand("F");
+            Assert.Equal(0, rover.GetY());
+            Assert.Equal(9, rover.GetX());
+        }
+
+        [Fact]
+        public void Test13()
+        {
+            var rover = new MarsRover('E', 9, 0);
+            rover.SendCommand("F");
+            Assert.Equal(0, rover.GetY());
+            Assert.Equal(0, rover.GetX());
+        }
+
+        [Fact]
+        public void Test14()
+        {
+            var rover = new MarsRover('S', 0, 0);
+            rover.SendCommand("F");
+            Assert.Equal(9, rover.GetY());
+            Assert.Equal(0, rover.GetX());
         }
     }
 }

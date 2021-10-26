@@ -38,20 +38,20 @@ namespace MarsRover.UnitTests
                     case 'F':
                         switch (_direction)
                         {
-                            case 'N': _y++; break;
-                            case 'W': _x--; break;
-                            case 'S': _y--; break;
-                            case 'E': _x++; break;
+                            case 'N': _y = _y == 9? 0 : _y + 1; break;
+                            case 'W': _x = _x == 0? 9 : _x - 1; break;
+                            case 'S': _y = _y == 0? 9 : _y - 1; break;
+                            case 'E': _x = _x == 9? 0 : _x + 1; break;
                         }
                         break;
 
                     case 'B':
                         switch (_direction)
                         {
-                            case 'N': _y--; break;
-                            case 'W': _x++; break;
-                            case 'S': _y++; break;
-                            case 'E': _x--; break;
+                            case 'N': _y = _y == 0? 9 : _y - 1; break;
+                            case 'W': _x = _x == 9? 0 : _x + 1; break;
+                            case 'S': _y = _y == 9? 0 : _y + 1; break;
+                            case 'E': _x = _x == 0? 9 : _x - 1; break;
                         }
                         break;
 
