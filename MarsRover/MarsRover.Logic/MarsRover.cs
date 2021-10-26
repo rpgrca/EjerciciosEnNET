@@ -1,6 +1,6 @@
 using System;
 
-namespace MarsRover.UnitTests
+namespace MarsRover.Logic
 {
     public class MarsRover
     {

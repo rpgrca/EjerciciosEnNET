@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Xunit;
+using MarsRover.Logic;
 
 namespace MarsRover.UnitTests
 {
@@ -13,14 +14,14 @@ namespace MarsRover.UnitTests
         [InlineData(0, 15)]
         public void ThrowException_WhenAnInvalidCoordinateIsSupplied(int x, int y)
         {
-            var exception = Assert.Throws<Exception>(() => new MarsRover('N', x, y, CreateEmptyMap()));
+            var exception = Assert.Throws<Exception>(() => new Logic.MarsRover('N', x, y, CreateEmptyMap()));
             Assert.Equal("Invalid coordinate", exception.Message);
         }
 
         [Fact]
         public void ThrowException_WhenNullMapIsProvided()
         {
-            var exception = Assert.Throws<Exception>(() => new MarsRover('N', 0, 0, null));
+            var exception = Assert.Throws<Exception>(() => new Logic.MarsRover('N', 0, 0, null));
             Assert.Equal("Invalid map", exception.Message);
         }
 
@@ -32,7 +33,7 @@ namespace MarsRover.UnitTests
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
             };
-            var exception = Assert.Throws<Exception>(() => new MarsRover('N', 0, 0, map));
+            var exception = Assert.Throws<Exception>(() => new Logic.MarsRover('N', 0, 0, map));
             Assert.Equal("Invalid map", exception.Message);
         }
 
@@ -52,7 +53,7 @@ namespace MarsRover.UnitTests
                 { 0, 0 },
                 { 0, 0 }
             };
-            var exception = Assert.Throws<Exception>(() => new MarsRover('N', 0, 0, map));
+            var exception = Assert.Throws<Exception>(() => new Logic.MarsRover('N', 0, 0, map));
             Assert.Equal("Invalid map", exception.Message);
         }
 
@@ -63,7 +64,7 @@ namespace MarsRover.UnitTests
         [InlineData('E')]
         public void ReturnSameDirectionAsInitialized(char expectedDirection)
         {
-            var rover = new MarsRover(expectedDirection, 0, 0, CreateEmptyMap());
+            var rover = new Logic.MarsRover(expectedDirection, 0, 0, CreateEmptyMap());
             var direction = rover.GetDirection();
             Assert.Equal(expectedDirection, direction);
         }
@@ -74,7 +75,7 @@ namespace MarsRover.UnitTests
         [InlineData(' ')]
         public void ThrowException_WhenInitializedWithInvalidDirection(char invalidDirection)
         {
-            var exception = Assert.Throws<Exception>(() => new MarsRover(invalidDirection, 0, 0, null));
+            var exception = Assert.Throws<Exception>(() => new Logic.MarsRover(invalidDirection, 0, 0, null));
             Assert.Equal("Invalid command", exception.Message);
         }
 
@@ -89,7 +90,7 @@ namespace MarsRover.UnitTests
             Assert.Equal(2, rover.GetX());
         }
 
-        private static MarsRover CreateRover() => new('N', 2, 2, CreateEmptyMap());
+        private static Logic.MarsRover CreateRover() => new('N', 2, 2, CreateEmptyMap());
 
         private static int[,] CreateEmptyMap() => new[,] {
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -170,7 +171,7 @@ namespace MarsRover.UnitTests
         [InlineData('S', 0, 0, "F", 0, 9)]
         public void ClipCorrectlyToTheOtherSideOfTheMap(char initialDirection, int initialX, int initialY, string command, int expectedX, int expectedY)
         {
-            var rover = new MarsRover(initialDirection, initialX, initialY, CreateEmptyMap());
+            var rover = new Logic.MarsRover(initialDirection, initialX, initialY, CreateEmptyMap());
             rover.SendCommand(command);
             Assert.Equal(expectedY, rover.GetY());
             Assert.Equal(expectedX, rover.GetX());
@@ -179,7 +180,7 @@ namespace MarsRover.UnitTests
         [Fact]
         public void Test16()
         {
-            var rover = new MarsRover('N', 0, 0, GetMapWithObstacleAt_1_0());
+            var rover = new Logic.MarsRover('N', 0, 0, GetMapWithObstacleAt_1_0());
             var exception = Assert.Throws<Exception>(() => rover.SendCommand("FFFFFRFFF"));
             Assert.Equal("Obstacle found", exception.Message);
             Assert.Equal(0, rover.GetX());
@@ -203,7 +204,7 @@ namespace MarsRover.UnitTests
         [Fact]
         public void Test17()
         {
-            var rover = new MarsRover('N', 0, 0, GetMapWithObstacleAt_2_0());
+            var rover = new Logic.MarsRover('N', 0, 0, GetMapWithObstacleAt_2_0());
             var exception = Assert.Throws<Exception>(() => rover.SendCommand("FFFFFRFFF"));
             Assert.Equal("Obstacle found", exception.Message);
             Assert.Equal(0, rover.GetX());
@@ -227,7 +228,7 @@ namespace MarsRover.UnitTests
         [Fact]
         public void Test18()
         {
-            var rover = new MarsRover('N', 0, 0, GetMapWithObstacleAt_0_1());
+            var rover = new Logic.MarsRover('N', 0, 0, GetMapWithObstacleAt_0_1());
             var exception = Assert.Throws<Exception>(() => rover.SendCommand("RF"));
             Assert.Equal("Obstacle found", exception.Message);
             Assert.Equal(0, rover.GetX());
@@ -239,7 +240,7 @@ namespace MarsRover.UnitTests
         [MemberData(nameof(GetSpecialCases))]
         public void Test1(int initialX, int initialY, string commands, int [,] map, char expectedDirection)
         {
-            var rover = new MarsRover('N', initialX, initialY, map);
+            var rover = new Logic.MarsRover('N', initialX, initialY, map);
             var exception = Assert.Throws<Exception>(() => rover.SendCommand(commands));
             Assert.Equal("Obstacle found", exception.Message);
             Assert.Equal(initialX, rover.GetX());
