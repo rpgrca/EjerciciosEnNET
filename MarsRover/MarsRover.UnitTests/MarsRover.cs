@@ -67,23 +67,23 @@ namespace MarsRover.UnitTests
                        break;
 
                     case 'L':
-                        switch (_direction)
+                        _direction = _direction switch
                         {
-                            case 'N': _direction = 'W'; break;
-                            case 'W': _direction = 'S'; break;
-                            case 'S': _direction = 'E'; break;
-                            default: _direction = 'N'; break;
-                        }
+                            'N' => 'W',
+                            'W' => 'S',
+                            'S' => 'E',
+                            _ => 'N',
+                        };
                         break;
 
                     case 'R':
-                        switch (_direction)
+                        _direction = _direction switch
                         {
-                            case 'N': _direction = 'E'; break;
-                            case 'E': _direction = 'S'; break;
-                            case 'S': _direction = 'W'; break;
-                            default: _direction = 'N'; break;
-                        }
+                            'N' => 'E',
+                            'E' => 'S',
+                            'S' => 'W',
+                            _ => 'N',
+                        };
                         break;
                 }
 
