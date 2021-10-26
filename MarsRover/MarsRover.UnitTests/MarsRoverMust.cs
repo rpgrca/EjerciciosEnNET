@@ -132,6 +132,7 @@ namespace MarsRover.UnitTests
         [InlineData("LLLB", 1)]
         [InlineData("LLLBB", 0)]
         [InlineData("LLLBBB", -1)]
+        [InlineData("RRRBBB", 5)]
         public void Test6(string commands, int expectedX)
         {
             var rover = new MarsRover('N', 2, 2);

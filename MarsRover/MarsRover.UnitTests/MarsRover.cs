@@ -33,75 +33,47 @@ namespace MarsRover.UnitTests
         {
             foreach (var command in commands)
             {
-                if (_direction == 'N')
+                switch (command)
                 {
-                    if (command == 'F')
-                    {
-                        _y++;
-                    }
+                    case 'F':
+                        switch (_direction)
+                        {
+                            case 'N': _y++; break;
+                            case 'W': _x--; break;
+                            case 'S': _y--; break;
+                            case 'E': _x++; break;
+                        }
+                        break;
 
-                    if (command == 'B')
-                    {
-                        _y--;
-                    }
-                }
-                else if (_direction == 'W')
-                {
-                    if (command == 'F')
-                    {
-                        _x--;
-                    }
+                    case 'B':
+                        switch (_direction)
+                        {
+                            case 'N': _y--; break;
+                            case 'W': _x++; break;
+                            case 'S': _y++; break;
+                            case 'E': _x--; break;
+                        }
+                        break;
 
-                    if (command == 'B')
-                    {
-                        _x++;
-                    }
-                }
-                else if (_direction == 'S')
-                {
-                    if (command == 'F')
-                    {
-                        _y--;
-                    }
+                    case 'L':
+                        switch (_direction)
+                        {
+                            case 'N': _direction = 'W'; break;
+                            case 'W': _direction = 'S'; break;
+                            case 'S': _direction = 'E'; break;
+                            default: _direction = 'N'; break;
+                        }
+                        break;
 
-                    if (command == 'B')
-                    {
-                        _y++;
-                    }
-                }
-                else
-                {
-                    if (command == 'F')
-                    {
-                        _x++;
-                    }
-
-                    if (command == 'B')
-                    {
-                        _x--;
-                    }
-                }
-
-                if (command == 'L')
-                {
-                    switch (_direction)
-                    {
-                        case 'N': _direction = 'W'; break;
-                        case 'W': _direction = 'S'; break;
-                        case 'S': _direction = 'E'; break;
-                        default: _direction = 'N'; break;
-                    }
-                }
-
-                if (command == 'R')
-                {
-                    switch (_direction)
-                    {
-                        case 'N': _direction = 'E'; break;
-                        case 'E': _direction = 'S'; break;
-                        case 'S': _direction = 'W'; break;
-                        default: _direction = 'N'; break;
-                    }
+                    case 'R':
+                        switch (_direction)
+                        {
+                            case 'N': _direction = 'E'; break;
+                            case 'E': _direction = 'S'; break;
+                            case 'S': _direction = 'W'; break;
+                            default: _direction = 'N'; break;
+                        }
+                        break;
                 }
             }
         }
