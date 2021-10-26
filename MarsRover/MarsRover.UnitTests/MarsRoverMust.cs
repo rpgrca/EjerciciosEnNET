@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace MarsRover.UnitTests
@@ -29,7 +28,7 @@ namespace MarsRover.UnitTests
         }
 
         [Fact]
-        public void Test3()
+        public void AddTwoToY_WhenFacingNorthAndMovingForwardTwice()
         {
             var rover = new MarsRover('N', 0, 0);
             rover.SendCommand("F");
@@ -45,7 +44,7 @@ namespace MarsRover.UnitTests
         [InlineData("FFF", 5)]
         [InlineData("B", 1)]
         [InlineData("BB", 0)]
-        public void Test4(string commands, int expectedY)
+        public void UpdatePositionCorrectly_WhenMovingForwardOrBackward(string commands, int expectedY)
         {
             var rover = new MarsRover('N', 2, 2);
             rover.SendCommand(commands);
@@ -58,19 +57,11 @@ namespace MarsRover.UnitTests
         [InlineData("LL", 'S')]
         [InlineData("LLL", 'E')]
         [InlineData("LLLL", 'N')]
-        public void Test5(string commands, char expectedDirection)
-        {
-            var rover = new MarsRover('N', 2, 2);
-            rover.SendCommand(commands);
-            Assert.Equal(expectedDirection, rover.GetDirection());
-        }
-
-        [Theory]
         [InlineData("R", 'E')]
         [InlineData("RR", 'S')]
         [InlineData("RRR", 'W')]
         [InlineData("RRRR", 'N')]
-        public void Test6(string commands, char expectedDirection)
+        public void UpdateDirectionCorrectly_WhenRotatingLeftOrRight(string commands, char expectedDirection)
         {
             var rover = new MarsRover('N', 2, 2);
             rover.SendCommand(commands);
