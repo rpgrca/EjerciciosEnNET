@@ -67,5 +67,41 @@ namespace MarsRover.UnitTests
             rover.SendCommand(commands);
             Assert.Equal(expectedDirection, rover.GetDirection());
         }
+
+        [Theory]
+        [InlineData("LF", 1)]
+        [InlineData("LFF", 0)]
+        [InlineData("LFFF", -1)]
+        public void Test1(string commands, int expectedX)
+        {
+            var rover = new MarsRover('N', 2, 2);
+            rover.SendCommand(commands);
+            Assert.Equal(expectedX, rover.GetX());
+            Assert.Equal(2, rover.GetY());
+        }
+
+        [Theory]
+        [InlineData("LLF", 1)]
+        [InlineData("LLFF", 0)]
+        [InlineData("LLFFF", -1)]
+        public void Test2(string commands, int expectedY)
+        {
+            var rover = new MarsRover('N', 2, 2);
+            rover.SendCommand(commands);
+            Assert.Equal(expectedY, rover.GetY());
+            Assert.Equal(2, rover.GetX());
+        }
+
+        [Theory]
+        [InlineData("LLLF", 3)]
+        [InlineData("LLLFF", 4)]
+        [InlineData("LLLFFF", 5)]
+        public void Test3(string commands, int expectedX)
+        {
+            var rover = new MarsRover('N', 2, 2);
+            rover.SendCommand(commands);
+            Assert.Equal(2, rover.GetY());
+            Assert.Equal(expectedX, rover.GetX());
+        }
     }
 }

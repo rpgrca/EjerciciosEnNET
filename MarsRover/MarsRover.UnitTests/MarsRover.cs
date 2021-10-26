@@ -33,14 +33,38 @@ namespace MarsRover.UnitTests
         {
             foreach (var command in commands)
             {
-                if (command == 'F')
+                if (_direction == 'N')
                 {
-                    _y++;
-                }
+                    if (command == 'F')
+                    {
+                        _y++;
+                    }
 
-                if (command == 'B')
+                    if (command == 'B')
+                    {
+                        _y--;
+                    }
+                }
+                else if (_direction == 'W')
                 {
-                    _y--;
+                    if (command == 'F')
+                    {
+                        _x--;
+                    }
+                }
+                else if (_direction == 'S')
+                {
+                    if (command == 'F')
+                    {
+                        _y--;
+                    }
+                }
+                else
+                {
+                    if (command == 'F')
+                    {
+                        _x++;
+                    }
                 }
 
                 if (command == 'L')
