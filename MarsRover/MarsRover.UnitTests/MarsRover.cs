@@ -8,7 +8,7 @@ namespace MarsRover.UnitTests
         private int _x;
         private int _y;
 
-        public MarsRover(char direction, int x, int y)
+        public MarsRover(char direction, int x, int y, int [,] map)
         {
             if (direction == 'N' || direction == 'S' || direction == 'E' || direction == 'W')
             {
