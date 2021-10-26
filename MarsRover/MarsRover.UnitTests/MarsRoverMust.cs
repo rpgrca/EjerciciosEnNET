@@ -6,6 +6,56 @@ namespace MarsRover.UnitTests
     public class MarsRoverMust
     {
         [Theory]
+        [InlineData(-1, 0)]
+        [InlineData(15, 0)]
+        [InlineData(0, -1)]
+        [InlineData(0, 15)]
+        public void Test0(int x, int y)
+        {
+            var exception = Assert.Throws<Exception>(() => new MarsRover('N', x, y, GetEmptyMap()));
+            Assert.Equal("Invalid coordinate", exception.Message);
+        }
+
+        [Fact]
+        public void Test01()
+        {
+            var exception = Assert.Throws<Exception>(() => new MarsRover('N', 0, 0, null));
+            Assert.Equal("Invalid map", exception.Message);
+        }
+
+        [Fact]
+        public void Test02()
+        {
+            var map = new[,]
+            {
+                { 0, 0 },
+                { 0, 0 }
+            };
+            var exception = Assert.Throws<Exception>(() => new MarsRover('N', 0, 0, map));
+            Assert.Equal("Invalid map", exception.Message);
+        }
+
+        [Fact]
+        public void Test03()
+        {
+            var map = new[,]
+            {
+                { 0, 0 },
+                { 0, 0 },
+                { 0, 0 },
+                { 0, 0 },
+                { 0, 0 },
+                { 0, 0 },
+                { 0, 0 },
+                { 0, 0 },
+                { 0, 0 },
+                { 0, 0 }
+            };
+            var exception = Assert.Throws<Exception>(() => new MarsRover('N', 0, 0, map));
+            Assert.Equal("Invalid map", exception.Message);
+        }
+
+        [Theory]
         [InlineData('N')]
         [InlineData('S')]
         [InlineData('W')]
@@ -23,7 +73,7 @@ namespace MarsRover.UnitTests
         [InlineData(' ')]
         public void ThrowException_WhenInitializedWithInvalidDirection(char invalidDirection)
         {
-            var exception = Assert.Throws<Exception>(() => new MarsRover(invalidDirection, 0, 0, GetEmptyMap()));
+            var exception = Assert.Throws<Exception>(() => new MarsRover(invalidDirection, 0, 0, null));
             Assert.Equal("Invalid command", exception.Message);
         }
 
@@ -231,10 +281,130 @@ namespace MarsRover.UnitTests
         [Fact]
         public void Test15()
         {
-            var rover = new MarsRover('S', 0, 0, GetEmptyMap());
-            rover.SendCommand("FFFFFLFFF");
+            var rover = new MarsRover('N', 0, 0, GetEmptyMap());
+            rover.SendCommand("FFFFFRFFF");
             Assert.Equal(5, rover.GetY());
             Assert.Equal(3, rover.GetX());
         }
+
+        [Fact]
+        public void Test16()
+        {
+            var rover = new MarsRover('N', 0, 0, GetMapWithObstacleAt_1_0());
+            var exception = Assert.Throws<Exception>(() => rover.SendCommand("FFFFFRFFF"));
+            Assert.Equal("Obstacle found", exception.Message);
+            Assert.Equal(0, rover.GetX());
+            Assert.Equal(0, rover.GetY());
+            Assert.Equal('N', rover.GetDirection());
+        }
+
+        private static int[,] GetMapWithObstacleAt_1_0() => new[,] {
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+            };
+
+        [Fact]
+        public void Test17()
+        {
+            var rover = new MarsRover('N', 0, 0, GetMapWithObstacleAt_2_0());
+            var exception = Assert.Throws<Exception>(() => rover.SendCommand("FFFFFRFFF"));
+            Assert.Equal("Obstacle found", exception.Message);
+            Assert.Equal(0, rover.GetX());
+            Assert.Equal(1, rover.GetY());
+            Assert.Equal('N', rover.GetDirection());
+        }
+
+        private static int[,] GetMapWithObstacleAt_2_0() => new[,] {
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+            };
+
+        [Fact]
+        public void Test18()
+        {
+            var rover = new MarsRover('N', 0, 0, GetMapWithObstacleAt_0_1());
+            var exception = Assert.Throws<Exception>(() => rover.SendCommand("RF"));
+            Assert.Equal("Obstacle found", exception.Message);
+            Assert.Equal(0, rover.GetX());
+            Assert.Equal(0, rover.GetY());
+            Assert.Equal('E', rover.GetDirection());
+        }
+
+        private static int[,] GetMapWithObstacleAt_0_1() => new[,] {
+                { 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+            };
+
+        [Fact]
+        public void Test19()
+        {
+            var rover = new MarsRover('N', 0, 0, GetMapWithObstacleAt_9_0());
+            var exception = Assert.Throws<Exception>(() => rover.SendCommand("LF"));
+            Assert.Equal("Obstacle found", exception.Message);
+            Assert.Equal(0, rover.GetX());
+            Assert.Equal(0, rover.GetY());
+            Assert.Equal('W', rover.GetDirection());
+        }
+
+        private static int[,] GetMapWithObstacleAt_9_0() => new[,] {
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+            };
+
+        [Fact]
+        public void Test20()
+        {
+            var rover = new MarsRover('N', 0, 0, GetMapWithObstacleAt_0_9());
+            var exception = Assert.Throws<Exception>(() => rover.SendCommand("B"));
+            Assert.Equal("Obstacle found", exception.Message);
+            Assert.Equal(0, rover.GetX());
+            Assert.Equal(0, rover.GetY());
+            Assert.Equal('N', rover.GetDirection());
+        }
+
+        private static int[,] GetMapWithObstacleAt_0_9() => new[,] {
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+            };
     }
 }
