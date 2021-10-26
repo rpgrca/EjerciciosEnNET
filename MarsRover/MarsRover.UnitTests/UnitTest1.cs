@@ -3,26 +3,50 @@ using Xunit;
 
 namespace MarsRover.UnitTests
 {
-    public class UnitTest1
+    public class MarsRoverMust
     {
-        [Fact]
-        public void Test1()
+        [Theory]
+        [InlineData('N')]
+        [InlineData('S')]
+        [InlineData('W')]
+        [InlineData('E')]
+        public void ReturnSameDirectionAsInitialized(char expectedDirection)
         {
-            var rover = new MarsRover('N', 0, 0);
+            var rover = new MarsRover(expectedDirection, 0, 0);
             var direction = rover.GetDirection();
-            Assert.Equal('N', direction);
+            Assert.Equal(expectedDirection, direction);
+        }
+
+        [Theory]
+        [InlineData('n')]
+        [InlineData('z')]
+        [InlineData(' ')]
+        public void ThrowException_WhenInitializedWithInvalidDirection(char invalidDirection)
+        {
+            var exception = Assert.Throws<Exception>(() => new MarsRover(invalidDirection, 0, 0));
+            Assert.Equal("Invalid command", exception.Message);
         }
     }
 
     public class MarsRover
     {
+        private readonly char _direction;
+
         public MarsRover(char direction, int x, int y)
         {
+            if (direction == 'N' || direction == 'S' || direction == 'E' || direction == 'W')
+            {
+                _direction = direction;
+            }
+            else
+            {
+                throw new Exception("Invalid command");
+            }
         }
 
         public char GetDirection()
         {
-            return 'N';
+            return _direction;
         }
     }
 }
