@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace MarsRover.UnitTests
@@ -10,33 +11,33 @@ namespace MarsRover.UnitTests
         [InlineData(15, 0)]
         [InlineData(0, -1)]
         [InlineData(0, 15)]
-        public void Test0(int x, int y)
+        public void ThrowException_WhenAnInvalidCoordinateIsSupplied(int x, int y)
         {
-            var exception = Assert.Throws<Exception>(() => new MarsRover('N', x, y, GetEmptyMap()));
+            var exception = Assert.Throws<Exception>(() => new MarsRover('N', x, y, CreateEmptyMap()));
             Assert.Equal("Invalid coordinate", exception.Message);
         }
 
         [Fact]
-        public void Test01()
+        public void ThrowException_WhenNullMapIsProvided()
         {
             var exception = Assert.Throws<Exception>(() => new MarsRover('N', 0, 0, null));
             Assert.Equal("Invalid map", exception.Message);
         }
 
         [Fact]
-        public void Test02()
+        public void ThrowException_WhenMapLackingHeightIsProvided()
         {
             var map = new[,]
             {
-                { 0, 0 },
-                { 0, 0 }
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
             };
             var exception = Assert.Throws<Exception>(() => new MarsRover('N', 0, 0, map));
             Assert.Equal("Invalid map", exception.Message);
         }
 
         [Fact]
-        public void Test03()
+        public void ThrowException_WhenMapLackingWidthIsProvided()
         {
             var map = new[,]
             {
@@ -62,7 +63,7 @@ namespace MarsRover.UnitTests
         [InlineData('E')]
         public void ReturnSameDirectionAsInitialized(char expectedDirection)
         {
-            var rover = new MarsRover(expectedDirection, 0, 0, GetEmptyMap());
+            var rover = new MarsRover(expectedDirection, 0, 0, CreateEmptyMap());
             var direction = rover.GetDirection();
             Assert.Equal(expectedDirection, direction);
         }
@@ -80,7 +81,7 @@ namespace MarsRover.UnitTests
         [Fact]
         public void AddTwoToY_WhenFacingNorthAndMovingForwardTwice()
         {
-            var rover = GetRover();
+            var rover = CreateRover();
             rover.SendCommand("F");
 
             rover.SendCommand("F");
@@ -88,9 +89,9 @@ namespace MarsRover.UnitTests
             Assert.Equal(2, rover.GetX());
         }
 
-        private static MarsRover GetRover() => new MarsRover('N', 2, 2, GetEmptyMap());
+        private static MarsRover CreateRover() => new('N', 2, 2, CreateEmptyMap());
 
-        private static int[,] GetEmptyMap() => new[,] {
+        private static int[,] CreateEmptyMap() => new[,] {
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -104,17 +105,18 @@ namespace MarsRover.UnitTests
             };
 
         [Theory]
-        [InlineData("F", 3)]
-        [InlineData("FF", 4)]
-        [InlineData("FFF", 5)]
-        [InlineData("B", 1)]
-        [InlineData("BB", 0)]
-        public void UpdatePositionCorrectly_WhenMovingForwardOrBackward(string commands, int expectedY)
+        [InlineData("F", 2, 3)]
+        [InlineData("FF", 2, 4)]
+        [InlineData("FFF", 2, 5)]
+        [InlineData("B", 2, 1)]
+        [InlineData("BB", 2, 0)]
+        [InlineData("FFFFFRFFF", 5, 7)]
+        public void UpdatePositionCorrectly_WhenMovingForwardOrBackward(string commands, int expectedX, int expectedY)
         {
-            var rover = GetRover();
+            var rover = CreateRover();
             rover.SendCommand(commands);
+            Assert.Equal(expectedX, rover.GetX());
             Assert.Equal(expectedY, rover.GetY());
-            Assert.Equal(2, rover.GetX());
         }
 
         [Theory]
@@ -128,163 +130,50 @@ namespace MarsRover.UnitTests
         [InlineData("RRRR", 'N')]
         public void UpdateDirectionCorrectly_WhenRotatingLeftOrRight(string commands, char expectedDirection)
         {
-            var rover = GetRover();
+            var rover = CreateRover();
             rover.SendCommand(commands);
             Assert.Equal(expectedDirection, rover.GetDirection());
         }
 
         [Theory]
-        [InlineData("LF", 1)]
-        [InlineData("LFF", 0)]
-        [InlineData("LFFF", 9)]
-        public void Test1(string commands, int expectedX)
+        [InlineData("LF", 1, 2)]
+        [InlineData("LFF", 0, 2)]
+        [InlineData("LLF", 2, 1)]
+        [InlineData("LLFF", 2, 0)]
+        [InlineData("LLLF", 3, 2)]
+        [InlineData("LLLFF", 4, 2)]
+        [InlineData("LLLFFF", 5, 2)]
+        [InlineData("LB", 3, 2)]
+        [InlineData("LBB", 4, 2)]
+        [InlineData("LBBB", 5, 2)]
+        [InlineData("LLB", 2, 3)]
+        [InlineData("LLBB", 2, 4)]
+        [InlineData("LLBBB", 2, 5)]
+        [InlineData("LLLB", 1, 2)]
+        [InlineData("LLLBB", 0, 2)]
+        public void UpdatePositionCorrectly_WhenTurningLeftAndMovingForwardOrBackward(string commands, int expectedX, int expectedY)
         {
-            var rover = GetRover();
-            rover.SendCommand(commands);
-            Assert.Equal(expectedX, rover.GetX());
-            Assert.Equal(2, rover.GetY());
-        }
-
-        [Theory]
-        [InlineData("LLF", 1)]
-        [InlineData("LLFF", 0)]
-        [InlineData("LLFFF", 9)]
-        public void Test2(string commands, int expectedY)
-        {
-            var rover = GetRover();
-            rover.SendCommand(commands);
-            Assert.Equal(expectedY, rover.GetY());
-            Assert.Equal(2, rover.GetX());
-        }
-
-        [Theory]
-        [InlineData("LLLF", 3)]
-        [InlineData("LLLFF", 4)]
-        [InlineData("LLLFFF", 5)]
-        public void Test3(string commands, int expectedX)
-        {
-            var rover = GetRover();
-            rover.SendCommand(commands);
-            Assert.Equal(2, rover.GetY());
-            Assert.Equal(expectedX, rover.GetX());
-        }
-
-        [Theory]
-        [InlineData("LB", 3)]
-        [InlineData("LBB", 4)]
-        [InlineData("LBBB", 5)]
-        public void Test4(string commands, int expectedX)
-        {
-            var rover = GetRover();
-            rover.SendCommand(commands);
-            Assert.Equal(expectedX, rover.GetX());
-            Assert.Equal(2, rover.GetY());
-        }
-
-        [Theory]
-        [InlineData("LLB", 3)]
-        [InlineData("LLBB", 4)]
-        [InlineData("LLBBB", 5)]
-        public void Test5(string commands, int expectedY)
-        {
-            var rover = GetRover();
+            var rover = CreateRover();
             rover.SendCommand(commands);
             Assert.Equal(expectedY, rover.GetY());
-            Assert.Equal(2, rover.GetX());
-        }
-
-        [Theory]
-        [InlineData("LLLB", 1)]
-        [InlineData("LLLBB", 0)]
-        [InlineData("LLLBBB", 9)]
-        [InlineData("RRRBBB", 5)]
-        public void Test6(string commands, int expectedX)
-        {
-            var rover = GetRover();
-            rover.SendCommand(commands);
-            Assert.Equal(2, rover.GetY());
             Assert.Equal(expectedX, rover.GetX());
         }
 
-        [Fact]
-        public void Test7()
+        [Theory]
+        [InlineData('N', 0, 0, "B", 0, 9)]
+        [InlineData('W', 9, 0, "B", 0, 0)]
+        [InlineData('E', 0, 0, "B", 9, 0)]
+        [InlineData('S', 0, 9, "B", 0, 0)]
+        [InlineData('N', 0, 9, "F", 0, 0)]
+        [InlineData('W', 0, 0, "F", 9, 0)]
+        [InlineData('E', 9, 0, "F", 0, 0)]
+        [InlineData('S', 0, 0, "F", 0, 9)]
+        public void ClipCorrectlyToTheOtherSideOfTheMap(char initialDirection, int initialX, int initialY, string command, int expectedX, int expectedY)
         {
-            var rover = new MarsRover('N', 0, 0, GetEmptyMap());
-            rover.SendCommand("B");
-            Assert.Equal(9, rover.GetY());
-            Assert.Equal(0, rover.GetX());
-        }
-
-        [Fact]
-        public void Test8()
-        {
-            var rover = new MarsRover('W', 9, 0, GetEmptyMap());
-            rover.SendCommand("B");
-            Assert.Equal(0, rover.GetY());
-            Assert.Equal(0, rover.GetX());
-        }
-
-        [Fact]
-        public void Test9()
-        {
-            var rover = new MarsRover('E', 0, 0, GetEmptyMap());
-            rover.SendCommand("B");
-            Assert.Equal(0, rover.GetY());
-            Assert.Equal(9, rover.GetX());
-        }
-
-        [Fact]
-        public void Test10()
-        {
-            var rover = new MarsRover('S', 0, 9, GetEmptyMap());
-            rover.SendCommand("B");
-            Assert.Equal(0, rover.GetY());
-            Assert.Equal(0, rover.GetX());
-        }
-
-        [Fact]
-        public void Test11()
-        {
-            var rover = new MarsRover('N', 0, 9, GetEmptyMap());
-            rover.SendCommand("F");
-            Assert.Equal(0, rover.GetY());
-            Assert.Equal(0, rover.GetX());
-        }
-
-        [Fact]
-        public void Test12()
-        {
-            var rover = new MarsRover('W', 0, 0, GetEmptyMap());
-            rover.SendCommand("F");
-            Assert.Equal(0, rover.GetY());
-            Assert.Equal(9, rover.GetX());
-        }
-
-        [Fact]
-        public void Test13()
-        {
-            var rover = new MarsRover('E', 9, 0, GetEmptyMap());
-            rover.SendCommand("F");
-            Assert.Equal(0, rover.GetY());
-            Assert.Equal(0, rover.GetX());
-        }
-
-        [Fact]
-        public void Test14()
-        {
-            var rover = new MarsRover('S', 0, 0, GetEmptyMap());
-            rover.SendCommand("F");
-            Assert.Equal(9, rover.GetY());
-            Assert.Equal(0, rover.GetX());
-        }
-
-        [Fact]
-        public void Test15()
-        {
-            var rover = new MarsRover('N', 0, 0, GetEmptyMap());
-            rover.SendCommand("FFFFFRFFF");
-            Assert.Equal(5, rover.GetY());
-            Assert.Equal(3, rover.GetX());
+            var rover = new MarsRover(initialDirection, initialX, initialY, CreateEmptyMap());
+            rover.SendCommand(command);
+            Assert.Equal(expectedY, rover.GetY());
+            Assert.Equal(expectedX, rover.GetX());
         }
 
         [Fact]
@@ -346,6 +235,25 @@ namespace MarsRover.UnitTests
             Assert.Equal('E', rover.GetDirection());
         }
 
+        [Theory]
+        [MemberData(nameof(GetSpecialCases))]
+        public void Test1(int initialX, int initialY, string commands, int [,] map, char expectedDirection)
+        {
+            var rover = new MarsRover('N', initialX, initialY, map);
+            var exception = Assert.Throws<Exception>(() => rover.SendCommand(commands));
+            Assert.Equal("Obstacle found", exception.Message);
+            Assert.Equal(initialX, rover.GetX());
+            Assert.Equal(initialY, rover.GetY());
+            Assert.Equal(expectedDirection, rover.GetDirection());
+        }
+
+        public static IEnumerable<object[]> GetSpecialCases()
+        {
+            yield return new object[] { 0, 0, "RF", GetMapWithObstacleAt_0_1(), 'E' };
+            yield return new object[] { 0, 0, "LF", GetMapWithObstacleAt_9_0(), 'W' };
+            yield return new object[] { 0, 0, "B", GetMapWithObstacleAt_0_9(), 'N' };
+        }
+
         private static int[,] GetMapWithObstacleAt_0_1() => new[,] {
                 { 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 },
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -359,17 +267,6 @@ namespace MarsRover.UnitTests
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
             };
 
-        [Fact]
-        public void Test19()
-        {
-            var rover = new MarsRover('N', 0, 0, GetMapWithObstacleAt_9_0());
-            var exception = Assert.Throws<Exception>(() => rover.SendCommand("LF"));
-            Assert.Equal("Obstacle found", exception.Message);
-            Assert.Equal(0, rover.GetX());
-            Assert.Equal(0, rover.GetY());
-            Assert.Equal('W', rover.GetDirection());
-        }
-
         private static int[,] GetMapWithObstacleAt_9_0() => new[,] {
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -382,17 +279,6 @@ namespace MarsRover.UnitTests
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
             };
-
-        [Fact]
-        public void Test20()
-        {
-            var rover = new MarsRover('N', 0, 0, GetMapWithObstacleAt_0_9());
-            var exception = Assert.Throws<Exception>(() => rover.SendCommand("B"));
-            Assert.Equal("Obstacle found", exception.Message);
-            Assert.Equal(0, rover.GetX());
-            Assert.Equal(0, rover.GetY());
-            Assert.Equal('N', rover.GetDirection());
-        }
 
         private static int[,] GetMapWithObstacleAt_0_9() => new[,] {
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
