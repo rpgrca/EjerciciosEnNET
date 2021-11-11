@@ -8,16 +8,12 @@ namespace ConsoleApp
         public const string INVALID_CONFIGURATION = "Invalid configuration";
         public const string MUST_SPECIFY_MESSAGE_WARNING_ERROR = "Error or Warning or Message must be specified";
         public const string INVALID_CONFIGURATION_VARIABLES = "Invalid configuration variables";
-        private readonly bool logToFile;
-        private readonly bool logToConsole;
-        private readonly bool logToDatabase;
-        private readonly bool logMessage;
-        private readonly bool logWarning;
-        private readonly bool logError;
-        private static IDictionary<string, string> dbParams;
+        private readonly List<ILogger> _loggers;
 
-        public Logger(bool logToFileParam, bool logToConsoleParam, bool logToDatabaseParam, bool logMessageParam, bool logWarningParam, bool logErrorParam, IDictionary<string, string> dbParamsMap)
+        public Logger(bool logToFileParam, bool logToConsoleParam, bool logToDatabaseParam, bool logMessageParam, bool logWarningParam, bool logErrorParam, IDictionary<string, string> dbParams)
         {
+            _loggers = new List<ILogger>();
+
             if (!logToConsoleParam && !logToFileParam && !logToDatabaseParam)
             {
                 throw new Exception(INVALID_CONFIGURATION);
@@ -28,39 +24,32 @@ namespace ConsoleApp
                 throw new Exception(MUST_SPECIFY_MESSAGE_WARNING_ERROR);
             }
 
-            if (dbParamsMap is null)
+            if (dbParams is null)
             {
                 throw new Exception(INVALID_CONFIGURATION_VARIABLES);
             }
 
-            logError = logErrorParam;
-            logMessage = logMessageParam;
-            logWarning = logWarningParam;
-            logToDatabase = logToDatabaseParam;
-            logToFile = logToFileParam;
-            logToConsole = logToConsoleParam;
-            dbParams = dbParamsMap;
+            if (logToFileParam)
+            {
+                _loggers.Add(new FileLogging(logMessageParam, logWarningParam, logErrorParam, dbParams));
+            }
+
+            if (logToConsoleParam)
+            {
+                _loggers.Add(new ConsoleLogging(logMessageParam, logWarningParam, logErrorParam, dbParams));
+            }
+
+            if (logToDatabaseParam)
+            {
+                _loggers.Add(new DatabaseLogging(logMessageParam, logWarningParam, logErrorParam, dbParams));
+            }
         }
 
         public void LogMessage(IEntry entry)
         {
-            if (entry is NullEntry) return;
-
-            string l = new Summary(logMessage, logWarning, logError).Build(entry.Text.Trim(), entry.Message, entry.Warning, entry.Error);
-
-            if (logToFile)
+            foreach (var logger in _loggers)
             {
-                new FileLogging(dbParams["logFileFolder"] + "/logFile.txt").Log(l);
-            }
-
-            if (logToConsole)
-            {
-                new ConsoleLogging().Log(entry.Message, entry.Warning, entry.Error, l);
-            }
-
-            if (logToDatabase)
-            {
-                new DatabaseLogging(logMessage, logWarning, logError, dbParams).Log(entry);
+                logger.Log(entry);
             }
         }
     }

@@ -22,7 +22,7 @@ namespace ConsoleApp.IntegrationTests
         [InlineData(null)]
         public void StoppingProcess_WhenMessageIsEmpty(string invalidMessage)
         {
-            var sut = new Logger(true, true, true, true, true, true, new Dictionary<string, string>());
+            var sut = new Logger(true, true, true, true, true, true, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
             var entry = Entry.Director.ConfigureToBuildFullLog(invalidMessage).Build();
 
             sut.LogMessage(entry);
@@ -48,14 +48,13 @@ namespace ConsoleApp.IntegrationTests
         [InlineData(true, true)]
         [InlineData(true, false)]
         [InlineData(false, true)]
-        public void NotLoggingAmessage_WhenConstructorIsSetNotToLogMessages(bool logWarnings, bool logErrors)
+        public void NotEvenCreatingLogFile_WhenConstructorIsSetNotToLogMessages(bool logWarnings, bool logErrors)
         {
             var sut = new Logger(true, false, false, false, logWarnings, logErrors, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
             var entry = Entry.Director.ConfigureToBuildMessage(SAMPLE_LOG_TEXT).Build();
             sut.LogMessage(entry);
 
-            var validator = new LoggerFileValidator();
-            validator.EnsureItIsEmpty();
+            Assert.False(System.IO.File.Exists(DEFAULT_LOG_PATH));
         }
 
         [Theory]
@@ -78,14 +77,13 @@ namespace ConsoleApp.IntegrationTests
         [InlineData(true, true)]
         [InlineData(true, false)]
         [InlineData(false, true)]
-        public void NotLoggingAwarning_WhenConstructorIsSetNotToLogWarnings(bool logMessages, bool logErrors)
+        public void NotEvenCreatingLogFile_WhenConstructorIsSetNotToLogWarnings(bool logMessages, bool logErrors)
         {
             var sut = new Logger(true, false, false, logMessages, false, logErrors, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
             var entry = Entry.Director.ConfigureToBuildWarning(SAMPLE_LOG_TEXT).Build();
             sut.LogMessage(entry);
 
-            var validator = new LoggerFileValidator();
-            validator.EnsureItIsEmpty();
+            Assert.False(System.IO.File.Exists(DEFAULT_LOG_PATH));
         }
 
         [Theory]
@@ -108,14 +106,13 @@ namespace ConsoleApp.IntegrationTests
         [InlineData(true, true)]
         [InlineData(true, false)]
         [InlineData(false, true)]
-        public void NotLoggingAnError_WhenConstructorIsSetNotToLogErrors(bool logMessages, bool logWarnings)
+        public void NotEvenCreatingLogFile_WhenConstructorIsSetNotToLogErrors(bool logMessages, bool logWarnings)
         {
             var sut = new Logger(true, false, false, logMessages, logWarnings, false, new Dictionary<string, string>() { { "logFileFolder", DEFAULT_LOG_PATH } });
             var entry = Entry.Director.ConfigureToBuildError(SAMPLE_LOG_TEXT).Build();
             sut.LogMessage(entry);
 
-            var validator = new LoggerFileValidator();
-            validator.EnsureItIsEmpty();
+            Assert.False(System.IO.File.Exists(DEFAULT_LOG_PATH));
         }
 
         [Theory]
@@ -133,8 +130,8 @@ namespace ConsoleApp.IntegrationTests
 
             var validator = new LoggerFileValidator();
             validator.EnsureLineCountIs(2);
-            validator.EnsureThatPoppedLineIs("warning", SAMPLE_LOG_TEXT);
             validator.EnsureThatPoppedLineIs("message", SAMPLE_LOG_TEXT);
+            validator.EnsureThatPoppedLineIs("warning", SAMPLE_LOG_TEXT);
         }
 
         [Theory]
@@ -152,8 +149,8 @@ namespace ConsoleApp.IntegrationTests
 
             var validator = new LoggerFileValidator();
             validator.EnsureLineCountIs(2);
-            validator.EnsureThatPoppedLineIs("error", SAMPLE_LOG_TEXT);
             validator.EnsureThatPoppedLineIs("message", SAMPLE_LOG_TEXT);
+            validator.EnsureThatPoppedLineIs("error", SAMPLE_LOG_TEXT);
         }
 
         [Theory]
@@ -167,8 +164,8 @@ namespace ConsoleApp.IntegrationTests
 
             var validator = new LoggerFileValidator();
             validator.EnsureLineCountIs(2);
-            validator.EnsureThatPoppedLineIs("error", SAMPLE_LOG_TEXT);
             validator.EnsureThatPoppedLineIs("warning", SAMPLE_LOG_TEXT);
+            validator.EnsureThatPoppedLineIs("error", SAMPLE_LOG_TEXT);
         }
 
         [Fact]
@@ -181,9 +178,9 @@ namespace ConsoleApp.IntegrationTests
 
             var validator = new LoggerFileValidator();
             validator.EnsureLineCountIs(3);
-            validator.EnsureThatPoppedLineIs("error", SAMPLE_LOG_TEXT);
-            validator.EnsureThatPoppedLineIs("warning", SAMPLE_LOG_TEXT);
             validator.EnsureThatPoppedLineIs("message", SAMPLE_LOG_TEXT);
+            validator.EnsureThatPoppedLineIs("warning", SAMPLE_LOG_TEXT);
+            validator.EnsureThatPoppedLineIs("error", SAMPLE_LOG_TEXT);
         }
 
 #region Disposing code

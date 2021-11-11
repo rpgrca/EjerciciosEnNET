@@ -1,15 +1,8 @@
 using System;
+using System.Collections.Generic;
 
 namespace ConsoleApp
 {
-    public interface IEntry
-    {
-        string Text { get; }
-        bool Message { get; }
-        bool Warning { get; }
-        bool Error { get; }
-    }
-
     public class Entry : IEntry
     {
         public static class Director
@@ -89,6 +82,7 @@ namespace ConsoleApp
         public bool Message { get; }
         public bool Warning { get; }
         public bool Error { get; }
+        private List<ILevel> _levels;
 
         protected Entry(string text, bool message, bool warning, bool error)
         {
@@ -97,22 +91,30 @@ namespace ConsoleApp
                 throw new Exception(Logger.MUST_SPECIFY_MESSAGE_WARNING_ERROR);
             }
 
-            (Text, Message, Warning, Error) = (text, message, warning, error);
-        }
-    }
+            Text = text;
+            _levels = new List<ILevel>();
+            if (message)
+            {
+                _levels.Add(new Message());
+            }
 
-    public class NullEntry : IEntry
-    {
-        public NullEntry()
+            if (warning)
+            {
+                _levels.Add(new Warning());
+            }
+
+            if (error)
+            {
+                _levels.Add(new Error());
+            }
+        }
+
+        public void LogInto(ILogger logger)
         {
+            foreach (var level in _levels)
+            {
+                level.LogInto(logger, Text);
+            }
         }
-
-        public string Text => "";
-
-        public bool Message => false;
-
-        public bool Warning => false;
-
-        public bool Error => false;
     }
 }

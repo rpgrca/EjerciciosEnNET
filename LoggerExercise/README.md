@@ -19,3 +19,13 @@ Pasos de exploración realizados
   1. Al solucionarlo se detecta otro funcionamiento cuestionable: en la base de datos se escribe un único registro mientras que en el archivo de texto y en la consola se escriben varios. Tiene sentido que un mensaje sea también una advertencia y un error? No deberían ser excluyentes como en el caso de la base de datos?
   1. Se implementa un parameter object para unir el texto del log con los flags.
   1. Se implementa el Builder pattern para construir al parameter object Entry.
+  1. Se soluciona un bug, si el archivo de log ya existe en el disco nunca se abre siquiera y revienta.
+  1. Si no hay nada que loguear ni siquiera se abre el archivo (antiguamente se creaba un archivo vacío).
+  1. En el logueo de base de datos se le da mayor prioridad al warning que al error, eso debería cambiarse (además de correr una actualización a la base para cambiar todos los 2 por 3 y todos los 3 por 2 eventualmente).
+
+
+        public const string DATABASE_SERVER = "tcp:logger-exercise-server.database.windows.net,1433";
+        public const string DATABASE_NAME = "logger";
+        public const string DATABASE_PASSWORD = "Extremely_Long_Password";
+        public const string DATABASE_USERNAME = "Logger_server_admin_login";
+     }

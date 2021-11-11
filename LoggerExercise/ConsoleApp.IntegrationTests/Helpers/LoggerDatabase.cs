@@ -12,6 +12,7 @@ namespace ConsoleApp.IntegrationTests.Helpers
             sqlConnection.Open();
             using var sqlCommand = new SqlCommand("DELETE FROM Log_Values", sqlConnection);
             sqlCommand.ExecuteNonQuery();
+            sqlConnection.Close();
         }
     }
 }
