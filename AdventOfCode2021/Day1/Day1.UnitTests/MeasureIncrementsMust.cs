@@ -4,7 +4,7 @@ using Day1.Logic;
 
 namespace Day1.UnitTests
 {
-    public class XyzMust
+    public class MeasureIncrementsMust
     {
         [Fact]
         public void ObtainSevenIncrements_WhenSuppliedSampleData()
@@ -20,7 +20,7 @@ namespace Day1.UnitTests
 260
 263";
 
-            var sut = new Xyz(DEPTHS);
+            var sut = new MeasureIncrements(DEPTHS);
             Assert.Equal(7, sut.Increments);
         }
 
@@ -2028,7 +2028,7 @@ namespace Day1.UnitTests
 9752
 9745";
 
-            var sut = new Xyz(DEPTHS);
+            var sut = new MeasureIncrements(DEPTHS);
             Assert.Equal(1665, sut.Increments);
         }
     }

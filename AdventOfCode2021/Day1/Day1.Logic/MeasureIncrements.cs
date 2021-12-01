@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 namespace Day1.Logic
 {
-    public class Xyz
+    public class MeasureIncrements
     {
         private readonly IEnumerable<int> _depths;
 
         public int Increments { get; private set; }
 
-        public Xyz(string depths)
+        public MeasureIncrements(string depths)
         {
             _depths = depths.Split("\n").Select(p => int.Parse(p));
             CountIncrements();
