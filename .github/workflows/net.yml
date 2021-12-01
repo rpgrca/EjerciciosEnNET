@@ -22,7 +22,7 @@ jobs:
     - name: Restore packages
       run: |
            dotnet restore
-           for s in SistemaDeAparcamiento AdventOfCode2020 Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum Codewars SatelliteMessages MarsRover; do
+           for s in SistemaDeAparcamiento AdventOfCode2020 AdventOfCode2021 Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum Codewars SatelliteMessages MarsRover; do
                dotnet restore $s/$s.sln
            done
 
@@ -32,7 +32,7 @@ jobs:
     - name: Build solutions
       run: |
            dotnet build --configuration Debug --no-restore
-           for s in SistemaDeAparcamiento AdventOfCode2020 Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum Codewars SatelliteMessages MarsRover; do
+           for s in SistemaDeAparcamiento AdventOfCode2020 AdventOfCode2021 Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum Codewars SatelliteMessages MarsRover; do
                dotnet build --configuration Debug --no-restore $s/$s.sln
            done
 
@@ -50,6 +50,12 @@ jobs:
       run: |
            for d in `seq 25`; do
                coverlet AdventOfCode2020/Day$d/Day$d.UnitTests/bin/Debug/net5.0/Day$d.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2020/Day$d/Day$d.UnitTests/bin/Debug/net5.0/Day$d.UnitTests.dll --no-build" --format OpenCover --output adventofcode2020day$d.coverage.xml
+           done
+
+    - name: Testing AdventOfCode2021
+      run: |
+           for d in `seq 1`; do
+               coverlet AdventOfCode2020/Day$d/Day$d.UnitTests/bin/Debug/net5.0/Day$d.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2021/Day$d/Day$d.UnitTests/bin/Debug/net5.0/Day$d.UnitTests.dll --no-build" --format OpenCover --output adventofcode2021day$d.coverage.xml
            done
 
     - name: Testing Codewars
