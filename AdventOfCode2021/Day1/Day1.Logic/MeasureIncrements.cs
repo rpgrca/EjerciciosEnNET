@@ -1,18 +1,16 @@
-using System;
 using System.Linq;
-using System.Collections.Generic;
 
 namespace Day1.Logic
 {
     public class MeasureIncrements
     {
-        private readonly List<int> _depths;
+        private readonly int[] _depths;
 
         public int Increments { get; }
 
         public MeasureIncrements(string depths, int windowSize)
         {
-            _depths = depths.Split("\n").Select(p => int.Parse(p)).ToList();
+            _depths = depths.Split("\n").Select(p => int.Parse(p)).ToArray();
             Increments = CountSlidingWindowIncrements(windowSize);
         }
 
@@ -21,9 +19,9 @@ namespace Day1.Logic
             var previousValue = int.MaxValue;
             var counter = 0;
 
-            for (var index = 0; index < _depths.Count - (measure - 1); index++)
+            for (var index = 0; index < _depths.Length - (measure - 1); index++)
             {
-                var currentValue = _depths.Skip(index).Take(measure).Sum();
+                var currentValue = _depths[index..(index+measure)].Sum();
                 if (currentValue > previousValue)
                 {
                     counter++;
