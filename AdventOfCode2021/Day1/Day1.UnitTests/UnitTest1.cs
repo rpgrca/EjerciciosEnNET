@@ -1,5 +1,6 @@
 using System;
 using Xunit;
+using Day1.Logic;
 
 namespace Day1.UnitTests
 {
@@ -18,6 +19,9 @@ namespace Day1.UnitTests
 269
 260
 263";
+
+            var sut = new Xyz(DEPTHS);
+            Assert.Equal(7, sut.Increments);
         }
     }
 }
