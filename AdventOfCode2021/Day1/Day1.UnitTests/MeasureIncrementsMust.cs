@@ -2031,5 +2031,59 @@ namespace Day1.UnitTests
             var sut = new MeasureIncrements(DEPTHS);
             Assert.Equal(1665, sut.Increments);
         }
+
+        [Fact]
+        public void Test0()
+        {
+            const string DEPTHS = @"199
+200
+208";
+
+            var sut = new MeasureIncrements(DEPTHS);
+            Assert.Equal(0, sut.ThreeMeasureSlidingWindowIncrements);
+        }
+
+        [Fact]
+        public void Test1()
+        {
+            const string DEPTHS = @"199
+200
+208
+210";
+
+            var sut = new MeasureIncrements(DEPTHS);
+            Assert.Equal(1, sut.ThreeMeasureSlidingWindowIncrements);
+        }
+
+        [Fact]
+        public void Test2()
+        {
+            const string DEPTHS = @"199
+200
+208
+210
+200";
+
+            var sut = new MeasureIncrements(DEPTHS);
+            Assert.Equal(1, sut.ThreeMeasureSlidingWindowIncrements);
+        }
+
+        [Fact]
+        public void Test3()
+        {
+             const string DEPTHS = @"199
+200
+208
+210
+200
+207
+240
+269
+260
+263";
+
+            var sut = new MeasureIncrements(DEPTHS);
+            Assert.Equal(5, sut.ThreeMeasureSlidingWindowIncrements);
+        }
     }
 }
