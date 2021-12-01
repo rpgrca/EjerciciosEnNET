@@ -8,42 +8,22 @@ namespace Day1.Logic
     {
         private readonly List<int> _depths;
 
-        public int Increments { get; private set; }
-        public int ThreeMeasureSlidingWindowIncrements { get; private set; }
+        public int Increments { get; }
 
-        public MeasureIncrements(string depths)
+        public MeasureIncrements(string depths, int windowSize)
         {
             _depths = depths.Split("\n").Select(p => int.Parse(p)).ToList();
-            CountIncrements();
-            CountThreeMeasureSlidingWindowIncrements();
+            Increments = CountSlidingWindowIncrements(windowSize);
         }
 
-        private void CountIncrements()
+        private int CountSlidingWindowIncrements(int measure)
         {
             var previousValue = int.MaxValue;
             var counter = 0;
 
-            foreach (var value in _depths)
+            for (var index = 0; index < _depths.Count - (measure - 1); index++)
             {
-                if (value > previousValue)
-                {
-                    counter++;
-                }
-
-                previousValue = value;
-            }
-
-            Increments = counter;
-        }
-
-        private void CountThreeMeasureSlidingWindowIncrements()
-        {
-            var previousValue = int.MaxValue;
-            var counter = 0;
-
-            for (var index = 0; index < _depths.Count - 2; index++)
-            {
-                var currentValue = _depths[index] + _depths[index+1] + _depths[index+2];
+                var currentValue = _depths.Skip(index).Take(measure).Sum();
                 if (currentValue > previousValue)
                 {
                     counter++;
@@ -52,7 +32,7 @@ namespace Day1.Logic
                 previousValue = currentValue;
             }
 
-            ThreeMeasureSlidingWindowIncrements = counter;
+            return counter;
         }
     }
 }

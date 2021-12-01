@@ -20,7 +20,7 @@ namespace Day1.UnitTests
 260
 263";
 
-            var sut = new MeasureIncrements(DEPTHS);
+            var sut = new MeasureIncrements(DEPTHS, 1);
             Assert.Equal(7, sut.Increments);
         }
 
@@ -2028,7 +2028,7 @@ namespace Day1.UnitTests
 9752
 9745";
 
-            var sut = new MeasureIncrements(DEPTHS);
+            var sut = new MeasureIncrements(DEPTHS, 1);
             Assert.Equal(1665, sut.Increments);
         }
 
@@ -2039,8 +2039,8 @@ namespace Day1.UnitTests
 200
 208";
 
-            var sut = new MeasureIncrements(DEPTHS);
-            Assert.Equal(0, sut.ThreeMeasureSlidingWindowIncrements);
+            var sut = new MeasureIncrements(DEPTHS, 3);
+            Assert.Equal(0, sut.Increments);
         }
 
         [Fact]
@@ -2057,8 +2057,8 @@ namespace Day1.UnitTests
 260
 263";
 
-            var sut = new MeasureIncrements(DEPTHS);
-            Assert.Equal(5, sut.ThreeMeasureSlidingWindowIncrements);
+            var sut = new MeasureIncrements(DEPTHS, 3);
+            Assert.Equal(5, sut.Increments);
         }
 
         [Fact]
@@ -4065,8 +4065,8 @@ namespace Day1.UnitTests
 9752
 9745";
 
-            var sut = new MeasureIncrements(DEPTHS);
-            Assert.Equal(1702, sut.ThreeMeasureSlidingWindowIncrements);
+            var sut = new MeasureIncrements(DEPTHS, 3);
+            Assert.Equal(1702, sut.Increments);
         }
     }
 }
