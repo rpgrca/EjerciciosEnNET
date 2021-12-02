@@ -21,7 +21,7 @@ namespace Day2.Logic
                     .ToList();
 
                 HorizontalPosition = _course.Sum(p => p.Item1 == "forward"? p.Item2 : 0);
-                Depth = 5;
+                Depth = _course.Sum(p => p.Item1 == "down"? p.Item2 : p.Item1 == "up"? -p.Item2 : 0);
             }
         }
     }

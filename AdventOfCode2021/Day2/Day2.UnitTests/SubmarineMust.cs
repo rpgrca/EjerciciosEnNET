@@ -25,6 +25,10 @@ forward 2", 15)]
         [InlineData("", 0)]
         [InlineData(@"forward 5
 down 5", 5)]
+        [InlineData(@"forward 5
+down 5
+forward 8
+up 3", 2)]
         public void CalculateDepthCorrectly(string course, int expectedDepth)
         {
             var sut = new Submarine(course);
