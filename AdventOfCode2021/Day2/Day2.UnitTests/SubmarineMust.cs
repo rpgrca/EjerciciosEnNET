@@ -36,7 +36,7 @@ up 3", 2)]
         }
 
         [Fact]
-        public void SolveSampleExercise()
+        public void SolveSample()
         {
             const string COURSE = @"forward 5
 down 5
@@ -49,7 +49,7 @@ forward 2";
         }
 
         [Fact]
-        public void SolveFirstExercise()
+        public void SolveFirstPuzzle()
         {
             const string COURSE = @"forward 2
 forward 3

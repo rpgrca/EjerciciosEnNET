@@ -13,7 +13,7 @@ namespace Day2.Logic
         public int Multiplier { get; }
         public int Aim { get; set; }
 
-        public Submarine(string course)
+        public Submarine(string course, bool useAim = false)
         {
             if (! string.IsNullOrWhiteSpace(course))
             {
@@ -22,8 +22,11 @@ namespace Day2.Logic
                     .Select(a => (a[0], int.Parse(a[1])))
                     .ToList();
 
-                HorizontalPosition = _course.Sum(p => p.Item1 == "forward"? p.Item2 : 0);
-                Depth = _course.Sum(p => p.Item1 == "down"? p.Item2 : p.Item1 == "up"? -p.Item2 : 0);
+                if (! useAim)
+                {
+                    HorizontalPosition = _course.Sum(p => p.Item1 == "forward"? p.Item2 : 0);
+                    Depth = _course.Sum(p => p.Item1 == "down"? p.Item2 : p.Item1 == "up"? -p.Item2 : 0);
+                }
                 Multiplier = HorizontalPosition * Depth;
             }
         }
