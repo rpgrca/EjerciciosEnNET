@@ -5,36 +5,27 @@ namespace Day2.UnitTests
 {
     public class SubmarineMust
     {
-        [Fact]
-        public void Test1()
-        {
-            const string COURSE = @"forward 5";
-            var sut = new Submarine(COURSE);
-
-            Assert.Equal(5, sut.HorizontalPosition);
-        }
-
-        [Fact]
-        public void Test2()
-        {
-            const string COURSE = @"forward 5
+        [Theory]
+        [InlineData("forward 5", 5)]
+        [InlineData(@"forward 5
 down 5
-forward 8";
-            var sut = new Submarine(COURSE);
-
-            Assert.Equal(13, sut.HorizontalPosition);
-        }
-
-        [Fact]
-        public void Test3()
-        {
-            const string COURSE = @"forward 5
+forward 8", 13)]
+        [InlineData(@"forward 5
 down 5
 forward 8
-forward 2";
-            var sut = new Submarine(COURSE);
+forward 2", 15)]
+        public void CalculateHorizontalPositionCorrectly(string course, int expectedPosition)
+        {
+            var sut = new Submarine(course);
 
-            Assert.Equal(15, sut.HorizontalPosition);
+            Assert.Equal(expectedPosition, sut.HorizontalPosition);
+        }
+
+        [Fact]
+        public void CalculateDepthCorrectly()
+        {
+            var sut = new Submarine(string.Empty);
+            Assert.Equal(0, sut.Depth);
         }
     }
 }
