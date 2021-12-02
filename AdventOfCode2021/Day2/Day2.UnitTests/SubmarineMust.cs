@@ -34,5 +34,18 @@ up 3", 2)]
             var sut = new Submarine(course);
             Assert.Equal(expectedDepth, sut.Depth);
         }
+
+        [Fact]
+        public void SolveSampleExercise()
+        {
+            const string COURSE = @"forward 5
+down 5
+forward 8
+up 3
+down 8
+forward 2";
+            var sut = new Submarine(COURSE);
+            Assert.Equal(150, sut.Multiplier);
+        }
     }
 }

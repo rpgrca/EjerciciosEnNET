@@ -10,6 +10,7 @@ namespace Day2.Logic
 
         public int HorizontalPosition { get; }
         public int Depth { get; }
+        public int Multiplier { get; }
 
         public Submarine(string course)
         {
@@ -22,6 +23,7 @@ namespace Day2.Logic
 
                 HorizontalPosition = _course.Sum(p => p.Item1 == "forward"? p.Item2 : 0);
                 Depth = _course.Sum(p => p.Item1 == "down"? p.Item2 : p.Item1 == "up"? -p.Item2 : 0);
+                Multiplier = HorizontalPosition * Depth;
             }
         }
     }
