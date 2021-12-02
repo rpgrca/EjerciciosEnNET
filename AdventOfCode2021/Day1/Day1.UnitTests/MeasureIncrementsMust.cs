@@ -20,7 +20,7 @@ namespace Day1.UnitTests
 263";
 
             var sut = new MeasureIncrements(DEPTHS, 1);
-            Assert.Equal(7, sut.Increments);
+            Assert.Equal(7, sut.Total);
         }
 
         [Fact]
@@ -2028,7 +2028,7 @@ namespace Day1.UnitTests
 9745";
 
             var sut = new MeasureIncrements(DEPTHS, 1);
-            Assert.Equal(1665, sut.Increments);
+            Assert.Equal(1665, sut.Total);
         }
 
         [Fact]
@@ -2039,7 +2039,7 @@ namespace Day1.UnitTests
 208";
 
             var sut = new MeasureIncrements(DEPTHS, 3);
-            Assert.Equal(0, sut.Increments);
+            Assert.Equal(0, sut.Total);
         }
 
         [Fact]
@@ -2057,7 +2057,7 @@ namespace Day1.UnitTests
 263";
 
             var sut = new MeasureIncrements(DEPTHS, 3);
-            Assert.Equal(5, sut.Increments);
+            Assert.Equal(5, sut.Total);
         }
 
         [Fact]
@@ -4065,7 +4065,7 @@ namespace Day1.UnitTests
 9745";
 
             var sut = new MeasureIncrements(DEPTHS, 3);
-            Assert.Equal(1702, sut.Increments);
+            Assert.Equal(1702, sut.Total);
         }
     }
 }
