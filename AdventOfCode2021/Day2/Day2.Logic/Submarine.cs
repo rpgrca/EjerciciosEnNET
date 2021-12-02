@@ -35,8 +35,18 @@ namespace Day2.Logic
                 .Select(a => (a[0], int.Parse(a[1])))
                 .ToList();
 
-            HorizontalPosition = _course.Sum(p => p.Item1 == "forward"? p.Item2 : 0);
-            Aim = _course.Sum(p => p.Item1 == "down"? p.Item2 : p.Item1 == "up"? -p.Item2 : 0);
+            foreach (var (command, value) in _course)
+            {
+                switch (command)
+                {
+                    case "up": Aim -= value; break;
+                    case "down": Aim += value; break;
+                    case "forward":
+                        HorizontalPosition += value;
+                        Depth += value * Aim;
+                        break;
+                }
+            }
         }
     }
 }

@@ -1068,6 +1068,9 @@ forward 4";
         [Theory]
         [InlineData(@"forward 5
 down 5", 5, 0)]
+         [InlineData(@"forward 5
+down 5
+forward 8", 5, 40)]
         public void Test1(string course, int expectedAim, int expectedDepth)
         {
             var sut = new Submarine(course, true);
