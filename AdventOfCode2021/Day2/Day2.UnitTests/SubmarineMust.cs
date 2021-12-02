@@ -1055,5 +1055,14 @@ forward 4";
             var sut = new Submarine(COURSE);
             Assert.Equal(1692075, sut.Multiplier);
         }
+
+        [Fact]
+        public void BeInitializedCorrectly()
+        {
+            var sut = new Submarine(string.Empty);
+            Assert.Equal(0, sut.HorizontalPosition);
+            Assert.Equal(0, sut.Depth);
+            Assert.Equal(0, sut.Aim);
+        }
     }
 }

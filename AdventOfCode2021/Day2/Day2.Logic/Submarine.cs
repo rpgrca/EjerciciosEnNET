@@ -11,6 +11,7 @@ namespace Day2.Logic
         public int HorizontalPosition { get; }
         public int Depth { get; }
         public int Multiplier { get; }
+        public int Aim { get; set; }
 
         public Submarine(string course)
         {
