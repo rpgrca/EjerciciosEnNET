@@ -12,7 +12,7 @@ namespace Day2.UnitTests
         [InlineData(null)]
         public void ThrowException_WhenCourseIsInvalid(string invalidCourse)
         {
-            var exception = Assert.Throws<ArgumentException>(() => new Submarine(invalidCourse));
+            var exception = Assert.Throws<ArgumentException>(() => Submarine.CreateSimpleSubmarineFor(invalidCourse));
             Assert.Equal("Invalid course", exception.Message);
         }
 
@@ -27,8 +27,7 @@ forward 8
 forward 2", 15)]
         public void CalculateHorizontalPositionCorrectly(string course, int expectedPosition)
         {
-            var sut = new Submarine(course);
-
+            var sut = Submarine.CreateSimpleSubmarineFor(course);
             Assert.Equal(expectedPosition, sut.HorizontalPosition);
         }
 
@@ -41,12 +40,12 @@ forward 8
 up 3", 2)]
         public void CalculateDepthCorrectly(string course, int expectedDepth)
         {
-            var sut = new Submarine(course);
+            var sut = Submarine.CreateSimpleSubmarineFor(course);
             Assert.Equal(expectedDepth, sut.Depth);
         }
 
         [Fact]
-        public void SolveSample()
+        public void SolveFirstSample()
         {
             const string COURSE = @"forward 5
 down 5
@@ -54,7 +53,7 @@ forward 8
 up 3
 down 8
 forward 2";
-            var sut = new Submarine(COURSE);
+            var sut = Submarine.CreateSimpleSubmarineFor(COURSE);
             Assert.Equal(150, sut.Multiplier);
         }
 
@@ -1062,14 +1061,14 @@ forward 2
 down 3
 forward 4";
 
-            var sut = new Submarine(COURSE);
+            var sut = Submarine.CreateSimpleSubmarineFor(COURSE);
             Assert.Equal(1692075, sut.Multiplier);
         }
 
         [Fact]
         public void BeInitializedCorrectly()
         {
-            var sut = new Submarine(@"forward 0");
+            var sut = Submarine.CreateSimpleSubmarineFor("forward 0");
             Assert.Equal(0, sut.HorizontalPosition);
             Assert.Equal(0, sut.Depth);
             Assert.Equal(0, sut.Aim);
@@ -1083,13 +1082,13 @@ down 5
 forward 8", 5, 40)]
         public void Test1(string course, int expectedAim, int expectedDepth)
         {
-            var sut = new Submarine(course, true);
+            var sut = Submarine.CreateComplexSubmarineFor(course);
             Assert.Equal(expectedDepth, sut.Depth);
             Assert.Equal(expectedAim, sut.Aim);
         }
 
         [Fact]
-        public void SolveSampleForSecondExercise()
+        public void SolveSecondSample()
         {
             const string COURSE = @"forward 5
 down 5
@@ -1097,7 +1096,7 @@ forward 8
 up 3
 down 8
 forward 2";
-            var sut = new Submarine(COURSE, true);
+            var sut = Submarine.CreateComplexSubmarineFor(COURSE);
             Assert.Equal(15, sut.HorizontalPosition);
             Assert.Equal(10, sut.Aim);
             Assert.Equal(60, sut.Depth);
@@ -2108,7 +2107,7 @@ forward 2
 down 3
 forward 4";
 
-            var sut = new Submarine(COURSE, true);
+            var sut = Submarine.CreateComplexSubmarineFor(COURSE);
             Assert.Equal(1749524700, sut.Multiplier);
         }
     }

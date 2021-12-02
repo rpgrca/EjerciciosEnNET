@@ -7,26 +7,28 @@ namespace Day2.Logic
     public class Submarine
     {
         private List<(string, int)> _course;
+        private readonly Dictionary<string, Action<Submarine, int>> _interpreter;
 
         public int HorizontalPosition { get; private set; }
         public int Depth { get; private set; }
         public int Multiplier { get; }
-        public int Aim { get; set; }
+        public int Aim { get; private set; }
 
-        public Submarine(string course)
+        public static Submarine CreateSimpleSubmarineFor(string course) => new(course, CreateSimpleMovementInterpreter());
+
+        public static Submarine CreateComplexSubmarineFor(string course) => new(course, CreateComplexMovementInterpreter());
+
+        private Submarine(string course, Dictionary<string, Action<Submarine, int>> interpreter)
         {
             if (string.IsNullOrWhiteSpace(course))
             {
                 throw new ArgumentException("Invalid course");
             }
 
+            _interpreter = interpreter;
+
             ParseInformationFrom(course);
-            RunInstructionsUsing(new Dictionary<string, Action<int>>()
-            {
-                { "up", v => Depth -= v },
-                { "down", v => Depth += v },
-                { "forward", v => HorizontalPosition += v }
-            });
+            RunInstructions();
 
             Multiplier = HorizontalPosition * Depth;
         }
@@ -39,28 +41,31 @@ namespace Day2.Logic
                 .ToList();
         }
 
-        private void RunInstructionsUsing(Dictionary<string, Action<int>> interpreter)
+        private static Dictionary<string, Action<Submarine, int>> CreateSimpleMovementInterpreter() =>
+            new()
+            {
+                { "up", (s, v) => s.Depth -= v },
+                { "down", (s, v) => s.Depth += v },
+                { "forward", (s, v) => s.HorizontalPosition += v }
+            };
+
+        private static Dictionary<string, Action<Submarine, int>> CreateComplexMovementInterpreter() =>
+            new()
+            {
+                { "up", (s, v) => s.Aim -= v },
+                { "down", (s, v) => s.Aim += v },
+                { "forward", (s, v) => {
+                    s.HorizontalPosition += v;
+                    s.Depth += v * s.Aim;
+                }}
+            };
+
+        private void RunInstructions()
         {
             foreach (var (command, value) in _course)
             {
-                interpreter[command](value);
+                _interpreter[command](this, value);
             }
-        }
-
-        public Submarine(string course, bool useAim)
-        {
-            ParseInformationFrom(course);
-            RunInstructionsUsing(new Dictionary<string, Action<int>>()
-            {
-                { "up", v => Aim -= v },
-                { "down", v => Aim += v },
-                { "forward", v => {
-                    HorizontalPosition += v;
-                    Depth += v * Aim;
-                }}
-            });
-
-            Multiplier = HorizontalPosition * Depth;
         }
     }
 }
