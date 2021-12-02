@@ -1068,14 +1068,32 @@ forward 4";
         [Theory]
         [InlineData(@"forward 5
 down 5", 5, 0)]
-         [InlineData(@"forward 5
+        [InlineData(@"forward 5
 down 5
 forward 8", 5, 40)]
+        
         public void Test1(string course, int expectedAim, int expectedDepth)
         {
             var sut = new Submarine(course, true);
             Assert.Equal(expectedDepth, sut.Depth);
             Assert.Equal(expectedAim, sut.Aim);
         }
+
+        [Fact]
+        public void SolveSampleForSecondExercise()
+        {
+            const string COURSE = @"forward 5
+down 5
+forward 8
+up 3
+down 8
+forward 2";
+            var sut = new Submarine(COURSE, true);
+            Assert.Equal(15, sut.HorizontalPosition);
+            Assert.Equal(10, sut.Aim);
+            Assert.Equal(60, sut.Depth);
+            Assert.Equal(900, sut.Multiplier);
+        }
+
     }
 }

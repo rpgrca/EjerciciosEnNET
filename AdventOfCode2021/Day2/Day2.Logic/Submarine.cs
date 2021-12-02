@@ -47,6 +47,8 @@ namespace Day2.Logic
                         break;
                 }
             }
+
+            Multiplier = HorizontalPosition * Depth;
         }
     }
 }
