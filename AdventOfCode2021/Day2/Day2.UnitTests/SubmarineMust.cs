@@ -21,11 +21,14 @@ forward 2", 15)]
             Assert.Equal(expectedPosition, sut.HorizontalPosition);
         }
 
-        [Fact]
-        public void CalculateDepthCorrectly()
+        [Theory]
+        [InlineData("", 0)]
+        [InlineData(@"forward 5
+down 5", 5)]
+        public void CalculateDepthCorrectly(string course, int expectedDepth)
         {
-            var sut = new Submarine(string.Empty);
-            Assert.Equal(0, sut.Depth);
+            var sut = new Submarine(course);
+            Assert.Equal(expectedDepth, sut.Depth);
         }
     }
 }
