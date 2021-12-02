@@ -9,10 +9,10 @@ namespace Day2.Logic
         private List<(string Command, int Value)> _course;
         private readonly Dictionary<string, Action<Submarine, int>> _interpreter;
 
-        public int HorizontalPosition { get; private set; }
-        public int Depth { get; private set; }
+        private int HorizontalPosition { get; set; }
+        private int Depth { get; set; }
+        private int Aim { get; set; }
         public int Multiplier { get; private set; }
-        public int Aim { get; private set; }
 
         public static Submarine CreateSimpleSubmarineFor(string course) => new(course, new()
         {
