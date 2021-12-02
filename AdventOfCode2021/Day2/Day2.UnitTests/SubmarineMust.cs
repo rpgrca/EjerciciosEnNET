@@ -1,11 +1,9 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
 using Xunit;
+using Day2.Logic;
 
 namespace Day2.UnitTests
 {
-    public class UnitTest1
+    public class SubmarineMust
     {
         [Fact]
         public void Test1()
@@ -26,18 +24,17 @@ forward 8";
 
             Assert.Equal(13, sut.HorizontalPosition);
         }
-    }
 
-    public class Submarine
-    {
-        private readonly List<string> _course;
-
-        public int HorizontalPosition { get; }
-
-        public Submarine(string course)
+        [Fact]
+        public void Test3()
         {
-            _course = course.Split("\n").ToList();
-            HorizontalPosition = _course.Count == 1 ? 5 : 13;
+            const string COURSE = @"forward 5
+down 5
+forward 8
+forward 2";
+            var sut = new Submarine(COURSE);
+
+            Assert.Equal(15, sut.HorizontalPosition);
         }
     }
 }
