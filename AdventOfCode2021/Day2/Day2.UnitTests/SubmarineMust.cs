@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 using Day2.Logic;
 
@@ -5,6 +6,16 @@ namespace Day2.UnitTests
 {
     public class SubmarineMust
     {
+        [Theory]
+        [InlineData("")]
+        [InlineData("   ")]
+        [InlineData(null)]
+        public void ThrowException_WhenCourseIsInvalid(string invalidCourse)
+        {
+            var exception = Assert.Throws<ArgumentException>(() => new Submarine(invalidCourse));
+            Assert.Equal("Invalid course", exception.Message);
+        }
+
         [Theory]
         [InlineData("forward 5", 5)]
         [InlineData(@"forward 5
@@ -22,7 +33,6 @@ forward 2", 15)]
         }
 
         [Theory]
-        [InlineData("", 0)]
         [InlineData(@"forward 5
 down 5", 5)]
         [InlineData(@"forward 5
@@ -1059,7 +1069,7 @@ forward 4";
         [Fact]
         public void BeInitializedCorrectly()
         {
-            var sut = new Submarine(string.Empty);
+            var sut = new Submarine(@"forward 0");
             Assert.Equal(0, sut.HorizontalPosition);
             Assert.Equal(0, sut.Depth);
             Assert.Equal(0, sut.Aim);
