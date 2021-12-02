@@ -1064,5 +1064,15 @@ forward 4";
             Assert.Equal(0, sut.Depth);
             Assert.Equal(0, sut.Aim);
         }
+
+        [Theory]
+        [InlineData(@"forward 5
+down 5", 5, 0)]
+        public void Test1(string course, int expectedAim, int expectedDepth)
+        {
+            var sut = new Submarine(course, true);
+            Assert.Equal(expectedDepth, sut.Depth);
+            Assert.Equal(expectedAim, sut.Aim);
+        }
     }
 }
