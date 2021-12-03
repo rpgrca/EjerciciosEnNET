@@ -13,6 +13,7 @@ namespace Day3.Logic
         public int EpsilonRate { get; }
         public int PowerConsumption { get; }
         public List<List<string>> FilteredValues { get; }
+        public int OxygenRating { get; }
 
         public DiagnosticReport(string reportInput)
         {
@@ -68,7 +69,7 @@ namespace Day3.Logic
 
             List<string> currentSet = _values;
 
-            for (var index = 0; index < 3; index++)
+            for (var index = 0; index < _values[0].Length; index++)
             {
                 var zeroes = 0;
                 var ones = 0;
@@ -98,6 +99,17 @@ namespace Day3.Logic
                 {
                     currentSet = teamOne;
                     FilteredValues.Add(teamOne);
+                }
+                else
+                {
+                    currentSet = teamOne;
+                    FilteredValues.Add(teamOne);
+                }
+
+                if (currentSet.Count == 1)
+                {
+                    OxygenRating = Convert.ToInt32(currentSet[0], 2);
+                    break;
                 }
             }
         }

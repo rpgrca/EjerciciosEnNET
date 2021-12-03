@@ -1095,5 +1095,28 @@ namespace Day3.UnitTests
                 p2 => Assert.Equal("10111", p2),
                 p3 => Assert.Equal("10101", p3));
         }
+
+        [Fact]
+        public void Test7()
+        {
+            var sut = new DiagnosticReport(SAMPLE_INPUT, true);
+            Assert.Collection(sut.FilteredValues[3],
+                p1 => Assert.Equal("10110", p1),
+                p2 => Assert.Equal("10111", p2));
+        }
+
+        [Fact]
+        public void Test8()
+        {
+            var sut = new DiagnosticReport(SAMPLE_INPUT, true);
+            Assert.Collection(sut.FilteredValues[4], p1 => Assert.Equal("10111", p1));
+        }
+
+        [Fact]
+        public void Test9()
+        {
+            var sut = new DiagnosticReport(SAMPLE_INPUT, true);
+            Assert.Equal(23, sut.OxygenRating);
+        }
     }
 }
