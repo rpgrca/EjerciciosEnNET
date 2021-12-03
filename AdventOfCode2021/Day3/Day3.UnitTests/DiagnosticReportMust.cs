@@ -16,12 +16,14 @@ namespace Day3.UnitTests
             Assert.Equal("Invalid report", exception.Message);
         }
 
-        [Fact]
-        public void Test1()
+        [Theory]
+        [InlineData("1", 1, 0)]
+        [InlineData("0", 0, 1)]
+        public void Test1(string reportInput, int expectedGamma, int expectedEpsilon)
         {
-            var sut = new DiagnosticReport("1");
-            Assert.Equal(1, sut.GammaRate);
-            Assert.Equal(0, sut.EpsilonRate);
+            var sut = new DiagnosticReport(reportInput);
+            Assert.Equal(expectedGamma, sut.GammaRate);
+            Assert.Equal(expectedEpsilon, sut.EpsilonRate);
         }
     }
 }

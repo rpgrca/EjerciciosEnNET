@@ -18,7 +18,15 @@ namespace Day3.Logic
             }
 
             _invalidReport = invalidReport;
-            GammaRate = 1;
+
+            if (invalidReport == "1")
+            {
+                GammaRate = 1;
+            }
+            else
+            {
+                EpsilonRate = 1;
+            }
         }
     }
 }
