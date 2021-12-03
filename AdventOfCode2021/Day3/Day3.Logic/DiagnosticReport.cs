@@ -61,6 +61,14 @@ namespace Day3.Logic
         {
             _values = reportInput.Split("\n").ToList();
 
+            OxygenRating = Calculate((z, _) => z, (_, o) => o);
+            Co2Rating = Calculate((_, o) => o, (z, _) => z);
+
+            LifeSupportRating = OxygenRating * Co2Rating;
+        }
+
+        private int Calculate(Func<List<string>, List<string>, List<string>> moreZeroes, Func<List<string>, List<string>, List<string>> moreOnes)
+        {
             List<string> currentSet = _values;
 
             for (var index = 0; index < _values[0].Length; index++)
@@ -86,68 +94,20 @@ namespace Day3.Logic
 
                 if (zeroes > ones)
                 {
-                    currentSet = teamZero;
-                }
-                else if (zeroes < ones)
-                {
-                    currentSet = teamOne;
+                    currentSet = moreZeroes(teamZero, teamOne);
                 }
                 else
                 {
-                    currentSet = teamOne;
+                    currentSet = moreOnes(teamZero, teamOne);
                 }
 
                 if (currentSet.Count == 1)
                 {
-                    OxygenRating = Convert.ToInt32(currentSet[0], 2);
                     break;
                 }
             }
 
-            currentSet = _values;
-
-            for (var index = 0; index < _values[0].Length; index++)
-            {
-                var zeroes = 0;
-                var ones = 0;
-                var teamZero = new List<string>();
-                var teamOne = new List<string>();
-
-                foreach (var value in currentSet)
-                {
-                    if (value[index] == '0')
-                    {
-                        zeroes++;
-                        teamZero.Add(value);
-                    }
-                    else
-                    {
-                        ones++;
-                        teamOne.Add(value);
-                    }
-                }
-
-                if (zeroes > ones)
-                {
-                    currentSet = teamOne;
-                }
-                else if (zeroes < ones)
-                {
-                    currentSet = teamZero;
-                }
-                else
-                {
-                    currentSet = teamZero;
-                }
-
-                if (currentSet.Count == 1)
-                {
-                    Co2Rating = Convert.ToInt32(currentSet[0], 2);
-                    break;
-                }
-            }
-
-            LifeSupportRating = OxygenRating * Co2Rating;
+            return Convert.ToInt32(currentSet[0], 2);
         }
     }
 }
