@@ -54,7 +54,7 @@ jobs:
 
     - name: Testing AdventOfCode2021
       run: |
-           for d in `seq 2`; do
+           for d in `seq 3`; do
                coverlet AdventOfCode2021/Day$d/Day$d.UnitTests/bin/Debug/net5.0/Day$d.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode2021/Day$d/Day$d.UnitTests/bin/Debug/net5.0/Day$d.UnitTests.dll --no-build" --format OpenCover --output adventofcode2021day$d.coverage.xml
            done
 
