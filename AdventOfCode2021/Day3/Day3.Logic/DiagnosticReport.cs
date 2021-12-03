@@ -9,12 +9,12 @@ namespace Day3.Logic
         private readonly List<string> _values;
         private int _gammaRate;
         private int _epsilonRate;
-        private readonly int[] _amountOfOnes;
+        private int[] _amountOfOnes;
+        private int _oxygenRating;
+        private int _co2Rating;
 
         public int PowerConsumption { get; private set; }
-        public int OxygenRating { get; }
-        public int Co2Rating { get; }
-        public int LifeSupportRating { get; }
+        public int LifeSupportRating { get; private set; }
 
         public DiagnosticReport(string reportInput)
         {
@@ -24,6 +24,10 @@ namespace Day3.Logic
             }
 
             _values = reportInput.Split("\n").ToList();
+        }
+
+        public void PreparePowerConsumptionReport()
+        {
             _amountOfOnes = new int[_values[0].Length];
 
             ClassifyValues();
@@ -31,24 +35,22 @@ namespace Day3.Logic
             CalculatePowerConsumption();
         }
 
-        private void ClassifyValues()
-        {
-            foreach (var value in _values)
-            {
+        private void ClassifyValues() =>
+            _values.ForEach(v => {
                 var index = 0;
 
-                foreach (var character in value)
+                foreach (var character in v)
                 {
                     _amountOfOnes[index++] += character - '0';
                 }
-            }
-        }
+            });
 
         private void CalculateGammaAndEpsilonRates()
         {
             foreach (var value in _amountOfOnes)
             {
                 var bit = _values.Count > value * 2 ? 1 : 0;
+
                 _gammaRate = (_gammaRate << 1) | (~bit & 1);
                 _epsilonRate = (_epsilonRate << 1) | (bit & 1);
             }
@@ -57,57 +59,36 @@ namespace Day3.Logic
         private void CalculatePowerConsumption() =>
             PowerConsumption = _gammaRate * _epsilonRate;
 
-        public DiagnosticReport(string reportInput, bool useSecond)
+        public void PrepareLifeSupportRating()
         {
-            _values = reportInput.Split("\n").ToList();
-
-            OxygenRating = Calculate((z, _) => z, (_, o) => o);
-            Co2Rating = Calculate((_, o) => o, (z, _) => z);
-
-            LifeSupportRating = OxygenRating * Co2Rating;
+            CalculateOxygenRating();
+            CalculateCo2Rating();
+            CalculateLifeSupport();
         }
 
-        private int Calculate(Func<List<string>, List<string>, List<string>> moreZeroes, Func<List<string>, List<string>, List<string>> moreOnes)
+        private void CalculateOxygenRating() =>
+            _oxygenRating = Calculate((z, o) => z.Count > o.Count ? z : o);
+
+        private int Calculate(Func<List<string>, List<string>, List<string>> nextSetCallback)
         {
-            List<string> currentSet = _values;
+            var currentSet = _values;
 
-            for (var index = 0; index < _values[0].Length; index++)
+            for (var index = 0; index < _values[0].Length && currentSet.Count > 1; index++)
             {
-                var zeroes = 0;
-                var ones = 0;
-                var teamZero = new List<string>();
-                var teamOne = new List<string>();
+                var zeroValues = new List<string>();
+                var oneValues = new List<string>();
 
-                foreach (var value in currentSet)
-                {
-                    if (value[index] == '0')
-                    {
-                        zeroes++;
-                        teamZero.Add(value);
-                    }
-                    else
-                    {
-                        ones++;
-                        teamOne.Add(value);
-                    }
-                }
-
-                if (zeroes > ones)
-                {
-                    currentSet = moreZeroes(teamZero, teamOne);
-                }
-                else
-                {
-                    currentSet = moreOnes(teamZero, teamOne);
-                }
-
-                if (currentSet.Count == 1)
-                {
-                    break;
-                }
+                currentSet.ForEach(v => (v[index] == '0' ? zeroValues : oneValues).Add(v));
+                currentSet = nextSetCallback(zeroValues, oneValues);
             }
 
             return Convert.ToInt32(currentSet[0], 2);
         }
+
+        private void CalculateCo2Rating() =>
+            _co2Rating = Calculate((z, o) => z.Count > o.Count ? o : z);
+
+        private void CalculateLifeSupport() =>
+            LifeSupportRating = _oxygenRating * _co2Rating;
     }
 }
