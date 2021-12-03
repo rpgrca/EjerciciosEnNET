@@ -1030,25 +1030,22 @@ namespace Day3.UnitTests
         }
 
         [Theory]
-        [InlineData("1", 1, 0)]
-        [InlineData("0", 0, 1)]
-        [InlineData("0\n1\n1", 1, 0)]
-        [InlineData("1\n0\n0", 0, 1)]
-        [InlineData("10\n01\n00", 0, 3)]
-        [InlineData("100\n100", 4, 3)]
-        public void Test1(string reportInput, int expectedGamma, int expectedEpsilon)
+        [InlineData("1", 0)]
+        [InlineData("0", 0)]
+        [InlineData("0\n1\n1", 0)]
+        [InlineData("1\n0\n0", 0)]
+        [InlineData("100\n100", 12)]
+        [InlineData("1010\n0101\n1110", 14)]
+        public void Test1(string reportInput, int expectedPowerConsumption)
         {
             var sut = new DiagnosticReport(reportInput);
-            Assert.Equal(expectedGamma, sut.GammaRate);
-            Assert.Equal(expectedEpsilon, sut.EpsilonRate);
+            Assert.Equal(expectedPowerConsumption, sut.PowerConsumption);
         }
 
         [Fact]
         public void Test2()
         {
             var sut = new DiagnosticReport(SAMPLE_INPUT);
-            Assert.Equal(22, sut.GammaRate);
-            Assert.Equal(9, sut.EpsilonRate);
             Assert.Equal(198, sut.PowerConsumption);
         }
 
@@ -1056,8 +1053,6 @@ namespace Day3.UnitTests
         public void Test3()
         {
             var sut = new DiagnosticReport(REAL_INPUT);
-            Assert.Equal(3527, sut.GammaRate);
-            Assert.Equal(568, sut.EpsilonRate);
             Assert.Equal(2003336, sut.PowerConsumption);
         }
 

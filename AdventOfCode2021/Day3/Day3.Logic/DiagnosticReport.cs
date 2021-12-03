@@ -8,8 +8,8 @@ namespace Day3.Logic
     {
         private readonly List<string> _values;
 
-        public int GammaRate { get; }
-        public int EpsilonRate { get; }
+        private int GammaRate { get; set; }
+        private int EpsilonRate { get; set; }
         public int PowerConsumption { get; }
         public List<List<string>> FilteredValues { get; }
         public int OxygenRating { get; }
