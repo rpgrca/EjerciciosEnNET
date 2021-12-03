@@ -7,6 +7,9 @@ namespace Day3.Logic
     public class DiagnosticReport
     {
         private readonly List<string> _values;
+        private int _gammaRate;
+        private int _epsilonRate;
+        private readonly int[] _amountOfOnes;
 
         public int PowerConsumption { get; private set; }
         public List<List<string>> FilteredValues { get; }
@@ -22,39 +25,38 @@ namespace Day3.Logic
             }
 
             _values = reportInput.Split("\n").ToList();
+            _amountOfOnes = new int[_values[0].Length];
 
-            var gammaValue = string.Empty;
-            var epsilonValue = string.Empty;
-            for (var index = _values[0].Length - 1; index >= 0; index--)
+            ClassifyValues();
+            CalculateGammaAndEpsilonRates();
+            CalculatePowerConsumption();
+        }
+
+        private void ClassifyValues()
+        {
+            foreach (var value in _values)
             {
-                var ones = 0;
+                var index = 0;
 
-                foreach (var value in _values)
+                foreach (var character in value)
                 {
-                    ones += value[index] - '0';
-                }
-
-                if (_values.Count - ones > ones)
-                {
-                    gammaValue = "0" + gammaValue;
-                    epsilonValue = "1" + epsilonValue;
-                }
-                else
-                {
-                    gammaValue = "1" + gammaValue;
-                    epsilonValue = "0" + epsilonValue;
+                    _amountOfOnes[index++] += character - '0';
                 }
             }
-
-            CalculatePowerConsumption(gammaValue, epsilonValue);
         }
 
-        private void CalculatePowerConsumption(string gammaValue, string epsilonValue)
+        private void CalculateGammaAndEpsilonRates()
         {
-            var gammaRate = Convert.ToInt32(gammaValue, 2);
-            var epsilonRate = Convert.ToInt32(epsilonValue, 2);
-            PowerConsumption = gammaRate * epsilonRate;
+            foreach (var value in _amountOfOnes)
+            {
+                var bit = _values.Count > value * 2 ? 1 : 0;
+                _gammaRate = (_gammaRate << 1) | (~bit & 1);
+                _epsilonRate = (_epsilonRate << 1) | (bit & 1);
+            }
         }
+
+        private void CalculatePowerConsumption() =>
+            PowerConsumption = _gammaRate * _epsilonRate;
 
         public DiagnosticReport(string reportInput, bool useSecond)
         {
