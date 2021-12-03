@@ -15,6 +15,7 @@ namespace Day3.Logic
         public List<List<string>> FilteredValues { get; }
         public int OxygenRating { get; }
         public int Co2Rating { get; }
+        public int LifeSupportRating { get; }
 
         public DiagnosticReport(string reportInput)
         {
@@ -156,6 +157,8 @@ namespace Day3.Logic
                     break;
                 }
             }
+
+            LifeSupportRating = OxygenRating * Co2Rating;
         }
     }
 }

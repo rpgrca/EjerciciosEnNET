@@ -1117,13 +1117,17 @@ namespace Day3.UnitTests
         {
             var sut = new DiagnosticReport(SAMPLE_INPUT, true);
             Assert.Equal(23, sut.OxygenRating);
+            Assert.Equal(10, sut.Co2Rating);
+            Assert.Equal(230, sut.LifeSupportRating);
         }
 
         [Fact]
         public void Test10()
         {
-            var sut = new DiagnosticReport(SAMPLE_INPUT, true);
-            Assert.Equal(10, sut.Co2Rating);
+            var sut = new DiagnosticReport(REAL_INPUT, true);
+            Assert.Equal(2547, sut.OxygenRating);
+            Assert.Equal(737, sut.Co2Rating);
+            Assert.Equal(1877139, sut.LifeSupportRating);
         }
     }
 }
