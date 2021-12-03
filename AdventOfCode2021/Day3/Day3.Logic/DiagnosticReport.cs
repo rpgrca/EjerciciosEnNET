@@ -14,6 +14,7 @@ namespace Day3.Logic
         public int PowerConsumption { get; }
         public List<List<string>> FilteredValues { get; }
         public int OxygenRating { get; }
+        public int Co2Rating { get; }
 
         public DiagnosticReport(string reportInput)
         {
@@ -109,6 +110,49 @@ namespace Day3.Logic
                 if (currentSet.Count == 1)
                 {
                     OxygenRating = Convert.ToInt32(currentSet[0], 2);
+                    break;
+                }
+            }
+
+            currentSet = _values;
+
+            for (var index = 0; index < _values[0].Length; index++)
+            {
+                var zeroes = 0;
+                var ones = 0;
+                var teamZero = new List<string>();
+                var teamOne = new List<string>();
+
+                foreach (var value in currentSet)
+                {
+                    if (value[index] == '0')
+                    {
+                        zeroes++;
+                        teamZero.Add(value);
+                    }
+                    else
+                    {
+                        ones++;
+                        teamOne.Add(value);
+                    }
+                }
+
+                if (ones > zeroes)
+                {
+                    currentSet = teamZero;
+                }
+                else if (ones < zeroes)
+                {
+                    currentSet = teamOne;
+                }
+                else
+                {
+                    currentSet = teamZero;
+                }
+
+                if (currentSet.Count == 1)
+                {
+                    Co2Rating = Convert.ToInt32(currentSet[0], 2);
                     break;
                 }
             }

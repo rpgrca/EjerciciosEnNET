@@ -1118,5 +1118,12 @@ namespace Day3.UnitTests
             var sut = new DiagnosticReport(SAMPLE_INPUT, true);
             Assert.Equal(23, sut.OxygenRating);
         }
+
+        [Fact]
+        public void Test10()
+        {
+            var sut = new DiagnosticReport(SAMPLE_INPUT, true);
+            Assert.Equal(10, sut.Co2Rating);
+        }
     }
 }
