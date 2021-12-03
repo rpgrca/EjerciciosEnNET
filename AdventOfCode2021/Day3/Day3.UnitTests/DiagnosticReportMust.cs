@@ -1051,57 +1051,6 @@ namespace Day3.UnitTests
         }
 
         [Fact]
-        public void Test4()
-        {
-            var sut = new DiagnosticReport(SAMPLE_INPUT, true);
-            Assert.Collection(sut.FilteredValues[0],
-                p1 => Assert.Equal("11110", p1),
-                p2 => Assert.Equal("10110", p2),
-                p3 => Assert.Equal("10111", p3),
-                p4 => Assert.Equal("10101", p4),
-                p5 => Assert.Equal("11100", p5),
-                p6 => Assert.Equal("10000", p6),
-                p7 => Assert.Equal("11001", p7));
-        }
-
-        [Fact]
-        public void Test5()
-        {
-            var sut = new DiagnosticReport(SAMPLE_INPUT, true);
-            Assert.Collection(sut.FilteredValues[1],
-                p1 => Assert.Equal("10110", p1),
-                p2 => Assert.Equal("10111", p2),
-                p3 => Assert.Equal("10101", p3),
-                p4 => Assert.Equal("10000", p4));
-        }
-
-        [Fact]
-        public void Test6()
-        {
-            var sut = new DiagnosticReport(SAMPLE_INPUT, true);
-            Assert.Collection(sut.FilteredValues[2],
-                p1 => Assert.Equal("10110", p1),
-                p2 => Assert.Equal("10111", p2),
-                p3 => Assert.Equal("10101", p3));
-        }
-
-        [Fact]
-        public void Test7()
-        {
-            var sut = new DiagnosticReport(SAMPLE_INPUT, true);
-            Assert.Collection(sut.FilteredValues[3],
-                p1 => Assert.Equal("10110", p1),
-                p2 => Assert.Equal("10111", p2));
-        }
-
-        [Fact]
-        public void Test8()
-        {
-            var sut = new DiagnosticReport(SAMPLE_INPUT, true);
-            Assert.Collection(sut.FilteredValues[4], p1 => Assert.Equal("10111", p1));
-        }
-
-        [Fact]
         public void Test9()
         {
             var sut = new DiagnosticReport(SAMPLE_INPUT, true);

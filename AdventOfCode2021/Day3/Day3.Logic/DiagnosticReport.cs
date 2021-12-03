@@ -12,7 +12,6 @@ namespace Day3.Logic
         private readonly int[] _amountOfOnes;
 
         public int PowerConsumption { get; private set; }
-        public List<List<string>> FilteredValues { get; }
         public int OxygenRating { get; }
         public int Co2Rating { get; }
         public int LifeSupportRating { get; }
@@ -62,8 +61,6 @@ namespace Day3.Logic
         {
             _values = reportInput.Split("\n").ToList();
 
-            FilteredValues = new List<List<string>>();
-
             List<string> currentSet = _values;
 
             for (var index = 0; index < _values[0].Length; index++)
@@ -90,17 +87,14 @@ namespace Day3.Logic
                 if (zeroes > ones)
                 {
                     currentSet = teamZero;
-                    FilteredValues.Add(teamZero);
                 }
                 else if (zeroes < ones)
                 {
                     currentSet = teamOne;
-                    FilteredValues.Add(teamOne);
                 }
                 else
                 {
                     currentSet = teamOne;
-                    FilteredValues.Add(teamOne);
                 }
 
                 if (currentSet.Count == 1)
@@ -133,13 +127,13 @@ namespace Day3.Logic
                     }
                 }
 
-                if (ones > zeroes)
-                {
-                    currentSet = teamZero;
-                }
-                else if (ones < zeroes)
+                if (zeroes > ones)
                 {
                     currentSet = teamOne;
+                }
+                else if (zeroes < ones)
+                {
+                    currentSet = teamZero;
                 }
                 else
                 {
