@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Day3.Logic
 {
     public class DiagnosticReport
     {
         private readonly string _invalidReport;
+
+        public int GammaRate { get; }
+        public int EpsilonRate { get; }
 
         public DiagnosticReport(string invalidReport)
         {
@@ -14,6 +18,7 @@ namespace Day3.Logic
             }
 
             _invalidReport = invalidReport;
+            GammaRate = 1;
         }
     }
 }

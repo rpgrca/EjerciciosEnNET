@@ -15,6 +15,13 @@ namespace Day3.UnitTests
             var exception = Assert.Throws<ArgumentException>(() => new DiagnosticReport(invalidReport));
             Assert.Equal("Invalid report", exception.Message);
         }
-    }
 
+        [Fact]
+        public void Test1()
+        {
+            var sut = new DiagnosticReport("1");
+            Assert.Equal(1, sut.GammaRate);
+            Assert.Equal(0, sut.EpsilonRate);
+        }
+    }
 }
