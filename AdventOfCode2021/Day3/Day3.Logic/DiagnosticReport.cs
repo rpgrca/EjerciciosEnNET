@@ -5,28 +5,56 @@ namespace Day3.Logic
 {
     public class DiagnosticReport
     {
-        private readonly string _invalidReport;
+        private readonly string _reportInput;
+        private readonly string[] _values;
 
         public int GammaRate { get; }
         public int EpsilonRate { get; }
+        public int PowerConsumption { get; }
 
-        public DiagnosticReport(string invalidReport)
+        public DiagnosticReport(string reportInput)
         {
-            if (string.IsNullOrWhiteSpace(invalidReport))
+            if (string.IsNullOrWhiteSpace(reportInput))
             {
                 throw new ArgumentException("Invalid report");
             }
 
-            _invalidReport = invalidReport;
+            _reportInput = reportInput;
+            _values = _reportInput.Split("\n");
 
-            if (invalidReport == "1")
+            var gammaValue = string.Empty;
+            var epsilonValue = string.Empty;
+            for (var index = 0; index < _values[0].Length; index++)
             {
-                GammaRate = 1;
+                var zeroes = 0;
+                var ones = 0;
+
+                foreach (var value in _values)
+                {
+                    if (value[_values[0].Length - 1 - index] == '0')
+                    {
+                        zeroes++;
+                    }
+                    else
+                    {
+                        ones++;
+                    }
+                }
+
+                if (zeroes > ones)
+                {
+                    gammaValue = "0" + gammaValue;
+                    epsilonValue = "1" + epsilonValue;
+                }
+                else if (zeroes < ones)
+                {
+                    gammaValue = "1" + gammaValue;
+                    epsilonValue = "0" + epsilonValue;
+                }
             }
-            else
-            {
-                EpsilonRate = 1;
-            }
+
+            GammaRate = Convert.ToInt32(gammaValue, 2);
+            EpsilonRate = Convert.ToInt32(epsilonValue, 2);
         }
     }
 }
