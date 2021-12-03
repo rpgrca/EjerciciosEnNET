@@ -6,7 +6,6 @@ namespace Day3.Logic
 {
     public class DiagnosticReport
     {
-        private readonly string _reportInput;
         private readonly List<string> _values;
 
         public int GammaRate { get; }
@@ -24,8 +23,7 @@ namespace Day3.Logic
                 throw new ArgumentException("Invalid report");
             }
 
-            _reportInput = reportInput;
-            _values = _reportInput.Split("\n").ToList();
+            _values = reportInput.Split("\n").ToList();
 
             var gammaValue = string.Empty;
             var epsilonValue = string.Empty;
@@ -65,8 +63,7 @@ namespace Day3.Logic
 
         public DiagnosticReport(string reportInput, bool useSecond)
         {
-            _reportInput = reportInput;
-            _values = _reportInput.Split("\n").ToList();
+            _values = reportInput.Split("\n").ToList();
             FilteredValues = new List<List<string>>();
 
             List<string> currentSet = _values;
