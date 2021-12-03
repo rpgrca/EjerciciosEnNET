@@ -1036,21 +1036,15 @@ namespace Day3.UnitTests
         [InlineData("1\n0\n0", 0)]
         [InlineData("100\n100", 12)]
         [InlineData("1010\n0101\n1110", 14)]
-        public void Test1(string reportInput, int expectedPowerConsumption)
+        [InlineData(SAMPLE_INPUT, 198)]
+        public void CalculatePowerConsumptionCorrectly(string reportInput, int expectedPowerConsumption)
         {
             var sut = new DiagnosticReport(reportInput);
             Assert.Equal(expectedPowerConsumption, sut.PowerConsumption);
         }
 
         [Fact]
-        public void Test2()
-        {
-            var sut = new DiagnosticReport(SAMPLE_INPUT);
-            Assert.Equal(198, sut.PowerConsumption);
-        }
-
-        [Fact]
-        public void Test3()
+        public void SolveFirstPuzzle()
         {
             var sut = new DiagnosticReport(REAL_INPUT);
             Assert.Equal(2003336, sut.PowerConsumption);

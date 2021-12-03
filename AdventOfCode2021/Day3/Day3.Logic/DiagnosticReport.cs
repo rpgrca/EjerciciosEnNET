@@ -8,9 +8,7 @@ namespace Day3.Logic
     {
         private readonly List<string> _values;
 
-        private int GammaRate { get; set; }
-        private int EpsilonRate { get; set; }
-        public int PowerConsumption { get; }
+        public int PowerConsumption { get; private set; }
         public List<List<string>> FilteredValues { get; }
         public int OxygenRating { get; }
         public int Co2Rating { get; }
@@ -27,43 +25,41 @@ namespace Day3.Logic
 
             var gammaValue = string.Empty;
             var epsilonValue = string.Empty;
-            for (var index = 0; index < _values[0].Length; index++)
+            for (var index = _values[0].Length - 1; index >= 0; index--)
             {
-                var zeroes = 0;
                 var ones = 0;
 
                 foreach (var value in _values)
                 {
-                    if (value[_values[0].Length - 1 - index] == '0')
-                    {
-                        zeroes++;
-                    }
-                    else
-                    {
-                        ones++;
-                    }
+                    ones += value[index] - '0';
                 }
 
-                if (zeroes > ones)
+                if (_values.Count - ones > ones)
                 {
                     gammaValue = "0" + gammaValue;
                     epsilonValue = "1" + epsilonValue;
                 }
-                else if (zeroes < ones)
+                else
                 {
                     gammaValue = "1" + gammaValue;
                     epsilonValue = "0" + epsilonValue;
                 }
             }
 
-            GammaRate = Convert.ToInt32(gammaValue, 2);
-            EpsilonRate = Convert.ToInt32(epsilonValue, 2);
-            PowerConsumption = GammaRate * EpsilonRate;
+            CalculatePowerConsumption(gammaValue, epsilonValue);
+        }
+
+        private void CalculatePowerConsumption(string gammaValue, string epsilonValue)
+        {
+            var gammaRate = Convert.ToInt32(gammaValue, 2);
+            var epsilonRate = Convert.ToInt32(epsilonValue, 2);
+            PowerConsumption = gammaRate * epsilonRate;
         }
 
         public DiagnosticReport(string reportInput, bool useSecond)
         {
             _values = reportInput.Split("\n").ToList();
+
             FilteredValues = new List<List<string>>();
 
             List<string> currentSet = _values;
