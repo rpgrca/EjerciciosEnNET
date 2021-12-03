@@ -55,6 +55,7 @@ namespace Day3.Logic
 
             GammaRate = Convert.ToInt32(gammaValue, 2);
             EpsilonRate = Convert.ToInt32(epsilonValue, 2);
+            PowerConsumption = GammaRate * EpsilonRate;
         }
     }
 }

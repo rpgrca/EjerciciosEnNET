@@ -42,5 +42,14 @@ namespace Day3.UnitTests
             Assert.Equal(expectedGamma, sut.GammaRate);
             Assert.Equal(expectedEpsilon, sut.EpsilonRate);
         }
+
+        [Fact]
+        public void Test2()
+        {
+            var sut = new DiagnosticReport(SAMPLE_INPUT);
+            Assert.Equal(22, sut.GammaRate);
+            Assert.Equal(9, sut.EpsilonRate);
+            Assert.Equal(198, sut.PowerConsumption);
+        }
     }
 }
