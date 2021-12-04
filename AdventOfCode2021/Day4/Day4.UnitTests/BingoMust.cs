@@ -1,6 +1,7 @@
 using System;
 using Xunit;
 using Day4.Logic;
+using static Day4.UnitTests.Constants;
 
 namespace Day4.UnitTests
 {
@@ -243,6 +244,15 @@ namespace Day4.UnitTests
             sut.Play("2,0,12,3,7");
 
             Assert.Equal((14+21+17+24+4+10+16+15+9+19+18+8+23+26+20+22+11+13+6+5) * 7, sut.FinalScore);
+        }
+
+        [Fact]
+        public void SolveFirstSample()
+        {
+            var sut = new Bingo(SAMPLE_BOARDS);
+            sut.Play(SAMPLE_DRAWN_NUMBERS);
+
+            Assert.Equal(4512, sut.FinalScore);
         }
     }
 }
