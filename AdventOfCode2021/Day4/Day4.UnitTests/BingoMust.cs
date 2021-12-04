@@ -229,5 +229,20 @@ namespace Day4.UnitTests
 
             Assert.Equal(4512, sut.FinalScore);
         }
+
+        [Fact]
+        public void RecognizeWinningBoard_WhenZeroBelongsToSeries()
+        {
+            const string BOARD = @"14 21 17 24  4
+10 16 15  9 19
+18  8 23 26 20
+22 11 13  6  5
+ 2  0 12  3  7";
+
+            var sut = new Bingo(BOARD);
+            sut.Play("2,0,12,3,7");
+
+            Assert.Equal((14+21+17+24+4+10+16+15+9+19+18+8+23+26+20+22+11+13+6+5) * 7, sut.FinalScore);
+        }
     }
 }

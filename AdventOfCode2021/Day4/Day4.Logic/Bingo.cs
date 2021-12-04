@@ -44,7 +44,14 @@ namespace Day4.Logic
                     {
                         if (line.Contains(number))
                         {
-                            line[line.IndexOf(number)] = -number;
+                            if (number == 0)
+                            {
+                                line[line.IndexOf(number)] = -999;
+                            }
+                            else
+                            {
+                                line[line.IndexOf(number)] = -number;
+                            }
 
                             if (LineIsComplete(line) || HasAnyVerticalLineComplete(board))
                             {
