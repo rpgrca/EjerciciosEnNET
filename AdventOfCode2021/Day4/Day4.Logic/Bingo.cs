@@ -101,5 +101,43 @@ namespace Day4.Logic
 
             return sum;
         }
+
+        public void PlayForLosing(string drawnNumbers)
+        {
+            var winningBoards = new List<List<List<int>>>();
+
+            foreach (var number in drawnNumbers.Split(",").Select(p => int.Parse(p)))
+            {
+               foreach (var board in Boards)
+                {
+                    foreach (var line in board)
+                    {
+                        if (line.Contains(number))
+                        {
+                            if (number == 0)
+                            {
+                                line[line.IndexOf(number)] = -999;
+                            }
+                            else
+                            {
+                                line[line.IndexOf(number)] = -number;
+                            }
+
+                            if (LineIsComplete(line) || HasAnyVerticalLineComplete(board))
+                            {
+                                winningBoards.Add(board);
+                                if (winningBoards.Count == Boards.Count)
+                                {
+                                    var sum = GetSumOfUnmarkedNumbers(board);
+                                    FinalScore = sum * number;
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }

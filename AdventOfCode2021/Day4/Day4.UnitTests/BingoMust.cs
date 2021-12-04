@@ -264,5 +264,13 @@ namespace Day4.UnitTests
             Assert.Equal(11774, sut.FinalScore);
         }
 
+        [Fact]
+        public void SolveSecondSample()
+        {
+            var sut = new Bingo(SAMPLE_BOARDS);
+            sut.PlayForLosing(SAMPLE_DRAWN_NUMBERS);
+
+            Assert.Equal(1924, sut.FinalScore);
+        }
     }
 }
