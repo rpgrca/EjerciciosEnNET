@@ -125,12 +125,15 @@ namespace Day4.Logic
 
                             if (LineIsComplete(line) || HasAnyVerticalLineComplete(board))
                             {
-                                winningBoards.Add(board);
-                                if (winningBoards.Count == Boards.Count)
+                                if (! winningBoards.Contains(board))
                                 {
-                                    var sum = GetSumOfUnmarkedNumbers(board);
-                                    FinalScore = sum * number;
-                                    return;
+                                    winningBoards.Add(board);
+                                    if (winningBoards.Count == Boards.Count)
+                                    {
+                                        var sum = GetSumOfUnmarkedNumbers(board);
+                                        FinalScore = sum * number;
+                                        return;
+                                    }
                                 }
                             }
                         }
