@@ -52,14 +52,14 @@ namespace Day4.Logic
         {
             foreach (var number in drawnNumbers.Split(",").Select(p => int.Parse(p)))
             {
-                if (MarkNumberInEveryBoardUntilWinnerIsFound(number))
+                if (HasWinnerBeenFoundAfterMarkingNumbersInBoards(number))
                 {
                     break;
                 }
             }
         }
 
-        private bool MarkNumberInEveryBoardUntilWinnerIsFound(int number)
+        private bool HasWinnerBeenFoundAfterMarkingNumbersInBoards(int number)
         {
             foreach (var board in _boards)
             {
@@ -85,8 +85,7 @@ namespace Day4.Logic
 
                 if (CheckIfCurrentBoardWins(index))
                 {
-                    var sum = GetSumOfUnmarkedNumbers(_currentBoard);
-                    FinalScore = sum * number;
+                    CalculateFinalScoreWith(number);
                 }
             }
         }
@@ -98,7 +97,11 @@ namespace Day4.Logic
                    (_currentBoard[w] < 0 && _currentBoard[5 + w] < 0 && _currentBoard[10 + w] < 0 && _currentBoard[15 + w] < 0 && _currentBoard[20 + w] < 0);
         }
 
-        private static int GetSumOfUnmarkedNumbers(int[] board) => board.Where(p => p > 0).Sum();
+        private void CalculateFinalScoreWith(int number) =>
+            FinalScore = GetSumOfUnmarkedNumbers(_currentBoard) * number;
+
+        private static int GetSumOfUnmarkedNumbers(int[] board) =>
+            board.Where(p => p > 0).Sum();
 
         public void PlayForLosing(string drawnNumbers)
         {
@@ -127,6 +130,7 @@ namespace Day4.Logic
             }
         }
 
-        public bool DoesBoardContainAtPosition(int boardId, int x, int value) => _boards[boardId][x] == value;
+        public bool DoesBoardContainAtPosition(int boardId, int x, int value) =>
+            _boards[boardId][x] == value;
     }
 }
