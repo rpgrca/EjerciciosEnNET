@@ -6,7 +6,11 @@ namespace Day4.Logic
 {
     public class Bingo
     {
-        public List<int[,]> Boards { get; set; }
+        private readonly string _boardInformation;
+        private readonly List<int[]> _winningBoards;
+        private readonly List<int[]> _boards;
+        private int[] _currentBoard;
+
         public int FinalScore { get; private set; }
 
         public Bingo(string boards)
@@ -16,103 +20,52 @@ namespace Day4.Logic
                 throw new ArgumentException("Invalid boards");
             }
 
-            FinalScore = -1;
-            Boards = new List<int[,]>();
+            _boardInformation = boards;
+            _winningBoards = new List<int[]>();
+            _boards = new List<int[]>();
 
-            var board = CreateBoard();
-            var y = 0;
-            foreach (var line in boards.Split("\n"))
+            FinalScore = -1;
+
+            LoadBoards();
+        }
+
+        private void LoadBoards()
+        {
+            var numbers = new List<int>();
+            foreach (var line in _boardInformation.Split("\n"))
             {
                 if (string.IsNullOrWhiteSpace(line))
                 {
-                    Boards.Add(board);
-                    board = CreateBoard();
-                    y = 0;
+                    _boards.Add(numbers.ToArray());
+                    numbers.Clear();
                 }
                 else
                 {
-                    var x = 0;
-                    foreach (var number in line.Split(" ").Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => int.Parse(p)))
-                    {
-                        board[y, x++] = number;
-                    }
-
-                    y++;
+                    numbers.AddRange(line.Split(" ").Where(p => !string.IsNullOrWhiteSpace(p)).Select(int.Parse));
                 }
             }
 
-            Boards.Add(board);
+            _boards.Add(numbers.ToArray());
         }
-
-        private static int[,] CreateBoard() =>
-            new int[5,5]
-            {
-                { 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0 }
-            };
 
         public void Play(string drawnNumbers)
         {
             foreach (var number in drawnNumbers.Split(",").Select(p => int.Parse(p)))
             {
-               foreach (var board in Boards)
+                if (MarkNumberInEveryBoardUntilWinnerIsFound(number))
                 {
-                    MarkNumberInBoard(board, number);
-                    if (FinalScore != -1)
-                    {
-                        return;
-                    }
+                    break;
                 }
             }
         }
 
-        private void MarkNumberInBoard(int[,] board, int number)
+        private bool MarkNumberInEveryBoardUntilWinnerIsFound(int number)
         {
-            for (var y = 0; y < 5; y++)
+            foreach (var board in _boards)
             {
-                for (var x = 0; x < 5; x++)
-                {
-                    if (board[y, x] == number)
-                    {
-                        board[y, x] = -1;
-
-                        if (CheckForWinningCombination(board, x, y))
-                        {
-                            var sum = GetSumOfUnmarkedNumbers(board);
-                            FinalScore = sum * number;
-                        }
-
-                        return;
-                    }
-                }
-            }
-        }
-
-        private static bool CheckForWinningCombination(int [,] board, int x, int y) =>
-            (board[y, 0] < 0 && board[y, 1] < 0 && board[y, 2] < 0 && board[y, 3] < 0 && board[y, 4] < 0) ||
-            (board[0, x] < 0 && board[1, x] < 0 && board[2, x] < 0 && board[3, x] < 0 && board[4, x] < 0);
-
-        private static bool LineIsComplete(List<int> line) => line.All(p => p < 0);
-
-        private bool HasAnyVerticalLineComplete(List<List<int>> board)
-        {
-            for (var index = 0; index < 5; index++)
-            {
-                var hasUnmarkedNumber = false;
-
-                foreach (var line in board)
-                {
-                    if (line[index] >= 0)
-                    {
-                        hasUnmarkedNumber = true;
-                        break;
-                    }
-                }
-
-                if (! hasUnmarkedNumber)
+                SetCurrentBoardTo(board);
+                MarkNumberInCurrentBoard(number);
+                if (FinalScore != -1)
                 {
                     return true;
                 }
@@ -121,54 +74,59 @@ namespace Day4.Logic
             return false;
         }
 
-        private static int GetSumOfUnmarkedNumbers(int[,] board)
+        private void SetCurrentBoardTo(int[] board) => _currentBoard = board;
+
+        private void MarkNumberInCurrentBoard(int number)
         {
-            var sum = 0;
-            foreach (var line in board)
+            var index = Array.IndexOf(_currentBoard, number);
+            if (index != -1)
             {
-                if (line > -1)
+                _currentBoard[index] = -1;
+
+                if (CheckIfCurrentBoardWins(index))
                 {
-                    sum += line;
+                    var sum = GetSumOfUnmarkedNumbers(_currentBoard);
+                    FinalScore = sum * number;
                 }
             }
-
-            return sum;
         }
+
+        private bool CheckIfCurrentBoardWins(int x)
+        {
+            var h = Math.DivRem(x, 5, out var w);
+            return (_currentBoard[(h * 5) + 0] < 0 && _currentBoard[(h * 5) + 1] < 0 && _currentBoard[(h * 5) + 2] < 0 && _currentBoard[(h * 5) + 3] < 0 && _currentBoard[(h * 5) + 4] < 0) ||
+                   (_currentBoard[w] < 0 && _currentBoard[5 + w] < 0 && _currentBoard[10 + w] < 0 && _currentBoard[15 + w] < 0 && _currentBoard[20 + w] < 0);
+        }
+
+        private static int GetSumOfUnmarkedNumbers(int[] board) => board.Where(p => p > 0).Sum();
 
         public void PlayForLosing(string drawnNumbers)
         {
-            var winningBoards = new List<int[,]>();
-
             foreach (var number in drawnNumbers.Split(",").Select(p => int.Parse(p)))
             {
-               foreach (var board in Boards)
+               foreach (var board in _boards.Except(_winningBoards))
                 {
-                    for (var y = 0; y < 5; y++)
+                    _currentBoard = board;
+                    var index = Array.IndexOf(board, number);
+                    if (index != -1)
                     {
-                        for (var x = 0; x < 5; x++)
-                        {
-                            if (board[y, x] == number)
-                            {
-                                board[y, x] = -1;
+                        board[index] = -1;
 
-                                if (CheckForWinningCombination(board, x, y))
-                                {
-                                    if (! winningBoards.Contains(board))
-                                    {
-                                        winningBoards.Add(board);
-                                        if (winningBoards.Count == Boards.Count)
-                                        {
-                                            var sum = GetSumOfUnmarkedNumbers(board);
-                                            FinalScore = sum * number;
-                                            return;
-                                        }
-                                    }
-                                }
+                        if (CheckIfCurrentBoardWins(index))
+                        {
+                            _winningBoards.Add(board);
+                            if (_winningBoards.Count == _boards.Count)
+                            {
+                                var sum = GetSumOfUnmarkedNumbers(board);
+                                FinalScore = sum * number;
+                                return;
                             }
                         }
                     }
                 }
             }
         }
+
+        public bool DoesBoardContainAtPosition(int boardId, int x, int value) => _boards[boardId][x] == value;
     }
 }

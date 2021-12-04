@@ -2,7 +2,6 @@ using System;
 using Xunit;
 using Day4.Logic;
 using static Day4.UnitTests.Constants;
-using System.Collections.Generic;
 
 namespace Day4.UnitTests
 {
@@ -28,31 +27,31 @@ namespace Day4.UnitTests
  1 12 20 15 19";
 
             var sut = new Bingo(BOARD);
-            Assert.Equal(22, sut.Boards[0][0,0]);
-            Assert.Equal(13, sut.Boards[0][0,1]);
-            Assert.Equal(17, sut.Boards[0][0,2]);
-            Assert.Equal(11, sut.Boards[0][0,3]);
-            Assert.Equal(0, sut.Boards[0][0,4]);
-            Assert.Equal(8, sut.Boards[0][1,0]);
-            Assert.Equal(2, sut.Boards[0][1,1]);
-            Assert.Equal(23, sut.Boards[0][1,2]);
-            Assert.Equal(4, sut.Boards[0][1,3]);
-            Assert.Equal(24, sut.Boards[0][1,4]);
-            Assert.Equal(21, sut.Boards[0][2,0]);
-            Assert.Equal(9, sut.Boards[0][2,1]);
-            Assert.Equal(14, sut.Boards[0][2,2]);
-            Assert.Equal(16, sut.Boards[0][2,3]);
-            Assert.Equal(7, sut.Boards[0][2,4]);
-            Assert.Equal(6, sut.Boards[0][3,0]);
-            Assert.Equal(10, sut.Boards[0][3,1]);
-            Assert.Equal(3, sut.Boards[0][3,2]);
-            Assert.Equal(18, sut.Boards[0][3,3]);
-            Assert.Equal(5, sut.Boards[0][3,4]);
-            Assert.Equal(1, sut.Boards[0][4,0]);
-            Assert.Equal(12, sut.Boards[0][4,1]);
-            Assert.Equal(20, sut.Boards[0][4,2]);
-            Assert.Equal(15, sut.Boards[0][4,3]);
-            Assert.Equal(19, sut.Boards[0][4,4]);
+            Assert.True(sut.DoesBoardContainAtPosition(0, 0, 22));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 1, 13));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 2, 17));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 3, 11));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 4, 0));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 5, 8));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 6, 2));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 7, 23));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 8, 4));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 9, 24));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 10, 21));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 11, 9));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 12, 14));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 13, 16));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 14, 7));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 15, 6));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 16, 10));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 17, 3));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 18, 18));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 19, 5));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 20, 1));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 21, 12));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 22, 20));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 23, 15));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 24, 19));
         }
 
         [Fact]
@@ -71,57 +70,57 @@ namespace Day4.UnitTests
 14 21 16 12  6";
 
             var sut = new Bingo(BOARD);
-            Assert.Equal(22, sut.Boards[0][0,0]);
-            Assert.Equal(13, sut.Boards[0][0,1]);
-            Assert.Equal(17, sut.Boards[0][0,2]);
-            Assert.Equal(11, sut.Boards[0][0,3]);
-            Assert.Equal(0, sut.Boards[0][0,4]);
-            Assert.Equal(8, sut.Boards[0][1,0]);
-            Assert.Equal(2, sut.Boards[0][1,1]);
-            Assert.Equal(23, sut.Boards[0][1,2]);
-            Assert.Equal(4, sut.Boards[0][1,3]);
-            Assert.Equal(24, sut.Boards[0][1,4]);
-            Assert.Equal(21, sut.Boards[0][2,0]);
-            Assert.Equal(9, sut.Boards[0][2,1]);
-            Assert.Equal(14, sut.Boards[0][2,2]);
-            Assert.Equal(16, sut.Boards[0][2,3]);
-            Assert.Equal(7, sut.Boards[0][2,4]);
-            Assert.Equal(6, sut.Boards[0][3,0]);
-            Assert.Equal(10, sut.Boards[0][3,1]);
-            Assert.Equal(3, sut.Boards[0][3,2]);
-            Assert.Equal(18, sut.Boards[0][3,3]);
-            Assert.Equal(5, sut.Boards[0][3,4]);
-            Assert.Equal(1, sut.Boards[0][4,0]);
-            Assert.Equal(12, sut.Boards[0][4,1]);
-            Assert.Equal(20, sut.Boards[0][4,2]);
-            Assert.Equal(15, sut.Boards[0][4,3]);
-            Assert.Equal(19, sut.Boards[0][4,4]);
+            Assert.True(sut.DoesBoardContainAtPosition(0, 0, 22));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 1, 13));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 2, 17));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 3, 11));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 4, 0));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 5, 8));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 6, 2));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 7, 23));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 8, 4));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 9, 24));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 10, 21));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 11, 9));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 12, 14));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 13, 16));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 14, 7));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 15, 6));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 16, 10));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 17, 3));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 18, 18));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 19, 5));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 20, 1));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 21, 12));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 22, 20));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 23, 15));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 24, 19));
 
-            Assert.Equal(3,sut.Boards[1][0,0]);
-            Assert.Equal(15,sut.Boards[1][0,1]);
-            Assert.Equal(0,sut.Boards[1][0,2]);
-            Assert.Equal(2,sut.Boards[1][0,3]);
-            Assert.Equal(22,sut.Boards[1][0,4]);
-            Assert.Equal(9,sut.Boards[1][1,0]);
-            Assert.Equal(18,sut.Boards[1][1,1]);
-            Assert.Equal(13,sut.Boards[1][1,2]);
-            Assert.Equal(17,sut.Boards[1][1,3]);
-            Assert.Equal(5,sut.Boards[1][1,4]);
-            Assert.Equal(19,sut.Boards[1][2,0]);
-            Assert.Equal(8,sut.Boards[1][2,1]);
-            Assert.Equal(7,sut.Boards[1][2,2]);
-            Assert.Equal(25,sut.Boards[1][2,3]);
-            Assert.Equal(23,sut.Boards[1][2,4]);
-            Assert.Equal(20,sut.Boards[1][3,0]);
-            Assert.Equal(11,sut.Boards[1][3,1]);
-            Assert.Equal(10,sut.Boards[1][3,2]);
-            Assert.Equal(24,sut.Boards[1][3,3]);
-            Assert.Equal(4,sut.Boards[1][3,4]);
-            Assert.Equal(14,sut.Boards[1][4,0]);
-            Assert.Equal(21,sut.Boards[1][4,1]);
-            Assert.Equal(16,sut.Boards[1][4,2]);
-            Assert.Equal(12,sut.Boards[1][4,3]);
-            Assert.Equal(6,sut.Boards[1][4,4]);
+            Assert.True(sut.DoesBoardContainAtPosition(1, 0, 3));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 1, 15));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 2, 0));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 3, 2));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 4, 22));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 5, 9));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 6, 18));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 7, 13));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 8, 17));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 9, 5));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 10, 19));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 11, 8));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 12, 7));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 13, 25));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 14, 23));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 15, 20));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 16, 11));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 17, 10));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 18, 24));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 19, 4));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 20, 14));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 21, 21));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 22, 16));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 23, 12));
+            Assert.True(sut.DoesBoardContainAtPosition(1, 24, 6));
         }
 
         [Fact]
@@ -136,7 +135,7 @@ namespace Day4.UnitTests
             var sut = new Bingo(BOARD);
             sut.Play("22");
 
-            Assert.Equal(-1, sut.Boards[0][0,0]);
+            Assert.True(sut.DoesBoardContainAtPosition(0, 0, -1));
         }
 
         [Fact]
@@ -150,31 +149,31 @@ namespace Day4.UnitTests
 
             var sut = new Bingo(BOARD);
             sut.Play("90");
-            Assert.Equal(22, sut.Boards[0][0,0]);
-            Assert.Equal(13, sut.Boards[0][0,1]);
-            Assert.Equal(17, sut.Boards[0][0,2]);
-            Assert.Equal(11, sut.Boards[0][0,3]);
-            Assert.Equal(0, sut.Boards[0][0,4]);
-            Assert.Equal(8, sut.Boards[0][1,0]);
-            Assert.Equal(2, sut.Boards[0][1,1]);
-            Assert.Equal(23, sut.Boards[0][1,2]);
-            Assert.Equal(4, sut.Boards[0][1,3]);
-            Assert.Equal(24, sut.Boards[0][1,4]);
-            Assert.Equal(21, sut.Boards[0][2,0]);
-            Assert.Equal(9, sut.Boards[0][2,1]);
-            Assert.Equal(14, sut.Boards[0][2,2]);
-            Assert.Equal(16, sut.Boards[0][2,3]);
-            Assert.Equal(7, sut.Boards[0][2,4]);
-            Assert.Equal(6, sut.Boards[0][3,0]);
-            Assert.Equal(10, sut.Boards[0][3,1]);
-            Assert.Equal(3, sut.Boards[0][3,2]);
-            Assert.Equal(18, sut.Boards[0][3,3]);
-            Assert.Equal(5, sut.Boards[0][3,4]);
-            Assert.Equal(1, sut.Boards[0][4,0]);
-            Assert.Equal(12, sut.Boards[0][4,1]);
-            Assert.Equal(20, sut.Boards[0][4,2]);
-            Assert.Equal(15, sut.Boards[0][4,3]);
-            Assert.Equal(19, sut.Boards[0][4,4]);
+            Assert.True(sut.DoesBoardContainAtPosition(0, 0, 22));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 1, 13));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 2, 17));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 3, 11));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 4, 0));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 5, 8));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 6, 2));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 7, 23));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 8, 4));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 9, 24));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 10, 21));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 11, 9));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 12, 14));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 13, 16));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 14, 7));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 15, 6));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 16, 10));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 17, 3));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 18, 18));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 19, 5));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 20, 1));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 21, 12));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 22, 20));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 23, 15));
+            Assert.True(sut.DoesBoardContainAtPosition(0, 24, 19));
         }
 
         [Fact]
