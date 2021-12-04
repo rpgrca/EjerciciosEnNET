@@ -2,6 +2,7 @@ using System;
 using Xunit;
 using Day4.Logic;
 using static Day4.UnitTests.Constants;
+using System.Collections.Generic;
 
 namespace Day4.UnitTests
 {
@@ -27,37 +28,31 @@ namespace Day4.UnitTests
  1 12 20 15 19";
 
             var sut = new Bingo(BOARD);
-            Assert.Collection(sut.Boards[0],
-                p1 => Assert.Collection(p1,
-                    p11 => Assert.Equal(22, p11),
-                    p12 => Assert.Equal(13, p12),
-                    p13 => Assert.Equal(17, p13),
-                    p14 => Assert.Equal(11, p14),
-                    p15 => Assert.Equal(0, p15)),
-                 p2 => Assert.Collection(p2,
-                    p11 => Assert.Equal(8, p11),
-                    p12 => Assert.Equal(2, p12),
-                    p13 => Assert.Equal(23, p13),
-                    p14 => Assert.Equal(4, p14),
-                    p15 => Assert.Equal(24, p15)),
-                 p3 => Assert.Collection(p3,
-                    p11 => Assert.Equal(21, p11),
-                    p12 => Assert.Equal(9, p12),
-                    p13 => Assert.Equal(14, p13),
-                    p14 => Assert.Equal(16, p14),
-                    p15 => Assert.Equal(7, p15)),
-                 p4 => Assert.Collection(p4,
-                    p11 => Assert.Equal(6, p11),
-                    p12 => Assert.Equal(10, p12),
-                    p13 => Assert.Equal(3, p13),
-                    p14 => Assert.Equal(18, p14),
-                    p15 => Assert.Equal(5, p15)),
-                 p5 => Assert.Collection(p5,
-                    p11 => Assert.Equal(1, p11),
-                    p12 => Assert.Equal(12, p12),
-                    p13 => Assert.Equal(20, p13),
-                    p14 => Assert.Equal(15, p14),
-                    p15 => Assert.Equal(19, p15)));
+            Assert.Equal(22, sut.Boards[0][0,0]);
+            Assert.Equal(13, sut.Boards[0][0,1]);
+            Assert.Equal(17, sut.Boards[0][0,2]);
+            Assert.Equal(11, sut.Boards[0][0,3]);
+            Assert.Equal(0, sut.Boards[0][0,4]);
+            Assert.Equal(8, sut.Boards[0][1,0]);
+            Assert.Equal(2, sut.Boards[0][1,1]);
+            Assert.Equal(23, sut.Boards[0][1,2]);
+            Assert.Equal(4, sut.Boards[0][1,3]);
+            Assert.Equal(24, sut.Boards[0][1,4]);
+            Assert.Equal(21, sut.Boards[0][2,0]);
+            Assert.Equal(9, sut.Boards[0][2,1]);
+            Assert.Equal(14, sut.Boards[0][2,2]);
+            Assert.Equal(16, sut.Boards[0][2,3]);
+            Assert.Equal(7, sut.Boards[0][2,4]);
+            Assert.Equal(6, sut.Boards[0][3,0]);
+            Assert.Equal(10, sut.Boards[0][3,1]);
+            Assert.Equal(3, sut.Boards[0][3,2]);
+            Assert.Equal(18, sut.Boards[0][3,3]);
+            Assert.Equal(5, sut.Boards[0][3,4]);
+            Assert.Equal(1, sut.Boards[0][4,0]);
+            Assert.Equal(12, sut.Boards[0][4,1]);
+            Assert.Equal(20, sut.Boards[0][4,2]);
+            Assert.Equal(15, sut.Boards[0][4,3]);
+            Assert.Equal(19, sut.Boards[0][4,4]);
         }
 
         [Fact]
@@ -76,69 +71,57 @@ namespace Day4.UnitTests
 14 21 16 12  6";
 
             var sut = new Bingo(BOARD);
-            Assert.Collection(sut.Boards[0],
-                p1 => Assert.Collection(p1,
-                    p11 => Assert.Equal(22, p11),
-                    p12 => Assert.Equal(13, p12),
-                    p13 => Assert.Equal(17, p13),
-                    p14 => Assert.Equal(11, p14),
-                    p15 => Assert.Equal(0, p15)),
-                p2 => Assert.Collection(p2,
-                    p11 => Assert.Equal(8, p11),
-                    p12 => Assert.Equal(2, p12),
-                    p13 => Assert.Equal(23, p13),
-                    p14 => Assert.Equal(4, p14),
-                    p15 => Assert.Equal(24, p15)),
-                p3 => Assert.Collection(p3,
-                    p11 => Assert.Equal(21, p11),
-                    p12 => Assert.Equal(9, p12),
-                    p13 => Assert.Equal(14, p13),
-                    p14 => Assert.Equal(16, p14),
-                    p15 => Assert.Equal(7, p15)),
-                p4 => Assert.Collection(p4,
-                    p11 => Assert.Equal(6, p11),
-                    p12 => Assert.Equal(10, p12),
-                    p13 => Assert.Equal(3, p13),
-                    p14 => Assert.Equal(18, p14),
-                    p15 => Assert.Equal(5, p15)),
-                p5 => Assert.Collection(p5,
-                    p11 => Assert.Equal(1, p11),
-                    p12 => Assert.Equal(12, p12),
-                    p13 => Assert.Equal(20, p13),
-                    p14 => Assert.Equal(15, p14),
-                    p15 => Assert.Equal(19, p15)));
+            Assert.Equal(22, sut.Boards[0][0,0]);
+            Assert.Equal(13, sut.Boards[0][0,1]);
+            Assert.Equal(17, sut.Boards[0][0,2]);
+            Assert.Equal(11, sut.Boards[0][0,3]);
+            Assert.Equal(0, sut.Boards[0][0,4]);
+            Assert.Equal(8, sut.Boards[0][1,0]);
+            Assert.Equal(2, sut.Boards[0][1,1]);
+            Assert.Equal(23, sut.Boards[0][1,2]);
+            Assert.Equal(4, sut.Boards[0][1,3]);
+            Assert.Equal(24, sut.Boards[0][1,4]);
+            Assert.Equal(21, sut.Boards[0][2,0]);
+            Assert.Equal(9, sut.Boards[0][2,1]);
+            Assert.Equal(14, sut.Boards[0][2,2]);
+            Assert.Equal(16, sut.Boards[0][2,3]);
+            Assert.Equal(7, sut.Boards[0][2,4]);
+            Assert.Equal(6, sut.Boards[0][3,0]);
+            Assert.Equal(10, sut.Boards[0][3,1]);
+            Assert.Equal(3, sut.Boards[0][3,2]);
+            Assert.Equal(18, sut.Boards[0][3,3]);
+            Assert.Equal(5, sut.Boards[0][3,4]);
+            Assert.Equal(1, sut.Boards[0][4,0]);
+            Assert.Equal(12, sut.Boards[0][4,1]);
+            Assert.Equal(20, sut.Boards[0][4,2]);
+            Assert.Equal(15, sut.Boards[0][4,3]);
+            Assert.Equal(19, sut.Boards[0][4,4]);
 
-            Assert.Collection(sut.Boards[1],
-                p6 => Assert.Collection(p6,
-                    p11 => Assert.Equal(3, p11),
-                    p12 => Assert.Equal(15, p12),
-                    p13 => Assert.Equal(0, p13),
-                    p14 => Assert.Equal(2, p14),
-                    p15 => Assert.Equal(22, p15)),
-                p7 => Assert.Collection(p7,
-                    p11 => Assert.Equal(9, p11),
-                    p12 => Assert.Equal(18, p12),
-                    p13 => Assert.Equal(13, p13),
-                    p14 => Assert.Equal(17, p14),
-                    p15 => Assert.Equal(5, p15)),
-                p8 => Assert.Collection(p8,
-                    p11 => Assert.Equal(19, p11),
-                    p12 => Assert.Equal(8, p12),
-                    p13 => Assert.Equal(7, p13),
-                    p14 => Assert.Equal(25, p14),
-                    p15 => Assert.Equal(23, p15)),
-                p9 => Assert.Collection(p9,
-                    p11 => Assert.Equal(20, p11),
-                    p12 => Assert.Equal(11, p12),
-                    p13 => Assert.Equal(10, p13),
-                    p14 => Assert.Equal(24, p14),
-                    p15 => Assert.Equal(4, p15)),
-                p10 => Assert.Collection(p10,
-                    p11 => Assert.Equal(14, p11),
-                    p12 => Assert.Equal(21, p12),
-                    p13 => Assert.Equal(16, p13),
-                    p14 => Assert.Equal(12, p14),
-                    p15 => Assert.Equal(6, p15)));
+            Assert.Equal(3,sut.Boards[1][0,0]);
+            Assert.Equal(15,sut.Boards[1][0,1]);
+            Assert.Equal(0,sut.Boards[1][0,2]);
+            Assert.Equal(2,sut.Boards[1][0,3]);
+            Assert.Equal(22,sut.Boards[1][0,4]);
+            Assert.Equal(9,sut.Boards[1][1,0]);
+            Assert.Equal(18,sut.Boards[1][1,1]);
+            Assert.Equal(13,sut.Boards[1][1,2]);
+            Assert.Equal(17,sut.Boards[1][1,3]);
+            Assert.Equal(5,sut.Boards[1][1,4]);
+            Assert.Equal(19,sut.Boards[1][2,0]);
+            Assert.Equal(8,sut.Boards[1][2,1]);
+            Assert.Equal(7,sut.Boards[1][2,2]);
+            Assert.Equal(25,sut.Boards[1][2,3]);
+            Assert.Equal(23,sut.Boards[1][2,4]);
+            Assert.Equal(20,sut.Boards[1][3,0]);
+            Assert.Equal(11,sut.Boards[1][3,1]);
+            Assert.Equal(10,sut.Boards[1][3,2]);
+            Assert.Equal(24,sut.Boards[1][3,3]);
+            Assert.Equal(4,sut.Boards[1][3,4]);
+            Assert.Equal(14,sut.Boards[1][4,0]);
+            Assert.Equal(21,sut.Boards[1][4,1]);
+            Assert.Equal(16,sut.Boards[1][4,2]);
+            Assert.Equal(12,sut.Boards[1][4,3]);
+            Assert.Equal(6,sut.Boards[1][4,4]);
         }
 
         [Fact]
@@ -153,7 +136,7 @@ namespace Day4.UnitTests
             var sut = new Bingo(BOARD);
             sut.Play("22");
 
-            Assert.Equal(-22, sut.Boards[0][0][0]);
+            Assert.Equal(-1, sut.Boards[0][0,0]);
         }
 
         [Fact]
@@ -167,38 +150,31 @@ namespace Day4.UnitTests
 
             var sut = new Bingo(BOARD);
             sut.Play("90");
-
-            Assert.Collection(sut.Boards[0],
-                p1 => Assert.Collection(p1,
-                    p11 => Assert.Equal(22, p11),
-                    p12 => Assert.Equal(13, p12),
-                    p13 => Assert.Equal(17, p13),
-                    p14 => Assert.Equal(11, p14),
-                    p15 => Assert.Equal(0, p15)),
-                 p2 => Assert.Collection(p2,
-                    p11 => Assert.Equal(8, p11),
-                    p12 => Assert.Equal(2, p12),
-                    p13 => Assert.Equal(23, p13),
-                    p14 => Assert.Equal(4, p14),
-                    p15 => Assert.Equal(24, p15)),
-                 p3 => Assert.Collection(p3,
-                    p11 => Assert.Equal(21, p11),
-                    p12 => Assert.Equal(9, p12),
-                    p13 => Assert.Equal(14, p13),
-                    p14 => Assert.Equal(16, p14),
-                    p15 => Assert.Equal(7, p15)),
-                 p4 => Assert.Collection(p4,
-                    p11 => Assert.Equal(6, p11),
-                    p12 => Assert.Equal(10, p12),
-                    p13 => Assert.Equal(3, p13),
-                    p14 => Assert.Equal(18, p14),
-                    p15 => Assert.Equal(5, p15)),
-                 p5 => Assert.Collection(p5,
-                    p11 => Assert.Equal(1, p11),
-                    p12 => Assert.Equal(12, p12),
-                    p13 => Assert.Equal(20, p13),
-                    p14 => Assert.Equal(15, p14),
-                    p15 => Assert.Equal(19, p15)));
+            Assert.Equal(22, sut.Boards[0][0,0]);
+            Assert.Equal(13, sut.Boards[0][0,1]);
+            Assert.Equal(17, sut.Boards[0][0,2]);
+            Assert.Equal(11, sut.Boards[0][0,3]);
+            Assert.Equal(0, sut.Boards[0][0,4]);
+            Assert.Equal(8, sut.Boards[0][1,0]);
+            Assert.Equal(2, sut.Boards[0][1,1]);
+            Assert.Equal(23, sut.Boards[0][1,2]);
+            Assert.Equal(4, sut.Boards[0][1,3]);
+            Assert.Equal(24, sut.Boards[0][1,4]);
+            Assert.Equal(21, sut.Boards[0][2,0]);
+            Assert.Equal(9, sut.Boards[0][2,1]);
+            Assert.Equal(14, sut.Boards[0][2,2]);
+            Assert.Equal(16, sut.Boards[0][2,3]);
+            Assert.Equal(7, sut.Boards[0][2,4]);
+            Assert.Equal(6, sut.Boards[0][3,0]);
+            Assert.Equal(10, sut.Boards[0][3,1]);
+            Assert.Equal(3, sut.Boards[0][3,2]);
+            Assert.Equal(18, sut.Boards[0][3,3]);
+            Assert.Equal(5, sut.Boards[0][3,4]);
+            Assert.Equal(1, sut.Boards[0][4,0]);
+            Assert.Equal(12, sut.Boards[0][4,1]);
+            Assert.Equal(20, sut.Boards[0][4,2]);
+            Assert.Equal(15, sut.Boards[0][4,3]);
+            Assert.Equal(19, sut.Boards[0][4,4]);
         }
 
         [Fact]

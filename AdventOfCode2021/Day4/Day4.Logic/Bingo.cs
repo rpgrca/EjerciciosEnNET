@@ -1,11 +1,12 @@
 using System.Linq;
 using System;
 using System.Collections.Generic;
+
 namespace Day4.Logic
 {
     public class Bingo
     {
-        public List<List<List<int>>> Boards { get; set; }
+        public List<int[,]> Boards { get; set; }
         public int FinalScore { get; private set; }
 
         public Bingo(string boards)
@@ -16,23 +17,42 @@ namespace Day4.Logic
             }
 
             FinalScore = -1;
-            Boards = new List<List<List<int>>>();
-            var board = new List<List<int>>();
+            Boards = new List<int[,]>();
+
+            var board = CreateBoard();
+            var y = 0;
             foreach (var line in boards.Split("\n"))
             {
                 if (string.IsNullOrWhiteSpace(line))
                 {
                     Boards.Add(board);
-                    board = new List<List<int>>();
+                    board = CreateBoard();
+                    y = 0;
                 }
                 else
                 {
-                    board.Add(new List<int>(line.Split(" ").Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => int.Parse(p))));
+                    var x = 0;
+                    foreach (var number in line.Split(" ").Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => int.Parse(p)))
+                    {
+                        board[y, x++] = number;
+                    }
+
+                    y++;
                 }
             }
 
             Boards.Add(board);
         }
+
+        private static int[,] CreateBoard() =>
+            new int[5,5]
+            {
+                { 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0 }
+            };
 
         public void Play(string drawnNumbers)
         {
@@ -40,32 +60,42 @@ namespace Day4.Logic
             {
                foreach (var board in Boards)
                 {
-                    foreach (var line in board)
+                    MarkNumberInBoard(board, number);
+                    if (FinalScore != -1)
                     {
-                        if (line.Contains(number))
-                        {
-                            if (number == 0)
-                            {
-                                line[line.IndexOf(number)] = -999;
-                            }
-                            else
-                            {
-                                line[line.IndexOf(number)] = -number;
-                            }
-
-                            if (LineIsComplete(line) || HasAnyVerticalLineComplete(board))
-                            {
-                                var sum = GetSumOfUnmarkedNumbers(board);
-                                FinalScore = sum * number;
-                                return;
-                            }
-                        }
+                        return;
                     }
                 }
             }
         }
 
-        private bool LineIsComplete(List<int> line) => line.All(p => p < 0);
+        private void MarkNumberInBoard(int[,] board, int number)
+        {
+            for (var y = 0; y < 5; y++)
+            {
+                for (var x = 0; x < 5; x++)
+                {
+                    if (board[y, x] == number)
+                    {
+                        board[y, x] = -1;
+
+                        if (CheckForWinningCombination(board, x, y))
+                        {
+                            var sum = GetSumOfUnmarkedNumbers(board);
+                            FinalScore = sum * number;
+                        }
+
+                        return;
+                    }
+                }
+            }
+        }
+
+        private static bool CheckForWinningCombination(int [,] board, int x, int y) =>
+            (board[y, 0] < 0 && board[y, 1] < 0 && board[y, 2] < 0 && board[y, 3] < 0 && board[y, 4] < 0) ||
+            (board[0, x] < 0 && board[1, x] < 0 && board[2, x] < 0 && board[3, x] < 0 && board[4, x] < 0);
+
+        private static bool LineIsComplete(List<int> line) => line.All(p => p < 0);
 
         private bool HasAnyVerticalLineComplete(List<List<int>> board)
         {
@@ -91,12 +121,15 @@ namespace Day4.Logic
             return false;
         }
 
-        private int GetSumOfUnmarkedNumbers(List<List<int>> board)
+        private static int GetSumOfUnmarkedNumbers(int[,] board)
         {
             var sum = 0;
             foreach (var line in board)
             {
-                sum += line.Where(p => p > 0).Sum();
+                if (line > -1)
+                {
+                    sum += line;
+                }
             }
 
             return sum;
@@ -104,35 +137,31 @@ namespace Day4.Logic
 
         public void PlayForLosing(string drawnNumbers)
         {
-            var winningBoards = new List<List<List<int>>>();
+            var winningBoards = new List<int[,]>();
 
             foreach (var number in drawnNumbers.Split(",").Select(p => int.Parse(p)))
             {
                foreach (var board in Boards)
                 {
-                    foreach (var line in board)
+                    for (var y = 0; y < 5; y++)
                     {
-                        if (line.Contains(number))
+                        for (var x = 0; x < 5; x++)
                         {
-                            if (number == 0)
+                            if (board[y, x] == number)
                             {
-                                line[line.IndexOf(number)] = -999;
-                            }
-                            else
-                            {
-                                line[line.IndexOf(number)] = -number;
-                            }
+                                board[y, x] = -1;
 
-                            if (LineIsComplete(line) || HasAnyVerticalLineComplete(board))
-                            {
-                                if (! winningBoards.Contains(board))
+                                if (CheckForWinningCombination(board, x, y))
                                 {
-                                    winningBoards.Add(board);
-                                    if (winningBoards.Count == Boards.Count)
+                                    if (! winningBoards.Contains(board))
                                     {
-                                        var sum = GetSumOfUnmarkedNumbers(board);
-                                        FinalScore = sum * number;
-                                        return;
+                                        winningBoards.Add(board);
+                                        if (winningBoards.Count == Boards.Count)
+                                        {
+                                            var sum = GetSumOfUnmarkedNumbers(board);
+                                            FinalScore = sum * number;
+                                            return;
+                                        }
                                     }
                                 }
                             }
@@ -141,6 +170,5 @@ namespace Day4.Logic
                 }
             }
         }
-
     }
 }
