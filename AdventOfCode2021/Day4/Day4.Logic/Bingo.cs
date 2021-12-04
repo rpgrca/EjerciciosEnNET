@@ -46,7 +46,7 @@ namespace Day4.Logic
                         {
                             line[line.IndexOf(number)] = -number;
 
-                            if (line.All(p => p < 0))
+                            if (LineIsComplete(line) || HasAnyVerticalLineComplete(board))
                             {
                                 var sum = GetSumOfUnmarkedNumbers(board);
                                 FinalScore = sum * number;
@@ -56,6 +56,32 @@ namespace Day4.Logic
                     }
                 }
             }
+        }
+
+        private bool LineIsComplete(List<int> line) => line.All(p => p < 0);
+
+        private bool HasAnyVerticalLineComplete(List<List<int>> board)
+        {
+            for (var index = 0; index < 5; index++)
+            {
+                var hasUnmarkedNumber = false;
+
+                foreach (var line in board)
+                {
+                    if (line[index] >= 0)
+                    {
+                        hasUnmarkedNumber = true;
+                        break;
+                    }
+                }
+
+                if (! hasUnmarkedNumber)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private int GetSumOfUnmarkedNumbers(List<List<int>> board)

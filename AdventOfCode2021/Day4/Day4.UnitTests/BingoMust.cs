@@ -214,5 +214,20 @@ namespace Day4.UnitTests
 
             Assert.Equal(4512, sut.FinalScore);
         }
+
+        [Fact]
+        public void RecognizeWinningBoard_WhenLiningVertically()
+        {
+            const string BOARD = @"14 10 18 22  2
+21 16  8 11  0
+17 15 23 13 12
+24  9 26  6  3
+ 4 19 20  5  7";
+
+            var sut = new Bingo(BOARD);
+            sut.Play("7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1");
+
+            Assert.Equal(4512, sut.FinalScore);
+        }
     }
 }
