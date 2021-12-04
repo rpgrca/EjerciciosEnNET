@@ -1,12 +1,11 @@
+using System.Linq;
 using System;
 using System.Collections.Generic;
 namespace Day4.Logic
 {
     public class Bingo
     {
-        private readonly string _boards;
-
-        public List<List<int>> Boards { get; set; }
+        public List<List<List<int>>> Boards { get; set; }
 
         public Bingo(string boards)
         {
@@ -15,16 +14,22 @@ namespace Day4.Logic
                 throw new ArgumentException("Invalid boards");
             }
 
-            _boards = boards;
-
-            Boards = new List<List<int>>()
+            Boards = new List<List<List<int>>>();
+            var board = new List<List<int>>();
+            foreach (var line in boards.Split("\n"))
             {
-                new() { 22, 13, 17, 11, 0 },
-                new() { 8, 2, 23, 4, 24 },
-                new() { 21, 9, 14, 16, 7 },
-                new() { 6, 10, 3, 18, 5 },
-                new() { 1, 12, 20, 15, 19 }
-            };
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    Boards.Add(board);
+                    board = new List<List<int>>();
+                }
+                else
+                {
+                    board.Add(new List<int>(line.Split(" ").Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => int.Parse(p))));
+                }
+            }
+
+            Boards.Add(board);
         }
     }
 }
