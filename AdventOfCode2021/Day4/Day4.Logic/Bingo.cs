@@ -31,5 +31,22 @@ namespace Day4.Logic
 
             Boards.Add(board);
         }
+
+        public void Play(string drawnNumbers)
+        {
+            foreach (var number in drawnNumbers.Split(",").Select(p => int.Parse(p)))
+            {
+                foreach (var board in Boards)
+                {
+                    foreach (var line in board)
+                    {
+                        if (line.Contains(number))
+                        {
+                            line[line.IndexOf(number)] = -number;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

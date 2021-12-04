@@ -139,5 +139,20 @@ namespace Day4.UnitTests
                     p14 => Assert.Equal(12, p14),
                     p15 => Assert.Equal(6, p15)));
         }
+
+        [Fact]
+        public void Test1()
+        {
+            const string BOARD = @"22 13 17 11  0
+ 8  2 23  4 24
+21  9 14 16  7
+ 6 10  3 18  5
+ 1 12 20 15 19";
+
+            var sut = new Bingo(BOARD);
+            sut.Play("22");
+
+            Assert.Equal(-22, sut.Boards[0][0][0]);
+        }
     }
 }
