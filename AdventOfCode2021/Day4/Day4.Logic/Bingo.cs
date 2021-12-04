@@ -6,6 +6,7 @@ namespace Day4.Logic
     public class Bingo
     {
         public List<List<List<int>>> Boards { get; set; }
+        public int FinalScore { get; private set; }
 
         public Bingo(string boards)
         {
@@ -14,6 +15,7 @@ namespace Day4.Logic
                 throw new ArgumentException("Invalid boards");
             }
 
+            FinalScore = -1;
             Boards = new List<List<List<int>>>();
             var board = new List<List<int>>();
             foreach (var line in boards.Split("\n"))
@@ -36,17 +38,35 @@ namespace Day4.Logic
         {
             foreach (var number in drawnNumbers.Split(",").Select(p => int.Parse(p)))
             {
-                foreach (var board in Boards)
+               foreach (var board in Boards)
                 {
                     foreach (var line in board)
                     {
                         if (line.Contains(number))
                         {
                             line[line.IndexOf(number)] = -number;
+
+                            if (line.All(p => p < 0))
+                            {
+                                var sum = GetSumOfUnmarkedNumbers(board);
+                                FinalScore = sum * number;
+                                return;
+                            }
                         }
                     }
                 }
             }
+        }
+
+        private int GetSumOfUnmarkedNumbers(List<List<int>> board)
+        {
+            var sum = 0;
+            foreach (var line in board)
+            {
+                sum += line.Where(p => p > 0).Sum();
+            }
+
+            return sum;
         }
     }
 }
