@@ -27,33 +27,29 @@ namespace Day3.UnitTests
         [InlineData(SAMPLE_INPUT, 198)]
         public void CalculatePowerConsumptionCorrectly_WhenUsingSampleInput(string reportInput, int expectedPowerConsumption)
         {
-            var sut = new DiagnosticReport(reportInput);
-            sut.PreparePowerConsumptionReport();
-            Assert.Equal(expectedPowerConsumption, sut.PowerConsumption);
+            var powerConsumption = new DiagnosticReport(reportInput).For(new PowerConsumption());
+            Assert.Equal(expectedPowerConsumption, powerConsumption);
         }
 
         [Fact]
         public void SolveFirstPuzzle()
         {
-            var sut = new DiagnosticReport(REAL_INPUT);
-            sut.PreparePowerConsumptionReport();
-            Assert.Equal(2003336, sut.PowerConsumption);
+            var powerConsumption = new DiagnosticReport(REAL_INPUT).For(new PowerConsumption());
+            Assert.Equal(2003336, powerConsumption);
         }
 
         [Fact]
         public void ObtainLifeSupportRatingCorrectly_WhenUsingSampleInput()
         {
-            var sut = new DiagnosticReport(SAMPLE_INPUT);
-            sut.PrepareLifeSupportRating();
-            Assert.Equal(230, sut.LifeSupportRating);
+            var lifeSupportRating = new DiagnosticReport(SAMPLE_INPUT).For(new LifeSupport());
+            Assert.Equal(230, lifeSupportRating);
         }
 
         [Fact]
         public void SolveSecondPuzzle()
         {
-            var sut = new DiagnosticReport(REAL_INPUT);
-            sut.PrepareLifeSupportRating();
-            Assert.Equal(1877139, sut.LifeSupportRating);
+            var lifeSupportRating = new DiagnosticReport(REAL_INPUT).For(new LifeSupport());
+            Assert.Equal(1877139, lifeSupportRating);
         }
     }
 }
