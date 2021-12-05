@@ -8,8 +8,14 @@ namespace Day5.Logic
 
         public HydrothermalVentReport(string report)
         {
-            throw new ArgumentException("Invalid input");
+            if (string.IsNullOrWhiteSpace(report))
+            {
+                throw new ArgumentException("Invalid input");
+            }
+
             _report = report;
         }
+
+        public int TotalPoints { get; set; } = 6;
     }
 }
