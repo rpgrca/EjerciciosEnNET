@@ -39,7 +39,7 @@ namespace Day5.Logic
             {
                 TotalPoints += Math.Abs(endingPoint[1] - initialPoint[1]) + 1;
             }
-            else
+            else if (initialPoint[1] == endingPoint[1])
             {
                 TotalPoints += Math.Abs(endingPoint[0] - initialPoint[0]) + 1;
             }
