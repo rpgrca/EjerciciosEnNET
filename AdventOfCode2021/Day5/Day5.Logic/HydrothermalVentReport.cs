@@ -8,9 +8,6 @@ namespace Day5.Logic
     {
         private readonly string _report;
         private readonly Dictionary<(int X, int Y), int> _points;
-        private bool v;
-
-        public int TotalPoints { get; private set; }
 
         public HydrothermalVentReport(string report)
         {
@@ -43,19 +40,16 @@ namespace Day5.Logic
                 if (initialPoint[0] == endingPoint[0])
                 {
                     MakeVerticalLine(initialPoint, endingPoint);
-                    TotalPoints += Math.Abs(endingPoint[1] - initialPoint[1]) + 1;
                 }
                 else if (initialPoint[1] == endingPoint[1])
                 {
                     MakeHorizontalLine(initialPoint, endingPoint);
-                    TotalPoints += Math.Abs(endingPoint[0] - initialPoint[0]) + 1;
                 }
                 else if (withDiagonals)
                 {
                     if (Math.Abs(endingPoint[0] - initialPoint[0]) == Math.Abs(endingPoint[1] - initialPoint[1]))
                     {
                         MakeDiagonalLine(initialPoint, endingPoint);
-                        TotalPoints += Math.Abs(endingPoint[0] - initialPoint[0]) + 1;
                     }
                 }
             }
