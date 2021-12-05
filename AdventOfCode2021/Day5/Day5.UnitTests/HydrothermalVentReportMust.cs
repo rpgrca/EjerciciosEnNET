@@ -55,5 +55,12 @@ namespace Day5.UnitTests
             var sut = new HydrothermalVentReport(input, true);
             Assert.Equal(expectedCount, sut.TotalPoints);
         }
+
+        [Fact]
+        public void Test4()
+        {
+            var sut = new HydrothermalVentReport(SAMPLE_INPUT, true);
+            Assert.Equal(12, sut.CalculateOverlappingPoints());
+        }
     }
 }

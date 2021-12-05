@@ -54,6 +54,7 @@ namespace Day5.Logic
                 {
                     if (Math.Abs(endingPoint[0] - initialPoint[0]) == Math.Abs(endingPoint[1] - initialPoint[1]))
                     {
+                        MakeDiagonalLine(initialPoint, endingPoint);
                         TotalPoints += Math.Abs(endingPoint[0] - initialPoint[0]) + 1;
                     }
                 }
@@ -112,6 +113,69 @@ namespace Day5.Logic
                     }
 
                     _points[(x, initialPoint[1])]++;
+                }
+            }
+        }
+
+        private void MakeDiagonalLine(List<int> initialPoint, List<int> endingPoint)
+        {
+            int x;
+            int y;
+            if (initialPoint[0] <= endingPoint[0])
+            {
+                if (initialPoint[1] <= endingPoint[1])
+                {
+                    // 0,0 -> 8,8
+                    for (x = initialPoint[0], y = initialPoint[1]; x <= endingPoint[0] && y <= endingPoint[1]; x++, y++)
+                    {
+                        if (!_points.ContainsKey((x, y)))
+                        {
+                            _points.Add((x, y), 0);
+                        }
+
+                        _points[(x, y)]++;
+                    }
+                }
+                else
+                {
+                    // 5,5 -> 8,2
+                    for (x = initialPoint[0], y = initialPoint[1]; x <= endingPoint[0] && y >= endingPoint[1]; x++, y--)
+                    {
+                        if (!_points.ContainsKey((x, y)))
+                        {
+                            _points.Add((x, y), 0);
+                        }
+
+                        _points[(x, y)]++;
+                    }
+                }
+            }
+            else
+            {
+                if (initialPoint[1] <= endingPoint[1])
+                {
+                    // 8,0 -> 0,8
+                    for (x = initialPoint[0], y = initialPoint[1]; x >= endingPoint[0] && y <= endingPoint[1]; x--, y++)
+                    {
+                        if (!_points.ContainsKey((x, y)))
+                        {
+                            _points.Add((x, y), 0);
+                        }
+
+                        _points[(x, y)]++;
+                    }
+                }
+                else
+                {
+                    for (x = initialPoint[0], y = initialPoint[1]; x >= endingPoint[0] && y >= endingPoint[1]; x--, y--)
+                    {
+                        if (!_points.ContainsKey((x, y)))
+                        {
+                            _points.Add((x, y), 0);
+                        }
+
+                        _points[(x, y)]++;
+                    }
                 }
             }
         }
