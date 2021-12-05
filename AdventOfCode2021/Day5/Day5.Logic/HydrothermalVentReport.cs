@@ -7,6 +7,7 @@ namespace Day5.Logic
     public class HydrothermalVentReport
     {
         private readonly string _report;
+        private readonly Dictionary<(int X, int Y), int> _points;
 
         public int TotalPoints { get; private set; }
 
@@ -18,6 +19,7 @@ namespace Day5.Logic
             }
 
             _report = report;
+            _points = new Dictionary<(int X, int Y), int>();
 
             Parse();
         }
@@ -29,20 +31,75 @@ namespace Day5.Logic
                 var initialPoint = line.Split("->")[0].Trim().Split(",").Select(p => int.Parse(p)).ToList();
                 var endingPoint = line.Split("->")[1].Trim().Split(",").Select(p => int.Parse(p)).ToList();
 
-                MakeLine(initialPoint, endingPoint);
+                if (initialPoint[0] == endingPoint[0])
+                {
+                    MakeVerticalLine(initialPoint, endingPoint);
+                    TotalPoints += Math.Abs(endingPoint[1] - initialPoint[1]) + 1;
+                }
+                else if (initialPoint[1] == endingPoint[1])
+                {
+                    MakeHorizontalLine(initialPoint, endingPoint);
+                    TotalPoints += Math.Abs(endingPoint[0] - initialPoint[0]) + 1;
+                }
             }
         }
 
-        private void MakeLine(List<int> initialPoint, List<int> endingPoint)
+        private void MakeVerticalLine(List<int> initialPoint, List<int> endingPoint)
         {
-            if (initialPoint[0] == endingPoint[0])
+            if (initialPoint[1] <= endingPoint[1])
             {
-                TotalPoints += Math.Abs(endingPoint[1] - initialPoint[1]) + 1;
+                for (var y = initialPoint[1]; y <= endingPoint[1]; y++)
+                {
+                    if (!_points.ContainsKey((initialPoint[0], y)))
+                    {
+                        _points.Add((initialPoint[0], y), 0);
+                    }
+
+                    _points[(initialPoint[0], y)]++;
+                }
             }
-            else if (initialPoint[1] == endingPoint[1])
+            else
             {
-                TotalPoints += Math.Abs(endingPoint[0] - initialPoint[0]) + 1;
+                for (var y = endingPoint[1]; y <= initialPoint[1]; y++)
+                {
+                    if (!_points.ContainsKey((initialPoint[0], y)))
+                    {
+                        _points.Add((initialPoint[0], y), 0);
+                    }
+
+                    _points[(initialPoint[0], y)]++;
+                }
             }
         }
+
+        private void MakeHorizontalLine(List<int> initialPoint, List<int> endingPoint)
+        {
+            if (initialPoint[0] <= endingPoint[0])
+            {
+                for (var x = initialPoint[0]; x <= endingPoint[0]; x++)
+                {
+                    if (!_points.ContainsKey((x, initialPoint[1])))
+                    {
+                        _points.Add((x, initialPoint[1]), 0);
+                    }
+
+                    _points[(x, initialPoint[1])]++;
+                }
+            }
+            else
+            {
+                for (var x = endingPoint[0]; x <= initialPoint[0]; x++)
+                {
+                    if (!_points.ContainsKey((x, initialPoint[1])))
+                    {
+                        _points.Add((x, initialPoint[1]), 0);
+                    }
+
+                    _points[(x, initialPoint[1])]++;
+                }
+            }
+        }
+
+        public int CalculateOverlappingPoints() => _points.Where(p => p.Value > 1).Select(p => p.Value).Count();
     }
 }
