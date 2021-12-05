@@ -13,7 +13,7 @@ namespace Day4.UnitTests
         [InlineData(" ")]
         public void BeInitializedCorrectly(string invalidBoards)
         {
-            var exception = Assert.Throws<ArgumentException>(() => new Bingo(invalidBoards));
+            var exception = Assert.Throws<ArgumentException>(() => Bingo.CreateForBestSolution(invalidBoards));
             Assert.Equal("Invalid boards", exception.Message);
         }
 
@@ -26,7 +26,7 @@ namespace Day4.UnitTests
  6 10  3 18  5
  1 12 20 15 19";
 
-            var sut = new Bingo(BOARD);
+            var sut = Bingo.CreateForBestSolution(BOARD);
             Assert.True(sut.DoesBoardContainAtPosition(0, 0, 22));
             Assert.True(sut.DoesBoardContainAtPosition(0, 1, 13));
             Assert.True(sut.DoesBoardContainAtPosition(0, 2, 17));
@@ -69,7 +69,7 @@ namespace Day4.UnitTests
 20 11 10 24  4
 14 21 16 12  6";
 
-            var sut = new Bingo(BOARD);
+            var sut = Bingo.CreateForBestSolution(BOARD);
             Assert.True(sut.DoesBoardContainAtPosition(0, 0, 22));
             Assert.True(sut.DoesBoardContainAtPosition(0, 1, 13));
             Assert.True(sut.DoesBoardContainAtPosition(0, 2, 17));
@@ -123,6 +123,17 @@ namespace Day4.UnitTests
             Assert.True(sut.DoesBoardContainAtPosition(1, 24, 6));
         }
 
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("  ")]
+        public void ThrowException_WhenTryingToPlayWithInvalidDrawnNumbers(string invalidDrawnNumbers)
+        {
+            var sut = Bingo.CreateForBestSolution(SAMPLE_BOARDS);
+            var exception = Assert.Throws<ArgumentException>(() => sut.Play(invalidDrawnNumbers));
+            Assert.Equal("Invalid drawn numbers", exception.Message);
+        }
+
         [Fact]
         public void MarkDrawnNumberInBoardCorrectly()
         {
@@ -132,7 +143,7 @@ namespace Day4.UnitTests
  6 10  3 18  5
  1 12 20 15 19";
 
-            var sut = new Bingo(BOARD);
+            var sut = Bingo.CreateForBestSolution(BOARD);
             sut.Play("22");
 
             Assert.True(sut.DoesBoardContainAtPosition(0, 0, -1));
@@ -147,7 +158,7 @@ namespace Day4.UnitTests
  6 10  3 18  5
  1 12 20 15 19";
 
-            var sut = new Bingo(BOARD);
+            var sut = Bingo.CreateForBestSolution(BOARD);
             sut.Play("90");
             Assert.True(sut.DoesBoardContainAtPosition(0, 0, 22));
             Assert.True(sut.DoesBoardContainAtPosition(0, 1, 13));
@@ -185,7 +196,7 @@ namespace Day4.UnitTests
 22 11 13  6  5
  2  0 12  3  7";
 
-            var sut = new Bingo(BOARD);
+            var sut = Bingo.CreateForBestSolution(BOARD);
             sut.Play("7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1");
 
             Assert.Equal(4512, sut.FinalScore);
@@ -200,7 +211,7 @@ namespace Day4.UnitTests
 24  9 26  6  3
  4 19 20  5  7";
 
-            var sut = new Bingo(BOARD);
+            var sut = Bingo.CreateForBestSolution(BOARD);
             sut.Play("7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1");
 
             Assert.Equal(4512, sut.FinalScore);
@@ -215,7 +226,7 @@ namespace Day4.UnitTests
 22 11 13  6  5
  2  0 12  3  7";
 
-            var sut = new Bingo(BOARD);
+            var sut = Bingo.CreateForBestSolution(BOARD);
             sut.Play("2,0,12,3,7");
 
             Assert.Equal((14+21+17+24+4+10+16+15+9+19+18+8+23+26+20+22+11+13+6+5) * 7, sut.FinalScore);
@@ -224,7 +235,7 @@ namespace Day4.UnitTests
         [Fact]
         public void SolveFirstSample()
         {
-            var sut = new Bingo(SAMPLE_BOARDS);
+            var sut = Bingo.CreateForBestSolution(SAMPLE_BOARDS);
             sut.Play(SAMPLE_DRAWN_NUMBERS);
 
             Assert.Equal(4512, sut.FinalScore);
@@ -233,7 +244,7 @@ namespace Day4.UnitTests
         [Fact]
         public void SolveFirstPuzzle()
         {
-            var sut = new Bingo(REAL_BOARDS);
+            var sut = Bingo.CreateForBestSolution(REAL_BOARDS);
             sut.Play(REAL_DRAWN_NUMBERS);
 
             Assert.Equal(11774, sut.FinalScore);
@@ -242,8 +253,8 @@ namespace Day4.UnitTests
         [Fact]
         public void SolveSecondSample()
         {
-            var sut = new Bingo(SAMPLE_BOARDS);
-            sut.PlayForLosing(SAMPLE_DRAWN_NUMBERS);
+            var sut = Bingo.CreateForWorstSolution(SAMPLE_BOARDS);
+            sut.Play(SAMPLE_DRAWN_NUMBERS);
 
             Assert.Equal(1924, sut.FinalScore);
         }
@@ -251,8 +262,8 @@ namespace Day4.UnitTests
         [Fact]
         public void SolveSecondPuzzle()
         {
-            var sut = new Bingo(REAL_BOARDS);
-            sut.PlayForLosing(REAL_DRAWN_NUMBERS);
+            var sut = Bingo.CreateForWorstSolution(REAL_BOARDS);
+            sut.Play(REAL_DRAWN_NUMBERS);
 
             Assert.Equal(4495, sut.FinalScore);
         }

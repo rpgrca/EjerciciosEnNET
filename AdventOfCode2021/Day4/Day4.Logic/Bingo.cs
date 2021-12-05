@@ -4,22 +4,28 @@ using System.Collections.Generic;
 
 namespace Day4.Logic
 {
-    public class Bingo
+    public sealed class Bingo
     {
         private readonly string _boardInformation;
         private readonly List<int[]> _winningBoards;
         private readonly List<int[]> _boards;
         private int[] _currentBoard;
 
+        private Func<List<int[]>, List<int[]>, bool> BoardFound { get; }
         public int FinalScore { get; private set; }
 
-        public Bingo(string boards)
+        public static Bingo CreateForBestSolution(string boards) => new(boards, (_, _) => true);
+
+        public static Bingo CreateForWorstSolution(string boards) => new(boards, (b, w) => b.Count == w.Count);
+
+        private Bingo(string boards, Func<List<int[]>, List<int[]>, bool> callback)
         {
             if (string.IsNullOrWhiteSpace(boards))
             {
                 throw new ArgumentException("Invalid boards");
             }
 
+            BoardFound = callback;
             _boardInformation = boards;
             _winningBoards = new List<int[]>();
             _boards = new List<int[]>();
@@ -50,45 +56,36 @@ namespace Day4.Logic
 
         public void Play(string drawnNumbers)
         {
+            if (string.IsNullOrWhiteSpace(drawnNumbers))
+            {
+                throw new ArgumentException("Invalid drawn numbers");
+            }
+
             foreach (var number in drawnNumbers.Split(",").Select(p => int.Parse(p)))
             {
-                if (HasWinnerBeenFoundAfterMarkingNumbersInBoards(number))
+                foreach (var board in _boards.Except(_winningBoards))
                 {
-                    break;
+                    SetCurrentBoardTo(board);
+                    var index = Array.IndexOf(_currentBoard, number);
+                    if (index != -1)
+                    {
+                        _currentBoard[index] = -1;
+
+                        if (CheckIfCurrentBoardWins(index))
+                        {
+                            _winningBoards.Add(_currentBoard);
+                            if (BoardFound(_boards, _winningBoards))
+                            {
+                                CalculateFinalScoreWith(number);
+                                return;
+                            }
+                        }
+                    }
                 }
             }
-        }
-
-        private bool HasWinnerBeenFoundAfterMarkingNumbersInBoards(int number)
-        {
-            foreach (var board in _boards)
-            {
-                SetCurrentBoardTo(board);
-                MarkNumberInCurrentBoard(number);
-                if (FinalScore != -1)
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         private void SetCurrentBoardTo(int[] board) => _currentBoard = board;
-
-        private void MarkNumberInCurrentBoard(int number)
-        {
-            var index = Array.IndexOf(_currentBoard, number);
-            if (index != -1)
-            {
-                _currentBoard[index] = -1;
-
-                if (CheckIfCurrentBoardWins(index))
-                {
-                    CalculateFinalScoreWith(number);
-                }
-            }
-        }
 
         private bool CheckIfCurrentBoardWins(int x)
         {
@@ -98,37 +95,10 @@ namespace Day4.Logic
         }
 
         private void CalculateFinalScoreWith(int number) =>
-            FinalScore = GetSumOfUnmarkedNumbers(_currentBoard) * number;
+            FinalScore = GetSumOfUnmarkedNumbersForCurrentBoard() * number;
 
-        private static int GetSumOfUnmarkedNumbers(int[] board) =>
-            board.Where(p => p > 0).Sum();
-
-        public void PlayForLosing(string drawnNumbers)
-        {
-            foreach (var number in drawnNumbers.Split(",").Select(p => int.Parse(p)))
-            {
-               foreach (var board in _boards.Except(_winningBoards))
-                {
-                    _currentBoard = board;
-                    var index = Array.IndexOf(board, number);
-                    if (index != -1)
-                    {
-                        board[index] = -1;
-
-                        if (CheckIfCurrentBoardWins(index))
-                        {
-                            _winningBoards.Add(board);
-                            if (_winningBoards.Count == _boards.Count)
-                            {
-                                var sum = GetSumOfUnmarkedNumbers(board);
-                                FinalScore = sum * number;
-                                return;
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        private int GetSumOfUnmarkedNumbersForCurrentBoard() =>
+            _currentBoard.Where(p => p > 0).Sum();
 
         public bool DoesBoardContainAtPosition(int boardId, int x, int value) =>
             _boards[boardId][x] == value;
