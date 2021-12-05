@@ -24,21 +24,24 @@ namespace Day5.Logic
 
         private void Parse()
         {
-            var initialPoint = _report.Split("->")[0].Trim().Split(",").Select(p => int.Parse(p)).ToList();
-            var endingPoint = _report.Split("->")[1].Trim().Split(",").Select(p => int.Parse(p)).ToList();
+            foreach (var line in _report.Split("\n"))
+            {
+                var initialPoint = line.Split("->")[0].Trim().Split(",").Select(p => int.Parse(p)).ToList();
+                var endingPoint = line.Split("->")[1].Trim().Split(",").Select(p => int.Parse(p)).ToList();
 
-            MakeLine(initialPoint, endingPoint);
+                MakeLine(initialPoint, endingPoint);
+            }
         }
 
         private void MakeLine(List<int> initialPoint, List<int> endingPoint)
         {
             if (initialPoint[0] == endingPoint[0])
             {
-                TotalPoints = Math.Abs(endingPoint[1] - initialPoint[1]) + 1;
+                TotalPoints += Math.Abs(endingPoint[1] - initialPoint[1]) + 1;
             }
             else
             {
-                TotalPoints = Math.Abs(endingPoint[0] - initialPoint[0]) + 1;
+                TotalPoints += Math.Abs(endingPoint[0] - initialPoint[0]) + 1;
             }
         }
     }
