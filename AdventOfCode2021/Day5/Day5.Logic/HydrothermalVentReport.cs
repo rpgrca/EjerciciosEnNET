@@ -9,7 +9,7 @@ namespace Day5.Logic
         private readonly string _report;
         private readonly Dictionary<(int X, int Y), int> _points;
 
-        public HydrothermalVentReport(string report)
+        public HydrothermalVentReport(string report, bool withDiagonals = false)
         {
             if (string.IsNullOrWhiteSpace(report))
             {
@@ -19,15 +19,7 @@ namespace Day5.Logic
             _report = report;
             _points = new Dictionary<(int X, int Y), int>();
 
-            Parse(false);
-        }
-
-        public HydrothermalVentReport(string report, bool v)
-        {
-            _report = report;
-            _points = new Dictionary<(int X, int Y), int>();
-
-            Parse(true);
+            Parse(withDiagonals);
         }
 
         private void Parse(bool withDiagonals)
