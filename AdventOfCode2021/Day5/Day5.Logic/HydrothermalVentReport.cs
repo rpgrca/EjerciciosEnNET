@@ -1,10 +1,14 @@
-﻿using System;
+﻿using System.Linq;
+using System.Collections.Generic;
+using System;
 
 namespace Day5.Logic
 {
     public class HydrothermalVentReport
     {
         private readonly string _report;
+
+        public int TotalPoints { get; private set; }
 
         public HydrothermalVentReport(string report)
         {
@@ -14,8 +18,28 @@ namespace Day5.Logic
             }
 
             _report = report;
+
+            Parse();
         }
 
-        public int TotalPoints { get; set; } = 6;
+        private void Parse()
+        {
+            var initialPoint = _report.Split("->")[0].Trim().Split(",").Select(p => int.Parse(p)).ToList();
+            var endingPoint = _report.Split("->")[1].Trim().Split(",").Select(p => int.Parse(p)).ToList();
+
+            MakeLine(initialPoint, endingPoint);
+        }
+
+        private void MakeLine(List<int> initialPoint, List<int> endingPoint)
+        {
+            if (initialPoint[0] == endingPoint[0])
+            {
+                TotalPoints = Math.Abs(endingPoint[1] - initialPoint[1]) + 1;
+            }
+            else
+            {
+                TotalPoints = Math.Abs(endingPoint[0] - initialPoint[0]) + 1;
+            }
+        }
     }
 }

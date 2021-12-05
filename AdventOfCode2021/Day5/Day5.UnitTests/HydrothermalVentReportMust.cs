@@ -16,12 +16,13 @@ namespace Day5.UnitTests
             Assert.Equal("Invalid input", exception.Message);
         }
 
-        [Fact]
-        public void Test1()
+        [Theory]
+        [InlineData("0,9 -> 5,9", 6)]
+        [InlineData("9,4 -> 3,4", 7)]
+        public void Test1(string singleHorizontalLine, int expectedPoints)
         {
-            const string SINGLE_LINE = "0,9 -> 5,9";
-            var sut = new HydrothermalVentReport(SINGLE_LINE);
-            Assert.Equal(6, sut.TotalPoints);
+            var sut = new HydrothermalVentReport(singleHorizontalLine);
+            Assert.Equal(expectedPoints, sut.TotalPoints);
         }
     }
 }
