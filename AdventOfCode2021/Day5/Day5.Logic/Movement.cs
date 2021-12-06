@@ -2,13 +2,13 @@ using System.Collections.Generic;
 
 namespace Day5.Logic.Movement
 {
-    public interface IMovement
+    internal interface IMovement
     {
         bool CanHandle((int X, int Y) startingPoint, (int X, int Y) endingPoint);
         IEnumerable<(int X, int Y)> Move((int X, int Y) startingPoint, (int X, int Y) endingPoint);
     }
 
-    public class TopLeftToBottomRight : IMovement
+    internal class TopLeftToBottomRight : IMovement
     {
         public bool CanHandle((int X, int Y) startingPoint, (int X, int Y) endingPoint) =>
             startingPoint.X < endingPoint.X && startingPoint.Y < endingPoint.Y;
@@ -22,9 +22,12 @@ namespace Day5.Logic.Movement
         }
     }
 
-    public class TopRightToBottomLeft : IMovement
+    internal class TopRightToBottomLeft : IMovement
     {
         public bool CanHandle((int X, int Y) startingPoint, (int X, int Y) endingPoint) =>
+            // FIXME: Impossible to get 100% coverage because the second predicate will never be true as otherwise it would
+            // be TopLeftToBottomRight which would have already been handled by the proper class. Must create unit test for
+            // this class.
             startingPoint.X > endingPoint.X && startingPoint.Y < endingPoint.Y;
 
         public IEnumerable<(int X, int Y)> Move((int X, int Y) startingPoint, (int X, int Y) endingPoint)
@@ -36,7 +39,7 @@ namespace Day5.Logic.Movement
         }
     }
 
-    public class BottomRightToUpperLeft : IMovement
+    internal class BottomRightToUpperLeft : IMovement
     {
         public bool CanHandle((int X, int Y) startingPoint, (int X, int Y) endingPoint) =>
             startingPoint.X > endingPoint.X && startingPoint.Y > endingPoint.Y;
@@ -50,7 +53,7 @@ namespace Day5.Logic.Movement
         }
     }
 
-    public class BottomLeftToUpperRight : IMovement
+    internal class BottomLeftToUpperRight : IMovement
     {
         public bool CanHandle((int X, int Y) startingPoint, (int X, int Y) endingPoint) =>
             startingPoint.X < endingPoint.X && startingPoint.Y > endingPoint.Y;
@@ -64,7 +67,7 @@ namespace Day5.Logic.Movement
         }
     }
 
-    public class TopToBottom : IMovement
+    internal class TopToBottom : IMovement
     {
         public bool CanHandle((int X, int Y) startingPoint, (int X, int Y) endingPoint) =>
             startingPoint.X == endingPoint.X && startingPoint.Y > endingPoint.Y;
@@ -76,7 +79,7 @@ namespace Day5.Logic.Movement
         }
     }
 
-    public class BottomToTop : IMovement
+    internal class BottomToTop : IMovement
     {
         public bool CanHandle((int X, int Y) startingPoint, (int X, int Y) endingPoint) =>
             startingPoint.X == endingPoint.X && startingPoint.Y < endingPoint.Y;
@@ -88,7 +91,7 @@ namespace Day5.Logic.Movement
         }
     }
 
-    public class LeftToRight : IMovement
+    internal class LeftToRight : IMovement
     {
         public bool CanHandle((int X, int Y) startingPoint, (int X, int Y) endingPoint) =>
             startingPoint.X < endingPoint.X && startingPoint.Y == endingPoint.Y;
@@ -100,7 +103,7 @@ namespace Day5.Logic.Movement
         }
     }
 
-    public class RightToLeft : IMovement
+    internal class RightToLeft : IMovement
     {
         public bool CanHandle((int X, int Y) startingPoint, (int X, int Y) endingPoint) =>
             startingPoint.X > endingPoint.X && startingPoint.Y == endingPoint.Y;

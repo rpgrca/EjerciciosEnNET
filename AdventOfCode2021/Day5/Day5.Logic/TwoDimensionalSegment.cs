@@ -4,7 +4,7 @@ using Day5.Logic.Movement;
 
 namespace Day5.Logic
 {
-    public sealed class TwoDimensionalSegment
+    internal sealed class TwoDimensionalSegment
     {
         public class Builder
         {
@@ -59,10 +59,6 @@ namespace Day5.Logic
                 ConfigureForHorizontalAndVerticalTracing(builder)
                     .Supporting(new()
                     {
-                        new TopToBottom(),
-                        new BottomToTop(),
-                        new LeftToRight(),
-                        new RightToLeft(),
                         new TopLeftToBottomRight(),
                         new TopRightToBottomLeft(),
                         new BottomLeftToUpperRight(),

@@ -49,6 +49,7 @@ namespace Day5.UnitTests
         [InlineData("1,1 -> 3,3", 0)]
         [InlineData("9,7 -> 7,9\n8,8 -> 6,6", 1)]
         [InlineData("1,1 -> 5,5\n5,5 -> 1,1", 5)]
+        [InlineData("1,4 -> 5,4\n5,3 -> 3,5", 1)]
         public void SupportDiagonalLines(string input, int expectedCount)
         {
             var sut = HydrothermalVentReport.CreateReportSupportingDiagonals(input);
