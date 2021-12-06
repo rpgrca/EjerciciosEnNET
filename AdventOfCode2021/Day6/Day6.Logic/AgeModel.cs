@@ -7,6 +7,7 @@ namespace Day6.Logic
     {
         private readonly string _inputAges;
         private readonly long[] _ages;
+        private int _zeroIndex;
 
         public AgeModel(string ages)
         {
@@ -23,9 +24,9 @@ namespace Day6.Logic
 
         private void Parse()
         {
-            foreach (var age in _inputAges.Split(",").Select(p => int.Parse(p)))
+            foreach (var fish in _inputAges.Split(",").GroupBy(p => p))
             {
-                _ages[age]++;
+                _ages[int.Parse(fish.Key)] = fish.Count();
             }
         }
 
@@ -33,22 +34,20 @@ namespace Day6.Logic
         {
             for (var day = 0; day < days; day++)
             {
-                var fishesSpawning = _ages[0];
+                var fishesSpawning = _ages[GetIndexOf(0)];
+                AdvanceZeroIndex();
 
-                _ages[0] = _ages[1];
-                _ages[1] = _ages[2];
-                _ages[2] = _ages[3];
-                _ages[3] = _ages[4];
-                _ages[4] = _ages[5];
-                _ages[5] = _ages[6];
-                _ages[6] = _ages[7] + fishesSpawning;
-                _ages[7] = _ages[8];
-                _ages[8] = fishesSpawning;
+                _ages[GetIndexOf(6)] += fishesSpawning;
+                _ages[GetIndexOf(8)] = fishesSpawning;
            }
         }
 
+        private int GetIndexOf(int age) => (_zeroIndex + age) % 9;
+
+        private void AdvanceZeroIndex() => _zeroIndex = (_zeroIndex + 1) % 9;
+
         public long CountAllFishes() => _ages.Sum();
 
-        public long CountFishesWithAnAgeOf(int value) => _ages[value];
+        public long CountFishesWithAnAgeOf(int value) => _ages[GetIndexOf(value)];
     }
 }

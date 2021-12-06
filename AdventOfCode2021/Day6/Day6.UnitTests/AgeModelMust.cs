@@ -131,7 +131,7 @@ namespace Day6.UnitTests
         [InlineData(18, 26)]
         [InlineData(80, 5934)]
         [InlineData(256, 26984457539)]
-        public void Test4(int days, long expectedFishes)
+        public void CalculateSpawnRateCorrectly_WhenSampleDataIsUsed(int days, long expectedFishes)
         {
             var sut = new AgeModel(SAMPLE_AGES);
             sut.Advance(days);
