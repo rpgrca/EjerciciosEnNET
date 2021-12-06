@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System;
-using System.Collections.Generic;
 
 namespace Day6.Logic
 {
