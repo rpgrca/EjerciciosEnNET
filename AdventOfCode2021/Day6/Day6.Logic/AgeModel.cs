@@ -47,6 +47,8 @@ namespace Day6.Logic
            }
         }
 
-        public long FishCount() => _ages.Sum();
+        public long CountAllFishes() => _ages.Sum();
+
+        public long CountFishesWithAnAgeOf(int value) => _ages[value];
     }
 }
