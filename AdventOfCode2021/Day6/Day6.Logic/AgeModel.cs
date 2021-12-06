@@ -28,12 +28,18 @@ namespace Day6.Logic
 
         public void NextDay()
         {
-            _ages[0]--;
-            if (_ages[0] < 0)
+            var spawnFishes = new List<int>();
+            for (var index = 0; index < Ages.Count; index++)
             {
-                _ages[0] = 6;
-                _ages.Add(8);
+                _ages[index]--;
+                if (_ages[index] < 0)
+                {
+                    _ages[index] = 6;
+                    spawnFishes.Add(8);
+                }
             }
+
+            _ages.AddRange(spawnFishes);
         }
     }
 }

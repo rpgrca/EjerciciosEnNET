@@ -37,7 +37,7 @@ namespace Day6.UnitTests
         }
 
         [Fact]
-        public void Test1()
+        public void DecrementInternalTimerCorrectly_WhenThereIsOneFish()
         {
             var sut = new AgeModel("3");
             sut.NextDay();
@@ -55,6 +55,19 @@ namespace Day6.UnitTests
             Assert.Collection(sut.Ages,
                 p1 => Assert.Equal(6, p1),
                 p2 => Assert.Equal(8, p2));
+        }
+
+        [Fact]
+        public void DecrementInternalTimerCorrectly_WhenThereAreSeveralFishes()
+        {
+            var sut = new AgeModel(SAMPLE_AGES);
+            sut.NextDay();
+            Assert.Collection(sut.Ages,
+                p1 => Assert.Equal(2, p1),
+                p2 => Assert.Equal(3, p2),
+                p3 => Assert.Equal(2, p3),
+                p4 => Assert.Equal(0, p4),
+                p5 => Assert.Equal(1, p5));
         }
     }
 }
