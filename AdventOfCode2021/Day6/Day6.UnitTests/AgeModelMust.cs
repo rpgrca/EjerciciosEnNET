@@ -135,5 +135,13 @@ namespace Day6.UnitTests
             sut.Advance(days);
             Assert.Equal(expectedFishes, sut.Ages.Count);
         }
+
+        [Fact]
+        public void SolveFirstPuzzle()
+        {
+            var sut = new AgeModel(REAL_AGES);
+            sut.Advance(80);
+            Assert.Equal(379114, sut.Ages.Count);
+        }
     }
 }
