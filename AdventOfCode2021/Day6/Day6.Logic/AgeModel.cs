@@ -6,9 +6,10 @@ namespace Day6.Logic
 {
     public class AgeModel
     {
-        private readonly string _ages;
+        private readonly string _inputAges;
+        private List<int> _ages;
 
-        public List<int> Ages { get; }
+        public List<int> Ages => _ages;
 
         public AgeModel(string ages)
         {
@@ -17,13 +18,22 @@ namespace Day6.Logic
                 throw new ArgumentException("Invalid age list");
             }
 
-            _ages = ages;
-            Ages = new List<int>();
+            _inputAges = ages;
 
             Parse();
         }
 
         private void Parse() =>
-            Ages.AddRange(_ages.Split(",").Select(p => int.Parse(p)));
+            _ages = _inputAges.Split(",").Select(p => int.Parse(p)).ToList();
+
+        public void NextDay()
+        {
+            _ages[0]--;
+            if (_ages[0] < 0)
+            {
+                _ages[0] = 6;
+                _ages.Add(8);
+            }
+        }
     }
 }

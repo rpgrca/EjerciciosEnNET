@@ -18,14 +18,14 @@ namespace Day6.UnitTests
         }
 
         [Fact]
-        public void Test1()
+        public void ReturnOneAge_WhenInitializedWithAsingleValue()
         {
             var sut = new AgeModel("3");
             Assert.Single(sut.Ages, 3);
         }
 
         [Fact]
-        public void Test2()
+        public void ReturnAllAges_WhenInitializedWithMoreThanOneValue()
         {
             var sut = new AgeModel(SAMPLE_AGES);
             Assert.Collection(sut.Ages,
@@ -34,6 +34,27 @@ namespace Day6.UnitTests
                 p3 => Assert.Equal(3, p3),
                 p4 => Assert.Equal(1, p4),
                 p5 => Assert.Equal(2, p5));
+        }
+
+        [Fact]
+        public void Test1()
+        {
+            var sut = new AgeModel("3");
+            sut.NextDay();
+            Assert.Single(sut.Ages, 2);
+        }
+
+        [Fact]
+        public void SpawnNewLanternfish_WhenTimerPassesZero()
+        {
+            var sut = new AgeModel("3");
+            sut.NextDay();
+            sut.NextDay();
+            sut.NextDay();
+            sut.NextDay();
+            Assert.Collection(sut.Ages,
+                p1 => Assert.Equal(6, p1),
+                p2 => Assert.Equal(8, p2));
         }
     }
 }
