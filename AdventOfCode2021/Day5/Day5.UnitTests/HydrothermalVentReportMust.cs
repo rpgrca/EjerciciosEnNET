@@ -13,7 +13,7 @@ namespace Day5.UnitTests
         [InlineData(" ")]
         public void BeInitializedCorrectly(string invalidReport)
         {
-            var exception = Assert.Throws<ArgumentException>(() => new HydrothermalVentReport(invalidReport));
+            var exception = Assert.Throws<ArgumentException>(() => HydrothermalVentReport.CreateReportNotSupportingDiagonals(invalidReport));
             Assert.Equal("Invalid input", exception.Message);
         }
 
@@ -25,8 +25,8 @@ namespace Day5.UnitTests
         [InlineData("8,0 -> 0,8", 0)]
         public void GenerateLinesCorrectly(string singleHorizontalLine, int expectedPoints)
         {
-            var sut = new HydrothermalVentReport(singleHorizontalLine);
-            Assert.Equal(expectedPoints, sut.CalculateOverlappingPoints());
+            var sut = HydrothermalVentReport.CreateReportNotSupportingDiagonals(singleHorizontalLine);
+            Assert.Equal(expectedPoints, sut.CalculateAmountOfOverlappingPoints());
         }
 
         [Theory]
@@ -34,15 +34,15 @@ namespace Day5.UnitTests
         [InlineData(SAMPLE_INPUT, 5)]
         public void CalculateOverlappingPoitnsCorrectly_WhenNotIncludingDiagonals(string input, int expectedCount)
         {
-            var sut = new HydrothermalVentReport(input);
-            Assert.Equal(expectedCount, sut.CalculateOverlappingPoints());
+            var sut = HydrothermalVentReport.CreateReportNotSupportingDiagonals(input);
+            Assert.Equal(expectedCount, sut.CalculateAmountOfOverlappingPoints());
         }
 
         [Fact]
         public void SolveFirstPuzzle()
         {
-            var sut = new HydrothermalVentReport(REAL_INPUT);
-            Assert.Equal(7269, sut.CalculateOverlappingPoints());
+            var sut = HydrothermalVentReport.CreateReportNotSupportingDiagonals(REAL_INPUT);
+            Assert.Equal(7269, sut.CalculateAmountOfOverlappingPoints());
         }
 
         [Theory]
@@ -51,22 +51,22 @@ namespace Day5.UnitTests
         [InlineData("1,1 -> 5,5\n5,5 -> 1,1", 5)]
         public void SupportDiagonalLines(string input, int expectedCount)
         {
-            var sut = new HydrothermalVentReport(input, true);
-            Assert.Equal(expectedCount, sut.CalculateOverlappingPoints());
+            var sut = HydrothermalVentReport.CreateReportSupportingDiagonals(input);
+            Assert.Equal(expectedCount, sut.CalculateAmountOfOverlappingPoints());
         }
 
         [Fact]
         public void CalculateOverlappingPointsCorrectly_WhenIncludingDiagonals()
         {
-            var sut = new HydrothermalVentReport(SAMPLE_INPUT, true);
-            Assert.Equal(12, sut.CalculateOverlappingPoints());
+            var sut = HydrothermalVentReport.CreateReportSupportingDiagonals(SAMPLE_INPUT);
+            Assert.Equal(12, sut.CalculateAmountOfOverlappingPoints());
         }
 
         [Fact]
         public void SolveSecondPuzzle()
         {
-            var sut = new HydrothermalVentReport(REAL_INPUT, true);
-            Assert.Equal(21140, sut.CalculateOverlappingPoints());
+            var sut = HydrothermalVentReport.CreateReportSupportingDiagonals(REAL_INPUT);
+            Assert.Equal(21140, sut.CalculateAmountOfOverlappingPoints());
         }
     }
 }

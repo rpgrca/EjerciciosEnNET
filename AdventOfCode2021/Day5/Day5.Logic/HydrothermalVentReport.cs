@@ -4,12 +4,35 @@ using System;
 
 namespace Day5.Logic
 {
-    public class HydrothermalVentReport
+    public sealed class HydrothermalVentReport
     {
         private readonly string _report;
         private readonly Dictionary<(int X, int Y), int> _points;
+        private readonly Func<(int X, int Y), (int X, int Y), Action<(int X, int Y)>, TwoDimensionalSegment> _segmentBuilder;
 
-        public HydrothermalVentReport(string report, bool withDiagonals = false)
+        public static HydrothermalVentReport CreateReportNotSupportingDiagonals(string report) =>
+            new(report, (s, e, c) =>
+                TwoDimensionalSegment
+                    .Director
+                    .ConfigureForHorizontalAndVerticalTracing(new TwoDimensionalSegment.Builder())
+                    .StartingFrom(s)
+                    .Until(e)
+                    .CallingInEveryStep(c)
+                    .Build()
+            );
+
+        public static HydrothermalVentReport CreateReportSupportingDiagonals(string report) =>
+            new(report, (s, e, c) =>
+                TwoDimensionalSegment
+                    .Director
+                    .ConfigureForHorizontalVerticalAndDiagonalTracing(new TwoDimensionalSegment.Builder())
+                    .StartingFrom(s)
+                    .Until(e)
+                    .CallingInEveryStep(c)
+                    .Build()
+            );
+
+        private HydrothermalVentReport(string report, Func<(int X, int Y), (int X, int Y), Action<(int X, int Y)>, TwoDimensionalSegment> segmentBuilder)
         {
             if (string.IsNullOrWhiteSpace(report))
             {
@@ -17,155 +40,25 @@ namespace Day5.Logic
             }
 
             _report = report;
+            _segmentBuilder = segmentBuilder;
             _points = new Dictionary<(int X, int Y), int>();
 
-            Parse(withDiagonals);
+            Parse();
         }
 
-        private void Parse(bool withDiagonals)
+        private void Parse()
         {
             foreach (var line in _report.Split("\n"))
             {
-                var initialPoint = line.Split("->")[0].Trim().Split(",").Select(p => int.Parse(p)).ToList();
-                var endingPoint = line.Split("->")[1].Trim().Split(",").Select(p => int.Parse(p)).ToList();
-
-                if (initialPoint[0] == endingPoint[0])
+                var points = line.Split("->").Select(p => p.Split(",")).Select(p => (int.Parse(p[0]), int.Parse(p[1]))).ToList();
+                _segmentBuilder(points[0], points[1], p =>
                 {
-                    MakeVerticalLine(initialPoint, endingPoint);
-                }
-                else if (initialPoint[1] == endingPoint[1])
-                {
-                    MakeHorizontalLine(initialPoint, endingPoint);
-                }
-                else if (withDiagonals)
-                {
-                    if (Math.Abs(endingPoint[0] - initialPoint[0]) == Math.Abs(endingPoint[1] - initialPoint[1]))
-                    {
-                        MakeDiagonalLine(initialPoint, endingPoint);
-                    }
-                }
+                    _points.TryAdd(p, 0);
+                    _points[p]++;
+                }).Trace();
             }
         }
 
-        private void MakeVerticalLine(List<int> initialPoint, List<int> endingPoint)
-        {
-            if (initialPoint[1] <= endingPoint[1])
-            {
-                for (var y = initialPoint[1]; y <= endingPoint[1]; y++)
-                {
-                    if (!_points.ContainsKey((initialPoint[0], y)))
-                    {
-                        _points.Add((initialPoint[0], y), 0);
-                    }
-
-                    _points[(initialPoint[0], y)]++;
-                }
-            }
-            else
-            {
-                for (var y = endingPoint[1]; y <= initialPoint[1]; y++)
-                {
-                    if (!_points.ContainsKey((initialPoint[0], y)))
-                    {
-                        _points.Add((initialPoint[0], y), 0);
-                    }
-
-                    _points[(initialPoint[0], y)]++;
-                }
-            }
-        }
-
-        private void MakeHorizontalLine(List<int> initialPoint, List<int> endingPoint)
-        {
-            if (initialPoint[0] <= endingPoint[0])
-            {
-                for (var x = initialPoint[0]; x <= endingPoint[0]; x++)
-                {
-                    if (!_points.ContainsKey((x, initialPoint[1])))
-                    {
-                        _points.Add((x, initialPoint[1]), 0);
-                    }
-
-                    _points[(x, initialPoint[1])]++;
-                }
-            }
-            else
-            {
-                for (var x = endingPoint[0]; x <= initialPoint[0]; x++)
-                {
-                    if (!_points.ContainsKey((x, initialPoint[1])))
-                    {
-                        _points.Add((x, initialPoint[1]), 0);
-                    }
-
-                    _points[(x, initialPoint[1])]++;
-                }
-            }
-        }
-
-        private void MakeDiagonalLine(List<int> initialPoint, List<int> endingPoint)
-        {
-            int x;
-            int y;
-            if (initialPoint[0] <= endingPoint[0])
-            {
-                if (initialPoint[1] <= endingPoint[1])
-                {
-                    // 0,0 -> 8,8
-                    for (x = initialPoint[0], y = initialPoint[1]; x <= endingPoint[0] && y <= endingPoint[1]; x++, y++)
-                    {
-                        if (!_points.ContainsKey((x, y)))
-                        {
-                            _points.Add((x, y), 0);
-                        }
-
-                        _points[(x, y)]++;
-                    }
-                }
-                else
-                {
-                    // 5,5 -> 8,2
-                    for (x = initialPoint[0], y = initialPoint[1]; x <= endingPoint[0] && y >= endingPoint[1]; x++, y--)
-                    {
-                        if (!_points.ContainsKey((x, y)))
-                        {
-                            _points.Add((x, y), 0);
-                        }
-
-                        _points[(x, y)]++;
-                    }
-                }
-            }
-            else
-            {
-                if (initialPoint[1] <= endingPoint[1])
-                {
-                    // 8,0 -> 0,8
-                    for (x = initialPoint[0], y = initialPoint[1]; x >= endingPoint[0] && y <= endingPoint[1]; x--, y++)
-                    {
-                        if (!_points.ContainsKey((x, y)))
-                        {
-                            _points.Add((x, y), 0);
-                        }
-
-                        _points[(x, y)]++;
-                    }
-                }
-                else
-                {
-                    for (x = initialPoint[0], y = initialPoint[1]; x >= endingPoint[0] && y >= endingPoint[1]; x--, y--)
-                    {
-                        if (!_points.ContainsKey((x, y)))
-                        {
-                            _points.Add((x, y), 0);
-                        }
-
-                        _points[(x, y)]++;
-                    }
-                }
-            }
-        }
-
-        public int CalculateOverlappingPoints() => _points.Where(p => p.Value > 1).Select(p => p.Value).Count();
+        public int CalculateAmountOfOverlappingPoints() => _points.Where(p => p.Value > 1).Select(p => p.Value).Count();
     }
 }
