@@ -7,9 +7,7 @@ namespace Day6.Logic
     public class AgeModel
     {
         private readonly string _inputAges;
-        private List<int> _ages;
-
-        public List<int> Ages => _ages;
+        private readonly long[] _ages;
 
         public AgeModel(string ages)
         {
@@ -19,30 +17,37 @@ namespace Day6.Logic
             }
 
             _inputAges = ages;
+            _ages = new long[] { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
             Parse();
         }
 
-        private void Parse() =>
-            _ages = _inputAges.Split(",").Select(p => int.Parse(p)).ToList();
+        private void Parse()
+        {
+            foreach (var age in _inputAges.Split(",").Select(p => int.Parse(p)))
+            {
+                _ages[age]++;
+            }
+        }
 
         public void Advance(int days)
         {
             for (var day = 0; day < days; day++)
             {
-                var spawnFishes = new List<int>();
-                for (var index = 0; index < Ages.Count; index++)
-                {
-                    _ages[index]--;
-                    if (_ages[index] < 0)
-                    {
-                        _ages[index] = 6;
-                        spawnFishes.Add(8);
-                    }
-                }
+                var fishesSpawning = _ages[0];
 
-                _ages.AddRange(spawnFishes);
-            }
+                _ages[0] = _ages[1];
+                _ages[1] = _ages[2];
+                _ages[2] = _ages[3];
+                _ages[3] = _ages[4];
+                _ages[4] = _ages[5];
+                _ages[5] = _ages[6];
+                _ages[6] = _ages[7] + fishesSpawning;
+                _ages[7] = _ages[8];
+                _ages[8] = fishesSpawning;
+           }
         }
+
+        public long FishCount() => _ages.Sum();
     }
 }

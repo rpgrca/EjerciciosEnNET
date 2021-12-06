@@ -1,4 +1,3 @@
-using System.Linq;
 using System;
 using Xunit;
 using Day6.Logic;
@@ -18,7 +17,7 @@ namespace Day6.UnitTests
             Assert.Equal("Invalid age list", exception.Message);
         }
 
-        [Fact]
+     /*   [Fact]
         public void ReturnOneAge_WhenInitializedWithAsingleValue()
         {
             var sut = new AgeModel("3");
@@ -124,16 +123,17 @@ namespace Day6.UnitTests
                 p24 => Assert.Equal(8, p24),
                 p25 => Assert.Equal(8, p25),
                 p26 => Assert.Equal(8, p26));
-        }
+        }*/
 
         [Theory]
         [InlineData(18, 26)]
         [InlineData(80, 5934)]
-        public void Test4(int days, int expectedFishes)
+        [InlineData(256, 26984457539)]
+        public void Test4(int days, long expectedFishes)
         {
             var sut = new AgeModel(SAMPLE_AGES);
             sut.Advance(days);
-            Assert.Equal(expectedFishes, sut.Ages.Count);
+            Assert.Equal(expectedFishes, sut.FishCount());
         }
 
         [Fact]
@@ -141,7 +141,15 @@ namespace Day6.UnitTests
         {
             var sut = new AgeModel(REAL_AGES);
             sut.Advance(80);
-            Assert.Equal(379114, sut.Ages.Count);
+            Assert.Equal(379114, sut.FishCount());
+        }
+
+        [Fact]
+        public void SolveSecondPuzzle()
+        {
+            var sut = new AgeModel(REAL_AGES);
+            sut.Advance(256);
+            Assert.Equal(1702631502303, sut.FishCount());
         }
     }
 }
