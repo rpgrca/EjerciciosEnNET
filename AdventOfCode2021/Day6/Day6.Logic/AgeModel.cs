@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Day6.Logic
 {
@@ -6,7 +7,14 @@ namespace Day6.Logic
     {
         public AgeModel(string ages)
         {
-            throw new ArgumentException("Invalid age list");
+            if (ages is null)
+            {
+                throw new ArgumentException("Invalid age list");
+            }
+
+            Ages = new List<int> { int.Parse(ages) };
         }
+
+        public List<int> Ages { get; set; }
     }
 }
