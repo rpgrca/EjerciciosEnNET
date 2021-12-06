@@ -7,7 +7,7 @@ namespace Day6.Logic
     {
         public AgeModel(string ages)
         {
-            if (ages is null)
+            if (string.IsNullOrWhiteSpace(ages))
             {
                 throw new ArgumentException("Invalid age list");
             }

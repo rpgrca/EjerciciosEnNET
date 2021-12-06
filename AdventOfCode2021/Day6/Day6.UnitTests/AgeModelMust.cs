@@ -6,10 +6,13 @@ namespace Day6.UnitTests
 {
     public class AgeModelMust
     {
-        [Fact]
-        public void BeInitializedCorrectly()
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("  ")]
+        public void BeInitializedCorrectly(string invalidAges)
         {
-            var exception = Assert.Throws<ArgumentException>(() => new AgeModel(null));
+            var exception = Assert.Throws<ArgumentException>(() => new AgeModel(invalidAges));
             Assert.Equal("Invalid age list", exception.Message);
         }
 
