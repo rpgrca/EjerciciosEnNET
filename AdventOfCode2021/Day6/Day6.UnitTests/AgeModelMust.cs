@@ -1,6 +1,7 @@
 using System;
 using Xunit;
 using Day6.Logic;
+using static Day6.UnitTests.Constants;
 
 namespace Day6.UnitTests
 {
@@ -21,6 +22,18 @@ namespace Day6.UnitTests
         {
             var sut = new AgeModel("3");
             Assert.Single(sut.Ages, 3);
+        }
+
+        [Fact]
+        public void Test2()
+        {
+            var sut = new AgeModel(SAMPLE_AGES);
+            Assert.Collection(sut.Ages,
+                p1 => Assert.Equal(3, p1),
+                p2 => Assert.Equal(4, p2),
+                p3 => Assert.Equal(3, p3),
+                p4 => Assert.Equal(1, p4),
+                p5 => Assert.Equal(2, p5));
         }
     }
 }

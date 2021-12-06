@@ -1,10 +1,15 @@
-﻿using System;
+﻿using System.Linq;
+using System;
 using System.Collections.Generic;
 
 namespace Day6.Logic
 {
     public class AgeModel
     {
+        private readonly string _ages;
+
+        public List<int> Ages { get; }
+
         public AgeModel(string ages)
         {
             if (string.IsNullOrWhiteSpace(ages))
@@ -12,9 +17,13 @@ namespace Day6.Logic
                 throw new ArgumentException("Invalid age list");
             }
 
-            Ages = new List<int> { int.Parse(ages) };
+            _ages = ages;
+            Ages = new List<int>();
+
+            Parse();
         }
 
-        public List<int> Ages { get; set; }
+        private void Parse() =>
+            Ages.AddRange(_ages.Split(",").Select(p => int.Parse(p)));
     }
 }
