@@ -40,7 +40,7 @@ namespace Day6.UnitTests
         public void DecrementInternalTimerCorrectly_WhenThereIsOneFish()
         {
             var sut = new AgeModel("3");
-            sut.NextDay();
+            sut.Advance(1);
             Assert.Single(sut.Ages, 2);
         }
 
@@ -48,10 +48,7 @@ namespace Day6.UnitTests
         public void SpawnNewLanternfish_WhenTimerPassesZero()
         {
             var sut = new AgeModel("3");
-            sut.NextDay();
-            sut.NextDay();
-            sut.NextDay();
-            sut.NextDay();
+            sut.Advance(4);
             Assert.Collection(sut.Ages,
                 p1 => Assert.Equal(6, p1),
                 p2 => Assert.Equal(8, p2));
@@ -61,7 +58,7 @@ namespace Day6.UnitTests
         public void DecrementInternalTimerCorrectly_WhenThereAreSeveralFishes()
         {
             var sut = new AgeModel(SAMPLE_AGES);
-            sut.NextDay();
+            sut.Advance(1);
             Assert.Collection(sut.Ages,
                 p1 => Assert.Equal(2, p1),
                 p2 => Assert.Equal(3, p2),

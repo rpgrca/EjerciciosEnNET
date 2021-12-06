@@ -26,20 +26,23 @@ namespace Day6.Logic
         private void Parse() =>
             _ages = _inputAges.Split(",").Select(p => int.Parse(p)).ToList();
 
-        public void NextDay()
+        public void Advance(int days)
         {
-            var spawnFishes = new List<int>();
-            for (var index = 0; index < Ages.Count; index++)
+            for (var day = 0; day < days; day++)
             {
-                _ages[index]--;
-                if (_ages[index] < 0)
+                var spawnFishes = new List<int>();
+                for (var index = 0; index < Ages.Count; index++)
                 {
-                    _ages[index] = 6;
-                    spawnFishes.Add(8);
+                    _ages[index]--;
+                    if (_ages[index] < 0)
+                    {
+                        _ages[index] = 6;
+                        spawnFishes.Add(8);
+                    }
                 }
-            }
 
-            _ages.AddRange(spawnFishes);
+                _ages.AddRange(spawnFishes);
+            }
         }
     }
 }
