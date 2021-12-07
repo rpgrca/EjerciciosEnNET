@@ -10,18 +10,13 @@ namespace Day7.Logic
         private IEnumerable<int> _positions;
 
         public int MinimumFuelConsumption { get; private set; }
-        public Func<int, int, int> ConsumptionCallback { get; }
+        public Func<int, int> ConsumptionCallback { get; }
 
-        public static SubmarineAlignment CreateWithConstantConsumption(string input) =>
-            new(input, (a, p) => Math.Abs(a - p));
+        public static SubmarineAlignment CreateWithConstantConsumption(string input) => new(input, p => p);
 
-        public static SubmarineAlignment CreateWithIncrementalConsumption(string input) =>
-            new(input, (a, p) => {
-                var s = Math.Abs(a - p);
-                return s * (s + 1) / 2;
-            });
+        public static SubmarineAlignment CreateWithIncrementalConsumption(string input) => new(input, p => p * (p + 1) / 2);
 
-        private SubmarineAlignment(string input, Func<int, int, int> consumptionCallback)
+        private SubmarineAlignment(string input, Func<int, int> consumptionCallback)
         {
             if (string.IsNullOrWhiteSpace(input))
             {
@@ -44,7 +39,7 @@ namespace Day7.Logic
 
             MinimumFuelConsumption = Enumerable
                 .Range(min, max - min + 1)
-                .Min(p => _positions.Sum(x => ConsumptionCallback(x, p)));
+                .Min(p => _positions.Sum(x => ConsumptionCallback(Math.Abs(x - p))));
         }
     }
 }
