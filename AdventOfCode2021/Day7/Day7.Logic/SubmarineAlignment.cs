@@ -9,7 +9,7 @@ namespace Day7.Logic
         private readonly string _input;
         private List<int> _positions;
 
-        public int BestPosition { get; private set; }
+        public int MinimumFuelConsumption { get; private set; }
 
         public SubmarineAlignment(string input)
         {
@@ -26,7 +26,19 @@ namespace Day7.Logic
         private void Parse()
         {
             _positions = _input.Split(",").Select(p => int.Parse(p)).ToList();
-            BestPosition = _positions[0];
+
+            var min = _positions.Min();
+            var max = _positions.Max();
+            MinimumFuelConsumption = _positions.Sum();
+
+            for (var index = min; index <= max; index++)
+            {
+                var offset = _positions.Sum(p => Math.Abs(p - index));
+                if (offset < MinimumFuelConsumption)
+                {
+                    MinimumFuelConsumption = offset;
+                }
+            }
         }
     }
 }
