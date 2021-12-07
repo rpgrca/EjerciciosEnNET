@@ -18,18 +18,18 @@ namespace Day7.UnitTests
         }
 
         [Theory]
-        [InlineData(3)]
-        [InlineData(7)]
-        public void Test2(int position)
+        [InlineData("3")]
+        [InlineData("7")]
+        public void ReturnZero_WhenThereIsOnlyOneElementInInput(string position)
         {
-            var sut = new SubmarineAlignment(position.ToString());
+            var sut = new SubmarineAlignment(position);
             Assert.Equal(0, sut.MinimumFuelConsumption);
         }
 
         [Theory]
         [InlineData("3,3")]
         [InlineData("4,4")]
-        public void Test3(string positions)
+        public void ReturnZero_WhenAllElementsInInputAreAligned(string positions)
         {
             var sut = new SubmarineAlignment(positions);
             Assert.Equal(0, sut.MinimumFuelConsumption);
@@ -40,31 +40,32 @@ namespace Day7.UnitTests
         [InlineData("3, 8", 5)]
         [InlineData("3, 8, 2", 6)]
         [InlineData("4, 5, 9, 1", 9)]
-        public void Test4(string positions, int expectedValue)
+        [InlineData(SAMPLE_POSITIONS, 37)]
+        public void CalculateMinimumFuelConsumptionCorrectly(string positions, int expectedValue)
         {
             var sut = new SubmarineAlignment(positions);
             Assert.Equal(expectedValue, sut.MinimumFuelConsumption);
         }
 
         [Fact]
-        public void Test5()
-        {
-            var sut = new SubmarineAlignment(SAMPLE_POSITIONS);
-            Assert.Equal(37, sut.MinimumFuelConsumption);
-        }
-
-        [Fact]
-        public void Test6()
+        public void SolveFirstPuzzle()
         {
             var sut = new SubmarineAlignment(REAL_POSITIONS);
             Assert.Equal(347011, sut.MinimumFuelConsumption);
         }
 
         [Fact]
-        public void Test7()
+        public void CalculateMinimumFuelConsumptionCorrectly_WhenConsumptionIsIncremental()
         {
             var sut = new SubmarineAlignment(SAMPLE_POSITIONS, true);
             Assert.Equal(168, sut.MinimumFuelConsumption);
+        }
+
+        [Fact]
+        public void SolveSecondPuzzle()
+        {
+            var sut = new SubmarineAlignment(REAL_POSITIONS, true);
+            Assert.Equal(98363777, sut.MinimumFuelConsumption);
         }
     }
 }
