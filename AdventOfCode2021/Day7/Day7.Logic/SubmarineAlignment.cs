@@ -4,14 +4,24 @@ using System.Collections.Generic;
 
 namespace Day7.Logic
 {
-    public class SubmarineAlignment
+    public sealed class SubmarineAlignment
     {
         private readonly string _input;
-        private List<int> _positions;
+        private IEnumerable<int> _positions;
 
         public int MinimumFuelConsumption { get; private set; }
+        public Func<int, int, int> ConsumptionCallback { get; }
 
-        public SubmarineAlignment(string input)
+        public static SubmarineAlignment CreateWithConstantConsumption(string input) =>
+            new(input, (a, p) => Math.Abs(a - p));
+
+        public static SubmarineAlignment CreateWithIncrementalConsumption(string input) =>
+            new(input, (a, p) => {
+                var s = Math.Abs(a - p);
+                return s * (s + 1) / 2;
+            });
+
+        private SubmarineAlignment(string input, Func<int, int, int> consumptionCallback)
         {
             if (string.IsNullOrWhiteSpace(input))
             {
@@ -19,72 +29,22 @@ namespace Day7.Logic
             }
 
             _input = input;
+            ConsumptionCallback = consumptionCallback;
 
             Parse();
             CalculateMinimumFuelConsumption();
         }
 
-        public SubmarineAlignment(string input, bool v)
-        {
-            _input = input;
-
-            Parse();
-
-            var min = _positions.Min();
-            var max = _positions.Max();
-            MinimumFuelConsumption = int.MaxValue;
-
-            for (var index = min; index <= max; index++)
-            {
-                var offset = _positions.Sum(p => Math.Abs(CalculateOffset(p, index)));
-                if (offset < MinimumFuelConsumption)
-                {
-                    MinimumFuelConsumption = offset;
-                }
-            }
-        }
-
-        private int CalculateOffset(int actualPosition, int proposedPosition)
-        {
-            if (actualPosition == proposedPosition)
-                return 0;
-
-            int result = 0;
-            if (actualPosition > proposedPosition)
-            {
-                for (var index = proposedPosition; index < actualPosition; index++)
-                {
-                    result += index - proposedPosition + 1;
-                }
-            }
-            else
-            {
-                for (var index = actualPosition; index < proposedPosition; index++)
-                {
-                    result += index - actualPosition + 1;
-                }
-            }
-
-            return result;
-        }
-
-        private void Parse() =>
-            _positions = _input.Split(",").Select(p => int.Parse(p)).ToList();
+        private void Parse() => _positions = _input.Split(",").Select(p => int.Parse(p));
 
         private void CalculateMinimumFuelConsumption()
         {
             var min = _positions.Min();
             var max = _positions.Max();
-            MinimumFuelConsumption = _positions.Sum();
 
-            for (var index = min; index <= max; index++)
-            {
-                var offset = _positions.Sum(p => Math.Abs(p - index));
-                if (offset < MinimumFuelConsumption)
-                {
-                    MinimumFuelConsumption = offset;
-                }
-            }
+            MinimumFuelConsumption = Enumerable
+                .Range(min, max - min + 1)
+                .Min(p => _positions.Sum(x => ConsumptionCallback(x, p)));
         }
     }
 }

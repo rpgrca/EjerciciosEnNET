@@ -13,7 +13,7 @@ namespace Day7.UnitTests
         [InlineData(" ")]
         public void ThrowException_WhenInitializedWithInvalidData(string invalidInput)
         {
-            var exception = Assert.Throws<ArgumentException>(() => new SubmarineAlignment(invalidInput));
+            var exception = Assert.Throws<ArgumentException>(() => SubmarineAlignment.CreateWithConstantConsumption(invalidInput));
             Assert.Equal("Invalid input", exception.Message);
         }
 
@@ -22,7 +22,7 @@ namespace Day7.UnitTests
         [InlineData("7")]
         public void ReturnZero_WhenThereIsOnlyOneElementInInput(string position)
         {
-            var sut = new SubmarineAlignment(position);
+            var sut = SubmarineAlignment.CreateWithConstantConsumption(position);
             Assert.Equal(0, sut.MinimumFuelConsumption);
         }
 
@@ -31,7 +31,7 @@ namespace Day7.UnitTests
         [InlineData("4,4")]
         public void ReturnZero_WhenAllElementsInInputAreAligned(string positions)
         {
-            var sut = new SubmarineAlignment(positions);
+            var sut = SubmarineAlignment.CreateWithConstantConsumption(positions);
             Assert.Equal(0, sut.MinimumFuelConsumption);
         }
 
@@ -43,28 +43,28 @@ namespace Day7.UnitTests
         [InlineData(SAMPLE_POSITIONS, 37)]
         public void CalculateMinimumFuelConsumptionCorrectly(string positions, int expectedValue)
         {
-            var sut = new SubmarineAlignment(positions);
+            var sut = SubmarineAlignment.CreateWithConstantConsumption(positions);
             Assert.Equal(expectedValue, sut.MinimumFuelConsumption);
         }
 
         [Fact]
         public void SolveFirstPuzzle()
         {
-            var sut = new SubmarineAlignment(REAL_POSITIONS);
+            var sut = SubmarineAlignment.CreateWithConstantConsumption(REAL_POSITIONS);
             Assert.Equal(347011, sut.MinimumFuelConsumption);
         }
 
         [Fact]
         public void CalculateMinimumFuelConsumptionCorrectly_WhenConsumptionIsIncremental()
         {
-            var sut = new SubmarineAlignment(SAMPLE_POSITIONS, true);
+            var sut = SubmarineAlignment.CreateWithIncrementalConsumption(SAMPLE_POSITIONS);
             Assert.Equal(168, sut.MinimumFuelConsumption);
         }
 
         [Fact]
         public void SolveSecondPuzzle()
         {
-            var sut = new SubmarineAlignment(REAL_POSITIONS, true);
+            var sut = SubmarineAlignment.CreateWithIncrementalConsumption(REAL_POSITIONS);
             Assert.Equal(98363777, sut.MinimumFuelConsumption);
         }
     }
