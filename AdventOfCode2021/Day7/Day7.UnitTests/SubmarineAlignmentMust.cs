@@ -24,5 +24,14 @@ namespace Day7.UnitTests
             var sut = new SubmarineAlignment(position.ToString());
             Assert.Equal(position, sut.BestPosition);
         }
+
+        [Theory]
+        [InlineData("3,3", 3)]
+        [InlineData("4,4", 4)]
+        public void Test3(string positions, int expectedValue)
+        {
+            var sut = new SubmarineAlignment(positions);
+            Assert.Equal(expectedValue, sut.BestPosition);
+        }
     }
 }
