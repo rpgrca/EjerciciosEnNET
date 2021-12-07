@@ -59,5 +59,12 @@ namespace Day7.UnitTests
             var sut = new SubmarineAlignment(REAL_POSITIONS);
             Assert.Equal(347011, sut.MinimumFuelConsumption);
         }
+
+        [Fact]
+        public void Test7()
+        {
+            var sut = new SubmarineAlignment(SAMPLE_POSITIONS, true);
+            Assert.Equal(168, sut.MinimumFuelConsumption);
+        }
     }
 }
