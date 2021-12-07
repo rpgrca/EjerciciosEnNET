@@ -14,7 +14,7 @@ namespace Day7.Logic
                 throw new ArgumentException("Invalid input");
             }
 
-            BestPosition = 3;
+            BestPosition = int.Parse(input);
         }
     }
 }

@@ -16,11 +16,13 @@ namespace Day7.UnitTests
             Assert.Equal("Invalid input", exception.Message);
         }
 
-        [Fact]
-        public void Test2()
+        [Theory]
+        [InlineData(3)]
+        [InlineData(7)]
+        public void Test2(int position)
         {
-            var sut = new SubmarineAlignment("3");
-            Assert.Equal(3, sut.BestPosition);
+            var sut = new SubmarineAlignment(position.ToString());
+            Assert.Equal(position, sut.BestPosition);
         }
     }
 }
