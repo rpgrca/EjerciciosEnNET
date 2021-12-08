@@ -33,5 +33,12 @@ edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf 
             var sut = new DisplayWiring(SAMPLE_SCANNINGS);
             Assert.Equal(26, sut.DigitsWithUniqueNumberOfSegments);
         }
+
+        [Fact]
+        public void Test3()
+        {
+            var sut = new DisplayWiring(REAL_SCANNINGS);
+            Assert.Equal(504, sut.DigitsWithUniqueNumberOfSegments);
+        }
     }
 }
