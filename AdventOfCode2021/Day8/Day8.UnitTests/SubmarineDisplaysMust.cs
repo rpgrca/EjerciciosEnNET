@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Day8.UnitTests
 {
-    public class DisplayWiringMust
+    public class SubmarineDisplaysMust
     {
         [Theory]
         [InlineData(null)]
@@ -14,7 +14,7 @@ namespace Day8.UnitTests
         [InlineData(" ")]
         public void ThrowException_WhenInvalidWiringIsUsed(string invalidWiring)
         {
-            var exception = Assert.Throws<ArgumentException>(() => new DisplayWiring(invalidWiring));
+            var exception = Assert.Throws<ArgumentException>(() => new SubmarineDisplays(invalidWiring));
             Assert.Equal("Invalid wiring", exception.Message);
         }
 
@@ -24,28 +24,28 @@ namespace Day8.UnitTests
 edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf gc", 2)]
         public void ParseInformationCorrectly(string wiring, int expectedSets)
         {
-            var sut = new DisplayWiring(wiring);
+            var sut = new SubmarineDisplays(wiring);
             Assert.Equal(expectedSets, sut.TotalScannings);
         }
 
         [Fact]
         public void CountDigitsWithUniqueNumberOfSegments()
         {
-            var sut = new DisplayWiring(SAMPLE_SCANNINGS);
+            var sut = new SubmarineDisplays(SAMPLE_SCANNINGS);
             Assert.Equal(26, sut.DigitsWithUniqueNumberOfSegments);
         }
 
         [Fact]
         public void SolveFirstPuzzle()
         {
-            var sut = new DisplayWiring(REAL_SCANNINGS);
+            var sut = new SubmarineDisplays(REAL_SCANNINGS);
             Assert.Equal(504, sut.DigitsWithUniqueNumberOfSegments);
         }
 
         [Fact]
         public void OrderWiring()
         {
-            var sut = new DisplayWiring("acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf");
+            var sut = new SubmarineDisplays("acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf");
             Assert.Collection(sut.GetDisplayFor(0),
                 p1 => Assert.Equal("bcdef", p1),
                 p2 => Assert.Equal("abcdf", p2),
@@ -57,7 +57,7 @@ edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf 
         [MemberData(nameof(DecodingDisplaySamples))]
         public void DecodeDisplaySegmentsCorrectly(string data, char wireA, char wireB, char wireC, char wireD, char wireE, char wireF, char wireG)
         {
-            var sut = new DisplayWiring(data);
+            var sut = new SubmarineDisplays(data);
             Assert.Collection(sut.GetWiringForDisplay(0),
                 p1 => Assert.Equal(wireA, p1),
                 p2 => Assert.Equal(wireB, p2),
@@ -88,7 +88,7 @@ edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf 
         [InlineData("gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce", 4315)]
         public void ReturnFixedDisplay(string data, int expectedDisplay)
         {
-            var sut = new DisplayWiring(data);
+            var sut = new SubmarineDisplays(data);
             sut.GetWiringForDisplay(0);
             Assert.Equal(expectedDisplay, sut.GetFixedDisplayFor(0));
         }
@@ -96,14 +96,14 @@ edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf 
         [Fact]
         public void ReturnSumOfDisplays_WhenUsingSampleScannings()
         {
-            var sut = new DisplayWiring(SAMPLE_SCANNINGS);
+            var sut = new SubmarineDisplays(SAMPLE_SCANNINGS);
             Assert.Equal(61229, sut.GetSumOfDisplays());
         }
 
         [Fact]
         public void SolveSecondPuzzle()
         {
-            var sut = new DisplayWiring(REAL_SCANNINGS);
+            var sut = new SubmarineDisplays(REAL_SCANNINGS);
             Assert.Equal(1073431, sut.GetSumOfDisplays());
         }
     }

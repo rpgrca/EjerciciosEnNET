@@ -4,16 +4,16 @@ using System.Collections.Generic;
 
 namespace Day8.Logic
 {
-    public class DisplayWiring
+    public class SubmarineDisplays
     {
         private readonly string _data;
-        private List<(List<string> Signals, List<string> Display)> _scannings;
         private readonly int[] _fixedDisplays;
+        private List<(List<string> Signals, List<string> Display)> _scannings;
 
         public int TotalScannings => _scannings.Count;
         public int DigitsWithUniqueNumberOfSegments { get; private set; }
 
-        public DisplayWiring(string data)
+        public SubmarineDisplays(string data)
         {
             if (string.IsNullOrWhiteSpace(data))
             {
