@@ -94,5 +94,12 @@ edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf 
             var sut = new DisplayWiring(SAMPLE_SCANNINGS);
             Assert.Equal(61229, sut.GetSumOfDisplays());
         }
+
+        [Fact]
+        public void SolveSecondPuzzle()
+        {
+            var sut = new DisplayWiring(REAL_SCANNINGS);
+            Assert.Equal(1073431, sut.GetSumOfDisplays());
+        }
     }
 }
