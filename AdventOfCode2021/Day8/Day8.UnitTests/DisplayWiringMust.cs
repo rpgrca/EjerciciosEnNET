@@ -42,7 +42,7 @@ edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf 
         }
 
         [Fact]
-        public void Test1()
+        public void OrderWiring()
         {
             var sut = new DisplayWiring("acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf");
             Assert.Collection(sut.GetDisplayFor(0),
@@ -50,6 +50,49 @@ edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf 
                 p2 => Assert.Equal("abcdf", p2),
                 p3 => Assert.Equal("bcdef", p3),
                 p4 => Assert.Equal("abcdf", p4));
+        }
+
+        [Fact]
+        public void Test1()
+        {
+            var sut = new DisplayWiring("acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf");
+            Assert.Collection(sut.GetWiringForDisplay(0),
+                p1 => Assert.Equal('d', p1),
+                p2 => Assert.Equal('e', p2),
+                p3 => Assert.Equal('a', p3),
+                p4 => Assert.Equal('f', p4),
+                p5 => Assert.Equal('g', p5),
+                p6 => Assert.Equal('b', p6),
+                p7 => Assert.Equal('c', p7));
+        }
+
+        [Fact]
+        public void Test2()
+        {
+            var sut = new DisplayWiring("be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe");
+            Assert.Collection(sut.GetWiringForDisplay(0),
+                p1 => Assert.Equal('d', p1),
+                p2 => Assert.Equal('g', p2),
+                p3 => Assert.Equal('b', p3),
+                p4 => Assert.Equal('c', p4),
+                p5 => Assert.Equal('a', p5),
+                p6 => Assert.Equal('e', p6),
+                p7 => Assert.Equal('f', p7));
+        }
+
+        [Fact]
+        public void Test3()
+        {
+            var sut = new DisplayWiring("acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf");
+            sut.GetWiringForDisplay(0);
+            Assert.Equal(5353, sut.GetFixedDisplayFor(0));
+        }
+
+        [Fact]
+        public void Test4()
+        {
+            var sut = new DisplayWiring(SAMPLE_SCANNINGS);
+            Assert.Equal(61229, sut.GetSumOfDisplays());
         }
     }
 }
