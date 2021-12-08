@@ -7,7 +7,7 @@ namespace Day8.Logic
     {
         private readonly List<string> _signals;
         private readonly List<string> _display;
-        private readonly List<List<char>> _numbers;
+        private readonly List<IEnumerable<char>> _numbers;
         private readonly Dictionary<char, char> _segments;
 
         public int Value { get; private set; }
@@ -18,7 +18,7 @@ namespace Day8.Logic
             _signals = signals;
             _display = display;
 
-            _numbers = new List<List<char>>();
+            _numbers = new List<IEnumerable<char>>();
             _segments = new Dictionary<char, char>
             {
                 { 'a', '\0' },
@@ -35,18 +35,18 @@ namespace Day8.Logic
         }
 
         private void ClassifyNumbers() =>
-            _numbers.AddRange(new List<List<char>>
+            _numbers.AddRange(new List<IEnumerable<char>>
             {
-                { new() },
-                { _signals.Single(p => p.Length == 2).Select(p => p).OrderBy(p => p).ToList() },
-                { new() },
-                { new() },
-                { _signals.Single(p => p.Length == 4).Select(p => p).OrderBy(p => p).ToList() },
-                { new() },
-                { new() },
-                { _signals.Single(p => p.Length == 3).Select(p => p).OrderBy(p => p).ToList() },
-                { _signals.Single(p => p.Length == 7).Select(p => p).OrderBy(p => p).ToList() },
-                { new() }
+                { null },
+                { _signals.Single(p => p.Length == 2).Select(p => p).OrderBy(p => p) },
+                { null },
+                { null },
+                { _signals.Single(p => p.Length == 4).Select(p => p).OrderBy(p => p) },
+                { null },
+                { null },
+                { _signals.Single(p => p.Length == 3).Select(p => p).OrderBy(p => p) },
+                { _signals.Single(p => p.Length == 7).Select(p => p).OrderBy(p => p) },
+                { null }
             });
 
         private void CalculateWirings()
@@ -95,13 +95,13 @@ namespace Day8.Logic
                 _numbers[3] = possibleTwoThreeFive[0];
                 if (! possibleTwoThreeFive[1].Except(_numbers[3]).Except(_numbers[4]).Any())
                 {
-                    _numbers[5] = possibleTwoThreeFive[1].OrderBy(p => p).ToList();
-                    _numbers[2] = possibleTwoThreeFive[2].OrderBy(p => p).ToList();
+                    _numbers[5] = possibleTwoThreeFive[1].OrderBy(p => p);
+                    _numbers[2] = possibleTwoThreeFive[2].OrderBy(p => p);
                 }
                 else
                 {
-                    _numbers[5] = possibleTwoThreeFive[2].OrderBy(p => p).ToList();
-                    _numbers[2] = possibleTwoThreeFive[1].OrderBy(p => p).ToList();
+                    _numbers[5] = possibleTwoThreeFive[2].OrderBy(p => p);
+                    _numbers[2] = possibleTwoThreeFive[1].OrderBy(p => p);
                 }
             }
             else
@@ -112,27 +112,27 @@ namespace Day8.Logic
                     _numbers[3] = possibleTwoThreeFive[1];
                     if (! possibleTwoThreeFive[0].Except(_numbers[3]).Except(_numbers[4]).Any())
                     {
-                        _numbers[5] = possibleTwoThreeFive[0].OrderBy(p => p).ToList();
-                        _numbers[2] = possibleTwoThreeFive[2].OrderBy(p => p).ToList();
+                        _numbers[5] = possibleTwoThreeFive[0].OrderBy(p => p);
+                        _numbers[2] = possibleTwoThreeFive[2].OrderBy(p => p);
                     }
                     else
                     {
-                        _numbers[5] = possibleTwoThreeFive[2].OrderBy(p => p).ToList();
-                        _numbers[2] = possibleTwoThreeFive[0].OrderBy(p => p).ToList();
+                        _numbers[5] = possibleTwoThreeFive[2].OrderBy(p => p);
+                        _numbers[2] = possibleTwoThreeFive[0].OrderBy(p => p);
                     }
                 }
                 else
                 {
-                    _numbers[3] = possibleTwoThreeFive[2].OrderBy(p => p).ToList();
+                    _numbers[3] = possibleTwoThreeFive[2].OrderBy(p => p);
                     if (! possibleTwoThreeFive[0].Except(_numbers[3]).Except(_numbers[4]).Any())
                     {
-                        _numbers[5] = possibleTwoThreeFive[0].OrderBy(p => p).ToList();
-                        _numbers[2] = possibleTwoThreeFive[1].OrderBy(p => p).ToList();
+                        _numbers[5] = possibleTwoThreeFive[0].OrderBy(p => p);
+                        _numbers[2] = possibleTwoThreeFive[1].OrderBy(p => p);
                     }
                     else
                     {
-                        _numbers[5] = possibleTwoThreeFive[1].OrderBy(p => p).ToList();
-                        _numbers[2] = possibleTwoThreeFive[0].OrderBy(p => p).ToList();
+                        _numbers[5] = possibleTwoThreeFive[1].OrderBy(p => p);
+                        _numbers[2] = possibleTwoThreeFive[0].OrderBy(p => p);
                     }
                 }
             }
@@ -159,12 +159,12 @@ namespace Day8.Logic
             _segments['f'] = _numbers[1].Except(new List<char>() { _segments['c']}).Single();
 
         private void DeduceNumber0() =>
-            _numbers[0] = new List<char> { _segments['a'], _segments['b'], _segments['c'], _segments['e'], _segments['f'], _segments['g'] }.OrderBy(p => p).ToList();
+            _numbers[0] = new List<char> { _segments['a'], _segments['b'], _segments['c'], _segments['e'], _segments['f'], _segments['g'] }.OrderBy(p => p);
 
         private void DeduceNumber6() =>
-            _numbers[6] = new List<char> { _segments['a'], _segments['b'], _segments['d'], _segments['e'], _segments['f'], _segments['g'] }.OrderBy(p => p).ToList();
+            _numbers[6] = new List<char> { _segments['a'], _segments['b'], _segments['d'], _segments['e'], _segments['f'], _segments['g'] }.OrderBy(p => p);
 
         private void DeduceNumber9() =>
-            _numbers[9] = new List<char> { _segments['a'], _segments['b'], _segments['c'], _segments['d'], _segments['f'], _segments['g'] }.OrderBy(p => p).ToList();
+            _numbers[9] = new List<char> { _segments['a'], _segments['b'], _segments['c'], _segments['d'], _segments['f'], _segments['g'] }.OrderBy(p => p);
     }
 }

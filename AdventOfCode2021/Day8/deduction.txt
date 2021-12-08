@@ -65,16 +65,7 @@
                     ff
 
 
-
-El que está en el segmento de 3 cables y no está en el segmento de 2 cables es el aa
-
- aa
-b  c
-b  c
- dd
-e  f
-e  f
- gg
+// El que está en el segmento de 3 cables y no está en el segmento de 2 cables es el aa
 
 
 
