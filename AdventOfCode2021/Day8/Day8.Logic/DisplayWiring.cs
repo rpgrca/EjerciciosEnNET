@@ -9,6 +9,9 @@ namespace Day8.Logic
         private readonly string _data;
         private List<(List<string> Signals, List<string> Display)> _scannings;
 
+        public int TotalScannings => _scannings.Count;
+        public int DigitsWithUniqueNumberOfSegments { get; private set; }
+
         public DisplayWiring(string data)
         {
             if (string.IsNullOrWhiteSpace(data))
@@ -18,6 +21,7 @@ namespace Day8.Logic
 
             _data = data;
             Parse();
+            CountDigitsWithUniqueNumberOfSegments();
         }
 
         private void Parse()
@@ -25,6 +29,12 @@ namespace Day8.Logic
             _scannings = _data.Split("\n").Select(p => p.Split("|")).Select(p => (p[0].Split(" ").ToList(), p[1].Split(" ").ToList())).ToList();
         }
 
-        public int TotalScannings => _scannings.Count;
+        private void CountDigitsWithUniqueNumberOfSegments()
+        {
+            DigitsWithUniqueNumberOfSegments = _scannings
+                .Select(p => p.Display)
+                .Select(p => p.Count(x => x.Length == 2 || x.Length == 4 || x.Length == 3 || x.Length == 7))
+                .Sum();
+        }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using Xunit;
 using Day8.Logic;
+using static Day8.UnitTests.Constants;
 
 namespace Day8.UnitTests
 {
@@ -24,6 +25,13 @@ edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf 
         {
             var sut = new DisplayWiring(wiring);
             Assert.Equal(expectedSets, sut.TotalScannings);
+        }
+
+        [Fact]
+        public void Test2()
+        {
+            var sut = new DisplayWiring(SAMPLE_SCANNINGS);
+            Assert.Equal(26, sut.DigitsWithUniqueNumberOfSegments);
         }
     }
 }
