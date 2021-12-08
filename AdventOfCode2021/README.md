@@ -8,4 +8,4 @@ Your instincts tell you that in order to save Christmas, you'll need to get all 
 
 Collect stars by solving puzzles. Two puzzles will be made available on each day in the Advent calendar; the second puzzle is unlocked when you complete the first. Each puzzle grants *one star*. Good luck!
 
-[Read all](https://adventofcode.com/2021)
+[Go to site](https://adventofcode.com/2021)
