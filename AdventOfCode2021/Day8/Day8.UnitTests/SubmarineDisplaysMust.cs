@@ -89,7 +89,6 @@ edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf 
         public void ReturnFixedDisplay(string data, int expectedDisplay)
         {
             var sut = new SubmarineDisplays(data);
-            sut.GetWiringForDisplay(0);
             Assert.Equal(expectedDisplay, sut.GetFixedDisplayFor(0));
         }
 
