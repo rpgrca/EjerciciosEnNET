@@ -1,8 +1,9 @@
-# Second Day
-https://adventofcode.com/2020/day/2
+## Day 2: Password Philosophy
 
-## First Puzzle
-Each line gives the password policy and then the password. The password policy indicates the lowest and highest number of times a given letter must appear for the password to be valid. For example, 1-3 a means that the password must contain a at least 1 time and at most 3 times.
+Your flight departs in a few days from the coastal airport; the easiest way down to the coast from here is via *toboggan*.
 
-## Second Puzzle
-Each policy actually describes two positions in the password, where 1 means the first character, 2 means the second character, and so on. (Be careful; Toboggan Corporate Policies have no concept of "index zero"!) Exactly one of these positions must contain the given letter. Other occurrences of the letter are irrelevant for the purposes of policy enforcement.
+The shopkeeper at the North Pole Toboggan Rental Shop is having a bad day. "Something's wrong with our computers; we can't log in!" You ask if you can take a look.
+
+Their password database seems to be a little corrupted: some of the passwords wouldn't have been allowed by the *Official Toboggan Corporate Policy* that was in effect when they were chosen.
+
+[Read all](https://adventofcode.com/2020/day/2)
