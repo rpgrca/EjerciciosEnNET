@@ -7,7 +7,7 @@ namespace Day8.Logic
     {
         private readonly List<string> _signals;
         private readonly List<string> _display;
-        private readonly List<IEnumerable<char>> _numbers;
+        private readonly List<string> _numbers;
         private readonly Dictionary<char, char> _segments;
 
         public int Value { get; private set; }
@@ -18,7 +18,7 @@ namespace Day8.Logic
             _signals = signals;
             _display = display;
 
-            _numbers = new List<IEnumerable<char>>();
+            _numbers = new List<string>();
             _segments = new Dictionary<char, char>
             {
                 { 'a', '\0' },
@@ -35,17 +35,17 @@ namespace Day8.Logic
         }
 
         private void ClassifyNumbers() =>
-            _numbers.AddRange(new List<IEnumerable<char>>
+            _numbers.AddRange(new List<string>
             {
                 { null },
-                { _signals.Single(p => p.Length == 2).Select(p => p).OrderBy(p => p) },
+                { string.Join("", _signals.Single(p => p.Length == 2).OrderBy(p => p)) },
                 { null },
                 { null },
-                { _signals.Single(p => p.Length == 4).Select(p => p).OrderBy(p => p) },
+                { string.Join("", _signals.Single(p => p.Length == 4).OrderBy(p => p)) },
                 { null },
                 { null },
-                { _signals.Single(p => p.Length == 3).Select(p => p).OrderBy(p => p) },
-                { _signals.Single(p => p.Length == 7).Select(p => p).OrderBy(p => p) },
+                { string.Join("", _signals.Single(p => p.Length == 3).OrderBy(p => p)) },
+                { string.Join("", _signals.Single(p => p.Length == 7).OrderBy(p => p)) },
                 { null }
             });
 
@@ -65,16 +65,16 @@ namespace Day8.Logic
 
             var fixedNumbers = new Dictionary<string, string>
             {
-                { string.Join("", _numbers[0]), "0" },
-                { string.Join("", _numbers[1]), "1" },
-                { string.Join("", _numbers[2]), "2" },
-                { string.Join("", _numbers[3]), "3" },
-                { string.Join("", _numbers[4]), "4" },
-                { string.Join("", _numbers[5]), "5" },
-                { string.Join("", _numbers[6]), "6" },
-                { string.Join("", _numbers[7]), "7" },
-                { string.Join("", _numbers[8]), "8" },
-                { string.Join("", _numbers[9]), "9" }
+                { _numbers[0], "0" },
+                { _numbers[1], "1" },
+                { _numbers[2], "2" },
+                { _numbers[3], "3" },
+                { _numbers[4], "4" },
+                { _numbers[5], "5" },
+                { _numbers[6], "6" },
+                { _numbers[7], "7" },
+                { _numbers[8], "8" },
+                { _numbers[9], "9" }
             };
 
             Value = int.Parse(string.Concat(_display.Select(p => fixedNumbers[p])));
@@ -88,20 +88,20 @@ namespace Day8.Logic
         {
             // 4) Tomo los numeros con 5 segmentos (2, 3, 5), a cada uno le quito los segmentos existentes en los
             // otros y el que queda vacío es el 3
-            var possibleTwoThreeFive = _signals.Where(p => p.Length == 5).Select(p => p.ToCharArray().ToList()).ToList();
+            var possibleTwoThreeFive = _signals.Where(p => p.Length == 5).Select(p => p).ToList();
             var a1 = possibleTwoThreeFive[0].Except(possibleTwoThreeFive[1]).Except(possibleTwoThreeFive[2]);
             if (!a1.Any())
             {
-                _numbers[3] = possibleTwoThreeFive[0];
+                _numbers[3] = string.Concat(possibleTwoThreeFive[0].OrderBy(p => p));
                 if (! possibleTwoThreeFive[1].Except(_numbers[3]).Except(_numbers[4]).Any())
                 {
-                    _numbers[5] = possibleTwoThreeFive[1].OrderBy(p => p);
-                    _numbers[2] = possibleTwoThreeFive[2].OrderBy(p => p);
+                    _numbers[5] = string.Concat(possibleTwoThreeFive[1].OrderBy(p => p));
+                    _numbers[2] = string.Concat(possibleTwoThreeFive[2].OrderBy(p => p));
                 }
                 else
                 {
-                    _numbers[5] = possibleTwoThreeFive[2].OrderBy(p => p);
-                    _numbers[2] = possibleTwoThreeFive[1].OrderBy(p => p);
+                    _numbers[5] = string.Concat(possibleTwoThreeFive[2].OrderBy(p => p));
+                    _numbers[2] = string.Concat(possibleTwoThreeFive[1].OrderBy(p => p));
                 }
             }
             else
@@ -112,27 +112,27 @@ namespace Day8.Logic
                     _numbers[3] = possibleTwoThreeFive[1];
                     if (! possibleTwoThreeFive[0].Except(_numbers[3]).Except(_numbers[4]).Any())
                     {
-                        _numbers[5] = possibleTwoThreeFive[0].OrderBy(p => p);
-                        _numbers[2] = possibleTwoThreeFive[2].OrderBy(p => p);
+                        _numbers[5] = string.Concat(possibleTwoThreeFive[0].OrderBy(p => p));
+                        _numbers[2] = string.Concat(possibleTwoThreeFive[2].OrderBy(p => p));
                     }
                     else
                     {
-                        _numbers[5] = possibleTwoThreeFive[2].OrderBy(p => p);
-                        _numbers[2] = possibleTwoThreeFive[0].OrderBy(p => p);
+                        _numbers[5] = string.Concat(possibleTwoThreeFive[2].OrderBy(p => p));
+                        _numbers[2] = string.Concat(possibleTwoThreeFive[0].OrderBy(p => p));
                     }
                 }
                 else
                 {
-                    _numbers[3] = possibleTwoThreeFive[2].OrderBy(p => p);
+                    _numbers[3] = string.Concat(possibleTwoThreeFive[2].OrderBy(p => p));
                     if (! possibleTwoThreeFive[0].Except(_numbers[3]).Except(_numbers[4]).Any())
                     {
-                        _numbers[5] = possibleTwoThreeFive[0].OrderBy(p => p);
-                        _numbers[2] = possibleTwoThreeFive[1].OrderBy(p => p);
+                        _numbers[5] = string.Concat(possibleTwoThreeFive[0].OrderBy(p => p));
+                        _numbers[2] = string.Concat(possibleTwoThreeFive[1].OrderBy(p => p));
                     }
                     else
                     {
-                        _numbers[5] = possibleTwoThreeFive[1].OrderBy(p => p);
-                        _numbers[2] = possibleTwoThreeFive[0].OrderBy(p => p);
+                        _numbers[5] = string.Concat(possibleTwoThreeFive[1].OrderBy(p => p));
+                        _numbers[2] = string.Concat(possibleTwoThreeFive[0].OrderBy(p => p));
                     }
                 }
             }
@@ -159,12 +159,12 @@ namespace Day8.Logic
             _segments['f'] = _numbers[1].Except(new List<char>() { _segments['c']}).Single();
 
         private void DeduceNumber0() =>
-            _numbers[0] = new List<char> { _segments['a'], _segments['b'], _segments['c'], _segments['e'], _segments['f'], _segments['g'] }.OrderBy(p => p);
+            _numbers[0] = string.Concat(new List<char> { _segments['a'], _segments['b'], _segments['c'], _segments['e'], _segments['f'], _segments['g']}.OrderBy(p => p));
 
         private void DeduceNumber6() =>
-            _numbers[6] = new List<char> { _segments['a'], _segments['b'], _segments['d'], _segments['e'], _segments['f'], _segments['g'] }.OrderBy(p => p);
+            _numbers[6] = string.Concat(new List<char> { _segments['a'], _segments['b'], _segments['d'], _segments['e'], _segments['f'], _segments['g'] }.OrderBy(p => p));
 
         private void DeduceNumber9() =>
-            _numbers[9] = new List<char> { _segments['a'], _segments['b'], _segments['c'], _segments['d'], _segments['f'], _segments['g'] }.OrderBy(p => p);
+            _numbers[9] = string.Concat(new List<char> { _segments['a'], _segments['b'], _segments['c'], _segments['d'], _segments['f'], _segments['g'] }.OrderBy(p => p));
     }
 }
