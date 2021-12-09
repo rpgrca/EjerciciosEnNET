@@ -11,9 +11,8 @@ namespace Day9.Logic
         private readonly List<int> _basins;
         private readonly List<(int X, int Y)> _lowPoints;
 
-        public int Width => _map[0].Length;
-        public int Height => _map.Count;
-
+        public int Width { get; private set; }
+        public int Height { get; private set; }
         public int RiskLevel { get; private set; }
 
         public HeightMap(string data)
@@ -29,58 +28,36 @@ namespace Day9.Logic
             _basins = new List<int>();
 
             Parse();
+            DetermineMapWidthAndHeight();
             CalculateLowPoints();
             CalculateRiskLevel();
             CalculateBasinSizes();
         }
 
-        private void Parse()
-        {
-            foreach (var row in _data.Split("\n"))
-            {
-                _map.Add(row.Select(p => p - '0').ToArray());
-            }
-        }
+        private void Parse() => _data
+            .Split("\n")
+            .ToList()
+            .ForEach(p => _map.Add(p.Select(p => p - '0').ToArray()));
 
-        private void CalculateLowPoints()
-        {
-            for (var y = 0; y < Height; y++)
-            {
-                for (var x = 0; x < Width; x++)
-                {
-                    if (IsLowPoint(x, y))
-                    {
-                        _lowPoints.Add((x, y));
-                    }
-                }
-            }
-        }
+        private void DetermineMapWidthAndHeight() =>
+            (Width, Height) = (_map[0].Length, _map.Count);
+
+        private void CalculateLowPoints() => _lowPoints
+            .AddRange(Enumerable
+                .Range(0, Width)
+                .SelectMany(_ => Enumerable.Range(0, Height), (x, y) => (x, y))
+                .Where(p => IsLowPoint(p.x, p.y)));
 
         private void CalculateRiskLevel() =>
             RiskLevel = _lowPoints.Select(p => _map[p.Y][p.X] + 1).Sum();
 
-        private bool IsLowPoint(int x, int y)
-        {
-            var adjacentLocations = new List<(int X, int Y)>
+        private bool IsLowPoint(int x, int y) => new List<int>
             {
-                (x, y - 1),
-                (x, y + 1),
-                (x - 1, y),
-                (x + 1, y)
-            };
-
-            foreach (var (X, Y) in adjacentLocations)
-            {
-                if (OutOfBounds(X, Y)) continue;
-
-                if (_map[y][x] >= _map[Y][X])
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
+                OutOfBounds(x, y - 1)? 9 : _map[y - 1][x],
+                OutOfBounds(x, y + 1)? 9 : _map[y + 1][x],
+                OutOfBounds(x - 1, y)? 9 : _map[y][x - 1],
+                OutOfBounds(x + 1, y)? 9 : _map[y][x + 1]
+            }.TrueForAll(p => p > _map[y][x]);
 
         private bool OutOfBounds(int x, int y) =>
             x < 0 || x >= Width || y < 0 || y >= Height;

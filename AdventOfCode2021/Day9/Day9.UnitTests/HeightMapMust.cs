@@ -56,8 +56,8 @@ namespace Day9.UnitTests
         {
             var sut = new HeightMap(SAMPLE_HEIGHTMAP);
             Assert.Equal(3, sut.GetBasinSizeFor(0));
-            Assert.Equal(9, sut.GetBasinSizeFor(1));
-            Assert.Equal(14, sut.GetBasinSizeFor(2));
+            Assert.Equal(14, sut.GetBasinSizeFor(1));
+            Assert.Equal(9, sut.GetBasinSizeFor(2));
             Assert.Equal(9, sut.GetBasinSizeFor(3));
         }
 
