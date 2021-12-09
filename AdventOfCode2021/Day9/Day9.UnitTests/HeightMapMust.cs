@@ -36,5 +36,12 @@ namespace Day9.UnitTests
             var sut = new HeightMap(map);
             Assert.Equal(expectedRiskLevel, sut.RiskLevel);
         }
+
+        [Fact]
+        public void SolveFirstPuzzle()
+        {
+            var sut = new HeightMap(REAL_HEIGHTMAP);
+            Assert.Equal(480, sut.RiskLevel);
+        }
     }
 }
