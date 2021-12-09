@@ -26,5 +26,15 @@ namespace Day9.UnitTests
             Assert.Equal(expectedWidth, sut.Width);
             Assert.Equal(expectedHeight, sut.Height);
         }
+
+        [Theory]
+        [InlineData("333\n323\n333", 3)]
+        [InlineData("21999\n39878\n98567\n87678", 8)]
+        [InlineData(SAMPLE_HEIGHTMAP, 15)]
+        public void CalculateRiskLevelCorrectly(string map, int expectedRiskLevel)
+        {
+            var sut = new HeightMap(map);
+            Assert.Equal(expectedRiskLevel, sut.RiskLevel);
+        }
     }
 }
