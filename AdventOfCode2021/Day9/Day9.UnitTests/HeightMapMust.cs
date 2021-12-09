@@ -69,5 +69,12 @@ namespace Day9.UnitTests
             var sut = new HeightMap(SAMPLE_HEIGHTMAP);
             Assert.Equal(1134, sut.GetBasinMultiplication());
         }
+
+        [Fact]
+        public void SolveSecondPuzzle()
+        {
+            var sut = new HeightMap(REAL_HEIGHTMAP);
+            Assert.Equal(1045660, sut.GetBasinMultiplication());
+        }
     }
 }
