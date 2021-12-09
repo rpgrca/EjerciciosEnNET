@@ -114,5 +114,7 @@ namespace Day9.Logic
             _map[y][x] = -1;
             return 1 + CalculateBasinSize(x - 1, y) + CalculateBasinSize(x + 1, y) + CalculateBasinSize(x, y - 1) + CalculateBasinSize(x, y + 1);
         }
+
+        public int GetBasinMultiplication() => Basins.OrderByDescending(p => p).Take(3).Aggregate(1, (t, i) => t *= i);
     }
 }

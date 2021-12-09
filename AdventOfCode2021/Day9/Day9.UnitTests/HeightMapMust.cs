@@ -62,5 +62,12 @@ namespace Day9.UnitTests
                 p3 => Assert.Equal(14, p3),
                 p4 => Assert.Equal(9, p4));
         }
+
+        [Fact]
+        public void CalculateBasinMultiplicationCorrectly()
+        {
+            var sut = new HeightMap(SAMPLE_HEIGHTMAP);
+            Assert.Equal(1134, sut.GetBasinMultiplication());
+        }
     }
 }
