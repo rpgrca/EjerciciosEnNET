@@ -8,11 +8,13 @@ namespace Day9.Logic
     {
         private readonly string _data;
         private readonly List<int[]> _map;
+        private readonly List<(int X, int Y)> _lowPoints;
 
         public int Width => _map[0].Length;
         public int Height => _map.Count;
 
         public int RiskLevel { get; private set; }
+        public List<int> Basins { get; private set; }
 
         public HeightMap(string data)
         {
@@ -23,9 +25,12 @@ namespace Day9.Logic
 
             _data = data;
             _map = new List<int[]>();
+            _lowPoints = new List<(int X, int Y)>();
+            Basins = new List<int>();
 
             Parse();
             CalculateRiskLevel();
+            CalculateBasinSizes();
         }
 
         private void Parse()
@@ -45,6 +50,7 @@ namespace Day9.Logic
                 {
                     if (IsLowPoint(x, y))
                     {
+                        _lowPoints.Add((x, y));
                         RiskLevel += _map[y][x] + 1;
                     }
                 }
@@ -77,6 +83,36 @@ namespace Day9.Logic
             }
 
             return isLowPoint;
+        }
+
+        private void CalculateBasinSizes()
+        {
+            foreach (var lowPoint in _lowPoints)
+            {
+                var basinSize = CalculateBasinSize(lowPoint.X, lowPoint.Y);
+                Basins.Add(basinSize);
+            }
+        }
+
+        private int CalculateBasinSize(int x, int y)
+        {
+            if (x < 0 || x >= Width || y < 0 || y >= Height)
+            {
+                return 0;
+            }
+
+            if (_map[y][x] == 9)
+            {
+                return 0;
+            }
+
+            if (_map[y][x] == -1)
+            {
+                return 0;
+            }
+
+            _map[y][x] = -1;
+            return 1 + CalculateBasinSize(x - 1, y) + CalculateBasinSize(x + 1, y) + CalculateBasinSize(x, y - 1) + CalculateBasinSize(x, y + 1);
         }
     }
 }
