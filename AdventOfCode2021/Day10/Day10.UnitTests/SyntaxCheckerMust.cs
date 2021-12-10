@@ -55,5 +55,12 @@ namespace Day10.UnitTests
                 p4 => Assert.Equal("[<(<(<(<{}))><([]([]()", p4),
                 p5 => Assert.Equal("<{([([[(<>()){}]>(<<{{", p5));
         }
+
+        [Fact]
+        public void CalculateSyntaxErrorScoreCorrectly_WhenUsingSampleData()
+        {
+            var sut = new SyntaxChecker(SAMPLE_SUBSYSTEM);
+            Assert.Equal(26397, sut.GetSyntaxErrorScore());
+        }
     }
 }

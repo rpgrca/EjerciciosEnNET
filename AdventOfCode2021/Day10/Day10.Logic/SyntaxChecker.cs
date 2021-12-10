@@ -8,7 +8,7 @@ namespace Day10.Logic
     {
         private readonly string _code;
         private readonly List<string> _validLines;
-        private readonly List<string> _invalidLines;
+        private readonly List<(string Line, int Score)> _invalidLines;
 
         public SyntaxChecker(string code)
         {
@@ -18,7 +18,7 @@ namespace Day10.Logic
             }
 
             _validLines = new List<string>();
-            _invalidLines = new List<string>();
+            _invalidLines = new List<(string, int)>();
             _code = code;
 
             Parse();
@@ -79,7 +79,12 @@ namespace Day10.Logic
 
                     if (isInvalid)
                     {
-                        _invalidLines.Add(line);
+                        _invalidLines.Add((line, character switch {
+                            ')' => 3,
+                            ']' => 57,
+                            '}' => 1197,
+                            '>' => 25137
+                        }));
                         break;
                     }
                 }
@@ -91,6 +96,11 @@ namespace Day10.Logic
             }
         }
 
-        public List<string> GetSyntaxErrors() => _invalidLines;
+        public List<string> GetSyntaxErrors() => _invalidLines.ConvertAll(p => p.Line);
+
+        public int GetSyntaxErrorScore()
+        {
+            return _invalidLines.ConvertAll(p => p.Score).Sum();
+        }
     }
 }
