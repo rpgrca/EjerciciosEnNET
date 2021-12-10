@@ -91,5 +91,13 @@ namespace Day10.UnitTests
             var sut = new SyntaxChecker(SAMPLE_SUBSYSTEM);
             Assert.Equal(288957, sut.GetAutcompleteScore());
         }
+
+        [Fact]
+        public void SolveSecondPuzzle()
+        {
+            var sut = new SyntaxChecker(REAL_SUBSYSTEM);
+            Assert.True(165561627 < sut.GetAutcompleteScore());
+            Assert.Equal(3103006161, sut.GetAutcompleteScore());
+        }
     }
 }

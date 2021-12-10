@@ -9,7 +9,7 @@ namespace Day10.Logic
         private readonly string _code;
         private readonly List<string> _validLines;
         private readonly List<(string Line, int Score)> _invalidLines;
-        private readonly List<(string Ending, int Score)> _missingEndings;
+        private readonly List<(string Ending, long Score)> _missingEndings;
 
         public SyntaxChecker(string code)
         {
@@ -20,7 +20,7 @@ namespace Day10.Logic
 
             _validLines = new List<string>();
             _invalidLines = new List<(string, int)>();
-            _missingEndings = new List<(string, int)>();
+            _missingEndings = new List<(string, long)>();
             _code = code;
 
             Parse();
@@ -100,7 +100,8 @@ namespace Day10.Logic
                         '<' => '>',
                         '{' => '}'
                     }));
-                    var score = missingEnding.Aggregate(0, (t, i) => t * 5 + i switch {
+
+                    var score = missingEnding.Aggregate(0L, (t, i) => t * 5 + i switch {
                         ')' => 1,
                         ']' => 2,
                         '}' => 3,
@@ -112,13 +113,13 @@ namespace Day10.Logic
             }
         }
 
-        public int GetAutcompleteScore()
+        public long GetAutcompleteScore()
         {
             var scores = GetAutocompleteScores().OrderBy(p => p).ToList();
             return scores[scores.Count / 2];
         }
 
-        public List<int> GetAutocompleteScores() => _missingEndings.ConvertAll(p => p.Score);
+        public List<long> GetAutocompleteScores() => _missingEndings.ConvertAll(p => p.Score);
 
         public List<string> GetSyntaxErrors() => _invalidLines.ConvertAll(p => p.Line);
 
