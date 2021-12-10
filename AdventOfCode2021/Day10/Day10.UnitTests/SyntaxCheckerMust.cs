@@ -1,4 +1,3 @@
-using System.Reflection;
 using System;
 using Xunit;
 using Day10.Logic;
@@ -26,7 +25,7 @@ namespace Day10.UnitTests
         [InlineData("<([{}])>")]
         [InlineData("[<>({}){}[([])<>]]")]
         [InlineData("(((((((((())))))))))")]
-        public void Test1(string input)
+        public void DetectCorrectLinesCorrectly(string input)
         {
             var sut = new SyntaxChecker(input);
             Assert.Empty(sut.GetSyntaxErrors());
@@ -37,7 +36,7 @@ namespace Day10.UnitTests
         [InlineData("{()()()>")]
         [InlineData("(((()))}")]
         [InlineData("<([]){()}[{}])")]
-        public void Test2(string input)
+        public void DetectSyntaxErrorsCorrectly(string input)
         {
             var sut = new SyntaxChecker(input);
             Assert.Collection(sut.GetSyntaxErrors(),
@@ -45,7 +44,7 @@ namespace Day10.UnitTests
         }
 
         [Fact]
-        public void Test3()
+        public void DetectSyntaxErrorsCorrectly_WhenUsingSampleData()
         {
             var sut = new SyntaxChecker(SAMPLE_SUBSYSTEM);
             Assert.Collection(sut.GetSyntaxErrors(),
@@ -71,22 +70,33 @@ namespace Day10.UnitTests
         }
 
         [Theory]
-        [InlineData("[({(<(())[]>[[{[]{<()<>>", "}}]])})]", 288957)]
-        [InlineData("[(()[<>])]({[<{<<[]>>(", ")}>]})", 5566)]
-        [InlineData("(((({<>}<{<{<>}{[]{[]{}", "}}>}>))))", 1480781)]
-        [InlineData("{<[[]]>}<{[{[{[]{()[[[]", "]]}}]}]}>", 995444)]
-        [InlineData("<{([{{}}[<[[[<>{}]]]>[]]", "])}>", 294)]
-        public void Test4(string input, string expectedEnding, int expectedScore)
+        [InlineData("[({(<(())[]>[[{[]{<()<>>", "}}]])})]")]
+        [InlineData("[(()[<>])]({[<{<<[]>>(", ")}>]})")]
+        [InlineData("(((({<>}<{<{<>}{[]{[]{}", "}}>}>))))")]
+        [InlineData("{<[[]]>}<{[{[{[]{()[[[]", "]]}}]}]}>")]
+        [InlineData("<{([{{}}[<[[[<>{}]]]>[]]", "])}>")]
+        public void CalculateAutocompleteCorrectly(string input, string expectedEnding)
         {
             var sut = new SyntaxChecker(input);
             Assert.Collection(sut.GetExpectedEndings(),
                 p1 => Assert.Equal(expectedEnding, p1));
+        }
+
+        [Theory]
+        [InlineData("[({(<(())[]>[[{[]{<()<>>", 288957)]
+        [InlineData("[(()[<>])]({[<{<<[]>>(", 5566)]
+        [InlineData("(((({<>}<{<{<>}{[]{[]{}", 1480781)]
+        [InlineData("{<[[]]>}<{[{[{[]{()[[[]", 995444)]
+        [InlineData("<{([{{}}[<[[[<>{}]]]>[]]", 294)]
+        public void CalculateAutocompleteScoreCorrectly(string input, int expectedScore)
+        {
+            var sut = new SyntaxChecker(input);
             Assert.Collection(sut.GetAutocompleteScores(),
                 p1 => Assert.Equal(expectedScore, p1));
         }
 
         [Fact]
-        public void Test5()
+        public void CalculateAutocompleteScoreCorrectly_WhenUsingSampleData()
         {
             var sut = new SyntaxChecker(SAMPLE_SUBSYSTEM);
             Assert.Equal(288957, sut.GetAutcompleteScore());
