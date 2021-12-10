@@ -84,5 +84,12 @@ namespace Day10.UnitTests
             Assert.Collection(sut.GetAutocompleteScores(),
                 p1 => Assert.Equal(expectedScore, p1));
         }
+
+        [Fact]
+        public void Test5()
+        {
+            var sut = new SyntaxChecker(SAMPLE_SUBSYSTEM);
+            Assert.Equal(288957, sut.GetAutcompleteScore());
+        }
     }
 }

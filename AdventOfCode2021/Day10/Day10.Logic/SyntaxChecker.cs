@@ -112,7 +112,13 @@ namespace Day10.Logic
             }
         }
 
-        public List<int> GetAutocompleteScores() => _missingEndings.ConvertAll(p => p.Score).OrderBy(p => p).ToList();
+        public int GetAutcompleteScore()
+        {
+            var scores = GetAutocompleteScores().OrderBy(p => p).ToList();
+            return scores[scores.Count / 2];
+        }
+
+        public List<int> GetAutocompleteScores() => _missingEndings.ConvertAll(p => p.Score);
 
         public List<string> GetSyntaxErrors() => _invalidLines.ConvertAll(p => p.Line);
 
