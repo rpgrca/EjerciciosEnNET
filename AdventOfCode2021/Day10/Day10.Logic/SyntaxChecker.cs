@@ -9,7 +9,7 @@ namespace Day10.Logic
         private readonly string _code;
         private readonly List<string> _validLines;
         private readonly List<(string Line, int Score)> _invalidLines;
-        private readonly List<string> _missingEndings;
+        private readonly List<(string Ending, int Score)> _missingEndings;
 
         public SyntaxChecker(string code)
         {
@@ -20,7 +20,7 @@ namespace Day10.Logic
 
             _validLines = new List<string>();
             _invalidLines = new List<(string, int)>();
-            _missingEndings = new List<string>();
+            _missingEndings = new List<(string, int)>();
             _code = code;
 
             Parse();
@@ -94,23 +94,30 @@ namespace Day10.Logic
                 if (! isInvalid)
                 {
                     _validLines.Add(line);
-                    _missingEndings.Add(string.Concat(stack.ConvertAll(p => p switch {
+                    var missingEnding = string.Concat(stack.ConvertAll(p => p switch {
                         '(' => ')',
                         '[' => ']',
                         '<' => '>',
                         '{' => '}'
-                    })));
+                    }));
+                    var score = missingEnding.Aggregate(0, (t, i) => t * 5 + i switch {
+                        ')' => 1,
+                        ']' => 2,
+                        '}' => 3,
+                        '>' => 4
+                    });
+
+                    _missingEndings.Add((missingEnding, score));
                 }
             }
         }
 
+        public List<int> GetAutocompleteScores() => _missingEndings.ConvertAll(p => p.Score).OrderBy(p => p).ToList();
+
         public List<string> GetSyntaxErrors() => _invalidLines.ConvertAll(p => p.Line);
 
-        public int GetSyntaxErrorScore()
-        {
-            return _invalidLines.ConvertAll(p => p.Score).Sum();
-        }
+        public int GetSyntaxErrorScore() => _invalidLines.ConvertAll(p => p.Score).Sum();
 
-        public List<string> GetExpectedEndings() => _missingEndings;
+        public List<string> GetExpectedEndings() => _missingEndings.ConvertAll(p => p.Ending).ToList();
     }
 }

@@ -71,16 +71,18 @@ namespace Day10.UnitTests
         }
 
         [Theory]
-        [InlineData("[({(<(())[]>[[{[]{<()<>>", "}}]])})]")]
-        [InlineData("[(()[<>])]({[<{<<[]>>(", ")}>]})")]
-        [InlineData("(((({<>}<{<{<>}{[]{[]{}", "}}>}>))))")]
-        [InlineData("{<[[]]>}<{[{[{[]{()[[[]", "]]}}]}]}>")]
-        [InlineData("<{([{{}}[<[[[<>{}]]]>[]]", "])}>")]
-        public void Test4(string input, string expectedEnding)
+        [InlineData("[({(<(())[]>[[{[]{<()<>>", "}}]])})]", 288957)]
+        [InlineData("[(()[<>])]({[<{<<[]>>(", ")}>]})", 5566)]
+        [InlineData("(((({<>}<{<{<>}{[]{[]{}", "}}>}>))))", 1480781)]
+        [InlineData("{<[[]]>}<{[{[{[]{()[[[]", "]]}}]}]}>", 995444)]
+        [InlineData("<{([{{}}[<[[[<>{}]]]>[]]", "])}>", 294)]
+        public void Test4(string input, string expectedEnding, int expectedScore)
         {
             var sut = new SyntaxChecker(input);
             Assert.Collection(sut.GetExpectedEndings(),
                 p1 => Assert.Equal(expectedEnding, p1));
+            Assert.Collection(sut.GetAutocompleteScores(),
+                p1 => Assert.Equal(expectedScore, p1));
         }
     }
 }
