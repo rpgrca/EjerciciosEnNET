@@ -33,6 +33,7 @@ namespace Day10.Logic
             foreach (var line in _code.Split("\n"))
             {
                 var isInvalid = false;
+                var expectedEnding = new List<char>();
                 stack.Clear();
 
                 foreach (var character in line)
@@ -40,42 +41,31 @@ namespace Day10.Logic
                     switch (character)
                     {
                         case '(':
+                            stack.Add(character);
+                            expectedEnding.Insert(0, ')');
+                            break;
+
                         case '{':
+                            stack.Add(character);
+                            expectedEnding.Insert(0, '}');
+                            break;
+
                         case '[':
+                            stack.Add(character);
+                            expectedEnding.Insert(0, ']');
+                            break;
+
                         case '<':
-                            stack.Insert(0, character);
+                            stack.Add(character);
+                            expectedEnding.Insert(0, '>');
                             break;
 
-                        case ')':
-                            if (stack[0] != '(')
+                        default:
+                            isInvalid = expectedEnding[0] != character;
+                            if (! isInvalid)
                             {
-                                isInvalid = true;
+                                expectedEnding.RemoveAt(0);
                             }
-                            stack.RemoveAt(0);
-                            break;
-
-                        case ']':
-                            if (stack[0] != '[')
-                            {
-                                isInvalid = true;
-                            }
-                            stack.RemoveAt(0);
-                            break;
-
-                        case '}':
-                            if (stack[0] != '{')
-                            {
-                                isInvalid = true;
-                            }
-                            stack.RemoveAt(0);
-                            break;
-
-                        case '>':
-                            if (stack[0] != '<')
-                            {
-                                isInvalid = true;
-                            }
-                            stack.RemoveAt(0);
                             break;
                     }
 
@@ -85,7 +75,7 @@ namespace Day10.Logic
                             ')' => 3,
                             ']' => 57,
                             '}' => 1197,
-                            '>' => 25137
+                            _ => 25137
                         }));
                         break;
                     }
@@ -94,21 +84,14 @@ namespace Day10.Logic
                 if (! isInvalid)
                 {
                     _validLines.Add(line);
-                    var missingEnding = string.Concat(stack.ConvertAll(p => p switch {
-                        '(' => ')',
-                        '[' => ']',
-                        '<' => '>',
-                        '{' => '}'
-                    }));
-
-                    var score = missingEnding.Aggregate(0L, (t, i) => t * 5 + i switch {
+                    var score = expectedEnding.Aggregate(0L, (t, i) => (t * 5) + i switch {
                         ')' => 1,
                         ']' => 2,
                         '}' => 3,
-                        '>' => 4
+                        _ => 4
                     });
 
-                    _missingEndings.Add((missingEnding, score));
+                    _missingEndings.Add((string.Concat(expectedEnding), score));
                 }
             }
         }
