@@ -9,6 +9,7 @@ namespace Day10.Logic
         private readonly string _code;
         private readonly List<string> _validLines;
         private readonly List<(string Line, int Score)> _invalidLines;
+        private readonly List<string> _missingEndings;
 
         public SyntaxChecker(string code)
         {
@@ -19,6 +20,7 @@ namespace Day10.Logic
 
             _validLines = new List<string>();
             _invalidLines = new List<(string, int)>();
+            _missingEndings = new List<string>();
             _code = code;
 
             Parse();
@@ -92,6 +94,12 @@ namespace Day10.Logic
                 if (! isInvalid)
                 {
                     _validLines.Add(line);
+                    _missingEndings.Add(string.Concat(stack.ConvertAll(p => p switch {
+                        '(' => ')',
+                        '[' => ']',
+                        '<' => '>',
+                        '{' => '}'
+                    })));
                 }
             }
         }
@@ -102,5 +110,7 @@ namespace Day10.Logic
         {
             return _invalidLines.ConvertAll(p => p.Score).Sum();
         }
+
+        public List<string> GetExpectedEndings() => _missingEndings;
     }
 }

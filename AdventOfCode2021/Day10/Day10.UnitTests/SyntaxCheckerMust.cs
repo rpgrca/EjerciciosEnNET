@@ -69,5 +69,18 @@ namespace Day10.UnitTests
             var sut = new SyntaxChecker(REAL_SUBSYSTEM);
             Assert.Equal(323613, sut.GetSyntaxErrorScore());
         }
+
+        [Theory]
+        [InlineData("[({(<(())[]>[[{[]{<()<>>", "}}]])})]")]
+        [InlineData("[(()[<>])]({[<{<<[]>>(", ")}>]})")]
+        [InlineData("(((({<>}<{<{<>}{[]{[]{}", "}}>}>))))")]
+        [InlineData("{<[[]]>}<{[{[{[]{()[[[]", "]]}}]}]}>")]
+        [InlineData("<{([{{}}[<[[[<>{}]]]>[]]", "])}>")]
+        public void Test4(string input, string expectedEnding)
+        {
+            var sut = new SyntaxChecker(input);
+            Assert.Collection(sut.GetExpectedEndings(),
+                p1 => Assert.Equal(expectedEnding, p1));
+        }
     }
 }
