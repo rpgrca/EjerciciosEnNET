@@ -62,5 +62,12 @@ namespace Day10.UnitTests
             var sut = new SyntaxChecker(SAMPLE_SUBSYSTEM);
             Assert.Equal(26397, sut.GetSyntaxErrorScore());
         }
+
+        [Fact]
+        public void SolveFirstPuzzle()
+        {
+            var sut = new SyntaxChecker(REAL_SUBSYSTEM);
+            Assert.Equal(323613, sut.GetSyntaxErrorScore());
+        }
     }
 }
