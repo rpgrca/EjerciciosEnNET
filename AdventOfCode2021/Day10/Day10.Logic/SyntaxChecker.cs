@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Day10.Logic
 {
@@ -26,66 +27,66 @@ namespace Day10.Logic
         private void Parse()
         {
             List<char> stack = new();
-            var line = string.Empty;
-            var isInvalid = false;
 
-            foreach (var character in _code)
+            foreach (var line in _code.Split("\n"))
             {
-                line += character;
+                var isInvalid = false;
+                stack.Clear();
 
-                switch (character)
+                foreach (var character in line)
                 {
-                    case '(':
-                    case '{':
-                    case '[':
-                    case '<':
-                        stack.Insert(0, character);
-                        break;
+                    switch (character)
+                    {
+                        case '(':
+                        case '{':
+                        case '[':
+                        case '<':
+                            stack.Insert(0, character);
+                            break;
 
-                    case ')':
-                        if (stack[0] != '(')
-                        {
-                            isInvalid = true;
-                        }
-                        stack.RemoveAt(0);
-                        break;
+                        case ')':
+                            if (stack[0] != '(')
+                            {
+                                isInvalid = true;
+                            }
+                            stack.RemoveAt(0);
+                            break;
 
-                    case ']':
-                        if (stack[0] != '[')
-                        {
-                            isInvalid = true;
-                        }
-                        stack.RemoveAt(0);
-                        break;
+                        case ']':
+                            if (stack[0] != '[')
+                            {
+                                isInvalid = true;
+                            }
+                            stack.RemoveAt(0);
+                            break;
 
-                    case '}':
-                        if (stack[0] != '{')
-                        {
-                            isInvalid = true;
-                        }
-                        stack.RemoveAt(0);
-                        break;
+                        case '}':
+                            if (stack[0] != '{')
+                            {
+                                isInvalid = true;
+                            }
+                            stack.RemoveAt(0);
+                            break;
 
-                    case '>':
-                        if (stack[0] != '<')
-                        {
-                            isInvalid = true;
-                        }
-                        stack.RemoveAt(0);
-                        break;
-                }
+                        case '>':
+                            if (stack[0] != '<')
+                            {
+                                isInvalid = true;
+                            }
+                            stack.RemoveAt(0);
+                            break;
+                    }
 
-                if (stack.Count == 0)
-                {
                     if (isInvalid)
                     {
                         _invalidLines.Add(line);
-                        isInvalid = false;
+                        break;
                     }
-                    else
-                    {
-                        _validLines.Add(line);
-                    }
+                }
+
+                if (! isInvalid)
+                {
+                    _validLines.Add(line);
                 }
             }
         }

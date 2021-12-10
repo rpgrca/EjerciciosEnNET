@@ -1,6 +1,8 @@
+using System.Reflection;
 using System;
 using Xunit;
 using Day10.Logic;
+using static Day10.UnitTests.Constants;
 
 namespace Day10.UnitTests
 {
@@ -40,6 +42,18 @@ namespace Day10.UnitTests
             var sut = new SyntaxChecker(input);
             Assert.Collection(sut.GetSyntaxErrors(),
                 p1 => Assert.Equal(input, p1));
+        }
+
+        [Fact]
+        public void Test3()
+        {
+            var sut = new SyntaxChecker(SAMPLE_SUBSYSTEM);
+            Assert.Collection(sut.GetSyntaxErrors(),
+                p1 => Assert.Equal("{([(<{}[<>[]}>{[]{[(<()>", p1),
+                p2 => Assert.Equal("[[<[([]))<([[{}[[()]]]", p2),
+                p3 => Assert.Equal("[{[{({}]{}}([{[{{{}}([]", p3),
+                p4 => Assert.Equal("[<(<(<(<{}))><([]([]()", p4),
+                p5 => Assert.Equal("<{([([[(<>()){}]>(<<{{", p5));
         }
     }
 }
