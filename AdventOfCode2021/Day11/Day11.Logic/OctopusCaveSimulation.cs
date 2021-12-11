@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Day11.Logic
 {
@@ -178,6 +177,42 @@ namespace Day11.Logic
             }
 
             return map.Trim();
+        }
+
+        public int GetFirstSyncFlashStep()
+        {
+            var steps = 0;
+
+            while (true)
+            {
+                Step(1);
+                steps++;
+
+                var gotAnythingOtherThanZero = false;
+                for (var y = 0; y < _height; y++)
+                {
+                    for (var x = 0; x < _width; x++)
+                    {
+                        if (_map[y,x] != 0)
+                        {
+                            gotAnythingOtherThanZero = true;
+                            break;
+                        }
+                    }
+
+                    if (gotAnythingOtherThanZero)
+                    {
+                        break;
+                    }
+                }
+
+                if (! gotAnythingOtherThanZero)
+                {
+                    break;
+                }
+            }
+
+            return steps;
         }
     }
 }
