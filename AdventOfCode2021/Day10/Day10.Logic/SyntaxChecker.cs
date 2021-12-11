@@ -10,6 +10,9 @@ namespace Day10.Logic
         private readonly List<string> _validLines;
         private readonly List<(string Line, int Score)> _invalidLines;
         private readonly List<(string Ending, long Score)> _missingEndings;
+        private readonly Dictionary<char, int> _invalidCharacterPoints;
+        private readonly Dictionary<char, int> _autocompleteCharacterPoints;
+        private readonly Dictionary<char, char> _opposites;
 
         public SyntaxChecker(string code)
         {
@@ -23,60 +26,77 @@ namespace Day10.Logic
             _missingEndings = new List<(string, long)>();
             _code = code;
 
+            _invalidCharacterPoints = new()
+            {
+                { ')', 3 },
+                { ']', 57 },
+                { '}', 1197 },
+                { '>', 25137 }
+            };
+
+            _opposites = new()
+            {
+                { '(', ')' },
+                { '{', '}' },
+                { '<', '>' },
+                { '[', ']' }
+            };
+
+            _autocompleteCharacterPoints = new()
+            {
+                { ')', 1 },
+                { ']', 2 },
+                { '}', 3 },
+                { '>', 4 }
+            };
+
             Parse();
+        }
+
+        private bool InsertIntoList(char value, List<char> list)
+        {
+            list.Insert(0, _opposites[value]);
+            return true;
+        }
+
+        private static bool RemoveIfExpected(char value, List<char> list)
+        {
+            if (list[0] == value)
+            {
+                list.RemoveAt(0);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private void Parse()
         {
-            List<char> stack = new();
+            var expectedEnding = new List<char>();
+            var machine = new Dictionary<char, Func<char, bool>>
+            {
+                { '(', c => InsertIntoList(c, expectedEnding) },
+                { '[', c => InsertIntoList(c, expectedEnding) },
+                { '{', c => InsertIntoList(c, expectedEnding) },
+                { '<', c => InsertIntoList(c, expectedEnding) },
+                { ')', c => RemoveIfExpected(c, expectedEnding) },
+                { '}', c => RemoveIfExpected(c, expectedEnding) },
+                { ']', c => RemoveIfExpected(c, expectedEnding) },
+                { '>', c => RemoveIfExpected(c, expectedEnding) }
+            };
 
             foreach (var line in _code.Split("\n"))
             {
                 var isInvalid = false;
-                var expectedEnding = new List<char>();
-                stack.Clear();
 
                 foreach (var character in line)
                 {
-                    switch (character)
-                    {
-                        case '(':
-                            stack.Add(character);
-                            expectedEnding.Insert(0, ')');
-                            break;
-
-                        case '{':
-                            stack.Add(character);
-                            expectedEnding.Insert(0, '}');
-                            break;
-
-                        case '[':
-                            stack.Add(character);
-                            expectedEnding.Insert(0, ']');
-                            break;
-
-                        case '<':
-                            stack.Add(character);
-                            expectedEnding.Insert(0, '>');
-                            break;
-
-                        default:
-                            isInvalid = expectedEnding[0] != character;
-                            if (! isInvalid)
-                            {
-                                expectedEnding.RemoveAt(0);
-                            }
-                            break;
-                    }
-
+                    isInvalid = !machine[character](character);
                     if (isInvalid)
                     {
-                        _invalidLines.Add((line, character switch {
-                            ')' => 3,
-                            ']' => 57,
-                            '}' => 1197,
-                            _ => 25137
-                        }));
+                        _invalidLines.Add((line, _invalidCharacterPoints[character]));
                         break;
                     }
                 }
@@ -84,15 +104,11 @@ namespace Day10.Logic
                 if (! isInvalid)
                 {
                     _validLines.Add(line);
-                    var score = expectedEnding.Aggregate(0L, (t, i) => (t * 5) + i switch {
-                        ')' => 1,
-                        ']' => 2,
-                        '}' => 3,
-                        _ => 4
-                    });
-
+                    var score = expectedEnding.Aggregate(0L, (t, i) => (t * 5) + _autocompleteCharacterPoints[i]);
                     _missingEndings.Add((string.Concat(expectedEnding), score));
                 }
+
+                expectedEnding.Clear();
             }
         }
 
