@@ -261,5 +261,12 @@ namespace Day11.UnitTests
             var sut = new OctopusCaveSimulation(SAMPLE_CAVE);
             Assert.Equal(195, sut.GetFirstSyncFlashStep());
         }
+
+        [Fact]
+        public void SolveSecondPuzzle()
+        {
+            var sut = new OctopusCaveSimulation(REAL_CAVE);
+            Assert.Equal(476, sut.GetFirstSyncFlashStep());
+        }
     }
 }
