@@ -10,6 +10,8 @@ namespace Day11.Logic
         private int _width;
         private int _height;
 
+        public int FlashCount { get; private set; }
+
         public OctopusCaveSimulation(string input)
         {
             if (string.IsNullOrWhiteSpace(input))
@@ -64,17 +66,7 @@ namespace Day11.Logic
                 {
                     for (var x = 0; x < _width; x++)
                     {
-                        if (_map[y,x] > 9)
-                        {
-                            if (x > 0) _map[y, x - 1]++;
-                            if (x < _width) _map[y, x + 1]++;
-                            if (y > 0) _map[y - 1, x]++;
-                            if (y < _height) _map[y + 1, x]++;
-                            if (x > 0 && y > 0) _map[y - 1, x - 1]++;
-                            if (x > 0 && y < _height) _map[y + 1, x - 1]++;
-                            if (x < _width && y > 0) _map[y - 1, x + 1]++;
-                            if (x < _width && y < _height) _map[y + 1, x + 1]++;
-                        }
+                        TryFlash(x, y);
                     }
                 }
 
@@ -82,10 +74,91 @@ namespace Day11.Logic
                 {
                     for (var x = 0; x < _width; x++)
                     {
-                        if (_map[y,x] > 9)
+                        if (_map[y,x] == -1)
                         {
                             _map[y,x] = 0;
                         }
+                    }
+                }
+            }
+        }
+
+        private void TryFlash(int x, int y)
+        {
+            if (_map[y, x] > 9)
+            {
+                _map[y, x] = -1;
+                FlashCount++;
+
+                if (x > 0)
+                {
+                    if (_map[y, x - 1] != -1)
+                    {
+                        _map[y, x - 1]++;
+                        TryFlash(x - 1, y);
+                    }
+
+                    if (y > 0)
+                    {
+                        if (_map[y - 1, x - 1] != -1)
+                        {
+                            _map[y - 1, x - 1]++;
+                            TryFlash(x - 1, y - 1);
+                        }
+                    }
+
+                    if (y < _height - 1)
+                    {
+                        if (_map[y + 1, x - 1] != -1)
+                        {
+                            _map[y + 1, x - 1]++;
+                            TryFlash(x - 1, y + 1);
+                        }
+                    }
+                }
+
+                if (x < _width - 1)
+                {
+                    if (_map[y, x + 1] != -1)
+                    {
+                        _map[y, x + 1]++;
+                        TryFlash(x + 1, y);
+                    }
+
+                    if (y > 0)
+                    {
+                        if (_map[y - 1, x + 1] != -1)
+                        {
+                            _map[y - 1, x + 1]++;
+                            TryFlash(x + 1, y - 1);
+                        }
+                    }
+
+                    if (y < _height - 1)
+                    {
+                        if (_map[y + 1, x + 1] != -1)
+                        {
+                            _map[y + 1, x + 1]++;
+                            TryFlash(x + 1, y + 1);
+                        }
+                    }
+                }
+
+                if (y > 0)
+                {
+                    if (_map[y - 1, x] != -1)
+                    {
+                        _map[y - 1, x]++;
+                        TryFlash(x, y - 1);
+                    }
+                }
+
+                if (y < _height - 1)
+                {
+                    if (_map[y + 1, x] != -1)
+                    {
+                        _map[y + 1, x]++;
+                        TryFlash(x, y + 1);
                     }
                 }
             }
