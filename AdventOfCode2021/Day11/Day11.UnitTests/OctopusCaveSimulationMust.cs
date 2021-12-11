@@ -25,5 +25,16 @@ namespace Day11.UnitTests
             var sut = new OctopusCaveSimulation(SAMPLE_CAVE);
             Assert.Equal(expectedPower, sut.GetOctopusEnergyLevelAt(x, y));
         }
+
+        [Theory]
+        [InlineData(1, "34543\n40004\n50005\n40004\n34543")]
+        public void ExecuteStepsCorrectly(int steps, string expectedMap)
+        {
+            const string map = "11111\n19991\n19191\n19991\n11111";
+
+            var sut = new OctopusCaveSimulation(map);
+            sut.Step(steps);
+            Assert.Equal(expectedMap, sut.GetMap());
+        }
     }
 }

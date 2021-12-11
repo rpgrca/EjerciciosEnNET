@@ -6,7 +6,9 @@ namespace Day11.Logic
     public class OctopusCaveSimulation
     {
         private readonly string _input;
-        private readonly int[,] _map;
+        private int[,] _map;
+        private int _width;
+        private int _height;
 
         public OctopusCaveSimulation(string input)
         {
@@ -16,15 +18,20 @@ namespace Day11.Logic
             }
 
             _input = input;
-            _map = new int[10,10];
 
             Parse();
         }
 
         private void Parse()
         {
+            var lines = _input.Split("\n");
+
+            _height = lines.Length;
+            _width = lines[0].Length;
+            _map = new int[_height, _width];
+
             var y = 0;
-            foreach (var line in _input.Split("\n"))
+            foreach (var line in lines)
             {
                 var x = 0;
                 foreach (var octopus in line)
@@ -39,6 +46,65 @@ namespace Day11.Logic
         public int GetOctopusEnergyLevelAt(int x, int y)
         {
             return _map[y,x];
+        }
+
+        public void Step(int steps)
+        {
+            while (steps-- > 0)
+            {
+                for (var y = 0; y < _height; y++)
+                {
+                    for (var x = 0; x < _width; x++)
+                    {
+                        _map[y,x]++;
+                    }
+                }
+
+                for (var y = 0; y < _height; y++)
+                {
+                    for (var x = 0; x < _width; x++)
+                    {
+                        if (_map[y,x] > 9)
+                        {
+                            if (x > 0) _map[y, x - 1]++;
+                            if (x < _width) _map[y, x + 1]++;
+                            if (y > 0) _map[y - 1, x]++;
+                            if (y < _height) _map[y + 1, x]++;
+                            if (x > 0 && y > 0) _map[y - 1, x - 1]++;
+                            if (x > 0 && y < _height) _map[y + 1, x - 1]++;
+                            if (x < _width && y > 0) _map[y - 1, x + 1]++;
+                            if (x < _width && y < _height) _map[y + 1, x + 1]++;
+                        }
+                    }
+                }
+
+                for (var y = 0; y < _height; y++)
+                {
+                    for (var x = 0; x < _width; x++)
+                    {
+                        if (_map[y,x] > 9)
+                        {
+                            _map[y,x] = 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        public string GetMap()
+        {
+            var map = string.Empty;
+            for (var y = 0; y < _height; y++)
+            {
+                for (var x = 0; x < _width; x++)
+                {
+                    map += _map[y,x];
+                }
+
+                map += "\n";
+            }
+
+            return map.Trim();
         }
     }
 }
