@@ -256,7 +256,7 @@ namespace Day11.UnitTests
         }
 
         [Fact]
-        public void Test1()
+        public void FindFirstSynchronizedFlash_WhenUsingSampleData()
         {
             var sut = new OctopusCaveSimulation(SAMPLE_CAVE);
             Assert.Equal(195, sut.GetFirstSyncFlashStep());

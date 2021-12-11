@@ -5,7 +5,7 @@ namespace Day11.Logic
     public class OctopusCaveSimulation
     {
         private readonly string _input;
-        private int[,] _map;
+        private int[] _map;
         private int _width;
         private int _height;
 
@@ -29,7 +29,7 @@ namespace Day11.Logic
 
             _height = lines.Length;
             _width = lines[0].Length;
-            _map = new int[_height, _width];
+            _map = new int[_height * _width];
 
             var y = 0;
             foreach (var line in lines)
@@ -37,7 +37,7 @@ namespace Day11.Logic
                 var x = 0;
                 foreach (var octopus in line)
                 {
-                    _map[y, x++] = octopus - '0';
+                    _map[(y * _width) + x++] = octopus - '0';
                 }
 
                 y++;
@@ -46,7 +46,7 @@ namespace Day11.Logic
 
         public int GetOctopusEnergyLevelAt(int x, int y)
         {
-            return _map[y,x];
+            return _map[(y * _width) + x];
         }
 
         public void Step(int steps)
@@ -57,7 +57,7 @@ namespace Day11.Logic
                 {
                     for (var x = 0; x < _width; x++)
                     {
-                        _map[y,x]++;
+                        _map[(y * _width) + x]++;
                     }
                 }
 
@@ -73,9 +73,9 @@ namespace Day11.Logic
                 {
                     for (var x = 0; x < _width; x++)
                     {
-                        if (_map[y,x] == -1)
+                        if (_map[(y * _width) + x] == -1)
                         {
-                            _map[y,x] = 0;
+                            _map[(y * _width) + x] = 0;
                         }
                     }
                 }
@@ -84,33 +84,33 @@ namespace Day11.Logic
 
         private void TryFlash(int x, int y)
         {
-            if (_map[y, x] > 9)
+            if (_map[(y * _width) + x] > 9)
             {
-                _map[y, x] = -1;
+                _map[(y * _width) + x] = -1;
                 FlashCount++;
 
                 if (x > 0)
                 {
-                    if (_map[y, x - 1] != -1)
+                    if (_map[(y * _width) + x - 1] != -1)
                     {
-                        _map[y, x - 1]++;
+                        _map[(y * _width) + x - 1]++;
                         TryFlash(x - 1, y);
                     }
 
                     if (y > 0)
                     {
-                        if (_map[y - 1, x - 1] != -1)
+                        if (_map[(y - 1) * _width + x - 1] != -1)
                         {
-                            _map[y - 1, x - 1]++;
+                            _map[(y - 1) * _width + x - 1]++;
                             TryFlash(x - 1, y - 1);
                         }
                     }
 
                     if (y < _height - 1)
                     {
-                        if (_map[y + 1, x - 1] != -1)
+                        if (_map[(y + 1) * _width + x - 1] != -1)
                         {
-                            _map[y + 1, x - 1]++;
+                            _map[(y + 1) * _width + x - 1]++;
                             TryFlash(x - 1, y + 1);
                         }
                     }
@@ -118,26 +118,26 @@ namespace Day11.Logic
 
                 if (x < _width - 1)
                 {
-                    if (_map[y, x + 1] != -1)
+                    if (_map[(y * _width) + x + 1] != -1)
                     {
-                        _map[y, x + 1]++;
+                        _map[(y * _width) + x + 1]++;
                         TryFlash(x + 1, y);
                     }
 
                     if (y > 0)
                     {
-                        if (_map[y - 1, x + 1] != -1)
+                        if (_map[((y - 1) * _width) + x + 1] != -1)
                         {
-                            _map[y - 1, x + 1]++;
+                            _map[((y - 1) * _width) + x + 1]++;
                             TryFlash(x + 1, y - 1);
                         }
                     }
 
                     if (y < _height - 1)
                     {
-                        if (_map[y + 1, x + 1] != -1)
+                        if (_map[(y + 1) * _width + x + 1] != -1)
                         {
-                            _map[y + 1, x + 1]++;
+                            _map[(y + 1) * _width + x + 1]++;
                             TryFlash(x + 1, y + 1);
                         }
                     }
@@ -145,18 +145,18 @@ namespace Day11.Logic
 
                 if (y > 0)
                 {
-                    if (_map[y - 1, x] != -1)
+                    if (_map[(y - 1) * _width + x] != -1)
                     {
-                        _map[y - 1, x]++;
+                        _map[(y - 1) * _width + x]++;
                         TryFlash(x, y - 1);
                     }
                 }
 
                 if (y < _height - 1)
                 {
-                    if (_map[y + 1, x] != -1)
+                    if (_map[(y + 1) * _width + x] != -1)
                     {
-                        _map[y + 1, x]++;
+                        _map[(y + 1) * _width + x]++;
                         TryFlash(x, y + 1);
                     }
                 }
@@ -170,7 +170,7 @@ namespace Day11.Logic
             {
                 for (var x = 0; x < _width; x++)
                 {
-                    map += _map[y,x];
+                    map += _map[(y * _width) + x];
                 }
 
                 map += "\n";
@@ -193,7 +193,7 @@ namespace Day11.Logic
                 {
                     for (var x = 0; x < _width; x++)
                     {
-                        if (_map[y,x] != 0)
+                        if (_map[(y * _width) + x] != 0)
                         {
                             gotAnythingOtherThanZero = true;
                             break;
