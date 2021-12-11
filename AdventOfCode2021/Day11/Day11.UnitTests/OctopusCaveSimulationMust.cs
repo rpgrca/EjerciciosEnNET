@@ -246,5 +246,13 @@ namespace Day11.UnitTests
             sut.Step(steps);
             Assert.Equal(expectedFlashes, sut.FlashCount);
         }
+
+        [Fact]
+        public void SolveFirstPuzzle()
+        {
+            var sut = new OctopusCaveSimulation(REAL_CAVE);
+            sut.Step(100);
+            Assert.Equal(1717, sut.FlashCount);
+        }
     }
 }
