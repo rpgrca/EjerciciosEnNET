@@ -1,5 +1,4 @@
-﻿using System.Text;
-using System;
+﻿using System;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -16,20 +15,9 @@ namespace Day12.Logic
         public int SmallCaveCount { get; private set; }
         public int Paths => _paths.Count;
 
-        public PathFinding(string data)
-        {
-            if (string.IsNullOrWhiteSpace(data))
-            {
-                throw new ArgumentException("Invalid data");
-            }
+        public static PathFinding CreateWithoutRepetition(string data) => new(data, true);
 
-            _data = data;
-            _map = new Dictionary<string, List<string>>();
-            _paths = new List<List<string>>();
-
-            Parse();
-            CalculatePaths();
-        }
+        public static PathFinding CreateWithAtMostOneRepetion(string data) => new(data, false);
 
         private void Parse()
         {
@@ -96,39 +84,7 @@ namespace Day12.Logic
 
         private static bool IsSmallCave(string cave) => cave == cave.ToLower() && cave != "start" && cave != "end";
 
-        private void CalculatePaths()
-        {
-            var walkedThrough = new List<string>();
-            FindPathToEndFrom("start", walkedThrough);
-        }
-
-        private void FindPathToEndFrom(string from, List<string> walkedThrough)
-        {
-            if (from == "end")
-            {
-                var finalPath = new List<string>(walkedThrough)
-                {
-                    from
-                };
-
-                _paths.Add(finalPath);
-                return;
-            }
-
-            if (IsSmallCave(from) && walkedThrough.Contains(from))
-            {
-                return;
-            }
-
-            walkedThrough.Add(from);
-            foreach (var cave in _map[from])
-            {
-                FindPathToEndFrom(cave, walkedThrough);
-            }
-            walkedThrough.RemoveAt(walkedThrough.Count - 1);
-        }
-
-        public PathFinding(string data, bool _)
+        public PathFinding(string data, bool withoutRepetition)
         {
             if (string.IsNullOrWhiteSpace(data))
             {
@@ -140,13 +96,13 @@ namespace Day12.Logic
             _paths = new List<List<string>>();
 
             Parse();
-            CalculatePathsWhenOneSmallCaveCanBeVisitedTwice();
+            CalculatePaths(withoutRepetition);
         }
 
-        private void CalculatePathsWhenOneSmallCaveCanBeVisitedTwice()
+        private void CalculatePaths(bool withRepetition)
         {
-             var walkedThrough = new List<string>();
-            FindPathToEndFrom("start", walkedThrough, false);
+            var walkedThrough = new List<string>();
+            FindPathToEndFrom("start", walkedThrough, withRepetition);
         }
 
         private void FindPathToEndFrom(string from, List<string> walkedThrough, bool smallCaveAlreadyVisitedTwice)
@@ -164,29 +120,25 @@ namespace Day12.Logic
 
             if (IsSmallCave(from) && walkedThrough.Contains(from))
             {
-                if (smallCaveAlreadyVisitedTwice)
+                if (!smallCaveAlreadyVisitedTwice)
                 {
-                    return;
+                    WalkThisCave(from, walkedThrough, true);
                 }
-                else
-                {
-                    smallCaveAlreadyVisitedTwice = true;
-                    walkedThrough.Add(from);
-                    foreach (var cave in _map[from])
-                    {
-                        FindPathToEndFrom(cave, walkedThrough, smallCaveAlreadyVisitedTwice);
-                    }
 
-                    walkedThrough.RemoveAt(walkedThrough.Count - 1);
-                    return;
-                }
+                return;
             }
 
+            WalkThisCave(from, walkedThrough, smallCaveAlreadyVisitedTwice);
+        }
+
+        private void WalkThisCave(string from, List<string> walkedThrough, bool smallCaveAlreadyVisitedTwice)
+        {
             walkedThrough.Add(from);
             foreach (var cave in _map[from])
             {
                 FindPathToEndFrom(cave, walkedThrough, smallCaveAlreadyVisitedTwice);
             }
+
             walkedThrough.RemoveAt(walkedThrough.Count - 1);
         }
     }

@@ -13,7 +13,7 @@ namespace Day12.UnitTests
         [InlineData(" ")]
         public void ThrowException_WhenInitializedWithInvalidData(string invalidData)
         {
-            var exception = Assert.Throws<ArgumentException>(() => new PathFinding(invalidData));
+            var exception = Assert.Throws<ArgumentException>(() => PathFinding.CreateWithoutRepetition(invalidData));
             Assert.Equal("Invalid data", exception.Message);
         }
 
@@ -22,7 +22,7 @@ namespace Day12.UnitTests
         [InlineData(MEDIUM_SAMPLE_CAVE, 7, 2, 3)]
         public void ParseMapCorrectly(string input, int expectedCaveCount, int expectedLargeCaveCount, int expectedSmallCaveCount)
         {
-            var sut = new PathFinding(input);
+            var sut = PathFinding.CreateWithoutRepetition(input);
             Assert.Equal(expectedCaveCount, sut.CaveCount);
             Assert.Equal(expectedLargeCaveCount, sut.LargeCaveCount);
             Assert.Equal(expectedSmallCaveCount, sut.SmallCaveCount);
@@ -34,14 +34,14 @@ namespace Day12.UnitTests
         [InlineData(LARGE_SAMPLE_CAVE, 226)]
         public void FindAllPathsCorrectly(string map, int expectedPaths)
         {
-            var sut = new PathFinding(map);
+            var sut = PathFinding.CreateWithoutRepetition(map);
             Assert.Equal(expectedPaths, sut.Paths);
         }
 
         [Fact]
         public void SolveFirstPuzzle()
         {
-            var sut = new PathFinding(REAL_CAVE);
+            var sut = PathFinding.CreateWithoutRepetition(REAL_CAVE);
             Assert.Equal(5157, sut.Paths);
         }
 
@@ -51,14 +51,14 @@ namespace Day12.UnitTests
         [InlineData(LARGE_SAMPLE_CAVE, 3509)]
         public void FindAllPathsCorrectly_WhenOneSmallCaveCanBeVisitedTwice(string map, int expectedPaths)
         {
-            var sut = new PathFinding(map, true);
+            var sut = PathFinding.CreateWithAtMostOneRepetion(map);
             Assert.Equal(expectedPaths, sut.Paths);
         }
 
         [Fact]
         public void SolveSecondPuzzle()
         {
-            var sut = new PathFinding(REAL_CAVE, true);
+            var sut = PathFinding.CreateWithAtMostOneRepetion(REAL_CAVE);
             Assert.Equal(144309, sut.Paths);
         }
     }
