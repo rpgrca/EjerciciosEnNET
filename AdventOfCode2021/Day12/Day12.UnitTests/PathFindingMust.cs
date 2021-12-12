@@ -28,11 +28,14 @@ namespace Day12.UnitTests
             Assert.Equal(expectedSmallCaveCount, sut.SmallCaveCount);
         }
 
-        [Fact]
-        public void FindAllPathsCorrectly()
+        [Theory]
+        [InlineData(SMALL_SAMPLE_CAVE, 10)]
+        [InlineData(MEDIUM_SAMPLE_CAVE, 19)]
+        [InlineData(LARGE_SAMPLE_CAVE, 226)]
+        public void FindAllPathsCorrectly(string map, int expectedPaths)
         {
-            var sut = new PathFinding(SMALL_SAMPLE_CAVE);
-            Assert.Equal(10, sut.Paths);
+            var sut = new PathFinding(map);
+            Assert.Equal(expectedPaths, sut.Paths);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Text;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -8,11 +9,12 @@ namespace Day12.Logic
     {
         private readonly string _data;
         private readonly Dictionary<string, List<string>> _map;
+        private readonly List<List<string>> _paths;
 
         public int CaveCount { get; private set; }
         public int LargeCaveCount { get; private set; }
         public int SmallCaveCount { get; private set; }
-        public int Paths { get; private set; }
+        public int Paths => _paths.Count;
 
         public PathFinding(string data)
         {
@@ -23,6 +25,7 @@ namespace Day12.Logic
 
             _data = data;
             _map = new Dictionary<string, List<string>>();
+            _paths = new List<List<string>>();
 
             Parse();
             CalculatePaths();
@@ -34,7 +37,7 @@ namespace Day12.Logic
             {
                 var cave = path.Split("-");
 
-                if (cave[1] == "start" || cave[1] == "end")
+                if (cave[1] == "start")
                 {
                     if (! _map.ContainsKey(cave[1]))
                     {
@@ -62,13 +65,44 @@ namespace Day12.Logic
             }
 
             CaveCount = _map.Keys.Count;
-            SmallCaveCount = _map.Count(p => p.Key != p.Key.ToUpper()) - 2;
-            LargeCaveCount = _map.Count(p => p.Key == p.Key.ToUpper());
+            SmallCaveCount = _map.Count(p => IsSmallCave(p.Key)) - 2;
+            LargeCaveCount = _map.Count(p => IsLargeCave(p.Key));
         }
+
+        private static bool IsLargeCave(string cave) => cave == cave.ToUpper();
+
+        private static bool IsSmallCave(string cave) => cave == cave.ToLower();
 
         private void CalculatePaths()
         {
-            Paths = 10;
+            var walkedThrough = new List<string>();
+            FindPathToEndFrom("start", walkedThrough);
+        }
+
+        private void FindPathToEndFrom(string from, List<string> walkedThrough)
+        {
+            if (from == "end")
+            {
+                var finalPath = new List<string>(walkedThrough)
+                {
+                    from
+                };
+
+                _paths.Add(finalPath);
+                return;
+            }
+
+            if (IsSmallCave(from) && walkedThrough.Contains(from))
+            {
+                return;
+            }
+
+            walkedThrough.Add(from);
+            foreach (var cave in _map[from])
+            {
+                FindPathToEndFrom(cave, walkedThrough);
+            }
+            walkedThrough.RemoveAt(walkedThrough.Count - 1);
         }
     }
 }
