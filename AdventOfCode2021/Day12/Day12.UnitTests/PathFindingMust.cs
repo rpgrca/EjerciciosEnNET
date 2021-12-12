@@ -37,5 +37,12 @@ namespace Day12.UnitTests
             var sut = new PathFinding(map);
             Assert.Equal(expectedPaths, sut.Paths);
         }
+
+        [Fact]
+        public void SolveFirstPuzzle()
+        {
+            var sut = new PathFinding(REAL_CAVE);
+            Assert.Equal(5157, sut.Paths);
+        }
     }
 }

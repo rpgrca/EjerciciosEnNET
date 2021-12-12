@@ -46,6 +46,15 @@ namespace Day12.Logic
 
                     _map[cave[1]].Add(cave[0]);
                 }
+                else if (cave[0] == "end")
+                {
+                    if (! _map.ContainsKey(cave[1]))
+                    {
+                        _map.Add(cave[1], new List<string>());
+                    }
+
+                    _map[cave[1]].Add(cave[0]);
+                }
                 else
                 {
                     if (! _map.ContainsKey(cave[0]))
@@ -87,6 +96,11 @@ namespace Day12.Logic
                 {
                     from
                 };
+
+                if (_paths.Any(p => string.Concat(p) == string.Concat(finalPath)))
+                {
+                    System.Diagnostics.Debugger.Break();
+                }
 
                 _paths.Add(finalPath);
                 return;
