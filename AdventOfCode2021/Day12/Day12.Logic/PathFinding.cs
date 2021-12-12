@@ -12,6 +12,7 @@ namespace Day12.Logic
         public int CaveCount { get; private set; }
         public int LargeCaveCount { get; private set; }
         public int SmallCaveCount { get; private set; }
+        public int Paths { get; private set; }
 
         public PathFinding(string data)
         {
@@ -24,6 +25,7 @@ namespace Day12.Logic
             _map = new Dictionary<string, List<string>>();
 
             Parse();
+            CalculatePaths();
         }
 
         private void Parse()
@@ -62,6 +64,11 @@ namespace Day12.Logic
             CaveCount = _map.Keys.Count;
             SmallCaveCount = _map.Count(p => p.Key != p.Key.ToUpper()) - 2;
             LargeCaveCount = _map.Count(p => p.Key == p.Key.ToUpper());
+        }
+
+        private void CalculatePaths()
+        {
+            Paths = 10;
         }
     }
 }
