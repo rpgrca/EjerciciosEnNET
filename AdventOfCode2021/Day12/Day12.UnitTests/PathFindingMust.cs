@@ -23,9 +23,9 @@ namespace Day12.UnitTests
         public void ParseMapCorrectly(string input, int expectedCaveCount, int expectedLargeCaveCount, int expectedSmallCaveCount)
         {
             var sut = PathFinding.CreateWithoutRepetition(input);
-            Assert.Equal(expectedCaveCount, sut.CaveCount);
-            Assert.Equal(expectedLargeCaveCount, sut.LargeCaveCount);
-            Assert.Equal(expectedSmallCaveCount, sut.SmallCaveCount);
+            Assert.True(sut.HasExactlyCaves(expectedCaveCount));
+            Assert.True(sut.HasExactlyLargeCaves(expectedLargeCaveCount));
+            Assert.True(sut.HasExactlySmallCaves(expectedSmallCaveCount));
         }
 
         [Theory]

@@ -4,87 +4,19 @@ using System.Collections.Generic;
 
 namespace Day12.Logic
 {
-    public class PathFinding
+    public sealed class PathFinding
     {
         private readonly string _data;
         private readonly Dictionary<string, List<string>> _map;
         private readonly List<List<string>> _paths;
 
-        public int CaveCount { get; private set; }
-        public int LargeCaveCount { get; private set; }
-        public int SmallCaveCount { get; private set; }
         public int Paths => _paths.Count;
 
         public static PathFinding CreateWithoutRepetition(string data) => new(data, true);
 
         public static PathFinding CreateWithAtMostOneRepetion(string data) => new(data, false);
 
-        private void Parse()
-        {
-            foreach (var path in _data.Split("\n"))
-            {
-                var cave = path.Split("-");
-
-                if (cave[1] == "start" || cave[0] == "end")
-                {
-                    if (! _map.ContainsKey(cave[1]))
-                    {
-                        _map.Add(cave[1], new List<string>());
-                    }
-
-                    _map[cave[1]].Add(cave[0]);
-                }
-                else if (cave[0] == "start")
-                {
-                    if (! _map.ContainsKey(cave[1]))
-                    {
-                        _map.Add(cave[1], new List<string>());
-                    }
-
-                    if (! _map.ContainsKey(cave[0]))
-                    {
-                        _map.Add(cave[0], new List<string>());
-                    }
-
-                    _map[cave[0]].Add(cave[1]);
-                }
-                else if (cave[1] == "end")
-                {
-                    if (! _map.ContainsKey(cave[0]))
-                    {
-                        _map.Add(cave[0], new List<string>());
-                    }
-
-                    _map[cave[0]].Add(cave[1]);
-                }
-                else
-                {
-                    if (! _map.ContainsKey(cave[0]))
-                    {
-                        _map.Add(cave[0], new List<string>());
-                    }
-
-                    _map[cave[0]].Add(cave[1]);
-
-                    if (!_map.ContainsKey(cave[1]))
-                    {
-                        _map.Add(cave[1], new List<string>());
-                    }
-
-                    _map[cave[1]].Add(cave[0]);
-                }
-            }
-
-            CaveCount = _map.Keys.Count + 1;
-            SmallCaveCount = _map.Count(p => IsSmallCave(p.Key));
-            LargeCaveCount = _map.Count(p => IsLargeCave(p.Key));
-        }
-
-        private static bool IsLargeCave(string cave) => cave == cave.ToUpper();
-
-        private static bool IsSmallCave(string cave) => cave == cave.ToLower() && cave != "start" && cave != "end";
-
-        public PathFinding(string data, bool withoutRepetition)
+        private PathFinding(string data, Func<string, List<string>> whenSmallCave)
         {
             if (string.IsNullOrWhiteSpace(data))
             {
@@ -96,16 +28,46 @@ namespace Day12.Logic
             _paths = new List<List<string>>();
 
             Parse();
-            CalculatePaths(withoutRepetition);
+            CalculatePaths(whenSmallCave);
         }
 
-        private void CalculatePaths(bool withRepetition)
+        private void Parse()
+        {
+            foreach (var (caveFrom, caveTo) in _data.Split("\n").Select(p => p.Split("-")).Select(p => (p[0], p[1])))
+            {
+                if (caveTo == "start" || caveFrom == "end")
+                {
+                    AddCavePassage(caveTo, caveFrom);
+                }
+                else if (caveFrom == "start" || caveTo == "end")
+                {
+                    AddCavePassage(caveFrom, caveTo);
+                }
+                else
+                {
+                    AddCavePassage(caveFrom, caveTo);
+                    AddCavePassage(caveTo, caveFrom);
+                }
+            }
+        }
+
+        private void AddCavePassage(string caveFrom, string caveTo)
+        {
+            _map.TryAdd(caveFrom, new List<string>());
+            _map[caveFrom].Add(caveTo);
+        }
+
+        private static bool IsLargeCave(string cave) => cave == cave.ToUpper();
+
+        private static bool IsSmallCave(string cave) => cave == cave.ToLower() && cave != "start" && cave != "end";
+
+        private void CalculatePaths(Func<string, List<string>> whenSmallCave)
         {
             var walkedThrough = new List<string>();
-            FindPathToEndFrom("start", walkedThrough, withRepetition);
+            FindPathToEndFrom("start", walkedThrough, whenSmallCave);
         }
 
-        private void FindPathToEndFrom(string from, List<string> walkedThrough, bool smallCaveAlreadyVisitedTwice)
+        private void FindPathToEndFrom(string from, List<string> walkedThrough, Func<string, List<string>> whenSmallCave)
         {
             if (from == "end")
             {
@@ -120,26 +82,30 @@ namespace Day12.Logic
 
             if (IsSmallCave(from) && walkedThrough.Contains(from))
             {
-                if (!smallCaveAlreadyVisitedTwice)
-                {
-                    WalkThisCave(from, walkedThrough, true);
-                }
+                whenSmallCave?.Invoke(from, walkedThrough);
 
                 return;
             }
 
-            WalkThisCave(from, walkedThrough, smallCaveAlreadyVisitedTwice);
+            WalkThisCave(from, walkedThrough, whenSmallCave);
         }
 
-        private void WalkThisCave(string from, List<string> walkedThrough, bool smallCaveAlreadyVisitedTwice)
+        private void WalkThisCave(string from, List<string> walkedThrough, Func<string, List<string>> whenSmallCave)
         {
             walkedThrough.Add(from);
+
             foreach (var cave in _map[from])
             {
-                FindPathToEndFrom(cave, walkedThrough, smallCaveAlreadyVisitedTwice);
+                FindPathToEndFrom(cave, walkedThrough, whenSmallCave);
             }
 
             walkedThrough.RemoveAt(walkedThrough.Count - 1);
         }
+
+        public bool HasExactlyCaves(int amount) => amount == _map.Keys.Count + 1;
+
+        public bool HasExactlyLargeCaves(int amount) => amount == _map.Count(p => IsLargeCave(p.Key));
+
+        public bool HasExactlySmallCaves(int amount) => amount == _map.Count(p => IsSmallCave(p.Key));
     }
 }
