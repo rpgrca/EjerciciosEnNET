@@ -44,5 +44,22 @@ namespace Day12.UnitTests
             var sut = new PathFinding(REAL_CAVE);
             Assert.Equal(5157, sut.Paths);
         }
+
+        [Theory]
+        [InlineData(SMALL_SAMPLE_CAVE, 36)]
+        [InlineData(MEDIUM_SAMPLE_CAVE, 103)]
+        [InlineData(LARGE_SAMPLE_CAVE, 3509)]
+        public void FindAllPathsCorrectly_WhenOneSmallCaveCanBeVisitedTwice(string map, int expectedPaths)
+        {
+            var sut = new PathFinding(map, true);
+            Assert.Equal(expectedPaths, sut.Paths);
+        }
+
+        [Fact]
+        public void SolveSecondPuzzle()
+        {
+            var sut = new PathFinding(REAL_CAVE, true);
+            Assert.Equal(144309, sut.Paths);
+        }
     }
 }
