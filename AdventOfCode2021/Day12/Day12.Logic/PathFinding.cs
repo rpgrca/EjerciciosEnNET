@@ -16,7 +16,7 @@ namespace Day12.Logic
 
         public static PathFinding CreateWithAtMostOneRepetion(string data) => new(data, false);
 
-        private PathFinding(string data, Func<string, List<string>> whenSmallCave)
+        private PathFinding(string data, bool withoutRepetition)
         {
             if (string.IsNullOrWhiteSpace(data))
             {
@@ -28,7 +28,7 @@ namespace Day12.Logic
             _paths = new List<List<string>>();
 
             Parse();
-            CalculatePaths(whenSmallCave);
+            CalculatePaths(withoutRepetition);
         }
 
         private void Parse()
@@ -61,13 +61,13 @@ namespace Day12.Logic
 
         private static bool IsSmallCave(string cave) => cave == cave.ToLower() && cave != "start" && cave != "end";
 
-        private void CalculatePaths(Func<string, List<string>> whenSmallCave)
+        private void CalculatePaths(bool withRepetition)
         {
             var walkedThrough = new List<string>();
-            FindPathToEndFrom("start", walkedThrough, whenSmallCave);
+            FindPathToEndFrom("start", walkedThrough, withRepetition);
         }
 
-        private void FindPathToEndFrom(string from, List<string> walkedThrough, Func<string, List<string>> whenSmallCave)
+        private void FindPathToEndFrom(string from, List<string> walkedThrough,  bool allowRepetition)
         {
             if (from == "end")
             {
@@ -82,21 +82,24 @@ namespace Day12.Logic
 
             if (IsSmallCave(from) && walkedThrough.Contains(from))
             {
-                whenSmallCave?.Invoke(from, walkedThrough);
+                if (!allowRepetition)
+                {
+                    WalkThisCave(from, walkedThrough, true);
+                }
 
                 return;
             }
 
-            WalkThisCave(from, walkedThrough, whenSmallCave);
+            WalkThisCave(from, walkedThrough, allowRepetition);
         }
 
-        private void WalkThisCave(string from, List<string> walkedThrough, Func<string, List<string>> whenSmallCave)
+        private void WalkThisCave(string from, List<string> walkedThrough, bool allowRepetition)
         {
             walkedThrough.Add(from);
 
             foreach (var cave in _map[from])
             {
-                FindPathToEndFrom(cave, walkedThrough, whenSmallCave);
+                FindPathToEndFrom(cave, walkedThrough, allowRepetition);
             }
 
             walkedThrough.RemoveAt(walkedThrough.Count - 1);
