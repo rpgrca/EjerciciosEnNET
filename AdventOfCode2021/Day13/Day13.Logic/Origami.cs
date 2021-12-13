@@ -58,5 +58,17 @@ namespace Day13.Logic
             _points.Clear();
             _points.AddRange(points);
         }
+
+        public void FoldAlongX(int x)
+        {
+            var points = _points
+                .OrderByDescending(p => p.X)
+                .Select(p => p.X <= x ? p : (x - (p.X - x), p.Y))
+                .Distinct()
+                .ToList();
+
+            _points.Clear();
+            _points.AddRange(points);
+        }
     }
 }

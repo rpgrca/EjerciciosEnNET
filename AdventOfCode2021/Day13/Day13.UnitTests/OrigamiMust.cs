@@ -28,11 +28,20 @@ namespace Day13.UnitTests
         }
 
         [Fact]
-        public void FoldPaperCorrectly_WhenUsingSampleInstructions()
+        public void FoldPaperAlongYaxisCorrectly_WhenUsingSampleInstructions()
         {
             var sut = new Origami(SAMPLE_INSTRUCTIONS);
             sut.FoldAlongY(7);
             Assert.Equal(17, sut.GetPoints());
+        }
+
+        [Fact]
+        public void FoldPaperAlongXaxisCorrectly_WhenUsingSampleInstructions()
+        {
+            var sut = new Origami(SAMPLE_INSTRUCTIONS);
+            sut.FoldAlongY(7);
+            sut.FoldAlongX(5);
+            Assert.Equal(16, sut.GetPoints());
         }
     }
 }
