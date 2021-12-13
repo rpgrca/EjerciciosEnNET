@@ -20,11 +20,19 @@ namespace Day13.UnitTests
         [Theory]
         [InlineData(SAMPLE_INSTRUCTIONS, 18, 2)]
         [InlineData(REAL_INSTRUCTIONS, 907, 12)]
-        public void Test1(string instructions, int expectedPoints, int expectedFolds)
+        public void ParseInstructionsCorrectly(string instructions, int expectedPoints, int expectedFolds)
         {
             var sut = new Origami(instructions);
             Assert.Equal(expectedPoints, sut.GetPoints());
             Assert.Equal(expectedFolds, sut.GetFolds());
+        }
+
+        [Fact]
+        public void FoldPaperCorrectly_WhenUsingSampleInstructions()
+        {
+            var sut = new Origami(SAMPLE_INSTRUCTIONS);
+            sut.FoldAlongY(7);
+            Assert.Equal(17, sut.GetPoints());
         }
     }
 }

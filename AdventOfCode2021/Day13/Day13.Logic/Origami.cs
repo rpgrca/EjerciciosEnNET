@@ -9,6 +9,8 @@ namespace Day13.Logic
         private readonly string _instructions;
         private readonly List<(int X, int Y)> _points;
         private readonly List<string> _folds;
+        private int _width;
+        private int _height;
 
         public Origami(string instructions)
         {
@@ -32,6 +34,9 @@ namespace Day13.Logic
                 .Select(p => p.Split(","))
                 .Select(p => (int.Parse(p[0]), int.Parse(p[1]))));
 
+            _width = _points.Max(p => p.X) + 1;
+            _height = _points.Max(p => p.Y) + 1;
+
             _folds.AddRange(_instructions
                 .Split("\n")
                 .Skip(_points.Count + 1)
@@ -41,5 +46,17 @@ namespace Day13.Logic
         public int GetPoints() => _points.Count;
 
         public int GetFolds() => _folds.Count;
+
+        public void FoldAlongY(int y)
+        {
+            var points = _points
+                .OrderByDescending(p => p.Y)
+                .Select(p => p.Y <= y ? p : (p.X, y - (p.Y - y)))
+                .Distinct()
+                .ToList();
+
+            _points.Clear();
+            _points.AddRange(points);
+        }
     }
 }
