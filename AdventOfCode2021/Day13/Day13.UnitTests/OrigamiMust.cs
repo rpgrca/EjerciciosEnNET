@@ -43,5 +43,13 @@ namespace Day13.UnitTests
             sut.FoldAlongX(5);
             Assert.Equal(16, sut.GetPoints());
         }
+
+        [Fact]
+        public void SolveFirstPuzzle()
+        {
+            var sut = new Origami(REAL_INSTRUCTIONS);
+            sut.FoldAlongX(655);
+            Assert.Equal(751, sut.GetPoints());
+        }
     }
 }
