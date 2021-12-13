@@ -51,5 +51,19 @@ namespace Day13.UnitTests
             sut.FoldAlongX(655);
             Assert.Equal(751, sut.GetPoints());
         }
+
+        [Fact]
+        public void PlotPointsCorrectly()
+        {
+            var sut = new Origami(SAMPLE_INSTRUCTIONS);
+            sut.FoldAccordingToInstructions();
+            Assert.Equal(@"#####
+#...#
+#...#
+#...#
+#####
+.....
+.....", sut.PlotPoints());
+        }
     }
 }

@@ -57,6 +57,7 @@ namespace Day13.Logic
 
             _points.Clear();
             _points.AddRange(points);
+            _height = y;
         }
 
         public void FoldAlongX(int x)
@@ -69,6 +70,47 @@ namespace Day13.Logic
 
             _points.Clear();
             _points.AddRange(points);
+            _width = x;
+        }
+
+        public void FoldAccordingToInstructions()
+        {
+            foreach (var instruction in _folds)
+            {
+                var fold = instruction.Split("=");
+                if (fold[0] == "x")
+                {
+                    FoldAlongX(int.Parse(fold[1]));
+                }
+                else
+                {
+                    FoldAlongY(int.Parse(fold[1]));
+                }
+            }
+        }
+
+        public string PlotPoints()
+        {
+            var value = string.Empty;
+
+            for (int y = 0; y < _height; y++)
+            {
+                for (int x = 0; x < _width; x++)
+                {
+                    if (_points.Contains((x, y)))
+                    {
+                        value += "#";
+                    }
+                    else
+                    {
+                        value += ".";
+                    }
+                }
+
+                value += "\n";
+            }
+
+            return value.Trim();
         }
     }
 }
