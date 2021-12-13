@@ -4,19 +4,20 @@ using System.Collections.Generic;
 
 namespace Day12.Logic
 {
-    public sealed class PathFinding
+    public sealed partial class PathFinding
     {
         private readonly string _data;
         private readonly Dictionary<string, List<string>> _map;
         private readonly List<List<string>> _paths;
+        private readonly ISmallCaveBehaviour _searchAlgorithm;
 
         public int Paths => _paths.Count;
 
-        public static PathFinding CreateWithoutRepetition(string data) => new(data, true);
+        public static PathFinding CreateWithoutRepetition(string data) => new(data, new WalkOnlyOnceInSmallCave());
 
-        public static PathFinding CreateWithAtMostOneRepetion(string data) => new(data, false);
+        public static PathFinding CreateWithAtMostOneRepetion(string data) => new(data, new RepeatUpToOneSmallCave());
 
-        private PathFinding(string data, bool withoutRepetition)
+        private PathFinding(string data, ISmallCaveBehaviour searchAlgorithm)
         {
             if (string.IsNullOrWhiteSpace(data))
             {
@@ -26,9 +27,10 @@ namespace Day12.Logic
             _data = data;
             _map = new Dictionary<string, List<string>>();
             _paths = new List<List<string>>();
+            _searchAlgorithm = searchAlgorithm;
 
             Parse();
-            CalculatePaths(withoutRepetition);
+            CalculatePaths();
         }
 
         private void Parse()
@@ -59,15 +61,15 @@ namespace Day12.Logic
 
         private static bool IsLargeCave(string cave) => cave == cave.ToUpper();
 
-        private static bool IsSmallCave(string cave) => cave == cave.ToLower() && cave != "start" && cave != "end";
+        private static bool IsSmallCave(string cave) => cave != "start" && cave != "end" && cave == cave.ToLower();
 
-        private void CalculatePaths(bool withRepetition)
+        private void CalculatePaths()
         {
             var walkedThrough = new List<string>();
-            FindPathToEndFrom("start", walkedThrough, withRepetition);
+            FindPathToEndFrom("start", walkedThrough, _searchAlgorithm);
         }
 
-        private void FindPathToEndFrom(string from, List<string> walkedThrough,  bool allowRepetition)
+        private void FindPathToEndFrom(string from, List<string> walkedThrough, ISmallCaveBehaviour smallCaveSearch)
         {
             if (from == "end")
             {
@@ -82,24 +84,20 @@ namespace Day12.Logic
 
             if (IsSmallCave(from) && walkedThrough.Contains(from))
             {
-                if (!allowRepetition)
-                {
-                    WalkThisCave(from, walkedThrough, true);
-                }
-
+                smallCaveSearch.Do(this, from, walkedThrough, new WalkOnlyOnceInSmallCave());
                 return;
             }
 
-            WalkThisCave(from, walkedThrough, allowRepetition);
+            WalkThisCave(from, walkedThrough, smallCaveSearch);
         }
 
-        private void WalkThisCave(string from, List<string> walkedThrough, bool allowRepetition)
+        private void WalkThisCave(string from, List<string> walkedThrough, ISmallCaveBehaviour smallCaveSearch)
         {
             walkedThrough.Add(from);
 
             foreach (var cave in _map[from])
             {
-                FindPathToEndFrom(cave, walkedThrough, allowRepetition);
+                FindPathToEndFrom(cave, walkedThrough, smallCaveSearch);
             }
 
             walkedThrough.RemoveAt(walkedThrough.Count - 1);
