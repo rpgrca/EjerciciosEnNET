@@ -53,6 +53,13 @@ namespace Day14.Logic
 
         public void RunFor(int steps)
         {
+            InitializeCounterWithPolymerTemplate();
+            ProcessEveryPairInPolymerTemplate(steps);
+            StoreGeneratedString();
+            CalculateSubtractionBetweenMoreAndLeastCommonPolymers();
+        }
+
+        private void InitializeCounterWithPolymerTemplate() =>
             PolymerTemplate
                 .ToList()
                 .ForEach(p => {
@@ -60,14 +67,17 @@ namespace Day14.Logic
                     _counter[p]++;
                 });
 
+        private void ProcessEveryPairInPolymerTemplate(int steps) =>
             PolymerTemplate[0..^1]
                 .Zip(PolymerTemplate[1..])
                 .ToList()
                 .ForEach(p => CountValues(steps, p.First, p.Second, _counter));
 
+        private void StoreGeneratedString() =>
             PolymerTemplate = _stringAccumulator.Value;
+
+        private void CalculateSubtractionBetweenMoreAndLeastCommonPolymers() =>
             _subtraction = _counter.Max(p => p.Value) - _counter.Min(p => p.Value);
-        }
 
         private void CountValues(int recursionDepth, char first, char second, Dictionary<char, long> counter)
         {
