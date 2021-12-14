@@ -26,5 +26,13 @@ namespace Day14.UnitTests
             Assert.Equal(expectedTemplate, sut.PolymerTemplate);
             Assert.Equal(expectedRulesCount, sut.GetPairInsertionRulesCount());
         }
+
+        [Fact]
+        public void Test1()
+        {
+            var sut = new PolymerizationEquipment(SAMPLE_INPUT);
+            sut.Step();
+            Assert.Equal("NCNBCHB", sut.PolymerTemplate);
+        }
     }
 }

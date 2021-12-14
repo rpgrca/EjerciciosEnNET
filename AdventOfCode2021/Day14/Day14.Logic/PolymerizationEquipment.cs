@@ -32,5 +32,17 @@ namespace Day14.Logic
         }
 
         public int GetPairInsertionRulesCount() => _rules.Keys.Count;
+
+        public void Step()
+        {
+            var newPolymer = PolymerTemplate[0].ToString();
+
+            for (var index = 0; index < PolymerTemplate.Length - 1; index++)
+            {
+                newPolymer += _rules[PolymerTemplate[index..(index + 2)]] + PolymerTemplate[index + 1];
+            }
+
+            PolymerTemplate = newPolymer;
+        }
     }
 }
