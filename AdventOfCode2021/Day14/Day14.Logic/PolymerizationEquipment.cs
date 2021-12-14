@@ -9,19 +9,19 @@ namespace Day14.Logic
         private readonly string _input;
         private readonly Dictionary<string, char> _rules;
         private readonly Dictionary<char, long> _counter;
-        private readonly IDictionary<string, Dictionary<char, long>> _cache;
+        private readonly ICache _cache;
         private readonly IStringAccumulator _stringAccumulator;
         private long _subtraction;
 
         public string PolymerTemplate { get; private set; }
 
         public static PolymerizationEquipment CreateEquipmentTrackingPolymers(string input) =>
-            new(input, new StringAccumulator(), new NullDictionary<string, Dictionary<char, long>>());
+            new(input, new StringAccumulator(), new TranscientCache());
 
         public static PolymerizationEquipment CreateEquipmentCountingPolymers(string input) =>
-            new(input, new NullAccumulator(), new Dictionary<string, Dictionary<char, long>>());
+            new(input, new NullAccumulator(), new PersistentCache());
 
-        private PolymerizationEquipment(string input, IStringAccumulator stringAccumulator, IDictionary<string, Dictionary<char, long>> cache)
+        private PolymerizationEquipment(string input, IStringAccumulator stringAccumulator, ICache cache)
         {
             if (string.IsNullOrWhiteSpace(input))
             {
