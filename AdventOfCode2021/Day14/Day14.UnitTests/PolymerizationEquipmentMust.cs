@@ -60,5 +60,13 @@ namespace Day14.UnitTests
             Assert.Equal(161, sut.CountElementInTemplate("H"));
             Assert.Equal(865, sut.CountElementInTemplate("N"));
         }
+
+        [Fact]
+        public void Test2()
+        {
+            var sut = new PolymerizationEquipment(SAMPLE_INPUT);
+            sut.Step(10);
+            Assert.Equal(1588, sut.GetSubstraction());
+        }
     }
 }

@@ -54,5 +54,11 @@ namespace Day14.Logic
         }
 
         public int CountElementInTemplate(string value) => PolymerTemplate.Count(p => p == value[0]);
+
+        public int GetSubstraction()
+        {
+            var groups = PolymerTemplate.GroupBy(p => p);
+            return groups.Max(p => p.Count()) - groups.Min(p => p.Count());
+        }
     }
 }
