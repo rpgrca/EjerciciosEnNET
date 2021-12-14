@@ -1,6 +1,7 @@
 using System;
-using Day14.Logic;
 using Xunit;
+using Day14.Logic;
+using static Day14.UnitTests.Constants;
 
 namespace Day14.UnitTests
 {
@@ -14,6 +15,16 @@ namespace Day14.UnitTests
         {
             var exception = Assert.Throws<ArgumentException>(() => new PolymerizationEquipment(invalidInput));
             Assert.Equal("Invalid input", exception.Message);
+        }
+
+        [Theory]
+        [InlineData(SAMPLE_INPUT, "NNCB", 16)]
+        [InlineData(REAL_INPUT, "VPPHOPVVSFSVFOCOSBKF", 100)]
+        public void BeInitializedCorrectly_WhenCorrectInputIsSupplied(string input, string expectedTemplate, int expectedRulesCount)
+        {
+            var sut = new PolymerizationEquipment(input);
+            Assert.Equal(expectedTemplate, sut.PolymerTemplate);
+            Assert.Equal(expectedRulesCount, sut.GetPairInsertionRulesCount());
         }
     }
 }
