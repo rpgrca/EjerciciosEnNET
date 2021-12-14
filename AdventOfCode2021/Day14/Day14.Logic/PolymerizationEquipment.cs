@@ -1,20 +1,27 @@
-﻿using System.Text;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Day14.Logic
 {
-    public class PolymerizationEquipment
+    public sealed class PolymerizationEquipment
     {
         private readonly string _input;
         private readonly Dictionary<string, char> _rules;
-        private readonly Dictionary<string, Dictionary<char, long>> _count;
-        private long _substraction;
+        private readonly Dictionary<char, long> _counter;
+        private readonly IDictionary<string, Dictionary<char, long>> _cache;
+        private readonly IStringAccumulator _stringAccumulator;
+        private long _subtraction;
 
         public string PolymerTemplate { get; private set; }
 
-        public PolymerizationEquipment(string input)
+        public static PolymerizationEquipment CreateEquipmentTrackingPolymers(string input) =>
+            new(input, new StringAccumulator(), new NullDictionary<string, Dictionary<char, long>>());
+
+        public static PolymerizationEquipment CreateEquipmentCountingPolymers(string input) =>
+            new(input, new NullAccumulator(), new Dictionary<string, Dictionary<char, long>>());
+
+        private PolymerizationEquipment(string input, IStringAccumulator stringAccumulator, IDictionary<string, Dictionary<char, long>> cache)
         {
             if (string.IsNullOrWhiteSpace(input))
             {
@@ -23,7 +30,9 @@ namespace Day14.Logic
 
             _input = input;
             _rules = new Dictionary<string, char>();
-            _count = new Dictionary<string, Dictionary<char, long>>();
+            _counter = new Dictionary<char, long>();
+            _stringAccumulator = stringAccumulator;
+            _cache = cache;
 
             Parse();
         }
@@ -32,100 +41,80 @@ namespace Day14.Logic
         {
             var input = _input.Split("\n");
             PolymerTemplate = input[0];
-            input[2..].Select(p => p.Split(" -> ")).ToList().ForEach(p => _rules.Add(p[0], p[1][0]));
+            _stringAccumulator.Append(PolymerTemplate[0]);
+
+            input[2..]
+                .Select(p => p.Split(" -> "))
+                .ToList()
+                .ForEach(p => _rules.Add(p[0], p[1][0]));
         }
 
         public int GetPairInsertionRulesCount() => _rules.Keys.Count;
 
-        public void Step(int count)
+        public void RunFor(int steps)
         {
-            for (var index = 0; index < count; index++)
-            {
-                Step();
-            }
+            PolymerTemplate
+                .ToList()
+                .ForEach(p => {
+                    _counter.TryAdd(p, 0);
+                    _counter[p]++;
+                });
 
-            var groups = PolymerTemplate.GroupBy(p => p);
-            var values = groups.Select(p => new { Key = p.Key, Count = p.Count() }).ToList();
-            _substraction = groups.Max(p => p.Count()) - groups.Min(p => p.Count());
+            PolymerTemplate[0..^1]
+                .Zip(PolymerTemplate[1..])
+                .ToList()
+                .ForEach(p => CountValues(steps, p.First, p.Second, _counter));
 
-//            Step2(count);
+            PolymerTemplate = _stringAccumulator.Value;
+            _subtraction = _counter.Max(p => p.Value) - _counter.Min(p => p.Value);
         }
 
-        private void Step()
+        private void CountValues(int recursionDepth, char first, char second, Dictionary<char, long> counter)
         {
-            var stringBuilder = new StringBuilder(PolymerTemplate[0].ToString());
-
-            for (var index = 0; index < PolymerTemplate.Length - 1; index++)
+            if (recursionDepth-- == 0)
             {
-                stringBuilder
-                    .Append(_rules[PolymerTemplate[index..(index + 2)]])
-                    .Append(PolymerTemplate[index + 1]);
-            }
-
-            PolymerTemplate = stringBuilder.ToString();
-        }
-
-        public void Step2(int count)
-        {
-            var counter = new Dictionary<char, long>();
-            var cache = new Dictionary<string, Dictionary<char, long>>();
-
-            for (var index = 0; index < PolymerTemplate.Length - 1; index++)
-            {
-                CountValues(count + 1, PolymerTemplate[index], PolymerTemplate[index + 1], counter, cache);
-            }
-
-            foreach (var value in PolymerTemplate)
-            {
-                counter[value]++;
-            }
-
-            _substraction = counter.Max(p => p.Value) - counter.Min(p => p.Value);
-        }
-
-        private void CountValues(int count, char first, char second, Dictionary<char, long> counter, Dictionary<string, Dictionary<char, long>> cache)
-        {
-            count--;
-            if (count == 0)
-            {
+                _stringAccumulator.Append(second);
                 return;
             }
 
-            var newCharacter = _rules[$"{first}{second}"];
-            counter.TryAdd(newCharacter, 0);
-            counter[newCharacter]++;
+            var key = $"{first}{second}";
+            var characterToInsert = _rules[key];
+            counter.TryAdd(characterToInsert, 0);
+            counter[characterToInsert]++;
 
-            var key = $"{first}{newCharacter}[{count}]";
-            if (!cache.ContainsKey(key))
-            {
-                var newCounter = new Dictionary<char, long>();
-                CountValues(count, first, newCharacter, newCounter, cache);
-                cache.Add(key, newCounter);
-            }
+            var values = CountValuesIn(recursionDepth, first, characterToInsert);
+            AccumulateValuesIn(counter, values);
 
-            foreach (var (k, v) in cache[key])
-            {
-                counter.TryAdd(k, 0);
-                counter[k] += v;
-            }
-
-            key = $"{newCharacter}{second}[{count}]";
-            if (!cache.ContainsKey(key))
-            {
-                var newCounter = new Dictionary<char, long>();
-                CountValues(count, newCharacter, second, newCounter, cache);
-                cache.Add(key, newCounter);
-            }
-
-            foreach (var (k, v) in cache[key])
-            {
-                counter.TryAdd(k, 0);
-                counter[k] += v;
-            }
+            values = CountValuesIn(recursionDepth, characterToInsert, second);
+            AccumulateValuesIn(counter, values);
         }
 
-        public long CountElementInTemplate(string value) => PolymerTemplate.Count(p => p == value[0]);
+        private Dictionary<char, long> CountValuesIn(int recursionDepth, char first, char second)
+        {
+            var key = GetKeyFor(first, second, recursionDepth);
+            if (!_cache.ContainsKey(key))
+            {
+                var newCounter = new Dictionary<char, long>();
+                CountValues(recursionDepth, first, second, newCounter);
+                _cache.Add(key, newCounter);
+            }
 
-        public long GetSubstraction() => _substraction;
+            return _cache[key];
+        }
+
+        private static string GetKeyFor(char first, char second, int recursionDepth) =>
+            $"{first}{second}{recursionDepth}";
+
+        private static void AccumulateValuesIn(Dictionary<char, long> to, Dictionary<char, long> from) =>
+            from.ToList().ForEach(kv =>
+            {
+                to.TryAdd(kv.Key, 0);
+                to[kv.Key] += kv.Value;
+            });
+
+        public long CountElementInTemplate(string value) =>
+            PolymerTemplate.Count(p => p == value[0]);
+
+        public long GetSubtraction() => _subtraction;
     }
 }
