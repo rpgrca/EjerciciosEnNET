@@ -52,5 +52,7 @@ namespace Day14.Logic
 
             PolymerTemplate = newPolymer;
         }
+
+        public int CountElementInTemplate(string value) => PolymerTemplate.Count(p => p == value[0]);
     }
 }

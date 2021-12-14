@@ -1,3 +1,4 @@
+using System.Linq;
 using System;
 using Xunit;
 using Day14.Logic;
@@ -32,11 +33,32 @@ namespace Day14.UnitTests
         [InlineData(2, "NBCCNBBBCBHCB")]
         [InlineData(3, "NBBBCNCCNBBNBNBBCHBHHBCHB")]
         [InlineData(4, "NBBNBNBBCCNBCNCCNBBNBBNBBBNBBNBBCBHCBHHNHCBBCBHCB")]
-        public void Test1(int steps, string expectedTemplate)
+        public void ReturnCorrectPolymerTemplate(int steps, string expectedTemplate)
         {
             var sut = new PolymerizationEquipment(SAMPLE_INPUT);
             sut.Step(steps);
             Assert.Equal(expectedTemplate, sut.PolymerTemplate);
+        }
+
+        [Theory]
+        [InlineData(5, 97)]
+        [InlineData(10, 3073)]
+        public void ReturnCorrectPolymerTemplate_AfterSteps(int steps, int expectedLength)
+        {
+            var sut = new PolymerizationEquipment(SAMPLE_INPUT);
+            sut.Step(steps);
+            Assert.Equal(expectedLength, sut.PolymerTemplate.Length);
+        }
+
+        [Fact]
+        public void Test1()
+        {
+            var sut = new PolymerizationEquipment(SAMPLE_INPUT);
+            sut.Step(10);
+            Assert.Equal(1749, sut.CountElementInTemplate("B"));
+            Assert.Equal(298, sut.CountElementInTemplate("C"));
+            Assert.Equal(161, sut.CountElementInTemplate("H"));
+            Assert.Equal(865, sut.CountElementInTemplate("N"));
         }
     }
 }
