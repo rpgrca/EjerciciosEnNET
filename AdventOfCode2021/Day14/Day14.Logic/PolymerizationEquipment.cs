@@ -33,7 +33,15 @@ namespace Day14.Logic
 
         public int GetPairInsertionRulesCount() => _rules.Keys.Count;
 
-        public void Step()
+        public void Step(int count)
+        {
+            for (var index = 0; index < count; index++)
+            {
+                Step();
+            }
+        }
+
+        private void Step()
         {
             var newPolymer = PolymerTemplate[0].ToString();
 

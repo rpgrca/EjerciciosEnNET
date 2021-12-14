@@ -27,12 +27,16 @@ namespace Day14.UnitTests
             Assert.Equal(expectedRulesCount, sut.GetPairInsertionRulesCount());
         }
 
-        [Fact]
-        public void Test1()
+        [Theory]
+        [InlineData(1, "NCNBCHB")]
+        [InlineData(2, "NBCCNBBBCBHCB")]
+        [InlineData(3, "NBBBCNCCNBBNBNBBCHBHHBCHB")]
+        [InlineData(4, "NBBNBNBBCCNBCNCCNBBNBBNBBBNBBNBBCBHCBHHNHCBBCBHCB")]
+        public void Test1(int steps, string expectedTemplate)
         {
             var sut = new PolymerizationEquipment(SAMPLE_INPUT);
-            sut.Step();
-            Assert.Equal("NCNBCHB", sut.PolymerTemplate);
+            sut.Step(steps);
+            Assert.Equal(expectedTemplate, sut.PolymerTemplate);
         }
     }
 }
