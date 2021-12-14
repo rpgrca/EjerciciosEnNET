@@ -68,5 +68,13 @@ namespace Day14.UnitTests
             sut.Step(10);
             Assert.Equal(1588, sut.GetSubstraction());
         }
+
+        [Fact]
+        public void SolveFirstPuzzle()
+        {
+            var sut = new PolymerizationEquipment(REAL_INPUT);
+            sut.Step(10);
+            Assert.Equal(2233, sut.GetSubstraction());
+        }
     }
 }
