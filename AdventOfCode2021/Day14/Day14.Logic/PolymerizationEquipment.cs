@@ -7,9 +7,9 @@ namespace Day14.Logic
     public class PolymerizationEquipment
     {
         private readonly string _input;
-        private readonly List<string> _rules;
+        private readonly Dictionary<string, string> _rules;
 
-        public string PolymerTemplate { get; set; }
+        public string PolymerTemplate { get; private set; }
 
         public PolymerizationEquipment(string input)
         {
@@ -19,7 +19,7 @@ namespace Day14.Logic
             }
 
             _input = input;
-            _rules = new List<string>();
+            _rules = new Dictionary<string, string>();
 
             Parse();
         }
@@ -28,10 +28,9 @@ namespace Day14.Logic
         {
             var input = _input.Split("\n");
             PolymerTemplate = input[0];
-
-            _rules.AddRange(input[2..].Select(p => p));
+            input[2..].Select(p => p.Split(" -> ")).ToList().ForEach(p => _rules.Add(p[0], p[1]));
         }
 
-        public int GetPairInsertionRulesCount() => _rules.Count;
+        public int GetPairInsertionRulesCount() => _rules.Keys.Count;
     }
 }
