@@ -2,14 +2,14 @@ using System.Collections.Generic;
 
 namespace Day14.Logic
 {
-    public interface ICache
+    internal interface ICache
     {
         Dictionary<char, long> this[string key] { get; }
         void Add(string key, Dictionary<char, long> value);
         bool ContainsKey(string key);
     }
 
-    public class TranscientCache : ICache
+    internal class TranscientCache : ICache
     {
         private Dictionary<char, long> _lastValue;
 
@@ -21,7 +21,7 @@ namespace Day14.Logic
         public bool ContainsKey(string key) => false;
     }
 
-    public class PersistentCache : ICache
+    internal class PersistentCache : ICache
     {
         private readonly Dictionary<string, Dictionary<char, long>> _cache;
 

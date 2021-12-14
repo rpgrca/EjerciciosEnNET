@@ -1,22 +1,19 @@
 namespace Day14.Logic
 {
-    public interface IStringAccumulator
+    internal interface IStringAccumulator
     {
         void Append(char value);
         string Value { get; }
     }
 
-    public class StringAccumulator : IStringAccumulator
+    internal class StringAccumulator : IStringAccumulator
     {
         public string Value { get; private set; }
 
-        public void Append(char value)
-        {
-            Value += value;
-        }
+        public void Append(char value) => Value += value;
     }
 
-    public class NullAccumulator : IStringAccumulator
+    internal class NullAccumulator : IStringAccumulator
     {
         public void Append(char value)
         {
