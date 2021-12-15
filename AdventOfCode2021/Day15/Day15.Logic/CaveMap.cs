@@ -306,15 +306,11 @@ namespace Day15.Logic
             }
 
             var sortedList = new SortedList<int, (int X, int Y)>();
-            if (y > 0) sortedList.Add(_map[y - 1][x].RiskLevel << 16 | (y - 1) << 8 | x, (x, y - 1));
             if (y + 1 < Height) sortedList.Add(_map[y + 1][x].RiskLevel << 16 | (y + 1) << 8 | x, (x, y + 1));
-            if (x > 0) sortedList.Add(_map[y][x - 1].RiskLevel << 16 | y << 8 | (x - 1), (x - 1, y));
             if (x + 1 < Width) sortedList.Add(_map[y][x + 1].RiskLevel << 16 | y << 8 | (x + 1), (x + 1, y));
+            if (y > 0) sortedList.Add(_map[y - 1][x].RiskLevel << 24 | (y - 1) << 8 | x, (x, y - 1));
+            if (x > 0) sortedList.Add(_map[y][x - 1].RiskLevel << 24 | y << 8 | (x - 1), (x - 1, y));
 
- /*           if (y > 0) sortedList.Add(_map[y - 1][x].RiskLevel << 14 | (y - 1) << 7 | x, (x, y - 1));
-            if (y + 1 < Height) sortedList.Add(_map[y + 1][x].RiskLevel << 14 | (y + 1) << 7 | x, (x, y + 1));
-            if (x > 0) sortedList.Add(_map[y][x - 1].RiskLevel << 14 | y << 7 | (x - 1), (x - 1, y));
-            if (x + 1 < Width) sortedList.Add(_map[y][x + 1].RiskLevel << 14 | y << 7 | (x + 1), (x + 1, y));*/
             foreach (var coordinates in sortedList)
             {
                 CalculateLowestRiskPath2(coordinates.Value.X, coordinates.Value.Y, accumulatedRiskLevel, false);
