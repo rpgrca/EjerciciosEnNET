@@ -32,22 +32,23 @@ namespace Day15.UnitTests
             const string map = "1163\n1381\n2136\n3694";
             var sut = new CaveMap(map);
 
-            var result = sut.GetPath();
-            Assert.Collection(result,
+            /*Assert.Collection(result,
                 p0 => Assert.Equal(1, p0),
                 p1 => Assert.Equal(1, p1),
                 p2 => Assert.Equal(2, p2),
                 p3 => Assert.Equal(1, p3),
                 p4 => Assert.Equal(3, p4),
                 p5 => Assert.Equal(6, p5),
-                p6 => Assert.Equal(4, p6));
+                p6 => Assert.Equal(4, p6));*/
+            sut.GetPath();
+            Assert.Equal(17, sut.GetPathLevel());
         }
 
         [Fact]
         public void FindLowestRiskPath_WhenUsingSampleMap()
         {
             var sut = new CaveMap(SAMPLE_MAP);
-            Assert.Collection(sut.GetPath(),
+            /*Assert.Collection(sut.GetPath(),
                 p0 => Assert.Equal(1, p0),
                 p1 => Assert.Equal(1, p1),
                 p2 => Assert.Equal(2, p2),
@@ -66,7 +67,18 @@ namespace Day15.UnitTests
                 p15 => Assert.Equal(3, p15),
                 p16 => Assert.Equal(2, p16),
                 p17 => Assert.Equal(1, p17),
-                p18 => Assert.Equal(1, p18));
+                p18 => Assert.Equal(1, p18));*/
+            sut.GetPath();
+            Assert.Equal(40, sut.GetPathLevel());
+        }
+
+        [Fact]
+        public void SolveFirstPuzzle()
+        {
+            var sut = new CaveMap(REAL_MAP);
+            sut.GetPath();
+            Assert.True(sut.GetPathLevel() < 829);
+            Assert.Equal(824, sut.GetPathLevel());
         }
     }
 }

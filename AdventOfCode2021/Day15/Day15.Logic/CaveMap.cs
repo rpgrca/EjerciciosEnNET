@@ -8,7 +8,7 @@ namespace Day15.Logic
     {
         private readonly string _input;
         private List<int> _minimumRiskPath;
-        private int[][] _map;
+        private (int RiskLevel, int TotalRiskSoFar)[][] _map;
         private int _minimumRisk;
 
         public int Width { get; private set; }
@@ -32,10 +32,10 @@ namespace Day15.Logic
             var lines = _input.Split("\n");
             var index = 0;
 
-            _map = new int[lines.Length][];
+            _map = new (int, int)[lines.Length][];
             foreach (var line in lines)
             {
-                _map[index++] = line.Select(p => p - '0').ToArray();
+                _map[index++] = line.Select(p => (p - '0', int.MaxValue)).ToArray();
             }
 
             Height = _map.Length;
@@ -45,24 +45,75 @@ namespace Day15.Logic
         public List<int> GetPath()
         {
             CalculateBorderPathRisk();
-            CalculateLowestRiskPath();
+            CalculateLowestRiskPath2();
 
             return _minimumRiskPath;
         }
 
         private void CalculateBorderPathRisk()
         {
-            foreach (var position in _map[0][1..])
+            foreach (var (RiskLevel, _) in _map[0][1..])
             {
-                _minimumRisk += position;
+                _minimumRisk += RiskLevel;
             }
 
             for (var index = 1; index < Height; index++)
             {
-                _minimumRisk += _map[index][Width - 1];
+                _minimumRisk += _map[index][Width - 1].RiskLevel;
             }
         }
 
+        private void CalculateLowestRiskPath2()
+        {
+            CalculateLowestRiskPath2(0, 0, 0, true);
+        }
+
+        private void CalculateLowestRiskPath2(int x, int y, int accumulatedRiskLevel, bool firstTime)
+        {
+            if (! firstTime)
+            {
+                accumulatedRiskLevel += _map[y][x].RiskLevel;
+            }
+
+            if (accumulatedRiskLevel >= _minimumRisk)
+            {
+                return;
+            }
+
+            if (_map[y][x].TotalRiskSoFar <= accumulatedRiskLevel)
+            {
+                return;
+            }
+
+            _map[y][x].TotalRiskSoFar = accumulatedRiskLevel;
+
+            if (x == Width - 1 && y == Height - 1)
+            {
+                var sum = accumulatedRiskLevel;
+                if (sum < _minimumRisk)
+                {
+                    _minimumRisk = sum;
+                }
+
+                return;
+            }
+
+            var sortedList = new SortedList<int, (int X, int Y)>();
+            if (y > 0) sortedList.Add(_map[y - 1][x].RiskLevel << 14 | (y - 1) << 7 | x, (x, y - 1));
+            if (y + 1 < Height) sortedList.Add(_map[y + 1][x].RiskLevel << 14 | (y + 1) << 7 | x, (x, y + 1));
+            if (x > 0) sortedList.Add(_map[y][x - 1].RiskLevel << 14 | y << 7 | (x - 1), (x - 1, y));
+            if (x + 1 < Width) sortedList.Add(_map[y][x + 1].RiskLevel << 14 | y << 7 | (x + 1), (x + 1, y));
+
+ /*           if (y > 0) sortedList.Add(_map[y - 1][x].RiskLevel << 14 | (y - 1) << 7 | x, (x, y - 1));
+            if (y + 1 < Height) sortedList.Add(_map[y + 1][x].RiskLevel << 14 | (y + 1) << 7 | x, (x, y + 1));
+            if (x > 0) sortedList.Add(_map[y][x - 1].RiskLevel << 14 | y << 7 | (x - 1), (x - 1, y));
+            if (x + 1 < Width) sortedList.Add(_map[y][x + 1].RiskLevel << 14 | y << 7 | (x + 1), (x + 1, y));*/
+            foreach (var coordinates in sortedList)
+            {
+                CalculateLowestRiskPath2(coordinates.Value.X, coordinates.Value.Y, accumulatedRiskLevel, false);
+            }
+        }
+/*
         private void CalculateLowestRiskPath()
         {
             var path = new List<int>();
@@ -70,6 +121,7 @@ namespace Day15.Logic
 
             CalculateLowestRiskPath(0, 0, path, positions);
         }
+
 
         private void CalculateLowestRiskPath(int x, int y, List<int> path, List<(int, int)> positions)
         {
@@ -101,28 +153,24 @@ namespace Day15.Logic
                 return;
             }
 
-            if (y > 0)
-            {
-                CalculateLowestRiskPath(x, y - 1, path, positions);
-            }
+            var sortedList = new List<(int X, int Y)>();
+            if (y > 0) sortedList.Add((x, y - 1));
+            if (y + 1 < Height) sortedList.Add((x, y + 1));
+            if (x > 0) sortedList.Add((x - 1, y));
+            if (x + 1 < Width) sortedList.Add((x + 1, y));
 
-            if (y + 1 < Height)
+            foreach (var coordinates in sortedList.OrderBy(p => _map[p.Y][p.X]))
             {
-                CalculateLowestRiskPath(x, y + 1, path, positions);
-            }
-
-            if (x > 0)
-            {
-                CalculateLowestRiskPath(x - 1, y, path, positions);
-            }
-
-            if (x + 1 < Width)
-            {
-                CalculateLowestRiskPath(x + 1, y, path, positions);
+                CalculateLowestRiskPath(coordinates.X, coordinates.Y, path, positions);
             }
 
             positions.RemoveAt(positions.Count - 1);
             path.RemoveAt(path.Count - 1);
+        }*/
+
+        public int GetPathLevel()
+        {
+            return _minimumRisk;
         }
     }
 }
