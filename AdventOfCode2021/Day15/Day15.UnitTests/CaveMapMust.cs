@@ -25,5 +25,48 @@ namespace Day15.UnitTests
             var sut = new CaveMap(map);
             Assert.Equal(expectedWidth, sut.Width);
         }
+
+        [Fact]
+        public void FindLowestRiskPath_WhenUsingAsmallMap()
+        {
+            const string map = "1163\n1381\n2136\n3694";
+            var sut = new CaveMap(map);
+
+            var result = sut.GetPath();
+            Assert.Collection(result,
+                p0 => Assert.Equal(1, p0),
+                p1 => Assert.Equal(1, p1),
+                p2 => Assert.Equal(2, p2),
+                p3 => Assert.Equal(1, p3),
+                p4 => Assert.Equal(3, p4),
+                p5 => Assert.Equal(6, p5),
+                p6 => Assert.Equal(4, p6));
+        }
+
+        [Fact]
+        public void FindLowestRiskPath_WhenUsingSampleMap()
+        {
+            var sut = new CaveMap(SAMPLE_MAP);
+            Assert.Collection(sut.GetPath(),
+                p0 => Assert.Equal(1, p0),
+                p1 => Assert.Equal(1, p1),
+                p2 => Assert.Equal(2, p2),
+                p3 => Assert.Equal(1, p3),
+                p4 => Assert.Equal(3, p4),
+                p5 => Assert.Equal(6, p5),
+                p6 => Assert.Equal(5, p6),
+                p7 => Assert.Equal(1, p7),
+                p8 => Assert.Equal(1, p8),
+                p9 => Assert.Equal(1, p9),
+                p10 => Assert.Equal(5, p10),
+                p11 => Assert.Equal(1, p11),
+                p12 => Assert.Equal(1, p12),
+                p13 => Assert.Equal(3, p13),
+                p14 => Assert.Equal(2, p14),
+                p15 => Assert.Equal(3, p15),
+                p16 => Assert.Equal(2, p16),
+                p17 => Assert.Equal(1, p17),
+                p18 => Assert.Equal(1, p18));
+        }
     }
 }
