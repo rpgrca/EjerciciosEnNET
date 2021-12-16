@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Day16.Logic
@@ -52,5 +53,7 @@ namespace Day16.Logic
                 }
             }
         }
+
+        public override int GetVersionSum() => Convert.ToInt32(Version, 2) + SubPackets.Sum(p => p.GetVersionSum());
     }
 }

@@ -10,6 +10,7 @@ namespace Day16.Logic
         private string _bits;
 
         public List<Packet> Packets { get; }
+        public string Ignored { get; private set; }
 
         public TransmissionDecoder(string transmission)
         {
@@ -45,54 +46,12 @@ namespace Day16.Logic
                 _ => "1111"
             }).Aggregate(string.Empty, (t, i) => t += i);
 
-            Packets.AddRange(new Parser(_bits).Packets);
-        }
-    }
+            var parser = new Parser(_bits);
+            Packets.AddRange(parser.Packets);
 
-    public class Parser
-    {
-        private readonly string _bits;
-        public List<Packet> Packets { get; }
-        public int Consumed { get; private set; }
-
-        public Parser(string bits)
-        {
-            _bits = bits;
-            Packets = new List<Packet>();
-
-            Parse();
+            Ignored = _bits[parser.Consumed..];
         }
 
-        private void Parse()
-        {
-            if (string.IsNullOrEmpty(_bits.Replace("0", string.Empty)))
-            {
-                Consumed = _bits.Length;
-            }
-            else
-            {
-                var index = 0;
-                var typeId = _bits[(index + 3)..(index + 6)];
-                Packet packet;
-                switch (typeId)
-                {
-                    case "100":
-                        packet = new LiteralPacket(_bits[index..]);
-                        index += packet.Consumed;
-
-                        Packets.Add(packet);
-                        break;
-
-                    default:
-                        packet = new OperatorPacket(_bits[index..]);
-                        index += packet.Consumed;
-
-                        Packets.Add(packet);
-                        break;
-                }
-
-                Consumed = index;
-            }
-        }
+        public int GetVersionSum() => Packets.Sum(p => p.GetVersionSum());
     }
 }

@@ -1,6 +1,7 @@
 using System;
-using Day16.Logic;
 using Xunit;
+using Day16.Logic;
+using static Day16.UnitTests.Constants;
 
 namespace Day16.UnitTests
 {
@@ -85,6 +86,27 @@ namespace Day16.UnitTests
                 p1 => Assert.Equal(1, ((LiteralPacket)p1).Value),
                 p2 => Assert.Equal(2, ((LiteralPacket)p2).Value),
                 p3 => Assert.Equal(3, ((LiteralPacket)p3).Value));
+        }
+
+        [Theory]
+        [InlineData("38006F45291200", "0000000")]
+        [InlineData("D2FE28", "000")]
+        [InlineData("EE00D40C823060", "00000")]
+        public void IgnoreEndOfTransmissionCorrectly(string transmission, string expectedIgnored)
+        {
+            var sut = new TransmissionDecoder(transmission);
+            Assert.Equal(expectedIgnored, sut.Ignored);
+        }
+
+        [Theory]
+        [InlineData("8A004A801A8002F478", 16)]
+        [InlineData("620080001611562C8802118E34", 12)]
+        [InlineData("C0015000016115A2E0802F182340", 23)]
+        [InlineData("A0016C880162017C3686B18A3D4780", 31)]
+        public void ReturnVersionSum(string transmission, int expectedVersionSum)
+        {
+            var sut = new TransmissionDecoder(transmission);
+            Assert.Equal(expectedVersionSum, sut.GetVersionSum());
         }
     }
 }

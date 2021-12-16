@@ -1,6 +1,6 @@
 namespace Day16.Logic
 {
-    public class Packet
+    public abstract class Packet
     {
         public string Version { get; }
         public string TypeId { get; }
@@ -13,5 +13,7 @@ namespace Day16.Logic
 
             Consumed = 6;
         }
+
+        public abstract int GetVersionSum();
     }
 }

@@ -7,10 +7,9 @@ namespace Day16.Logic
     public class LiteralPacket : Packet
     {
         private string _bits;
-        private readonly bool _padWithIgnored;
 
         public List<string> Groups { get; }
-        public int Value { get; private set; }
+        public long Value { get; private set; }
 
         public LiteralPacket(string bits) : base(bits)
         {
@@ -38,7 +37,9 @@ namespace Day16.Logic
 
         private void CalculateValue()
         {
-            Value = Convert.ToInt32(Groups.Select(p => p[1..]).Aggregate(string.Empty, (t, i) => t += i), 2);
+            Value = Convert.ToInt64(Groups.Select(p => p[1..]).Aggregate(string.Empty, (t, i) => t += i), 2);
         }
+
+        public override int GetVersionSum() => Convert.ToInt32(Version, 2);
     }
 }
