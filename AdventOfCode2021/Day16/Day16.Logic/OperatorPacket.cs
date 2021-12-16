@@ -83,4 +83,13 @@ namespace Day16.Logic
 
         public override long Value => SubPackets.Min(p => p.Value);
     }
+
+    public class MaximumOperatorPacket : OperatorPacket
+    {
+        public MaximumOperatorPacket(string bits) : base(bits)
+        {
+        }
+
+        public override long Value => SubPackets.Max(p => p.Value);
+    }
 }
