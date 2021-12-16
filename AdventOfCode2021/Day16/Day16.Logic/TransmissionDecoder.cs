@@ -47,7 +47,7 @@ namespace Day16.Logic
             }).Aggregate(string.Empty, (t, i) => t += i);
 
             var parser = new Parser(_bits);
-            Packets.AddRange(parser.Packets);
+            Packets.Add(parser.ParsedPacket);
 
             Ignored = _bits[parser.Consumed..];
         }

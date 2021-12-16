@@ -1,20 +1,15 @@
-using System;
-using System.Collections.Generic;
-
 namespace Day16.Logic
 {
     public class Parser
     {
         private readonly string _bits;
 
-        public List<Packet> Packets { get; }
+        public Packet ParsedPacket { get; private set; }
         public int Consumed { get; private set; }
 
         public Parser(string bits)
         {
             _bits = bits;
-            Packets = new List<Packet>();
-
             Parse();
         }
 
@@ -26,11 +21,8 @@ namespace Day16.Logic
             }
             else
             {
-                var packet = PacketFactory.Create(_bits);
-
-                Packets.Add(packet);
-
-                Consumed = packet.Consumed;
+                ParsedPacket = PacketFactory.Create(_bits);
+                Consumed = ParsedPacket.Consumed;
             }
         }
 
