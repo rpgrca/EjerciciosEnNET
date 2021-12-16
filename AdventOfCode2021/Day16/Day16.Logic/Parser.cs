@@ -33,6 +33,7 @@ namespace Day16.Logic
                 {
                     { "000", x => new SumOperatorPacket(x) },
                     { "001", x => new ProductOperatorPacket(x) },
+                    { "010", x => new MinimumOperatorPacket(x) },
                     { "100", x => new LiteralPacket(x) }
                 };
 

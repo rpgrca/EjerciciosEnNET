@@ -74,4 +74,13 @@ namespace Day16.Logic
 
         public override long Value => SubPackets.Aggregate(1L, (t, i) => t *= i.Value);
     }
+
+    public class MinimumOperatorPacket : OperatorPacket
+    {
+        public MinimumOperatorPacket(string bits) : base(bits)
+        {
+        }
+
+        public override long Value => SubPackets.Min(p => p.Value);
+    }
 }
