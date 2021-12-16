@@ -108,5 +108,12 @@ namespace Day16.UnitTests
             var sut = new TransmissionDecoder(transmission);
             Assert.Equal(expectedVersionSum, sut.GetVersionSum());
         }
+
+        [Fact]
+        public void SolveFirstPuzzle()
+        {
+            var sut = new TransmissionDecoder(REAL_TRANSMISSION);
+            Assert.Equal(897, sut.GetVersionSum());
+        }
     }
 }
