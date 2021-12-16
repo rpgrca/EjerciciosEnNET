@@ -36,7 +36,8 @@ namespace Day16.Logic
                     { "010", x => new MinimumOperatorPacket(x) },
                     { "011", x => new MaximumOperatorPacket(x) },
                     { "100", x => new LiteralPacket(x) },
-                    { "101", x => new GreaterThanOperatorPacket(x) }
+                    { "101", x => new GreaterThanOperatorPacket(x) },
+                    { "110", x => new LessThaOperatorPacket(x) }
                 };
 
                 if (operators.ContainsKey(typeId))

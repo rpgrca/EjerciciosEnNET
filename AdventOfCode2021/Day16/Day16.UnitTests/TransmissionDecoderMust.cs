@@ -122,6 +122,7 @@ namespace Day16.UnitTests
         [InlineData("880086C3E88112", 7L)]
         [InlineData("CE00C43D881120", 9L)]
         [InlineData("F600BC2D8F", 0L)]
+        [InlineData("D8005AC2A8F0", 1L)]
         public void ExecuteOperatorCorrectly(string transmission, long expectedValue)
         {
             var sut = new TransmissionDecoder(transmission);

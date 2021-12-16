@@ -101,4 +101,13 @@ namespace Day16.Logic
 
         public override long Value => SubPackets[0].Value > SubPackets[1].Value ? 1 : 0;
     }
+
+    public class LessThaOperatorPacket : OperatorPacket
+    {
+        public LessThaOperatorPacket(string bits) : base(bits)
+        {
+        }
+
+        public override long Value => SubPackets[0].Value < SubPackets[1].Value ? 1 : 0;
+    }
 }
