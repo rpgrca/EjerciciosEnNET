@@ -45,18 +45,25 @@ namespace Day16.Logic
                 _ => "1111"
             }).Aggregate(string.Empty, (t, i) => t += i);
 
-            var packet = new Packet
+            var index = 0;
+            var typeId = _bits[(index + 3)..(index + 6)];
+            Packet packet;
+            switch (typeId)
             {
-                Version = _bits[0..3],
-                TypeId = _bits[3..6]
-            };
-            Packets.Add(packet);
-        }
-    }
+                case "100":
+                    packet = new LiteralPacket(_bits[index..]);
+                    index += packet.Consumed;
 
-    public class Packet
-    {
-        public string Version { get; set; }
-        public string TypeId { get; set; }
+                    Packets.Add(packet);
+                    break;
+
+                default:
+                    packet = new OperatorPacket(_bits[index..]);
+                    index += packet.Consumed;
+
+                    Packets.Add(packet);
+                    break;
+            }
+        }
     }
 }
