@@ -15,18 +15,8 @@ namespace Day16.Logic
 
         private void Parse()
         {
-            if (IsFinalPadding())
-            {
-                Consumed = _bits.Length;
-            }
-            else
-            {
-                ParsedPacket = PacketFactory.Create(_bits);
-                Consumed = ParsedPacket.Consumed;
-            }
+            ParsedPacket = PacketFactory.Create(_bits);
+            Consumed = ParsedPacket.Consumed;
         }
-
-        private bool IsFinalPadding() =>
-            string.IsNullOrEmpty(_bits.Replace("0", string.Empty));
     }
 }
