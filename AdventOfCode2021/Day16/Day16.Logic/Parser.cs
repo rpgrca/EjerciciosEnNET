@@ -37,21 +37,13 @@ namespace Day16.Logic
                     { "011", x => new MaximumOperatorPacket(x) },
                     { "100", x => new LiteralPacket(x) },
                     { "101", x => new GreaterThanOperatorPacket(x) },
-                    { "110", x => new LessThaOperatorPacket(x) }
+                    { "110", x => new LessThaOperatorPacket(x) },
+                    { "111", x => new EqualThanOperatorPacket(x) }
                 };
 
-                if (operators.ContainsKey(typeId))
-                {
-                    packet = operators[typeId](_bits[index..]);
-                    index += packet.Consumed;
-                    Packets.Add(packet);
-                }
-                else
-                {
-                    packet = new OperatorPacket(_bits[index..]);
-                    index += packet.Consumed;
-                    Packets.Add(packet);
-                }
+                packet = operators[typeId](_bits[index..]);
+                index += packet.Consumed;
+                Packets.Add(packet);
 
                 Consumed = index;
             }
