@@ -15,6 +15,7 @@ namespace Day16.UnitTests
             var exception = Assert.Throws<ArgumentException>(() => new TransmissionDecoder(invalidTransmission));
             Assert.Equal("Invalid transmission", exception.Message);
         }
+
         [Theory]
         [InlineData("D2FE28", "110", "100")]
         [InlineData("38006F45291200", "001", "110")]
@@ -33,7 +34,7 @@ namespace Day16.UnitTests
         public void ParseLiteralPacketsCorrectly()
         {
             var decoder = new TransmissionDecoder("D2FE28");
-            var sut = decoder.Packets[0] as LiteralPacket;
+            var sut = (LiteralPacket)decoder.Packets[0];
 
             Assert.Equal("110", sut.Version);
             Assert.Equal("100", sut.TypeId);
@@ -44,15 +45,16 @@ namespace Day16.UnitTests
             Assert.Equal(2021, sut.Value);
         }
 
-/*
-                    Assert.Collection(p1.Literal,
-                        p11 => Assert.Equal("10111", p11),
-                        p12 => Assert.Equal("11110", p12),
-                        p13 => Assert.Equal("11110", p13),
-                        p14 => Assert.Equal("00101", p14),
-                        p15 => Assert.Equal("000", p15));
+        [Theory]
+        [InlineData("EE00D40C823060", 1)]
+        [InlineData("38006F45291200", 0)]
+        public void DetectsLengthTypeIdCorrectly_WhenParsingOperatorPacket(string transmission, int expectedLengthTypeId)
+        {
+            var decoder = new TransmissionDecoder(transmission);
+            var sut = (OperatorPacket)decoder.Packets[0];
+            Assert.Equal(expectedLengthTypeId, sut.LengthTypeId);
+        }
 
-*/
     }
 
 }

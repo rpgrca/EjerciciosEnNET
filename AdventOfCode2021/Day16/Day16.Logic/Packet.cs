@@ -66,8 +66,20 @@ namespace Day16.Logic
 
     public class OperatorPacket : Packet
     {
+        private readonly string _bits;
+
+        public int LengthTypeId { get; private set; }
+
         public OperatorPacket(string bits) : base(bits)
         {
+            _bits = bits;
+
+            Parse();
+        }
+
+        private void Parse()
+        {
+            LengthTypeId = _bits[Consumed++] - '0';
         }
     }
 }
