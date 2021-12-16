@@ -129,5 +129,12 @@ namespace Day16.UnitTests
             var sut = new TransmissionDecoder(transmission);
             Assert.Equal(expectedValue, sut.Value);
         }
+
+        [Fact]
+        public void SolveSecondPuzzle()
+        {
+            var sut = new TransmissionDecoder(REAL_TRANSMISSION);
+            Assert.Equal(9485076995911, sut.Value);
+        }
     }
 }
