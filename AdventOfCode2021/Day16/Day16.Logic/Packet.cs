@@ -5,6 +5,7 @@ namespace Day16.Logic
         public string Version { get; }
         public string TypeId { get; }
         public int Consumed { get; protected set; }
+        public long Value { get; protected set; }
 
         protected Packet(string bits)
         {
@@ -15,7 +16,5 @@ namespace Day16.Logic
         }
 
         public abstract int GetVersionSum();
-
-        public virtual long Value { get; }
     }
 }

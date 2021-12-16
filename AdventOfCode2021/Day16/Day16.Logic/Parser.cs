@@ -6,6 +6,7 @@ namespace Day16.Logic
     public class Parser
     {
         private readonly string _bits;
+
         public List<Packet> Packets { get; }
         public int Consumed { get; private set; }
 
@@ -19,34 +20,21 @@ namespace Day16.Logic
 
         private void Parse()
         {
-            if (string.IsNullOrEmpty(_bits.Replace("0", string.Empty)))
+            if (IsFinalPadding())
             {
                 Consumed = _bits.Length;
             }
             else
             {
-                var index = 0;
-                var typeId = _bits[(index + 3)..(index + 6)];
-                Packet packet;
+                var packet = PacketFactory.Create(_bits);
 
-                var operators = new Dictionary<string, Func<string, Packet>>
-                {
-                    { "000", x => new SumOperatorPacket(x) },
-                    { "001", x => new ProductOperatorPacket(x) },
-                    { "010", x => new MinimumOperatorPacket(x) },
-                    { "011", x => new MaximumOperatorPacket(x) },
-                    { "100", x => new LiteralPacket(x) },
-                    { "101", x => new GreaterThanOperatorPacket(x) },
-                    { "110", x => new LessThaOperatorPacket(x) },
-                    { "111", x => new EqualThanOperatorPacket(x) }
-                };
-
-                packet = operators[typeId](_bits[index..]);
-                index += packet.Consumed;
                 Packets.Add(packet);
 
-                Consumed = index;
+                Consumed = packet.Consumed;
             }
         }
+
+        private bool IsFinalPadding() =>
+            string.IsNullOrEmpty(_bits.Replace("0", string.Empty));
     }
 }

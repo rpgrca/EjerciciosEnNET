@@ -57,7 +57,7 @@ namespace Day16.UnitTests
         }
 
         [Fact]
-        public void DetectsSubPacketsLengthInBitsCorrectly()
+        public void DetectsSubPacketsLengthIBitsCorrectly()
         {
             var decoder = new TransmissionDecoder("38006F45291200");
             var sut = (OperatorPacket)decoder.Packets[0];
@@ -72,8 +72,8 @@ namespace Day16.UnitTests
             var sut = (OperatorPacket)decoder.Packets[0];
 
             Assert.Collection(sut.SubPackets,
-                p1 => Assert.Equal(10, ((LiteralPacket)p1).Value),
-                p2 => Assert.Equal(20, ((LiteralPacket)p2).Value));
+                p1 => Assert.Equal(10, p1.Value),
+                p2 => Assert.Equal(20, p2.Value));
         }
 
         [Fact]
@@ -83,9 +83,9 @@ namespace Day16.UnitTests
             var sut = (OperatorPacket)decoder.Packets[0];
 
             Assert.Collection(sut.SubPackets,
-                p1 => Assert.Equal(1, ((LiteralPacket)p1).Value),
-                p2 => Assert.Equal(2, ((LiteralPacket)p2).Value),
-                p3 => Assert.Equal(3, ((LiteralPacket)p3).Value));
+                p1 => Assert.Equal(1, p1.Value),
+                p2 => Assert.Equal(2, p2.Value),
+                p3 => Assert.Equal(3, p3.Value));
         }
 
         [Theory]

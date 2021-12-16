@@ -59,64 +59,43 @@ namespace Day16.Logic
 
     public class SumOperatorPacket : OperatorPacket
     {
-        public SumOperatorPacket(string bits) : base(bits)
-        {
-        }
-
-        public override long Value => SubPackets.Sum(p => p.Value);
+        public SumOperatorPacket(string bits) : base(bits) =>
+            Value = SubPackets.Sum(p => p.Value);
     }
 
     public class ProductOperatorPacket : OperatorPacket
     {
-        public ProductOperatorPacket(string bits) : base(bits)
-        {
-        }
-
-        public override long Value => SubPackets.Aggregate(1L, (t, i) => t *= i.Value);
+        public ProductOperatorPacket(string bits) : base(bits) =>
+            Value = SubPackets.Aggregate(1L, (t, i) => t *= i.Value);
     }
 
     public class MinimumOperatorPacket : OperatorPacket
     {
-        public MinimumOperatorPacket(string bits) : base(bits)
-        {
-        }
-
-        public override long Value => SubPackets.Min(p => p.Value);
+        public MinimumOperatorPacket(string bits) : base(bits) =>
+            Value = SubPackets.Min(p => p.Value);
     }
 
     public class MaximumOperatorPacket : OperatorPacket
     {
-        public MaximumOperatorPacket(string bits) : base(bits)
-        {
-        }
-
-        public override long Value => SubPackets.Max(p => p.Value);
+        public MaximumOperatorPacket(string bits) : base(bits) =>
+            Value = SubPackets.Max(p => p.Value);
     }
 
     public class GreaterThanOperatorPacket : OperatorPacket
     {
-        public GreaterThanOperatorPacket(string bits) : base(bits)
-        {
-        }
-
-        public override long Value => SubPackets[0].Value > SubPackets[1].Value ? 1 : 0;
+        public GreaterThanOperatorPacket(string bits) : base(bits) =>
+            Value = SubPackets[0].Value > SubPackets[1].Value ? 1 : 0;
     }
 
     public class LessThaOperatorPacket : OperatorPacket
     {
-        public LessThaOperatorPacket(string bits) : base(bits)
-        {
-        }
-
-        public override long Value => SubPackets[0].Value < SubPackets[1].Value ? 1 : 0;
+        public LessThaOperatorPacket(string bits) : base(bits) =>
+            Value = SubPackets[0].Value < SubPackets[1].Value ? 1 : 0;
     }
 
     public class EqualThanOperatorPacket : OperatorPacket
     {
-        public EqualThanOperatorPacket(string bits) : base(bits)
-        {
-        }
-
-        public override long Value => SubPackets[0].Value == SubPackets[1].Value ? 1 : 0;
+        public EqualThanOperatorPacket(string bits) : base(bits) =>
+            Value = SubPackets[0].Value == SubPackets[1].Value ? 1 : 0;
     }
 }
