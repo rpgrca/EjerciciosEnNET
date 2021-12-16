@@ -74,5 +74,17 @@ namespace Day16.UnitTests
                 p1 => Assert.Equal(10, ((LiteralPacket)p1).Value),
                 p2 => Assert.Equal(20, ((LiteralPacket)p2).Value));
         }
+
+        [Fact]
+        public void ParsesOperatorWithSubPacketsCountCorreclty()
+        {
+            var decoder = new TransmissionDecoder("EE00D40C823060");
+            var sut = (OperatorPacket)decoder.Packets[0];
+
+            Assert.Collection(sut.SubPackets,
+                p1 => Assert.Equal(1, ((LiteralPacket)p1).Value),
+                p2 => Assert.Equal(2, ((LiteralPacket)p2).Value),
+                p3 => Assert.Equal(3, ((LiteralPacket)p3).Value));
+        }
     }
 }
