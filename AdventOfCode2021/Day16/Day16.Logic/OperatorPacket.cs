@@ -63,12 +63,15 @@ namespace Day16.Logic
         {
         }
 
-        public override long Value
+        public override long Value => SubPackets.Sum(p => p.Value);
+    }
+
+    public class ProductOperatorPacket : OperatorPacket
+    {
+        public ProductOperatorPacket(string bits) : base(bits)
         {
-            get
-            {
-                return SubPackets.Sum(p => p.Value);
-            }
         }
+
+        public override long Value => SubPackets.Aggregate(1L, (t, i) => t *= i.Value);
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Day16.Logic
@@ -27,27 +28,25 @@ namespace Day16.Logic
                 var index = 0;
                 var typeId = _bits[(index + 3)..(index + 6)];
                 Packet packet;
-                switch (typeId)
+
+                var operators = new Dictionary<string, Func<string, Packet>>
                 {
-                    case "000":
-                        packet = new SumOperatorPacket(_bits[index..]);
-                        index += packet.Consumed;
-                        Packets.Add(packet);
-                        break;
+                    { "000", x => new SumOperatorPacket(x) },
+                    { "001", x => new ProductOperatorPacket(x) },
+                    { "100", x => new LiteralPacket(x) }
+                };
 
-                    case "100":
-                        packet = new LiteralPacket(_bits[index..]);
-                        index += packet.Consumed;
-
-                        Packets.Add(packet);
-                        break;
-
-                    default:
-                        packet = new OperatorPacket(_bits[index..]);
-                        index += packet.Consumed;
-
-                        Packets.Add(packet);
-                        break;
+                if (operators.ContainsKey(typeId))
+                {
+                    packet = operators[typeId](_bits[index..]);
+                    index += packet.Consumed;
+                    Packets.Add(packet);
+                }
+                else
+                {
+                    packet = new OperatorPacket(_bits[index..]);
+                    index += packet.Consumed;
+                    Packets.Add(packet);
                 }
 
                 Consumed = index;
