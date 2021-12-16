@@ -55,6 +55,24 @@ namespace Day16.UnitTests
             Assert.Equal(expectedLengthTypeId, sut.LengthTypeId);
         }
 
-    }
+        [Fact]
+        public void DetectsSubPacketsLengthInBitsCorrectly()
+        {
+            var decoder = new TransmissionDecoder("38006F45291200");
+            var sut = (OperatorPacket)decoder.Packets[0];
 
+            Assert.Equal(27, sut.SubPacketsLengthInBits);
+        }
+
+        [Fact]
+        public void ParsesOperatorWithSubPacketsLengthInBitsCorrectly()
+        {
+            var decoder = new TransmissionDecoder("38006F45291200");
+            var sut = (OperatorPacket)decoder.Packets[0];
+
+            Assert.Collection(sut.SubPackets,
+                p1 => Assert.Equal(10, ((LiteralPacket)p1).Value),
+                p2 => Assert.Equal(20, ((LiteralPacket)p2).Value));
+        }
+    }
 }
