@@ -27,6 +27,11 @@ namespace Day16.Logic
 
         private void Parse()
         {
+            ConvertHexadecimalToBits();
+            ParseBits();
+        }
+
+        private void ConvertHexadecimalToBits() =>
             _bits = _transmission.Select(p => p switch {
                 '0' => "0000",
                 '1' => "0001",
@@ -46,13 +51,22 @@ namespace Day16.Logic
                 _ => "1111"
             }).Aggregate(string.Empty, (t, i) => t += i);
 
+        private void ParseBits()
+        {
             var parser = new Parser(_bits);
             Packets.Add(parser.ParsedPacket);
 
             Ignored = _bits[parser.Consumed..];
         }
 
-        public int GetVersionSum() => Packets.Sum(p => p.GetVersionSum());
+        public long GetVersionSum()
+        {
+            var visitor = new VersionSumVisitor();
+
+            Packets.ForEach(p => p.Accept(visitor));
+
+            return visitor.Sum;
+        }
 
         public long Value => Packets[0].Value;
     }

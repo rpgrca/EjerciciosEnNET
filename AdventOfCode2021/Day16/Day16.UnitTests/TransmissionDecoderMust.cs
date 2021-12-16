@@ -18,10 +18,10 @@ namespace Day16.UnitTests
         }
 
         [Theory]
-        [InlineData("D2FE28", "110", "100")]
-        [InlineData("38006F45291200", "001", "110")]
-        [InlineData("EE00D40C823060", "111", "011")]
-        public void Test1(string transmission, string expectedVersion, string expectedTypeId)
+        [InlineData("D2FE28", 6, 4)]
+        [InlineData("38006F45291200", 1, 6)]
+        [InlineData("EE00D40C823060", 7, 3)]
+        public void Test1(string transmission, int expectedVersion, int expectedTypeId)
         {
             var sut = new TransmissionDecoder(transmission);
             Assert.Collection(sut.Packets,
@@ -37,8 +37,8 @@ namespace Day16.UnitTests
             var decoder = new TransmissionDecoder("D2FE28");
             var sut = (LiteralPacket)decoder.Packets[0];
 
-            Assert.Equal("110", sut.Version);
-            Assert.Equal("100", sut.TypeId);
+            Assert.Equal(6, sut.Version);
+            Assert.Equal(4, sut.TypeId);
             Assert.Collection(sut.Groups,
                 p1 => Assert.Equal("10111", p1),
                 p2 => Assert.Equal("11110", p2),

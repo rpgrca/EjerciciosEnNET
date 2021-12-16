@@ -1,20 +1,21 @@
+using System;
 namespace Day16.Logic
 {
-    public abstract class Packet
+    public abstract class Packet : IVisitable
     {
-        public string Version { get; }
-        public string TypeId { get; }
+        public int Version { get; }
+        public int TypeId { get; }
         public int Consumed { get; protected set; }
         public long Value { get; protected set; }
 
         protected Packet(string bits)
         {
-            Version = bits[0..3];
-            TypeId = bits[3..6];
+            Version = Convert.ToInt32(bits[0..3], 2);
+            TypeId = Convert.ToInt32(bits[3..6], 2);
 
             Consumed = 6;
         }
 
-        public abstract int GetVersionSum();
+        public abstract void Accept(VersionSumVisitor visitor);
     }
 }

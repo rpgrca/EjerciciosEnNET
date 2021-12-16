@@ -41,7 +41,7 @@ namespace Day16.Logic
         private void CalculateValue() =>
             Value = Convert.ToInt64(Groups.Select(p => p[1..]).Aggregate(string.Empty, (t, i) => t += i), 2);
 
-        public override int GetVersionSum() =>
-            Convert.ToInt32(Version, 2);
+        public override void Accept(VersionSumVisitor visitor) =>
+            visitor.Visit(this);
     }
 }
