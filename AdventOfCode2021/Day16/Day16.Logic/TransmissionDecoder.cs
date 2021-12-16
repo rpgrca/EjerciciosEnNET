@@ -53,5 +53,7 @@ namespace Day16.Logic
         }
 
         public int GetVersionSum() => Packets.Sum(p => p.GetVersionSum());
+
+        public long Value => Packets[0].Value;
     }
 }

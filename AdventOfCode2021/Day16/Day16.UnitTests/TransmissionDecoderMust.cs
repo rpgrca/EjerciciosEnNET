@@ -115,5 +115,13 @@ namespace Day16.UnitTests
             var sut = new TransmissionDecoder(REAL_TRANSMISSION);
             Assert.Equal(897, sut.GetVersionSum());
         }
+
+        [Theory]
+        [InlineData("C200B40A82", 3L)]
+        public void ExecuteOperatorCorrectly(string transmission, long expectedValue)
+        {
+            var sut = new TransmissionDecoder(transmission);
+            Assert.Equal(expectedValue, sut.Value);
+        }
     }
 }

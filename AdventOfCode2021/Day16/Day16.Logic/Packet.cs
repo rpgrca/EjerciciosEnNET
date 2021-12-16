@@ -15,5 +15,7 @@ namespace Day16.Logic
         }
 
         public abstract int GetVersionSum();
+
+        public virtual long Value { get; }
     }
 }

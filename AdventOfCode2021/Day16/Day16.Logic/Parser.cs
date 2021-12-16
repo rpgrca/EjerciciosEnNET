@@ -29,6 +29,12 @@ namespace Day16.Logic
                 Packet packet;
                 switch (typeId)
                 {
+                    case "000":
+                        packet = new SumOperatorPacket(_bits[index..]);
+                        index += packet.Consumed;
+                        Packets.Add(packet);
+                        break;
+
                     case "100":
                         packet = new LiteralPacket(_bits[index..]);
                         index += packet.Consumed;

@@ -56,4 +56,19 @@ namespace Day16.Logic
 
         public override int GetVersionSum() => Convert.ToInt32(Version, 2) + SubPackets.Sum(p => p.GetVersionSum());
     }
+
+    public class SumOperatorPacket : OperatorPacket
+    {
+        public SumOperatorPacket(string bits) : base(bits)
+        {
+        }
+
+        public override long Value
+        {
+            get
+            {
+                return SubPackets.Sum(p => p.Value);
+            }
+        }
+    }
 }

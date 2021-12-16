@@ -9,7 +9,6 @@ namespace Day16.Logic
         private string _bits;
 
         public List<string> Groups { get; }
-        public long Value { get; private set; }
 
         public LiteralPacket(string bits) : base(bits)
         {
@@ -31,14 +30,9 @@ namespace Day16.Logic
             Consumed += 5;
 
             _bits = _bits[6..Consumed];
-
-            CalculateValue();
         }
 
-        private void CalculateValue()
-        {
-            Value = Convert.ToInt64(Groups.Select(p => p[1..]).Aggregate(string.Empty, (t, i) => t += i), 2);
-        }
+        public override long Value => Convert.ToInt64(Groups.Select(p => p[1..]).Aggregate(string.Empty, (t, i) => t += i), 2);
 
         public override int GetVersionSum() => Convert.ToInt32(Version, 2);
     }
