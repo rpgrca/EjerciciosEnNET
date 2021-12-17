@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Resources;
+using System.Linq;
 using System;
 using System.Collections.Generic;
 
@@ -12,6 +13,8 @@ namespace Day17.Logic
 
         public (int Minimum, int Maximum) RangeX { get; private set; }
         public (int Minimum, int Maximum) RangeY { get; private set; }
+        public int HighestPoint { get; private set; }
+        public (int X, int Y) BestVelocity { get; set; }
 
         public Launcher(string targetArea)
         {
@@ -61,6 +64,11 @@ namespace Day17.Logic
                 }
 
                 _velocity.Y--;
+
+                if (_probePosition.Y > HighestPoint)
+                {
+                    HighestPoint = _probePosition.Y;
+                }
             }
         }
 
@@ -84,5 +92,37 @@ namespace Day17.Logic
 
         private bool IsProbeWithinTargetArea() =>
             _probePosition.X >= RangeX.Minimum && _probePosition.Y <= RangeY.Maximum;
+
+        public void CalculateBestShoot()
+        {
+            List<(int X, int Y, int Highest)> values =new();
+            int step = 0;
+
+            for (var x = RangeX.Minimum; x >= 0; x -= step)
+            {
+                step++;
+            }
+
+            var minimumX = step;
+            var maximumX = RangeX.Maximum;
+
+            while (minimumX <= maximumX)
+            {
+                for (var y = 0; y < 100; y++)
+                {
+                    var probe = new Launcher(_targetArea);
+                    probe.InitialVelocity(minimumX, y);
+                    var steps = probe.CountStepsUntilHittingTargetArea();
+                    if (steps != -1)
+                    {
+                        values.Add((minimumX, y, probe.HighestPoint));
+                    }
+                }
+
+                minimumX++;
+            }
+
+            HighestPoint = values.Max(p => p.Highest);
+        }
     }
 }
