@@ -37,5 +37,15 @@ namespace Day17.UnitTests
             Assert.True(sut.IsProbePositionedAt(0, 0));
             Assert.True(sut.IsCurrentVelocityEqualTo(7, 2));
         }
+
+        [Fact]
+        public void ExecuteStepCorrectly()
+        {
+            var sut = new Launcher(SAMPLE_TARGET_AREA);
+            sut.InitialVelocity(7, 2);
+            sut.Step();
+            Assert.True(sut.IsProbePositionedAt(7, 2));
+            Assert.True(sut.IsCurrentVelocityEqualTo(6, 1));
+        }
     }
 }
