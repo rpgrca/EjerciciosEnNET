@@ -1,4 +1,5 @@
 using System;
+
 namespace Day16.Logic
 {
     public abstract class Packet : IVisitable
