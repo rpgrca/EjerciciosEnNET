@@ -107,11 +107,19 @@ namespace Day17.UnitTests
         }
 
         [Fact]
-        public void Test2()
+        public void FindHighestPointCorrectly()
         {
             var sut = new Launcher(SAMPLE_TARGET_AREA);
             sut.CalculateBestShoot();
             Assert.Equal(45, sut.HighestPoint);
+        }
+
+        [Fact]
+        public void SolveFirstPuzzle()
+        {
+            var sut = new Launcher(REAL_TARGET_AREA);
+            sut.CalculateBestShoot();
+            Assert.Equal(4278, sut.HighestPoint);
         }
     }
 }
