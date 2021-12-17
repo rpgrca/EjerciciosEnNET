@@ -121,5 +121,21 @@ namespace Day17.UnitTests
             sut.CalculateBestShoot();
             Assert.Equal(4278, sut.HighestPoint);
         }
+
+        [Fact]
+        public void FindAllValidInitialVelocities()
+        {
+            var sut = new Launcher(SAMPLE_TARGET_AREA);
+            sut.CalculateAllShoots();
+            Assert.Equal(112, sut.ShootCount);
+        }
+
+        [Fact]
+        public void SolveSecondPuzzle()
+        {
+            var sut = new Launcher(REAL_TARGET_AREA);
+            sut.CalculateAllShoots();
+            Assert.Equal(1994, sut.ShootCount);
+        }
     }
 }

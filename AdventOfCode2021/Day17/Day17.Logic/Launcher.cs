@@ -1,5 +1,4 @@
-﻿using System.Resources;
-using System.Linq;
+﻿using System.Linq;
 using System;
 using System.Collections.Generic;
 
@@ -15,6 +14,7 @@ namespace Day17.Logic
         public (int Minimum, int Maximum) RangeY { get; private set; }
         public int HighestPoint { get; private set; }
         public (int X, int Y) BestVelocity { get; set; }
+        public int ShootCount { get; private set; }
 
         public Launcher(string targetArea)
         {
@@ -123,6 +123,38 @@ namespace Day17.Logic
             }
 
             HighestPoint = values.Max(p => p.Highest);
+        }
+
+        public void CalculateAllShoots()
+        {
+            List<(int X, int Y, int Highest)> values =new();
+            int step = 0;
+
+            for (var x = RangeX.Minimum; x >= 0; x -= step)
+            {
+                step++;
+            }
+
+            var minimumX = step;
+            var maximumX = RangeX.Maximum;
+
+            while (minimumX <= maximumX)
+            {
+                for (var y = RangeY.Minimum - 1; y < 100; y++)
+                {
+                    var probe = new Launcher(_targetArea);
+                    probe.InitialVelocity(minimumX, y);
+                    var steps = probe.CountStepsUntilHittingTargetArea();
+                    if (steps != -1)
+                    {
+                        values.Add((minimumX, y, probe.HighestPoint));
+                    }
+                }
+
+                minimumX++;
+            }
+
+            ShootCount = values.Count;
         }
     }
 }
