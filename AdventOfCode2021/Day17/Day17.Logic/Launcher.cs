@@ -6,6 +6,8 @@ namespace Day17.Logic
     public class Launcher
     {
         private readonly string _targetArea;
+        private (int X, int Y) _initialVelocity;
+        private (int X, int Y) _probePosition;
 
         public (int X, int Y) Maximum { get; private set; }
         public (int X, int Y) Minimum { get; private set; }
@@ -34,5 +36,11 @@ namespace Day17.Logic
             Maximum = (coordinates[0].Item2, coordinates[1].Item1);
             Minimum = (coordinates[0].Item1, coordinates[1].Item2);
         }
+
+        public void InitialVelocity(int x, int y) => _initialVelocity = (x, y);
+
+        public bool IsCurrentVelocityEqualTo(int x, int y) => _initialVelocity == (x, y);
+
+        public bool IsProbePositionedAt(int x, int y) => _probePosition == (x, y);
     }
 }
