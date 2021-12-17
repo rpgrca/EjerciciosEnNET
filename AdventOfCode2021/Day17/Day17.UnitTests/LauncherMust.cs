@@ -20,13 +20,13 @@ namespace Day17.UnitTests
         }
 
         [Theory]
-        [InlineData(SAMPLE_TARGET_AREA, 20, -5, 30, -10)]
-        [InlineData(REAL_TARGET_AREA, 195, -67, 238, -93)]
-        public void BeInitializedCorrectly(string targetArea, int expectedMinimumX, int expectedMinimumY, int expectedMaximumX, int expectedMaximumY)
+        [InlineData(SAMPLE_TARGET_AREA, 20, 30, -10, -5)]
+        [InlineData(REAL_TARGET_AREA, 195, 238, -93, -67)]
+        public void BeInitializedCorrectly(string targetArea, int expectedMinimumX, int expectedMaximumX, int expectedMinimumY, int expectedMaximumY)
         {
             var sut = new Launcher(targetArea);
-            Assert.Equal((expectedMaximumX, expectedMaximumY), sut.Maximum);
-            Assert.Equal((expectedMinimumX, expectedMinimumY), sut.Minimum);
+            Assert.Equal((expectedMinimumX, expectedMaximumX), sut.RangeX);
+            Assert.Equal((expectedMinimumY, expectedMaximumY), sut.RangeY);
         }
 
         [Fact]
@@ -38,14 +38,31 @@ namespace Day17.UnitTests
             Assert.True(sut.IsCurrentVelocityEqualTo(7, 2));
         }
 
-        [Fact]
-        public void ExecuteStepCorrectly()
+        [Theory]
+        [InlineData(7, 2, 1, 7, 2, 6, 1)]
+        [InlineData(7, 2, 2, 13, 3, 5, 0)]
+        [InlineData(7, 2, 3, 18, 3, 4, -1)]
+        [InlineData(7, 2, 4, 22, 2, 3, -2)]
+        [InlineData(7, 2, 5, 25, 0, 2, -3)]
+        [InlineData(7, 2, 6, 27, -3, 1, -4)]
+        [InlineData(7, 2, 7, 28, -7, 0, -5)]
+        public void ExecuteStepCorrectly(int initialX, int initialY, int steps, int expectedPositionX, int expectedPositionY,
+            int expectedVelocityX, int expectedVelocityY)
         {
             var sut = new Launcher(SAMPLE_TARGET_AREA);
-            sut.InitialVelocity(7, 2);
-            sut.Step();
-            Assert.True(sut.IsProbePositionedAt(7, 2));
-            Assert.True(sut.IsCurrentVelocityEqualTo(6, 1));
+            sut.InitialVelocity(initialX, initialY);
+            sut.Step(steps);
+            Assert.True(sut.IsProbePositionedAt(expectedPositionX, expectedPositionY));
+            Assert.True(sut.IsCurrentVelocityEqualTo(expectedVelocityX, expectedVelocityY));
+        }
+
+        [Theory]
+        [InlineData(7, 2)]
+        public void FindWhetherProbeReachesTargetArea(int initialX, int initialY)
+        {
+            var sut = new Launcher(SAMPLE_TARGET_AREA);
+            sut.InitialVelocity(initialX, initialY);
+            Assert.Equal(7, sut.CountStepsUntilHittingTargetArea());
         }
     }
 }

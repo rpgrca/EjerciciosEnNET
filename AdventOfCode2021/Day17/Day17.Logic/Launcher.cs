@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System;
+using System.Collections.Generic;
 
 namespace Day17.Logic
 {
@@ -9,8 +10,8 @@ namespace Day17.Logic
         private (int X, int Y) _velocity;
         private (int X, int Y) _probePosition;
 
-        public (int X, int Y) Maximum { get; private set; }
-        public (int X, int Y) Minimum { get; private set; }
+        public (int Minimum, int Maximum) RangeX { get; private set; }
+        public (int Minimum, int Maximum) RangeY { get; private set; }
 
         public Launcher(string targetArea)
         {
@@ -33,8 +34,8 @@ namespace Day17.Logic
                 .Select(p => p.Split(".."))
                 .Select(p => (int.Parse(p[0]), int.Parse(p[1])))
                 .ToList();
-            Maximum = (coordinates[0].Item2, coordinates[1].Item1);
-            Minimum = (coordinates[0].Item1, coordinates[1].Item2);
+            RangeX = (coordinates[0].Item1, coordinates[0].Item2);
+            RangeY = (coordinates[1].Item1, coordinates[1].Item2);
         }
 
         public void InitialVelocity(int x, int y) => _velocity = (x, y);
@@ -43,21 +44,45 @@ namespace Day17.Logic
 
         public bool IsProbePositionedAt(int x, int y) => _probePosition == (x, y);
 
-        public void Step()
+        public void Step(int steps)
         {
-            _probePosition.X += _velocity.X;
-            _probePosition.Y += _velocity.Y;
-
-            if (_velocity.X > 0)
+            for (var step = 0; step < steps; step++)
             {
-                _velocity.X--;
-            }
-            else if (_velocity.X < 0)
-            {
-                _velocity.X++;
-            }
+                _probePosition.X += _velocity.X;
+                _probePosition.Y += _velocity.Y;
 
-            _velocity.Y--;
+                if (_velocity.X > 0)
+                {
+                    _velocity.X--;
+                }
+                else if (_velocity.X < 0)
+                {
+                    _velocity.X++;
+                }
+
+                _velocity.Y--;
+            }
         }
+
+        public int CountStepsUntilHittingTargetArea()
+        {
+            var steps = 0;
+
+            while (_probePosition.X <= RangeX.Maximum && _probePosition.Y >= RangeY.Minimum)
+            {
+                if (IsProbeWithinTargetArea())
+                {
+                    return steps;
+                }
+
+                Step(1);
+                steps++;
+            }
+
+            return -1;
+        }
+
+        private bool IsProbeWithinTargetArea() =>
+            _probePosition.X >= RangeX.Minimum && _probePosition.Y <= RangeY.Maximum;
     }
 }
