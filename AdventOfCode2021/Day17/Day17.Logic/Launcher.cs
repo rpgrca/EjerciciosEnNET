@@ -7,14 +7,11 @@ namespace Day17.Logic
     public class Launcher
     {
         private readonly string _targetArea;
-        private (int X, int Y) _velocity;
-        private (int X, int Y) _probePosition;
 
         public (int Minimum, int Maximum) RangeX { get; private set; }
         public (int Minimum, int Maximum) RangeY { get; private set; }
-        public int HighestPoint { get; private set; }
-        public (int X, int Y) BestVelocity { get; set; }
-        public int ShootCount { get; private set; }
+        public int HighestPointAbleToReach { get; private set; }
+        public int AmountOfShootsAbleToHitTargetArea { get; private set; }
 
         public Launcher(string targetArea)
         {
@@ -37,124 +34,66 @@ namespace Day17.Logic
                 .Select(p => p.Split(".."))
                 .Select(p => (int.Parse(p[0]), int.Parse(p[1])))
                 .ToList();
+
             RangeX = (coordinates[0].Item1, coordinates[0].Item2);
             RangeY = (coordinates[1].Item1, coordinates[1].Item2);
         }
 
-        public void InitialVelocity(int x, int y) => _velocity = (x, y);
-
-        public bool IsCurrentVelocityEqualTo(int x, int y) => _velocity == (x, y);
-
-        public bool IsProbePositionedAt(int x, int y) => _probePosition == (x, y);
-
-        public void Step(int steps)
+       public int CountStepsUntilHittingTargetArea(Probe probe)
         {
-            for (var step = 0; step < steps; step++)
+            for (var steps = 0; probe.HasntReached(RangeX, RangeY); steps++)
             {
-                _probePosition.X += _velocity.X;
-                _probePosition.Y += _velocity.Y;
-
-                if (_velocity.X > 0)
-                {
-                    _velocity.X--;
-                }
-                else if (_velocity.X < 0)
-                {
-                    _velocity.X++;
-                }
-
-                _velocity.Y--;
-
-                if (_probePosition.Y > HighestPoint)
-                {
-                    HighestPoint = _probePosition.Y;
-                }
-            }
-        }
-
-        public int CountStepsUntilHittingTargetArea()
-        {
-            var steps = 0;
-
-            while (_probePosition.X <= RangeX.Maximum && _probePosition.Y >= RangeY.Minimum)
-            {
-                if (IsProbeWithinTargetArea())
+                if (probe.IsWithin(RangeX, RangeY))
                 {
                     return steps;
                 }
 
-                Step(1);
-                steps++;
+                probe.Step(1);
             }
 
             return -1;
         }
 
-        private bool IsProbeWithinTargetArea() =>
-            _probePosition.X >= RangeX.Minimum && _probePosition.Y <= RangeY.Maximum;
+        public void CalculateBestShoot() =>
+            HighestPointAbleToReach = GetMaximumHeights().Max(p => p);
 
-        public void CalculateBestShoot()
+        private List<int> GetMaximumHeights()
         {
-            List<(int X, int Y, int Highest)> values =new();
-            int step = 0;
-
-            for (var x = RangeX.Minimum; x >= 0; x -= step)
-            {
-                step++;
-            }
-
-            var minimumX = step;
-            var maximumX = RangeX.Maximum;
-
-            while (minimumX <= maximumX)
-            {
-                for (var y = 0; y < 100; y++)
-                {
-                    var probe = new Launcher(_targetArea);
-                    probe.InitialVelocity(minimumX, y);
-                    var steps = probe.CountStepsUntilHittingTargetArea();
-                    if (steps != -1)
-                    {
-                        values.Add((minimumX, y, probe.HighestPoint));
-                    }
-                }
-
-                minimumX++;
-            }
-
-            HighestPoint = values.Max(p => p.Highest);
-        }
-
-        public void CalculateAllShoots()
-        {
-            List<(int X, int Y, int Highest)> values =new();
-            int step = 0;
-
-            for (var x = RangeX.Minimum; x >= 0; x -= step)
-            {
-                step++;
-            }
-
-            var minimumX = step;
+            var values = new List<int>();
+            var minimumX = CalculateMinimumVelocityX();
             var maximumX = RangeX.Maximum;
 
             while (minimumX <= maximumX)
             {
                 for (var y = RangeY.Minimum - 1; y < 100; y++)
                 {
-                    var probe = new Launcher(_targetArea);
-                    probe.InitialVelocity(minimumX, y);
-                    var steps = probe.CountStepsUntilHittingTargetArea();
+                    var probe = new Probe(minimumX, y);
+                    var steps = CountStepsUntilHittingTargetArea(probe);
                     if (steps != -1)
                     {
-                        values.Add((minimumX, y, probe.HighestPoint));
+                        values.Add(probe.HighestPoint);
                     }
                 }
 
                 minimumX++;
             }
 
-            ShootCount = values.Count;
+            return values;
         }
+
+        private int CalculateMinimumVelocityX()
+        {
+            int step = 0;
+
+            for (var x = RangeX.Minimum; x >= 0; x -= step)
+            {
+                step++;
+            }
+
+            return step;
+        }
+
+        public void CalculateAllShoots() =>
+            AmountOfShootsAbleToHitTargetArea = GetMaximumHeights().Count;
     }
 }
