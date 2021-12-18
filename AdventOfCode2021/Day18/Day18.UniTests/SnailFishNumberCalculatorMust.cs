@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -54,7 +55,7 @@ namespace Day18.UniTests
 
         [Theory]
         [MemberData(nameof(ExplodeSampleFeeder))]
-        public void Test1(string number, SnailFishNumber expectedNumber)
+        public void ExplodeSnailFishNumbersCorrectly(string number, SnailFishNumber expectedNumber)
         {
             var parser = new SnailFishNumberParser(number);
             var value = parser.Value;
@@ -70,8 +71,25 @@ namespace Day18.UniTests
             yield return new object[] { "[[6,[5,[4,[3,2]]]],1]", ((6,(5,(7,0).AsNumber()).AsNumber()).AsNumber(),3).AsNumber() };
             yield return new object[] { "[[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]]", ((3,(2,(8,0).AsNumber()).AsNumber()).AsNumber(),(9,(5,(4,(3,2).AsNumber()).AsNumber()).AsNumber()).AsNumber()).AsNumber() };
             yield return new object[] { "[[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]]", ((3,(2,(8,0).AsNumber()).AsNumber()).AsNumber(),(9,(5,(7,0).AsNumber()).AsNumber()).AsNumber()).AsNumber() };
+            yield return new object[] { "[[[[[4,3],4],4],[7,[[8,4],9]]],[1,1]]", ((((0,7).AsNumber(),4).AsNumber(),(7,((8,4).AsNumber(),9).AsNumber()).AsNumber()).AsNumber(),(1,1).AsNumber()).AsNumber() };
+            yield return new object[] { "[[[[0,7],4],[7,[[8,4],9]]],[1,1]]", ((((0,7).AsNumber(),4).AsNumber(),(15,(0,13).AsNumber()).AsNumber()).AsNumber(),(1,1).AsNumber()).AsNumber() };
         }
 
+        [Theory]
+        [MemberData(nameof(SplitterSampleFeeder))]
+        public void ReduceSnailFishNumberCorrectly(string number, SnailFishNumber expectedNumber)
+        {
+            var parser = new SnailFishNumberParser(number);
+            var value = parser.Value;
 
+            var sut = new SnailFishNumberSplitter(value);
+            Assert.Equal(expectedNumber, sut.Value);
+        }
+
+        public static IEnumerable<object[]> SplitterSampleFeeder()
+        {
+            yield return new object[] { "[[[[0,7],4],[15,[0,13]]],[1,1]]", ((((0,7).AsNumber(),4).AsNumber(),((7,8).AsNumber(),(0,13).AsNumber()).AsNumber()).AsNumber(),(1,1).AsNumber()).AsNumber() };
+            yield return new object[] { "[[[[0,7],4],[[7,8],[0,13]]],[1,1]]", ((((0,7).AsNumber(),4).AsNumber(),((7,8).AsNumber(),(0,(6,7).AsNumber()).AsNumber()).AsNumber()).AsNumber(),(1,1).AsNumber()).AsNumber() };
+        }
     }
 }

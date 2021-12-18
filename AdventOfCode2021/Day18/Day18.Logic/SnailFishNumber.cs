@@ -4,7 +4,6 @@ namespace Day18.Logic
 {
     public abstract class Number : IVisitable
     {
-        public abstract void Explode(RegularNumber leftSide, RegularNumber rightSide);
         public abstract void Accept(INumberVisitor visitor);
     }
 
@@ -12,6 +11,8 @@ namespace Day18.Logic
     {
         private int _number;
         private readonly int _order;
+
+        public int Value => _number;
 
         public RegularNumber(int number, int order = -1)
         {
@@ -24,23 +25,19 @@ namespace Day18.Logic
             if (obj is not RegularNumber) return false;
 
             var other = (RegularNumber)obj;
-            return _number == other._number;
-        }
-
-        public override void Explode(RegularNumber leftSide, RegularNumber rightSide)
-        {
+            return Value == other.Value;
         }
 
         public void Add(RegularNumber number)
         {
-            _number += number._number;
+            _number += number.Value;
         }
 
         public bool IsOrder(int order) => _order == order;
 
         public override void Accept(INumberVisitor visitor) => visitor.Visit(this);
 
-        public override string ToString() => $"{_number}";
+        public override string ToString() => $"{Value}";
 
         public bool IsLeftOf(RegularNumber number) => number.IsOrder(_order + 1);
 
@@ -66,12 +63,6 @@ namespace Day18.Logic
         }
 
         public override string ToString() => $"[{LeftSide},{RightSide}]";
-
-        public override void Explode(RegularNumber leftSide, RegularNumber rightSide)
-        {
-            leftSide.Add((RegularNumber)LeftSide);
-            rightSide.Add((RegularNumber)RightSide);
-        }
 
         public override void Accept(INumberVisitor visitor)
         {
