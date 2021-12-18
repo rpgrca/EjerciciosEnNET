@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Linq.Expressions;
+using System;
 using System.Collections.Generic;
 
 namespace Day18.Logic
@@ -7,7 +8,8 @@ namespace Day18.Logic
     {
         private readonly string _homework;
 
-        public List<SnailFishNumber> Expressions { get; }
+        public List<SnailFishNumber> Numbers { get; }
+        public SnailFishNumber Result { get; private set; }
 
         public SnailFishNumberCalculator(string homework)
         {
@@ -16,7 +18,7 @@ namespace Day18.Logic
                 throw new ArgumentException("Invalid homework");
             }
 
-            Expressions = new List<SnailFishNumber>();
+            Numbers = new List<SnailFishNumber>();
             _homework = homework;
 
             Parse();
@@ -25,7 +27,9 @@ namespace Day18.Logic
         private void Parse()
         {
             var expression = new SnailFishNumberParser(_homework);
-            Expressions.Add((SnailFishNumber)expression.Value);
+            Numbers.Add((SnailFishNumber)expression.Value);
+
+            Result = Numbers[0];
         }
     }
 }
