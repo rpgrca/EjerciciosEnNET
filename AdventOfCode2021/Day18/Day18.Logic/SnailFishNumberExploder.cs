@@ -1,59 +1,49 @@
-using System;
 namespace Day18.Logic
 {
-    public class SnailFishNumberExploder
+    public interface IReducer
     {
-        public SnailFishNumber Value { get; }
+        SnailFishNumber Apply();
+        bool CanReduce();
+    }
+
+    public class SnailFishNumberExploder : IReducer
+    {
+        private readonly bool _canReduce;
+        public bool CanReduce() => _canReduce;
+
+        private readonly SnailFishNumber _deepestSnailNumber;
+        private readonly SnailFishNumber _deepestSnailNumberParent;
+        private readonly SnailFishNumber _value;
 
         public SnailFishNumberExploder(SnailFishNumber value)
         {
+            _value = value;
+
             var visitor = new ExploderScannerVisitor();
-            value.Accept(visitor);
+            _value.Accept(visitor);
 
-            if (visitor.MustExplode())
-            {
-                value.Accept(new ReduceByExplosionVisitor(visitor.DeepestSnailNumber));
-
-                if (visitor.DeepestSnailNumberParent.LeftSide == visitor.DeepestSnailNumber)
-                {
-                    visitor.DeepestSnailNumberParent.LeftSide = new RegularNumber(0, -1);
-                }
-                else
-                {
-                    visitor.DeepestSnailNumberParent.RightSide = new RegularNumber(0, -1);
-                }
-
-                Value = value;
-            }
+            _canReduce = visitor.MustExplode();
+            _deepestSnailNumber = visitor.DeepestSnailNumber;
+            _deepestSnailNumberParent = visitor.DeepestSnailNumberParent;
         }
-    }
 
-    public class SnailFishNumberSplitter
-    {
-        public SnailFishNumber Value { get; }
-
-        public SnailFishNumberSplitter(SnailFishNumber value)
+        public SnailFishNumber Apply()
         {
-            var visitor = new SplitterScannerVisitor();
-            value.Accept(visitor);
+            _value.Accept(new ReduceByExplosionVisitor(_deepestSnailNumber));
 
-            if (visitor.MustSplit())
+            if (_deepestSnailNumberParent.LeftSide == _deepestSnailNumber)
             {
-                if (visitor.SnailFishNumberToSplitParent.LeftSide == visitor.SnailFishNumberToSplit)
-                {
-                    visitor.SnailFishNumberToSplitParent.LeftSide = new SnailFishNumber(
-                        new RegularNumber((int)Math.Floor(visitor.SnailFishNumberToSplit.Value / 2.0)),
-                        new RegularNumber((int)Math.Ceiling(visitor.SnailFishNumberToSplit.Value / 2.0)));
-                }
-                else
-                {
-                    visitor.SnailFishNumberToSplitParent.RightSide = new SnailFishNumber(
-                        new RegularNumber((int)Math.Floor(visitor.SnailFishNumberToSplit.Value / 2.0)),
-                        new RegularNumber((int)Math.Ceiling(visitor.SnailFishNumberToSplit.Value / 2.0)));
-                }
+                _deepestSnailNumberParent.LeftSide = new RegularNumber(0, -1);
+            }
+            else
+            {
+                _deepestSnailNumberParent.RightSide = new RegularNumber(0, -1);
             }
 
-            Value = value;
+            var visitor = new ReorderRegularNumberVisitor();
+            _value.Accept(visitor);
+
+            return _value;
         }
     }
 }

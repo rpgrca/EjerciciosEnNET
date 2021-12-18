@@ -10,7 +10,7 @@ namespace Day18.Logic
     public class RegularNumber : Number
     {
         private int _number;
-        private readonly int _order;
+        private int _order;
 
         public int Value => _number;
 
@@ -42,6 +42,8 @@ namespace Day18.Logic
         public bool IsLeftOf(RegularNumber number) => number.IsOrder(_order + 1);
 
         public bool IsRightOf(RegularNumber number) => _order > 0 && number.IsOrder(_order - 1);
+
+        public void ReorderTo(int newOrder) => _order = newOrder;
     }
 
     [DebuggerDisplay("{ToString()}")]

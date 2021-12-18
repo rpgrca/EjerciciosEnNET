@@ -1,7 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System;
-using System.Collections.Generic;
-
 namespace Day18.Logic
 {
     public interface IVisitable
@@ -63,7 +59,7 @@ namespace Day18.Logic
             }
         }
 
-        public bool MustExplode() => DeepestLevel >= 4;
+        public bool MustExplode() => DeepestLevel > 4;
 
         public void AddLevel()
         {
@@ -169,5 +165,40 @@ namespace Day18.Logic
         }
 
         public bool MustSplit() => SnailFishNumberToSplit != null;
+    }
+
+    public class ReorderRegularNumberVisitor : INumberVisitor
+    {
+        private int _order;
+
+        public void AddLevel()
+        {
+        }
+
+        public void RemoveLevel()
+        {
+        }
+
+        public void Visit(SnailFishNumber snailFishNumber)
+        {
+        }
+
+        public void Visit(RegularNumber regularNumber)
+        {
+            regularNumber.ReorderTo(_order++);
+        }
+
+        public void Visit(Number number)
+        {
+            if (number is SnailFishNumber snailFishNumber)
+            {
+                Visit(snailFishNumber);
+            }
+
+            if (number is RegularNumber regularNumber)
+            {
+                Visit(regularNumber);
+            }
+        }
     }
 }

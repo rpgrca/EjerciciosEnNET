@@ -1,8 +1,8 @@
-using System.ComponentModel;
 using System;
 using System.Collections.Generic;
 using Xunit;
 using Day18.Logic;
+using static Day18.UniTests.Constants;
 
 namespace Day18.UniTests
 {
@@ -60,8 +60,8 @@ namespace Day18.UniTests
             var parser = new SnailFishNumberParser(number);
             var value = parser.Value;
 
-            var sut = new SnailFishNumberExploder(value);
-            Assert.Equal(expectedNumber, sut.Value);
+            var sut = new SnailFishNumberExploder(value).Apply();
+            Assert.Equal(expectedNumber, sut);
         }
 
         public static IEnumerable<object[]> ExplodeSampleFeeder()
@@ -82,8 +82,8 @@ namespace Day18.UniTests
             var parser = new SnailFishNumberParser(number);
             var value = parser.Value;
 
-            var sut = new SnailFishNumberSplitter(value);
-            Assert.Equal(expectedNumber, sut.Value);
+            var sut = new SnailFishNumberSplitter(value).Apply();
+            Assert.Equal(expectedNumber, sut);
         }
 
         public static IEnumerable<object[]> SplitterSampleFeeder()
@@ -91,5 +91,32 @@ namespace Day18.UniTests
             yield return new object[] { "[[[[0,7],4],[15,[0,13]]],[1,1]]", ((((0,7).AsNumber(),4).AsNumber(),((7,8).AsNumber(),(0,13).AsNumber()).AsNumber()).AsNumber(),(1,1).AsNumber()).AsNumber() };
             yield return new object[] { "[[[[0,7],4],[[7,8],[0,13]]],[1,1]]", ((((0,7).AsNumber(),4).AsNumber(),((7,8).AsNumber(),(0,(6,7).AsNumber()).AsNumber()).AsNumber()).AsNumber(),(1,1).AsNumber()).AsNumber() };
         }
+
+        [Theory]
+        [MemberData(nameof(SumFeeder))]
+        public void SimplifySnailFishNumberCorrectly(string homework, SnailFishNumber expectedResult)
+        {
+            var sut = new SnailFishNumberCalculator(homework);
+            sut.AddNumbers();
+            Assert.Equal(expectedResult, sut.Result);
+        }
+
+        public static IEnumerable<object[]> SumFeeder()
+        {
+            yield return new object[] { "[[[[4,3],4],4],[7,[[8,4],9]]]\n[1,1]", ((((0,7).AsNumber(),4).AsNumber(),((7,8).AsNumber(),(6,0).AsNumber()).AsNumber()).AsNumber(),(8,1).AsNumber()).AsNumber() };
+            yield return new object[] { "[1,1]\n[2,2]\n[3,3]\n[4,4]", ((((1,1).AsNumber(),(2,2).AsNumber()).AsNumber(),(3,3).AsNumber()).AsNumber(),(4,4).AsNumber()).AsNumber() };
+            yield return new object[] { "[1,1]\n[2,2]\n[3,3]\n[4,4]\n[5,5]", ((((3,0).AsNumber(),(5,3).AsNumber()).AsNumber(),(4,4).AsNumber()).AsNumber(),(5,5).AsNumber()).AsNumber() };
+            yield return new object[] { "[[[[1,1],[2,2]],[3,3]],[4,4]]\n[5,5]", ((((3,0).AsNumber(),(5,3).AsNumber()).AsNumber(),(4,4).AsNumber()).AsNumber(),(5,5).AsNumber()).AsNumber() };
+            yield return new object[] { "[1,1]\n[2,2]\n[3,3]\n[4,4]\n[5,5]\n[6,6]", ((((5,0).AsNumber(),(7,4).AsNumber()).AsNumber(),(5,5).AsNumber()).AsNumber(),(6,6).AsNumber()).AsNumber() };
+        }
+
+        /*[Fact]
+        public void SolveFirstSampleHomework()
+        {
+            var sut = new SnailFishNumberCalculator(SAMPLE_HOMEWORK);
+            sut.AddNumbers();
+            Assert.Equal(((((8,7).AsNumber(),(7,7).AsNumber()).AsNumber(),((8,6).AsNumber(),(7,7).AsNumber()).AsNumber()).AsNumber(),(((0,7).AsNumber(),(6,6).AsNumber()).AsNumber(),(8,7).AsNumber()).AsNumber()).AsNumber(), sut.Result);
+
+        }*/
     }
 }
