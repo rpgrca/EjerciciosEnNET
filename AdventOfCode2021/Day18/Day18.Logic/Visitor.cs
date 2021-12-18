@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Day18.Logic
 {
@@ -18,18 +19,29 @@ namespace Day18.Logic
 
     public class NumberExploderVisitor : INumberVisitor
     {
-        private int _level = 0;
+        private int _level;
+        private SnailFishNumber _currentNumber;
+        private SnailFishNumber _parentNumber;
 
         public SnailFishNumber DeepestSnailNumberParent { get; private set; }
         public SnailFishNumber DeepestSnailNumber { get; private set; }
         public int DeepestLevel { get; private set; }
 
+        public NumberExploderVisitor()
+        {
+            _level = 0;
+        }
+
         public void Visit(SnailFishNumber snailFishNumber)
         {
-            if (_level == DeepestLevel)
+            _parentNumber = _currentNumber;
+            _currentNumber = snailFishNumber;
+
+            if (_level > DeepestLevel)
             {
-                DeepestSnailNumberParent = DeepestSnailNumber;
-                DeepestSnailNumber = snailFishNumber;
+                DeepestLevel = _level;
+                DeepestSnailNumberParent = _parentNumber;
+                DeepestSnailNumber = _currentNumber;
             }
         }
 
@@ -55,10 +67,6 @@ namespace Day18.Logic
         public void AddLevel()
         {
             _level++;
-            if (_level > DeepestLevel)
-            {
-                DeepestLevel = _level;
-            }
         }
 
         public void RemoveLevel()
@@ -70,9 +78,6 @@ namespace Day18.Logic
     public class ReducerByExplosionVisitor : INumberVisitor
     {
         private readonly SnailFishNumber _deepestFishNumber;
-        private int _level;
-        private RegularNumber _leftSide;
-        private RegularNumber _rightSide;
 
         public ReducerByExplosionVisitor(SnailFishNumber deepestFishNumber)
         {
@@ -81,12 +86,10 @@ namespace Day18.Logic
 
         public void AddLevel()
         {
-            _level++;
         }
 
         public void RemoveLevel()
         {
-            _level--;
         }
 
         public void Visit(SnailFishNumber snailFishNumber)

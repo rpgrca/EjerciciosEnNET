@@ -11,7 +11,7 @@ namespace Day18.Logic
     public class RegularNumber : Number
     {
         private int _number;
-        private int _order;
+        private readonly int _order;
 
         public RegularNumber(int number, int order = -1)
         {
@@ -21,6 +21,8 @@ namespace Day18.Logic
 
         public override bool Equals(object obj)
         {
+            if (obj is not RegularNumber) return false;
+
             var other = (RegularNumber)obj;
             return _number == other._number;
         }

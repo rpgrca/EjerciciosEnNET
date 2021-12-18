@@ -19,11 +19,11 @@ namespace Day18.UniTests
 
         [Theory]
         [MemberData(nameof(SimpleExpressionFeeder))]
-        public void BeInitializedCorrectly(string homework, SnailFishNumber expectedExpression)
+        public void BeInitializedCorrectly(string homework, SnailFishNumber expectedNumber)
         {
             var sut = new SnailFishNumberCalculator(homework);
             Assert.Collection(sut.Numbers,
-                p1 => Assert.Equal(expectedExpression, p1));
+                p1 => Assert.Equal(expectedNumber, p1));
         }
 
         public static IEnumerable<object[]> SimpleExpressionFeeder()
@@ -52,14 +52,26 @@ namespace Day18.UniTests
             Assert.Equal(((1,2).AsNumber(), ((3,4).AsNumber(),5).AsNumber()).AsNumber(), sut.Result);
         }
 
-        [Fact]
-        public void Test1()
+        [Theory]
+        [MemberData(nameof(ExplodeSampleFeeder))]
+        public void Test1(string number, SnailFishNumber expectedNumber)
         {
-            var parser = new SnailFishNumberParser("[[[[[9,8],1],2],3],4]");
+            var parser = new SnailFishNumberParser(number);
             var value = parser.Value;
 
             var sut = new SnailFishNumberExploder(value);
-            Assert.Equal(((((0,9).AsNumber(),2).AsNumber(),3).AsNumber(),4).AsNumber(), sut.Value);
+            Assert.Equal(expectedNumber, sut.Value);
         }
+
+        public static IEnumerable<object[]> ExplodeSampleFeeder()
+        {
+            yield return new object[] { "[[[[[9,8],1],2],3],4]", ((((0,9).AsNumber(),2).AsNumber(),3).AsNumber(),4).AsNumber() };
+            yield return new object[] { "[7,[6,[5,[4,[3,2]]]]]", (7,(6,(5,(7,0).AsNumber()).AsNumber()).AsNumber()).AsNumber() };
+            yield return new object[] { "[[6,[5,[4,[3,2]]]],1]", ((6,(5,(7,0).AsNumber()).AsNumber()).AsNumber(),3).AsNumber() };
+            yield return new object[] { "[[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]]", ((3,(2,(8,0).AsNumber()).AsNumber()).AsNumber(),(9,(5,(4,(3,2).AsNumber()).AsNumber()).AsNumber()).AsNumber()).AsNumber() };
+            yield return new object[] { "[[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]]", ((3,(2,(8,0).AsNumber()).AsNumber()).AsNumber(),(9,(5,(7,0).AsNumber()).AsNumber()).AsNumber()).AsNumber() };
+        }
+
+
     }
 }
