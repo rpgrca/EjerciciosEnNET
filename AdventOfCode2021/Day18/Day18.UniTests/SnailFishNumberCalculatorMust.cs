@@ -38,10 +38,18 @@ namespace Day18.UniTests
         }
 
         [Fact]
-        public void AddSnailFishNumbersCorrectly()
+        public void HaveResultEqualToInput_WhenNoOperationIsDone()
         {
             var sut = new SnailFishNumberCalculator("[1,2]");
             Assert.Equal((1, 2).AsNumber(), sut.Result);
+        }
+
+        [Fact]
+        public void AddSnailFishNumbersCorrectly()
+        {
+            var sut = new SnailFishNumberCalculator("[1,2]\n[[3,4],5]");
+            sut.AddNumbers();
+            Assert.Equal(((1,2).AsNumber(), ((3,4).AsNumber(),5).AsNumber()).AsNumber(), sut.Result);
         }
     }
 }

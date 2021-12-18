@@ -22,14 +22,21 @@ namespace Day18.Logic
             _homework = homework;
 
             Parse();
+            Result = Numbers[0];
         }
 
         private void Parse()
         {
-            var expression = new SnailFishNumberParser(_homework);
-            Numbers.Add((SnailFishNumber)expression.Value);
+            foreach (var snailNumber in _homework.Split("\n"))
+            {
+                var expression = new SnailFishNumberParser(snailNumber);
+                Numbers.Add((SnailFishNumber)expression.Value);
+            }
+        }
 
-            Result = Numbers[0];
+        public void AddNumbers()
+        {
+            Result = new SnailFishNumber(Numbers[0], Numbers[1]);
         }
     }
 }
