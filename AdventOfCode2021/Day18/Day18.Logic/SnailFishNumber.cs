@@ -1,11 +1,12 @@
 using System.Linq.Expressions;
 using System.Diagnostics;
+using System.Collections.Generic;
+
 namespace Day18.Logic
 {
     public abstract class Number : IVisitable
     {
         public abstract void Accept(INumberVisitor visitor);
-        public abstract Number Clone();
     }
 
     public class RegularNumber : Number
@@ -45,8 +46,6 @@ namespace Day18.Logic
         public bool IsRightOf(RegularNumber number) => _order > 0 && number.IsOrder(_order - 1);
 
         public void ReorderTo(int newOrder) => _order = newOrder;
-
-        public override Number Clone() => new RegularNumber(_number, _order);
     }
 
     [DebuggerDisplay("{ToString()}")]
@@ -57,8 +56,35 @@ namespace Day18.Logic
 
         public SnailFishNumber(Number leftSide, Number rightSide)
         {
-            LeftSide = leftSide.Clone();
-            RightSide = rightSide.Clone();
+            LeftSide = leftSide;
+            RightSide = rightSide;
+        }
+
+        public int GetMagnitude()
+        {
+            var magnitude = 0;
+
+            if (LeftSide is SnailFishNumber snailFishNumber)
+            {
+                magnitude = snailFishNumber.GetMagnitude() * 3;
+            }
+            else
+            {
+                var leftNumber = (RegularNumber)LeftSide;
+                magnitude = leftNumber.Value * 3;
+            }
+
+            if (RightSide is SnailFishNumber snailFishNumber1)
+            {
+                magnitude += snailFishNumber1.GetMagnitude() * 2;
+            }
+            else
+            {
+                var rightNumber = (RegularNumber)RightSide;
+                magnitude += rightNumber.Value * 2;
+            }
+
+            return magnitude;
         }
 
         public override bool Equals(object obj)
@@ -79,7 +105,5 @@ namespace Day18.Logic
 
             visitor.RemoveLevel();
         }
-
-        public override Number Clone() => new SnailFishNumber(LeftSide.Clone(), RightSide.Clone());
     }
 }

@@ -143,5 +143,39 @@ namespace Day18.UniTests
             sut.AddNumbers();
             Assert.Equal(((((6,6).AsNumber(),(7,6).AsNumber()).AsNumber(),((7,7).AsNumber(),(7,0).AsNumber()).AsNumber()).AsNumber(),(((7,7).AsNumber(),(7,7).AsNumber()).AsNumber(),((7,8).AsNumber(),(9,9).AsNumber()).AsNumber()).AsNumber()).AsNumber(), sut.Result);
         }
+
+        [Theory]
+        [InlineData("[9,1]", 29)]
+        [InlineData("[1,9]", 21)]
+        [InlineData("[[9,1],[1,9]]", 129)]
+        [InlineData("[[1,2],[[3,4],5]]", 143)]
+        [InlineData("[[[[0,7],4],[[7,8],[6,0]]],[8,1]]", 1384)]
+        [InlineData("[[[[1,1],[2,2]],[3,3]],[4,4]]", 445)]
+        [InlineData("[[[[3,0],[5,3]],[4,4]],[5,5]]", 791)]
+        [InlineData("[[[[5,0],[7,4]],[5,5]],[6,6]]", 1137)]
+        [InlineData("[[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]", 3488)]
+        public void CalculateResultMagnitudeCorrectly(string number, int expectedMagnitude)
+        {
+            var parser = new SnailFishNumberParser(number);
+            var sut = parser.Value;
+            Assert.Equal(expectedMagnitude, sut.GetMagnitude());
+        }
+
+        [Fact]
+        public void SolveMagnitudeForSecondSampleHomework()
+        {
+            var sut = new SnailFishNumberCalculator(SECOND_SAMPLE_HOMEWORK);
+            sut.AddNumbers();
+            Assert.Equal(4140, sut.Result.GetMagnitude());
+        }
+
+        [Fact]
+        public void SolveFirstPuzzle()
+        {
+            var sut = new SnailFishNumberCalculator(REAL_HOMEWORK);
+            sut.AddNumbers();
+            Assert.Equal(3411, sut.Result.GetMagnitude());
+
+        }
     }
 }

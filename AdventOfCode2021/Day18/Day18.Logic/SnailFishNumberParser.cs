@@ -9,6 +9,7 @@ namespace Day18.Logic
         private int _order;
 
         public SnailFishNumber Value { get; private set; }
+        public int Magnitude { get; private set; }
 
         public SnailFishNumberParser(string snailFishNumber)
         {
