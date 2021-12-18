@@ -1,13 +1,93 @@
+using System;
+
 namespace Day18.Logic
 {
     public interface IVisitable
     {
-        void Accept(NumberVisitor visitor);
+        void Accept(INumberVisitor visitor);
     }
 
-    public class NumberVisitor
+    public interface INumberVisitor
     {
-        private int level = 0;
+        void Visit(SnailFishNumber snailFishNumber);
+        void Visit(RegularNumber regularNumber);
+        void Visit(Number number);
+        void AddLevel();
+        void RemoveLevel();
+    }
+
+    public class NumberExploderVisitor : INumberVisitor
+    {
+        private int _level = 0;
+
+        public SnailFishNumber DeepestSnailNumberParent { get; private set; }
+        public SnailFishNumber DeepestSnailNumber { get; private set; }
+        public int DeepestLevel { get; private set; }
+
+        public void Visit(SnailFishNumber snailFishNumber)
+        {
+            if (_level == DeepestLevel)
+            {
+                DeepestSnailNumberParent = DeepestSnailNumber;
+                DeepestSnailNumber = snailFishNumber;
+            }
+        }
+
+        public void Visit(RegularNumber regularNumber)
+        {
+        }
+
+        public void Visit(Number number)
+        {
+            if (number is SnailFishNumber snailFishNumber)
+            {
+                Visit(snailFishNumber);
+            }
+
+            if (number is RegularNumber regularNumber)
+            {
+                Visit(regularNumber);
+            }
+        }
+
+        public bool MustExplode() => DeepestLevel >= 4;
+
+        public void AddLevel()
+        {
+            _level++;
+            if (_level > DeepestLevel)
+            {
+                DeepestLevel = _level;
+            }
+        }
+
+        public void RemoveLevel()
+        {
+            _level--;
+        }
+    }
+
+    public class ReducerByExplosionVisitor : INumberVisitor
+    {
+        private readonly SnailFishNumber _deepestFishNumber;
+        private int _level;
+        private RegularNumber _leftSide;
+        private RegularNumber _rightSide;
+
+        public ReducerByExplosionVisitor(SnailFishNumber deepestFishNumber)
+        {
+            _deepestFishNumber = deepestFishNumber;
+        }
+
+        public void AddLevel()
+        {
+            _level++;
+        }
+
+        public void RemoveLevel()
+        {
+            _level--;
+        }
 
         public void Visit(SnailFishNumber snailFishNumber)
         {
@@ -15,6 +95,28 @@ namespace Day18.Logic
 
         public void Visit(RegularNumber regularNumber)
         {
+            if (regularNumber.IsLeftOf((RegularNumber)_deepestFishNumber.LeftSide))
+            {
+                regularNumber.Add((RegularNumber)_deepestFishNumber.LeftSide);
+            }
+
+            if (regularNumber.IsRightOf((RegularNumber)_deepestFishNumber.RightSide))
+            {
+                regularNumber.Add((RegularNumber)_deepestFishNumber.RightSide);
+            }
+        }
+
+        public void Visit(Number number)
+        {
+            if (number is SnailFishNumber snailFishNumber)
+            {
+                Visit(snailFishNumber);
+            }
+
+            if (number is RegularNumber regularNumber)
+            {
+                Visit(regularNumber);
+            }
         }
     }
 }

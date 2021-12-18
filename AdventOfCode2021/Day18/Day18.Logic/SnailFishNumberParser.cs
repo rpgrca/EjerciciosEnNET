@@ -6,8 +6,9 @@ namespace Day18.Logic
     {
         private string _leftOver;
         private readonly List<Number> _discoveredNumbers;
+        private int _order;
 
-        public Number Value { get; private set; }
+        public SnailFishNumber Value { get; private set; }
 
         public SnailFishNumberParser(string snailFishNumber)
         {
@@ -19,7 +20,7 @@ namespace Day18.Logic
 
         private void Parse()
         {
-            Value = ParseNumber();
+            Value = (SnailFishNumber)ParseNumber();
         }
 
         private void Consume(char toConsume)
@@ -58,7 +59,7 @@ namespace Day18.Logic
                 index++;
             }
 
-            var number = new RegularNumber(int.Parse(_leftOver[0..index]));
+            var number = new RegularNumber(int.Parse(_leftOver[0..index]), _order++);
             Consume(index);
 
             return number;

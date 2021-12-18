@@ -56,9 +56,10 @@ namespace Day18.UniTests
         public void Test1()
         {
             var parser = new SnailFishNumberParser("[[[[[9,8],1],2],3],4]");
-            var sut = parser.Value;
+            var value = parser.Value;
 
-            Assert.Equal(((((0,9).AsNumber(),2).AsNumber(),3).AsNumber(),4).AsNumber(), sut);
+            var sut = new SnailFishNumberExploder(value);
+            Assert.Equal(((((0,9).AsNumber(),2).AsNumber(),3).AsNumber(),4).AsNumber(), sut.Value);
         }
     }
 }
