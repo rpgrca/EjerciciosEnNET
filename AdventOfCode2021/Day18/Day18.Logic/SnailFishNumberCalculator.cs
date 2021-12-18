@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace Day18.Logic
 {
-
     public class SnailFishNumberCalculator
     {
         private readonly string _homework;
@@ -19,7 +18,6 @@ namespace Day18.Logic
 
             Expressions = new List<SnailFishNumber>();
             _homework = homework;
-
 
             Parse();
         }

@@ -35,4 +35,17 @@ namespace Day18.Logic
             return other._leftSide.Equals(_leftSide) && other._rightSide.Equals(_rightSide);
         }
     }
+
+    public static class SnailFishNumberExtesions
+    {
+        public static RegularNumber AsNumber(this int value) => new(value);
+
+        public static SnailFishNumber AsNumber(this (int Left, int Right) value) => new(value.Left.AsNumber(), value.Right.AsNumber());
+
+        public static SnailFishNumber AsNumber(this (SnailFishNumber Left, int Right) value) => new(value.Left, value.Right.AsNumber());
+
+        public static SnailFishNumber AsNumber(this (int Left, SnailFishNumber Right) value) => new(value.Left.AsNumber(), value.Right);
+
+        public static SnailFishNumber AsNumber(this (SnailFishNumber Left, SnailFishNumber Right) value) => new(value.Left, value.Right);
+    }
 }
