@@ -90,6 +90,7 @@ namespace Day18.UniTests
         {
             yield return new object[] { "[[[[0,7],4],[15,[0,13]]],[1,1]]", ((((0,7).AsNumber(),4).AsNumber(),((7,8).AsNumber(),(0,13).AsNumber()).AsNumber()).AsNumber(),(1,1).AsNumber()).AsNumber() };
             yield return new object[] { "[[[[0,7],4],[[7,8],[0,13]]],[1,1]]", ((((0,7).AsNumber(),4).AsNumber(),((7,8).AsNumber(),(0,(6,7).AsNumber()).AsNumber()).AsNumber()).AsNumber(),(1,1).AsNumber()).AsNumber() };
+            yield return new object[] { "[[[[0,7],[7,7]],[[8,8],[6,7]]],[[[7,6],38],[8,[9,0]]]]", ((((0,7).AsNumber(),(7,7).AsNumber()).AsNumber(),((8,8).AsNumber(),(6,7).AsNumber()).AsNumber()).AsNumber(),(((7,6).AsNumber(),(19,19).AsNumber()).AsNumber(),(8,(9,0).AsNumber()).AsNumber()).AsNumber()).AsNumber() };
         }
 
         [Theory]
@@ -110,13 +111,37 @@ namespace Day18.UniTests
             yield return new object[] { "[1,1]\n[2,2]\n[3,3]\n[4,4]\n[5,5]\n[6,6]", ((((5,0).AsNumber(),(7,4).AsNumber()).AsNumber(),(5,5).AsNumber()).AsNumber(),(6,6).AsNumber()).AsNumber() };
         }
 
-        /*[Fact]
+        [Theory]
+        [InlineData("[[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]]\n[7,[[[3,7],[4,3]],[[6,3],[8,8]]]]", "[[[[4,0],[5,4]],[[7,7],[6,0]]],[[8,[7,7]],[[7,9],[5,0]]]]")]
+        [InlineData("[[[[4,0],[5,4]],[[7,7],[6,0]]],[[8,[7,7]],[[7,9],[5,0]]]]\n[[2,[[0,8],[3,4]]],[[[6,7],1],[7,[1,6]]]]", "[[[[6,7],[6,7]],[[7,7],[0,7]]],[[[8,7],[7,7]],[[8,8],[8,0]]]]")]
+        [InlineData("[[[[6,7],[6,7]],[[7,7],[0,7]]],[[[8,7],[7,7]],[[8,8],[8,0]]]]\n[[[[2,4],7],[6,[0,5]]],[[[6,8],[2,8]],[[2,1],[4,5]]]]", "[[[[7,0],[7,7]],[[7,7],[7,8]]],[[[7,7],[8,8]],[[7,7],[8,7]]]]")]
+        [InlineData("[[[[7,0],[7,7]],[[7,7],[7,8]]],[[[7,7],[8,8]],[[7,7],[8,7]]]]\n[7,[5,[[3,8],[1,4]]]]", "[[[[7,7],[7,8]],[[9,5],[8,7]]],[[[6,8],[0,8]],[[9,9],[9,0]]]]")]
+        [InlineData("[[[[7,7],[7,8]],[[9,5],[8,7]]],[[[6,8],[0,8]],[[9,9],[9,0]]]]\n[[2,[2,2]],[8,[8,1]]]", "[[[[6,6],[6,6]],[[6,0],[6,7]]],[[[7,7],[8,9]],[8,[8,1]]]]")]
+        [InlineData("[[[[6,6],[6,6]],[[6,0],[6,7]]],[[[7,7],[8,9]],[8,[8,1]]]]\n[2,9]", "[[[[6,6],[7,7]],[[0,7],[7,7]]],[[[5,5],[5,6]],9]]")]
+        [InlineData("[[[[6,6],[7,7]],[[0,7],[7,7]]],[[[5,5],[5,6]],9]]\n[1,[[[9,3],9],[[9,0],[0,7]]]]", "[[[[7,8],[6,7]],[[6,8],[0,8]]],[[[7,7],[5,0]],[[5,5],[5,6]]]]")]
+        [InlineData("[[[[7,8],[6,7]],[[6,8],[0,8]]],[[[7,7],[5,0]],[[5,5],[5,6]]]]\n[[[5,[7,4]],7],1]", "[[[[7,7],[7,7]],[[8,7],[8,7]]],[[[7,0],[7,7]],9]]")]
+        [InlineData("[[[[7,7],[7,7]],[[8,7],[8,7]]],[[[7,0],[7,7]],9]]\n[[[[4,2],2],6],[8,7]]", "[[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]")]
+        public void SolveSampleHomework_WhenDoingItStepByStep(string homework, string expectedResult)
+        {
+            var sut = new SnailFishNumberCalculator(homework);
+            sut.AddNumbers();
+            Assert.Equal(expectedResult, sut.Result.ToString());
+        }
+
+        [Fact]
         public void SolveFirstSampleHomework()
         {
             var sut = new SnailFishNumberCalculator(SAMPLE_HOMEWORK);
             sut.AddNumbers();
             Assert.Equal(((((8,7).AsNumber(),(7,7).AsNumber()).AsNumber(),((8,6).AsNumber(),(7,7).AsNumber()).AsNumber()).AsNumber(),(((0,7).AsNumber(),(6,6).AsNumber()).AsNumber(),(8,7).AsNumber()).AsNumber()).AsNumber(), sut.Result);
+        }
 
-        }*/
+        [Fact]
+        public void SolveSecondSampleHomework()
+        {
+            var sut = new SnailFishNumberCalculator(SECOND_SAMPLE_HOMEWORK);
+            sut.AddNumbers();
+            Assert.Equal(((((6,6).AsNumber(),(7,6).AsNumber()).AsNumber(),((7,7).AsNumber(),(7,0).AsNumber()).AsNumber()).AsNumber(),(((7,7).AsNumber(),(7,7).AsNumber()).AsNumber(),((7,8).AsNumber(),(9,9).AsNumber()).AsNumber()).AsNumber()).AsNumber(), sut.Result);
+        }
     }
 }

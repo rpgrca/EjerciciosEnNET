@@ -37,6 +37,7 @@ namespace Day18.Logic
         public void AddNumbers()
         {
             var result = Numbers[0];
+            var loops = 0;
 
             foreach (var operand in Numbers.Skip(1))
             {
@@ -48,6 +49,7 @@ namespace Day18.Logic
 
                 do
                 {
+                    loops++;
                     reduced = false;
 
                     var exploder = new SnailFishNumberExploder(sum);

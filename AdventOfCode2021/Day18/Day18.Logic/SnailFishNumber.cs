@@ -1,10 +1,11 @@
-using System;
+using System.Linq.Expressions;
 using System.Diagnostics;
 namespace Day18.Logic
 {
     public abstract class Number : IVisitable
     {
         public abstract void Accept(INumberVisitor visitor);
+        public abstract Number Clone();
     }
 
     public class RegularNumber : Number
@@ -44,6 +45,8 @@ namespace Day18.Logic
         public bool IsRightOf(RegularNumber number) => _order > 0 && number.IsOrder(_order - 1);
 
         public void ReorderTo(int newOrder) => _order = newOrder;
+
+        public override Number Clone() => new RegularNumber(_number, _order);
     }
 
     [DebuggerDisplay("{ToString()}")]
@@ -54,8 +57,8 @@ namespace Day18.Logic
 
         public SnailFishNumber(Number leftSide, Number rightSide)
         {
-            LeftSide = leftSide;
-            RightSide = rightSide;
+            LeftSide = leftSide.Clone();
+            RightSide = rightSide.Clone();
         }
 
         public override bool Equals(object obj)
@@ -76,5 +79,7 @@ namespace Day18.Logic
 
             visitor.RemoveLevel();
         }
+
+        public override Number Clone() => new SnailFishNumber(LeftSide.Clone(), RightSide.Clone());
     }
 }

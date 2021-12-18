@@ -124,12 +124,11 @@ namespace Day18.Logic
     {
         private RegularNumber _currentNumber;
         private SnailFishNumber _parentNumber;
+        private SnailFishNumber _lastParentNumber;
         public RegularNumber SnailFishNumberToSplit { get; private set; }
-        public SnailFishNumber SnailFishNumberToSplitParent { get; private set; }
 
         public void Visit(SnailFishNumber snailFishNumber)
         {
-            _parentNumber = snailFishNumber;
         }
 
         public void Visit(RegularNumber regularNumber)
@@ -139,7 +138,6 @@ namespace Day18.Logic
             if (_currentNumber.Value >= 10 && SnailFishNumberToSplit is null)
             {
                 SnailFishNumberToSplit = _currentNumber;
-                SnailFishNumberToSplitParent = _parentNumber;
             }
         }
 
@@ -186,6 +184,51 @@ namespace Day18.Logic
         public void Visit(RegularNumber regularNumber)
         {
             regularNumber.ReorderTo(_order++);
+        }
+
+        public void Visit(Number number)
+        {
+            if (number is SnailFishNumber snailFishNumber)
+            {
+                Visit(snailFishNumber);
+            }
+
+            if (number is RegularNumber regularNumber)
+            {
+                Visit(regularNumber);
+            }
+        }
+    }
+
+    public class ReduceBySplittingVisitor : INumberVisitor
+    {
+        private readonly RegularNumber _numberToSplit;
+
+        public SnailFishNumber SnailFishNumberToSplitParent { get; private set; }
+
+        public ReduceBySplittingVisitor(RegularNumber numberToSplit)
+        {
+            _numberToSplit = numberToSplit;
+        }
+
+        public void AddLevel()
+        {
+        }
+
+        public void RemoveLevel()
+        {
+        }
+
+        public void Visit(SnailFishNumber snailFishNumber)
+        {
+            if (snailFishNumber.LeftSide == _numberToSplit || snailFishNumber.RightSide == _numberToSplit)
+            {
+                SnailFishNumberToSplitParent = snailFishNumber;
+            }
+        }
+
+        public void Visit(RegularNumber regularNumber)
+        {
         }
 
         public void Visit(Number number)
