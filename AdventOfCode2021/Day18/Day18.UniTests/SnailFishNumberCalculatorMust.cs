@@ -1,6 +1,7 @@
 using System;
-using Day18.Logic;
+using System.Collections.Generic;
 using Xunit;
+using Day18.Logic;
 
 namespace Day18.UniTests
 {
@@ -17,12 +18,18 @@ namespace Day18.UniTests
         }
 
         [Theory]
-        [InlineData("[1,2]")]
-        public void BeInitializedCorrectly(string homework)
+        [MemberData(nameof(SimpleExpressionFeeder))]
+        public void BeInitializedCorrectly(string homework, SnailFishNumber expectedExpression)
         {
             var sut = new SnailFishNumberCalculator(homework);
             Assert.Collection(sut.Expressions,
-                p1 => Assert.Equal((1, 2), p1));
+                p1 => Assert.Equal(expectedExpression, p1));
+        }
+
+        public static IEnumerable<object[]> SimpleExpressionFeeder()
+        {
+            yield return new object[] { "[1,2]", new SnailFishNumber(new RegularNumber(1), new RegularNumber(2)) };
+            yield return new object[] { "[[1,2],3]", new SnailFishNumber(new SnailFishNumber(new RegularNumber(1), new RegularNumber(2)), new RegularNumber(3)) };
         }
     }
 }
