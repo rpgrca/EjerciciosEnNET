@@ -51,5 +51,14 @@ namespace Day18.UniTests
             sut.AddNumbers();
             Assert.Equal(((1,2).AsNumber(), ((3,4).AsNumber(),5).AsNumber()).AsNumber(), sut.Result);
         }
+
+        [Fact]
+        public void Test1()
+        {
+            var parser = new SnailFishNumberParser("[[[[[9,8],1],2],3],4]");
+            var sut = parser.Value;
+
+            Assert.Equal(((((0,9).AsNumber(),2).AsNumber(),3).AsNumber(),4).AsNumber(), sut);
+        }
     }
 }

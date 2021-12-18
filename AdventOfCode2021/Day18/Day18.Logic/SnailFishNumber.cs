@@ -1,7 +1,9 @@
 namespace Day18.Logic
 {
-    public interface Number
+    public abstract class Number : IVisitable
     {
+        public abstract void Explode(RegularNumber leftSide, RegularNumber rightSide);
+        public abstract void Accept(NumberVisitor visitor);
     }
 
     public class RegularNumber : Number
@@ -16,6 +18,17 @@ namespace Day18.Logic
             var other = (RegularNumber)obj;
             return _number == other._number;
         }
+
+        public override void Explode(RegularNumber leftSide, RegularNumber rightSide)
+        {
+        }
+
+        public void Add(RegularNumber number)
+        {
+            _number += number._number;
+        }
+
+        public override void Accept(NumberVisitor visitor) => visitor.Visit(this);
     }
 
     public class SnailFishNumber : Number
@@ -34,18 +47,13 @@ namespace Day18.Logic
             var other = (SnailFishNumber)obj;
             return other._leftSide.Equals(_leftSide) && other._rightSide.Equals(_rightSide);
         }
-    }
 
-    public static class SnailFishNumberExtesions
-    {
-        public static RegularNumber AsNumber(this int value) => new(value);
+        public override void Explode(RegularNumber leftSide, RegularNumber rightSide)
+        {
+            leftSide.Add((RegularNumber)_leftSide);
+            rightSide.Add((RegularNumber)_rightSide);
+        }
 
-        public static SnailFishNumber AsNumber(this (int Left, int Right) value) => new(value.Left.AsNumber(), value.Right.AsNumber());
-
-        public static SnailFishNumber AsNumber(this (SnailFishNumber Left, int Right) value) => new(value.Left, value.Right.AsNumber());
-
-        public static SnailFishNumber AsNumber(this (int Left, SnailFishNumber Right) value) => new(value.Left.AsNumber(), value.Right);
-
-        public static SnailFishNumber AsNumber(this (SnailFishNumber Left, SnailFishNumber Right) value) => new(value.Left, value.Right);
+        public override void Accept(NumberVisitor visitor) => visitor.Visit(this);
     }
 }
