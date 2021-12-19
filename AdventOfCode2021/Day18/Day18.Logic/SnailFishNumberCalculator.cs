@@ -10,7 +10,7 @@ namespace Day18.Logic
     {
         private readonly string _homework;
 
-        public List<SnailFishNumber> Numbers { get; }
+        private readonly List<SnailFishNumber> _numbers;
         public SnailFishNumber Result { get; private set; }
 
         public SnailFishNumberCalculator(string homework)
@@ -20,11 +20,11 @@ namespace Day18.Logic
                 throw new ArgumentException("Invalid homework");
             }
 
-            Numbers = new List<SnailFishNumber>();
+            _numbers = new List<SnailFishNumber>();
             _homework = homework;
 
             Parse();
-            Result = Numbers[0];
+            Result = _numbers[0];
         }
 
         private void Parse()
@@ -32,16 +32,16 @@ namespace Day18.Logic
             foreach (var snailNumber in _homework.Split("\n"))
             {
                 var expression = new SnailFishNumberParser(snailNumber);
-                Numbers.Add(expression.Value);
+                _numbers.Add(expression.Value);
             }
         }
 
         public void AddNumbers()
         {
-            var result = Numbers[0];
+            var result = _numbers[0];
             var loops = 0;
 
-            foreach (var operand in Numbers.Skip(1))
+            foreach (var operand in _numbers.Skip(1))
             {
                 bool reduced = false;
                 var sum = new SnailFishNumber(result, operand);
@@ -83,16 +83,16 @@ namespace Day18.Logic
             var largestMagnitude = 0;
             SnailFishNumber largestResult = null;
 
-            foreach (var number in Numbers)
+            foreach (var number in _numbers)
             {
-                for (var index = 0; index < Numbers.Count; index++)
+                for (var index = 0; index < _numbers.Count; index++)
                 {
-                    if (number == Numbers[index])
+                    if (number == _numbers[index])
                     {
                         continue;
                     }
 
-                    var calculator = new SnailFishNumberCalculator($"{number}\n{Numbers[index]}");
+                    var calculator = new SnailFishNumberCalculator($"{number}\n{_numbers[index]}");
                     calculator.AddNumbers();
                     var magnitude = calculator.Result.GetMagnitude();
 
