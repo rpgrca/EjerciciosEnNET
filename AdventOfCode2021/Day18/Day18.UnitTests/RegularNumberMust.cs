@@ -13,5 +13,23 @@ namespace Day18.UnitTests
 
             Assert.Equal(value, sut);
         }
+
+        [Fact]
+        public void ReturnFalse_WhenTwoDifferentInstancesHaveDifferentValue()
+        {
+            var value = 5.AsNumber();
+            var sut = 6.AsNumber();
+
+            Assert.NotEqual(value, sut);
+        }
+
+        [Fact]
+        public void ReturnFalse_WhenRegularNumberIsComparedWithSnailFishNumber()
+        {
+            var value = (5, 6).AsNumber();
+            var sut = 6.AsNumber();
+
+            Assert.False(sut.Equals(value));
+        }
     }
 }
