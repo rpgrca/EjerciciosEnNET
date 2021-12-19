@@ -5,63 +5,48 @@ namespace Day18.Logic
 {
     public class SnailFishNumberParser
     {
-        private string _leftOver;
         private readonly List<Number> _discoveredNumbers;
+        private string _leftover;
         private int _order;
 
         public SnailFishNumber Value { get; private set; }
-        public int Magnitude { get; private set; }
 
         public SnailFishNumberParser(string snailFishNumber)
         {
-            _leftOver = snailFishNumber;
+            _leftover = snailFishNumber;
             _discoveredNumbers = new List<Number>();
 
             Parse();
         }
 
-        private void Parse()
-        {
-            Value = (SnailFishNumber)ParseNumber();
-        }
+        private void Parse() => Value = (SnailFishNumber)ParseNumber();
 
-        private void Consume(char toConsume)
-        {
-            if (_leftOver[0] != toConsume)
-            {
-                throw new System.Exception($"Expected {toConsume}");
-            }
+        private void Consume(char _) => _leftover = _leftover[1..];
 
-            _leftOver = _leftOver[1..];
-        }
-
-        private void Consume(int amount)
-        {
-            _leftOver = _leftOver[amount..];
-        }
+        private void Consume(int amount) => _leftover = _leftover[amount..];
 
         private Number ParseNumber()
         {
-            Number leftNumber, rightNumber;
+            Number leftValue, rightValue;
 
-            if (_leftOver[0] == '[')
+            if (_leftover[0] == '[')
             {
                 Consume('[');
-                leftNumber = ParseNumber();
+                leftValue = ParseNumber();
                 Consume(',');
-                rightNumber = ParseNumber();
+                rightValue = ParseNumber();
                 Consume(']');
 
-                return new SnailFishNumber(leftNumber, rightNumber);
+                return new SnailFishNumber(leftValue, rightValue);
             }
 
             var index = 0;
-            while (_leftOver[index] >= '0' && _leftOver[index] <= '9')
+            while (_leftover[index] >= '0' && _leftover[index] <= '9')
             {
                 index++;
             }
 
-            var number = new RegularNumber(int.Parse(_leftOver[0..index]), _order++);
+            var number = new RegularNumber(int.Parse(_leftover[0..index]), _order++);
             Consume(index);
 
             return number;

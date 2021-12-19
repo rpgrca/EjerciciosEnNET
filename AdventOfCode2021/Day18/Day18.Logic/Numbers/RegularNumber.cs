@@ -1,7 +1,9 @@
+using System.Diagnostics;
 using Day18.Logic.Visitors;
 
 namespace Day18.Logic.Numbers
 {
+    [DebuggerDisplay("{ToString()}")]
     public class RegularNumber : Number
     {
         private int _number;
@@ -36,8 +38,6 @@ namespace Day18.Logic.Numbers
 
             return false;
         }
-
-        public override int GetHashCode() => base.GetHashCode();
 
         public override string ToString() => $"{Value}";
     }

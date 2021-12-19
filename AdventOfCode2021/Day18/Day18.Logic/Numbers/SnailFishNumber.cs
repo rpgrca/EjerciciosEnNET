@@ -3,7 +3,6 @@ using Day18.Logic.Visitors;
 
 namespace Day18.Logic.Numbers
 {
-
     [DebuggerDisplay("{ToString()}")]
     public class SnailFishNumber : Number
     {
@@ -42,10 +41,26 @@ namespace Day18.Logic.Numbers
             return magnitude;
         }
 
+        internal void ReplaceSideWith(SnailFishNumber oldSnailFishNumber, RegularNumber regularNumber)
+        {
+            if (LeftSide == oldSnailFishNumber)
+            {
+                LeftSide = regularNumber;
+            }
+            else
+            {
+                RightSide = regularNumber;
+            }
+        }
+
         public override bool Equals(object obj)
         {
-            var other = (SnailFishNumber)obj;
-            return other.LeftSide.Equals(LeftSide) && other.RightSide.Equals(RightSide);
+            if (obj is SnailFishNumber other)
+            {
+                return other.RightSide.Equals(RightSide) && other.LeftSide.Equals(LeftSide);
+            }
+
+            return false;
         }
 
         public override string ToString() => $"[{LeftSide},{RightSide}]";

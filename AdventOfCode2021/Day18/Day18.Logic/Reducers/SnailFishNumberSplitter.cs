@@ -1,17 +1,16 @@
 using System;
 using Day18.Logic.Numbers;
+using Day18.Logic.Reducers;
 using Day18.Logic.Visitors;
 
 namespace Day18.Logic
 {
     public class SnailFishNumberSplitter : IReducer
     {
-        private SnailFishNumber _value;
-        private SnailFishNumber _snailFishNumberToSplitParent;
+        private readonly SnailFishNumber _value;
         private readonly RegularNumber _snailFishNumberToSplit;
         private readonly bool _canReduce;
-
-        public bool CanReduce() => _canReduce;
+        private SnailFishNumber _snailFishNumberToSplitParent;
 
         public SnailFishNumberSplitter(SnailFishNumber value)
         {
@@ -35,22 +34,12 @@ namespace Day18.Logic
                 _snailFishNumberToSplitParent.LeftSide = new SnailFishNumber(
                     new RegularNumber((int)Math.Floor(_snailFishNumberToSplit.Value / 2.0)),
                     new RegularNumber((int)Math.Ceiling(_snailFishNumberToSplit.Value / 2.0)));
-
-                 if (((RegularNumber)((SnailFishNumber)_snailFishNumberToSplitParent.LeftSide).LeftSide).Value + ((RegularNumber)((SnailFishNumber)_snailFishNumberToSplitParent.LeftSide).RightSide).Value != _snailFishNumberToSplit.Value)
-                 {
-                     throw new ArgumentException("invalid split value");
-                 }
             }
             else
             {
                 _snailFishNumberToSplitParent.RightSide = new SnailFishNumber(
                     new RegularNumber((int)Math.Floor(_snailFishNumberToSplit.Value / 2.0)),
                     new RegularNumber((int)Math.Ceiling(_snailFishNumberToSplit.Value / 2.0)));
-
-                 if (((RegularNumber)((SnailFishNumber)_snailFishNumberToSplitParent.RightSide).LeftSide).Value + ((RegularNumber)((SnailFishNumber)_snailFishNumberToSplitParent.RightSide).RightSide).Value != _snailFishNumberToSplit.Value)
-                 {
-                     throw new ArgumentException("invalid split value");
-                 }
             }
 
             var orderVisitor = new ReorderRegularNumberVisitor();
@@ -58,5 +47,7 @@ namespace Day18.Logic
 
             return _value;
         }
+
+        public bool CanReduce() => _canReduce;
     }
 }

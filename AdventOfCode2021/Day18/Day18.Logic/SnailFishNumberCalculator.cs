@@ -3,14 +3,15 @@ using System;
 using System.Collections.Generic;
 using Day18.Logic.Visitors;
 using Day18.Logic.Numbers;
+using Day18.Logic.Reducers;
 
 namespace Day18.Logic
 {
     public class SnailFishNumberCalculator
     {
         private readonly string _homework;
-
         private readonly List<SnailFishNumber> _numbers;
+
         public SnailFishNumber Result { get; private set; }
 
         public SnailFishNumberCalculator(string homework)
@@ -24,6 +25,7 @@ namespace Day18.Logic
             _homework = homework;
 
             Parse();
+
             Result = _numbers[0];
         }
 
@@ -39,7 +41,6 @@ namespace Day18.Logic
         public void AddNumbers()
         {
             var result = _numbers[0];
-            var loops = 0;
 
             foreach (var operand in _numbers.Skip(1))
             {
@@ -51,7 +52,6 @@ namespace Day18.Logic
 
                 do
                 {
-                    loops++;
                     reduced = false;
 
                     var exploder = new SnailFishNumberExploder(sum);
@@ -81,7 +81,6 @@ namespace Day18.Logic
         public void FindLargestMagnitude()
         {
             var largestMagnitude = 0;
-            SnailFishNumber largestResult = null;
 
             foreach (var number in _numbers)
             {
@@ -99,12 +98,10 @@ namespace Day18.Logic
                     if (magnitude > largestMagnitude)
                     {
                         largestMagnitude = magnitude;
-                        largestResult = calculator.Result;
+                        Result = calculator.Result;
                     }
                 }
             }
-
-            Result = largestResult;
         }
     }
 }
