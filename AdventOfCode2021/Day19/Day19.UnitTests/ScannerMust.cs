@@ -57,5 +57,7 @@ namespace Day19.UnitTests
             var sut = new Scanner(data);
             Assert.Equal(6, sut.Beacons.Count);
         }
+
+
     }
 }
