@@ -35,5 +35,43 @@ namespace Day19.Logic
                 Beacons.Add((coordinates[0], coordinates[1], coordinates[2]));
             }
         }
+
+        public void RotateOnZaxis(int degrees)
+        {
+            switch (degrees)
+            {
+                case 90:
+                    break;
+
+                case 180:
+                    var beacons = Beacons.Select(p => (-p.X, -p.Y, p.Z)).ToList();
+                    Beacons.Clear();
+                    Beacons.AddRange(beacons);
+                    break;
+
+                case 270:
+                    break;
+            }
+        }
+
+        public void RotateOnXaxis(int degrees)
+        {
+            List<(int X, int Y, int Z)> beacons;
+            switch (degrees)
+            {
+                case 90:
+                    beacons = Beacons.Select(p => (p.X, p.Z, -p.Y)).ToList();
+                    Beacons.Clear();
+                    Beacons.AddRange(beacons);
+                    break;
+
+                case 270:
+                    beacons = Beacons.Select(p => (p.X, -p.Z, p.Y)).ToList();
+                    Beacons.Clear();
+                    Beacons.AddRange(beacons);
+                    break;
+
+            }
+        }
     }
 }
