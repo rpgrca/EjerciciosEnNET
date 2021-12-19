@@ -59,7 +59,7 @@ namespace Day19.UnitTests
         }
 
         [Fact]
-        public void BeAbleToRotateOnAxisZandXtoMatchNewPosition()
+        public void FindAcombinationForTheSecondEquivalence()
         {
             const string data = @"--- scanner 0 ---
 -1,-1,1
@@ -83,7 +83,7 @@ namespace Day19.UnitTests
         }
 
         [Fact]
-        public void RotateScanner90DegreesClockwiseOnYaxis()
+        public void FindAcombinationForTheThirdEquivalence()
         {
             const string data = @"--- scanner 0 ---
 -1,-1,1
@@ -106,7 +106,7 @@ namespace Day19.UnitTests
         }
 
         [Fact]
-        public void Test1()
+        public void FindAcombinationForTheFourthEquivalence()
         {
             const string data = @"--- scanner 0 ---
 -1,-1,1
@@ -130,7 +130,7 @@ namespace Day19.UnitTests
         }
 
         [Fact]
-        public void Test2()
+        public void FindAcombinationForTheFifthEquivalence()
         {
             const string data = @"--- scanner 0 ---
 -1,-1,1
@@ -154,27 +154,100 @@ namespace Day19.UnitTests
                 p6 => Assert.Equal((0, 7, -8), p6));
         }
 
+        [Fact]
+        public void CalculateEuclideanDistanceBetweenTwoBeaconsCorrectly()
+        {
+            var scanner0 = new Scanner("--- scanner 0 ---\n-618,-824,-621\n-537,-823,-458");
+            var distance0 = scanner0.CalculateDistanceBetweenBeaconsWithIndex(0, 1);
 
+            var scanner1 = new Scanner("--- scanner 1 ---\n686,422,578\n605,423,415");
+            var distance1 = scanner1.CalculateDistanceBetweenBeaconsWithIndex(0, 1);
 
-            /*
-                 z                                       z            
-                 |8                                      |                  (8, 0, 7) => Rotate around Y 90 => (-7, 0, 8)
-                 |                                       |                  (8, 0, 7) => Rotate around Y 270 => (7, 0, -8)
-                 |                                       |  /               (7, 0, -8) => Rotate around X 180 => (7, 0, 8)
-                 |                                       | /                (5, 6, -4) => Rotate around Z 90 => (6, -5, -4)
-          _______0___________ x                  _________/________6_ x     (6, -5, -4) => Rotate around X 270 => (6, 4, -5)
-                 /                                       /                  (6, 4, -5) => Rotate around Z 180 => (-6, -4, -5)
-                /|                                      /|
-               / |                                     4 |
-              7  |                                    /  |  
-             y   |                                   y    -5
+            Assert.Equal(distance0, distance1);
+        }
 
-            1,-1,1
-2,-2,2
-3,-3,3
-2,-1,3
--5,4,-6
--8,0,7";
-8,-7,0*/
+        [Fact]
+        public void CalculateEuclideanDistancesBetweenBothBeaconsInAlist()
+        {
+            var sut = new Scanner("--- scanner 0 ---\n-618,-824,-621\n-537,-823,-458");
+            sut.CalculateDistances();
+            Assert.Collection(sut.Distances,
+                p1 => Assert.Equal(182.01922975334227, p1.Distance));
+        }
+
+        [Fact]
+        public void CalculateEuclideanDistanceBetweenThreeBeaconsInAlist()
+        {
+            var sut = new Scanner("--- scanner 0 ---\n-618,-824,-621\n-537,-823,-458\n-447,-329,318");
+            sut.CalculateDistances();
+            Assert.Collection(sut.Distances,
+                p1 => Assert.Equal(182.01922975334227, p1.Distance),
+                p2 => Assert.Equal(1075.1683589094314, p2.Distance),
+                p3 => Assert.Equal(924.2899977820814, p3.Distance));
+        }
+
+        [Fact]
+        public void Initialize()
+        {
+            const string data = @"--- scanner 0 ---
+404,-588,-901
+528,-643,409
+-838,591,734
+390,-675,-793
+-537,-823,-458
+-485,-357,347
+-345,-311,381
+-661,-816,-575
+-876,649,763
+-618,-824,-621
+553,345,-567
+474,580,667
+-447,-329,318
+-584,868,-557
+544,-627,-890
+564,392,-477
+455,729,728
+-892,524,684
+-689,845,-530
+423,-701,434
+7,-33,-71
+630,319,-379
+443,580,662
+-789,900,-551
+459,-707,401
+
+--- scanner 1 ---
+686,422,578
+605,423,415
+515,917,-361
+-336,658,858
+95,138,22
+-476,619,847
+-340,-569,-846
+567,-361,727
+-460,603,-452
+669,-402,600
+729,430,532
+-500,-761,534
+-322,571,750
+-466,-666,-811
+-429,-592,574
+-355,545,-477
+703,-491,-529
+-328,-685,520
+413,935,-424
+-391,539,-444
+586,-435,557
+-364,-763,-893
+807,-499,-711
+755,-354,-619
+553,889,-390";
+
+            var sut = new NavigationSystem(data);
+            sut.CalculateDistances();
+            sut.FindPossibleIntersectingBeacons();
+
+            Assert.Equal((68,-1246,-43), sut.ScannerPositions[1]);
+        }
     }
 }

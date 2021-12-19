@@ -17,11 +17,15 @@ namespace Day19.UnitTests
             Assert.Equal("Invalid data", exception.Message);
         }
 
-        [Fact]
-        public void CreateBeaconsAccordingToInputData()
+        [Theory]
+        [InlineData(SAMPLE_COORDINATES, 5)]
+        [InlineData(REAL_COORDINATES, 26)]
+        public void CreateBeaconsAccordingToInputData(string coordinates, int expectedScanners)
         {
-            var sut = new NavigationSystem(SAMPLE_COORDINATES);
-            Assert.Equal(4, sut.Scanners.Count);
+            var sut = new NavigationSystem(coordinates);
+            Assert.Equal(expectedScanners, sut.Scanners.Count);
         }
+
+
     }
 }
