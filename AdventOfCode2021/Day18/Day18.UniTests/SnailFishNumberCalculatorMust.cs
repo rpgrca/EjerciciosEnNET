@@ -175,7 +175,22 @@ namespace Day18.UniTests
             var sut = new SnailFishNumberCalculator(REAL_HOMEWORK);
             sut.AddNumbers();
             Assert.Equal(3411, sut.Result.GetMagnitude());
+        }
 
+        [Fact]
+        public void SolveSecondPuzzle_WhenUsingSampleInput()
+        {
+            var sut = new SnailFishNumberCalculator(SECOND_SAMPLE_HOMEWORK);
+            sut.FindLargestMagnitude();
+            Assert.Equal(3993, sut.Result.GetMagnitude());
+        }
+
+        [Fact]
+        public void SolveSecondPuzzle()
+        {
+            var sut = new SnailFishNumberCalculator(REAL_HOMEWORK);
+            sut.FindLargestMagnitude();
+            Assert.Equal(4680, sut.Result.GetMagnitude());
         }
     }
 }

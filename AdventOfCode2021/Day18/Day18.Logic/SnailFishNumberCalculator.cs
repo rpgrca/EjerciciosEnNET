@@ -75,5 +75,34 @@ namespace Day18.Logic
 
             Result = result;
         }
+
+        public void FindLargestMagnitude()
+        {
+            var largestMagnitude = 0;
+            SnailFishNumber largestResult = null;
+
+            foreach (var number in Numbers)
+            {
+                for (var index = 0; index < Numbers.Count; index++)
+                {
+                    if (number == Numbers[index])
+                    {
+                        continue;
+                    }
+
+                    var calculator = new SnailFishNumberCalculator($"{number}\n{Numbers[index]}");
+                    calculator.AddNumbers();
+                    var magnitude = calculator.Result.GetMagnitude();
+
+                    if (magnitude > largestMagnitude)
+                    {
+                        largestMagnitude = magnitude;
+                        largestResult = calculator.Result;
+                    }
+                }
+            }
+
+            Result = largestResult;
+        }
     }
 }
