@@ -79,11 +79,35 @@ namespace Day19.UnitTests
                 p1 => Assert.Equal((2, -1, 3), p1),
                 p1 => Assert.Equal((-5, 4, -6), p1),
                 p2 => Assert.Equal((-8, -7, 0), p2));
+        }
+
+        [Fact]
+        public void RotateScanner()
+        {
+            const string data = @"--- scanner 0 ---
+-1,-1,1
+-2,-2,2
+-3,-3,3
+-2,-3,1
+5,6,-4
+8,0,7";
+
+            var sut = new Scanner(data);
+            sut.RotateOnYaxis(90);
+
+            Assert.Collection(sut.Beacons,
+                p1 => Assert.Equal((-1,-1,-1), p1),
+                p2 => Assert.Equal((-2,-2,-2), p2),
+                p3 => Assert.Equal((-3,-3,-3), p3),
+                p4 => Assert.Equal((-1,-3,-2), p4),
+                p5 => Assert.Equal((4,6,5), p5),
+                p6 => Assert.Equal((-7,0,8), p6));
+        }
 
             /*
                  z                                       z            
-                 |                                       7
-                 |  -7                                   |    
+                 |                                       7                  (8, 0, 7) => Rotate around Y 90 => (-7, 0, 8)
+                 |  -7                                   |                 
                  |  /                                    |  /
                  | /                                     | /
         -8_______0/__________ x                 _________0/________8_ x
@@ -100,6 +124,5 @@ namespace Day19.UnitTests
 -5,4,-6
 -8,0,7";
 8,-7,0*/
-        }
     }
 }

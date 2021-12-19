@@ -73,5 +73,19 @@ namespace Day19.Logic
 
             }
         }
+
+        public void RotateOnYaxis(int degrees)
+        {
+            List<(int X, int Y, int Z)> beacons;
+
+            switch (degrees)
+            {
+                case 90:
+                    beacons = Beacons.Select(p => (-p.Z, p.Y, p.X)).ToList();
+                    Beacons.Clear();
+                    Beacons.AddRange(beacons);
+                    break;
+            }
+        }
     }
 }
