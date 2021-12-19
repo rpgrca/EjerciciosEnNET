@@ -1,4 +1,7 @@
 using System;
+using Day18.Logic.Numbers;
+using Day18.Logic.Visitors;
+
 namespace Day18.Logic
 {
     public class SnailFishNumberSplitter : IReducer

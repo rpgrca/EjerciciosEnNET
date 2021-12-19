@@ -1,3 +1,6 @@
+using Day18.Logic.Numbers;
+using Day18.Logic.Visitors;
+
 namespace Day18.Logic
 {
     public interface IReducer
@@ -33,11 +36,11 @@ namespace Day18.Logic
 
             if (_deepestSnailNumberParent.LeftSide == _deepestSnailNumber)
             {
-                _deepestSnailNumberParent.LeftSide = new RegularNumber(0, -1);
+                _deepestSnailNumberParent.LeftSide = new RegularNumber(0);
             }
             else
             {
-                _deepestSnailNumberParent.RightSide = new RegularNumber(0, -1);
+                _deepestSnailNumberParent.RightSide = new RegularNumber(0);
             }
 
             var visitor = new ReorderRegularNumberVisitor();

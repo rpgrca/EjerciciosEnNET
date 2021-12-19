@@ -1,52 +1,8 @@
-using System.Linq.Expressions;
 using System.Diagnostics;
-using System.Collections.Generic;
+using Day18.Logic.Visitors;
 
-namespace Day18.Logic
+namespace Day18.Logic.Numbers
 {
-    public abstract class Number : IVisitable
-    {
-        public abstract void Accept(INumberVisitor visitor);
-    }
-
-    public class RegularNumber : Number
-    {
-        private int _number;
-        private int _order;
-
-        public int Value => _number;
-
-        public RegularNumber(int number, int order = -1)
-        {
-            _number = number;
-            _order = order;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is not RegularNumber) return false;
-
-            var other = (RegularNumber)obj;
-            return Value == other.Value;
-        }
-
-        public void Add(RegularNumber number)
-        {
-            _number += number.Value;
-        }
-
-        public bool IsOrder(int order) => _order == order;
-
-        public override void Accept(INumberVisitor visitor) => visitor.Visit(this);
-
-        public override string ToString() => $"{Value}";
-
-        public bool IsLeftOf(RegularNumber number) => number.IsOrder(_order + 1);
-
-        public bool IsRightOf(RegularNumber number) => _order > 0 && number.IsOrder(_order - 1);
-
-        public void ReorderTo(int newOrder) => _order = newOrder;
-    }
 
     [DebuggerDisplay("{ToString()}")]
     public class SnailFishNumber : Number
@@ -62,8 +18,7 @@ namespace Day18.Logic
 
         public int GetMagnitude()
         {
-            var magnitude = 0;
-
+            int magnitude;
             if (LeftSide is SnailFishNumber snailFishNumber)
             {
                 magnitude = snailFishNumber.GetMagnitude() * 3;
@@ -105,5 +60,8 @@ namespace Day18.Logic
 
             visitor.RemoveLevel();
         }
+
+        internal bool HasAsSide(RegularNumber numberToSplit) =>
+            LeftSide == numberToSplit || RightSide == numberToSplit;
     }
 }

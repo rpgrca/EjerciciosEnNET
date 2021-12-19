@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Day18.Logic.Numbers;
 
 namespace Day18.Logic
 {

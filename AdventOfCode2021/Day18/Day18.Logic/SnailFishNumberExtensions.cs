@@ -1,3 +1,5 @@
+using Day18.Logic.Numbers;
+
 namespace Day18.Logic
 {
     public static class SnailFishNumberExtensions

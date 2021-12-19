@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System;
 using System.Collections.Generic;
+using Day18.Logic.Visitors;
+using Day18.Logic.Numbers;
 
 namespace Day18.Logic
 {

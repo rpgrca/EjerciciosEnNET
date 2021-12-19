@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Xunit;
 using Day18.Logic;
 using static Day18.UniTests.Constants;
+using Day18.Logic.Numbers;
 
 namespace Day18.UniTests
 {
