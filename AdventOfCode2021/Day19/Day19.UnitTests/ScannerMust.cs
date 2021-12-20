@@ -58,7 +58,7 @@ namespace Day19.UnitTests
             var sut = new Scanner(data);
             Assert.Equal(6, sut.Beacons.Count);
         }
-
+/*
         [Fact]
         public void FindAcombinationForTheSecondEquivalence()
         {
@@ -154,19 +154,7 @@ namespace Day19.UnitTests
                 p5 => Assert.Equal((-6, -4, -5), p5),
                 p6 => Assert.Equal((0, 7, -8), p6));
         }
-
-        [Fact]
-        public void CalculateEuclideanDistanceBetweenTwoBeaconsCorrectly()
-        {
-            var scanner0 = new Scanner("--- scanner 0 ---\n-618,-824,-621\n-537,-823,-458");
-            var distance0 = scanner0.CalculateDistanceBetweenBeaconsWithIndex(0, 1);
-
-            var scanner1 = new Scanner("--- scanner 1 ---\n686,422,578\n605,423,415");
-            var distance1 = scanner1.CalculateDistanceBetweenBeaconsWithIndex(0, 1);
-
-            Assert.Equal(distance0, distance1);
-        }
-
+*/
         [Fact]
         public void CalculateEuclideanDistancesBetweenBothBeaconsInAlist()
         {

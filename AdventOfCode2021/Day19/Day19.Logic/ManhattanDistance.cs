@@ -9,11 +9,11 @@ namespace Day19.Logic
 
         public ManhattanDistance(List<Scanner> scanners)
         {
-            foreach (var firstScanner in scanners.ToArray()[0..^1])
+            for (var first = 0; first < scanners.Count - 1; first++)
             {
-                foreach (var secondScanner in scanners.ToArray()[1..])
+                for (var second = first + 1; second < scanners.Count; second++)
                 {
-                    var distance = CalculateAbsoluteDistance(firstScanner, secondScanner);
+                    var distance = CalculateAbsoluteDistance(scanners[first], scanners[second]);
                     if (distance > Maximum)
                     {
                         Maximum = distance;

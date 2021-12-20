@@ -64,8 +64,7 @@ namespace Day19.Logic
             }
         }
 
-        private int ScannersStillAtOrigin() =>
-            Scanners.Count(p => p.Origin == (0, 0, 0));
+        private int ScannersStillAtOrigin() => Scanners.Count(p => p.IsAtOrigin());
 
         private void MatchScannersForward()
         {
