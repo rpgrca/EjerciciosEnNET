@@ -34,19 +34,9 @@ namespace Day20.Logic
             var lines = _input.Split("\n");
             Algorithm = lines[0];
 
-            for (var index = 0; index < 60; index++)
-            {
-                _image.Add(new string('.', lines[2].Length + 120).ToCharArray());
-            }
-
             foreach (var line in lines[2..])
             {
-                _image.Add((new string('.', 60) + line + new string('.', 60)).ToCharArray());
-            }
-
-            for (var index = 0; index < 60; index++)
-            {
-                _image.Add(new string('.', lines[0].Length + 120).ToCharArray());
+                _image.Add(line.ToCharArray());
             }
 
             ImageWidth = _image[0].Length;
@@ -57,16 +47,11 @@ namespace Day20.Logic
         {
             for (var level = 0; level < levels; level++)
             {
-                var enhancedImage = CreateImage();
+                var enhancedImage = ZoomInImage();
 
-                /*for (var index = 0; index < ImageHeight + 10; index ++)
+                for (var y = 0; y < ImageHeight + 2; y++)
                 {
-                    enhancedImage.Add(new string('.', ImageWidth + 10).ToCharArray());
-                }*/
-
-                for (var y = 0; y < ImageHeight; y++)
-                {
-                    for (var x = 0; x < ImageWidth; x++)
+                    for (var x = 0; x < ImageWidth + 2; x++)
                     {
                         var index = GetSurroundingPixelsFromImage(x, y);
                         enhancedImage[y][x] = EnhancePixel(index);
@@ -78,29 +63,17 @@ namespace Day20.Logic
                 _image.Clear();
                 _image.AddRange(enhancedImage);
 
-                for (var x = 0; x < ImageWidth; x++)
-                {
-                    _image[0][x] = GetInfinitePixel();
-                }
-
-                for (var y = 0; y < ImageHeight; y++)
-                {
-                    _image[y][0] = _image[y][ImageWidth - 1] = GetInfinitePixel();
-                }
-
-                for (var x = 0; x < ImageWidth; x++)
-                {
-                    _image[ImageHeight - 1][x] = GetInfinitePixel();
-                }
+                ImageWidth += 2;
+                ImageHeight += 2;
             }
         }
 
-        private List<char[]> CreateImage()
+        private List<char[]> ZoomInImage()
         {
             var image = new List<char[]>();
-            for (var y = 0; y < ImageHeight; y++)
+            for (var y = 0; y < ImageHeight + 2; y++)
             {
-                image.Add(new string(' ', ImageWidth).ToCharArray());
+                image.Add(new string(GetInfinitePixel(), ImageWidth + 2).ToCharArray());
             }
 
             return image;
@@ -138,7 +111,7 @@ namespace Day20.Logic
 
         private char GetInfinitePixel() => _infinitePixels[4];
 
-        private static (int, int) ConvertToOldImageCoordinates(int x, int y) => (y, x);
+        private static (int, int) ConvertToOldImageCoordinates(int x, int y) => (y - 1, x - 1);
 
         private char EnhancePixel(int index) => Algorithm[index];
 

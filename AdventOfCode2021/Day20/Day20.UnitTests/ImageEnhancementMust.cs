@@ -19,8 +19,8 @@ namespace Day20.UnitTests
         }
 
         [Theory]
-        [InlineData(SAMPLE_INPUT, 125, 125)]
-        [InlineData(REAL_INPUT, 220, 220)]
+        [InlineData(SAMPLE_INPUT, 5, 5)]
+        [InlineData(REAL_INPUT, 100, 100)]
         public void BeInitializedCorrectly(string input, int expectedWidth, int expectedHeight)
         {
             var sut = new ImageEnhancement(input);
