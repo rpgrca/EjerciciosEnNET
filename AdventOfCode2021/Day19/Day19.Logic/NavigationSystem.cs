@@ -347,6 +347,25 @@ namespace Day19.Logic
             throw new ArgumentException("Missing transformation");
         }
 
+        public int GetLargestManhattanDistance()
+        {
+            var maximumDistance = 0;
+
+            for (var index = 0; index < Scanners.Count - 1; index++)
+            {
+                for (var subIndex = index + 1; subIndex < Scanners.Count; subIndex++)
+                {
+                    var distance = Math.Abs(Scanners[index].Origin.X - Scanners[subIndex].Origin.X) + Math.Abs(Scanners[index].Origin.Y - Scanners[subIndex].Origin.Y) + Math.Abs(Scanners[index].Origin.Z - Scanners[subIndex].Origin.Z);
+                    if (distance > maximumDistance)
+                    {
+                        maximumDistance = distance;
+                    }
+                }
+            }
+
+            return maximumDistance;
+        }
+
         private (int X, int Y, int Z) Offset((int X, int Y, int Z) main, (int X, int Y, int Z) other) =>
             (main.X + other.X, main.Y + other.Y, main.Z + other.Z);
 

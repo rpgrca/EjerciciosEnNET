@@ -385,5 +385,16 @@ namespace Day19.UnitTests
             Assert.NotEqual(402, sut.Beacons.Count);
             Assert.Equal(330, sut.Beacons.Count);
         }
+
+        [Fact]
+        public void CalculateManhattanDistance()
+        {
+            var sut = new NavigationSystem(SAMPLE_COORDINATES);
+            sut.CalculateDistances();
+            sut.FindPossibleIntersectingBeacons();
+            sut.ConsolidateBeacons();
+
+            Assert.Equal(3621, sut.GetLargestManhattanDistance());
+        }
     }
 }
