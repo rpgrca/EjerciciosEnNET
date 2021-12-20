@@ -84,13 +84,13 @@ namespace Day19.Logic
                     var possibleHits = Scanners[index].Distances
                         .GroupJoin(Scanners[subIndex].Distances, p => p.Distance, q => q.Distance, (p, q) => new { From = p, To = q })
                         .Where(p => p.To.Any())
-                        .Select(p => ((p.From.From, p.From.To), (p.To.Single().From, p.To.Single().To)))
+                        //.Select(p => ((p.From.From, p.From.To), (p.To.Single().From, p.To.Single().To)))
+                        .SelectMany(p => p.To, (x, y) => ((x.From.From, x.From.To), (y.From, y.To)))
                         .ToList();
 
                     LocateScannerInFirstScannerScope(possibleHits, index, subIndex);
                 }
             }
-
         }
 
         private void LocateScannerInFirstScannerScope(List<(((int X, int Y, int Z) From, (int X, int Y, int Z) To), ((int X, int Y, int Z) From, (int X, int Y, int Z) To))> matches, int index, int subIndex)
@@ -113,8 +113,7 @@ namespace Day19.Logic
                         dictionary[subMatch.Item2.To]++;
                     }
 
-                    var found = dictionary.Single(p => p.Value > 1);
-
+                    var found = dictionary.SingleOrDefault(p => p.Value >= 11); //.Single(p => p.Value > 1);
                     if (found.Value >= 11)
                     {
                         result.Add((match.Item1.From, found.Key));
@@ -133,7 +132,6 @@ namespace Day19.Logic
                 {
                     if (! _scannerPositions.ContainsKey(index))
                     {
-            
                     }
                 }
             }
@@ -151,7 +149,7 @@ namespace Day19.Logic
                 (p => (-p.X,  p.Y, -p.Z), p => ( p.X, -p.Y,  p.Z)),
                 (p => (-p.X, -p.Y,  p.Z), p => ( p.X,  p.Y, -p.Z)),
                 (p => (-p.X, -p.Y, -p.Z), p => ( p.X,  p.Y,  p.Z)),
-                                               
+
                 (p => ( p.X,  p.Z,  p.Y), p => (-p.X, -p.Z, -p.Y)),
                 (p => ( p.X,  p.Z, -p.Y), p => (-p.X, -p.Z,  p.Y)),
                 (p => ( p.X, -p.Z,  p.Y), p => (-p.X,  p.Z, -p.Y)),
@@ -160,7 +158,7 @@ namespace Day19.Logic
                 (p => (-p.X,  p.Z, -p.Y), p => ( p.X, -p.Z,  p.Y)),
                 (p => (-p.X, -p.Z,  p.Y), p => ( p.X,  p.Z, -p.Y)),
                 (p => (-p.X, -p.Z, -p.Y), p => ( p.X,  p.Z,  p.Y)),
-                                               
+
                 (p => ( p.Z,  p.X,  p.Y), p => (-p.Z, -p.X, -p.Y)),
                 (p => ( p.Z,  p.X, -p.Y), p => (-p.Z, -p.X,  p.Y)),
                 (p => ( p.Z, -p.X,  p.Y), p => (-p.Z,  p.X, -p.Y)),
@@ -169,7 +167,7 @@ namespace Day19.Logic
                 (p => (-p.Z,  p.X, -p.Y), p => ( p.Z, -p.X,  p.Y)),
                 (p => (-p.Z, -p.X,  p.Y), p => ( p.Z,  p.X, -p.Y)),
                 (p => (-p.Z, -p.X, -p.Y), p => ( p.Z,  p.X,  p.Y)),
-                                               
+
                 (p => ( p.Y,  p.X,  p.Z), p => (-p.Y, -p.X, -p.Z)),
                 (p => ( p.Y,  p.X, -p.Z), p => (-p.Y, -p.X,  p.Z)),
                 (p => ( p.Y, -p.X,  p.Z), p => (-p.Y,  p.X, -p.Z)),
@@ -178,7 +176,7 @@ namespace Day19.Logic
                 (p => (-p.Y,  p.X, -p.Z), p => ( p.Y, -p.X,  p.Z)),
                 (p => (-p.Y, -p.X,  p.Z), p => ( p.Y,  p.X, -p.Z)),
                 (p => (-p.Y, -p.X, -p.Z), p => ( p.Y,  p.X,  p.Z)),
-                                               
+
                 (p => ( p.Y,  p.Z,  p.X), p => (-p.Y, -p.Z, -p.X)),
                 (p => ( p.Y,  p.Z, -p.X), p => (-p.Y, -p.Z,  p.X)),
                 (p => ( p.Y, -p.Z,  p.X), p => (-p.Y,  p.Z, -p.X)),
@@ -187,7 +185,7 @@ namespace Day19.Logic
                 (p => (-p.Y,  p.Z, -p.X), p => ( p.Y, -p.Z,  p.X)),
                 (p => (-p.Y, -p.Z,  p.X), p => ( p.Y,  p.Z, -p.X)),
                 (p => (-p.Y, -p.Z, -p.X), p => ( p.Y,  p.Z,  p.X)),
-                                               
+
                 (p => ( p.Z,  p.Y,  p.X), p => (-p.Z, -p.Y, -p.X)),
                 (p => ( p.Z,  p.Y, -p.X), p => (-p.Z, -p.Y,  p.X)),
                 (p => ( p.Z, -p.Y,  p.X), p => (-p.Z,  p.Y, -p.X)),
@@ -300,40 +298,17 @@ namespace Day19.Logic
             throw new ArgumentException("Missing transformation");
         }
 
-        private (int X, int Y, int Z) Offset((int X, int Y, int Z) main, (int X, int Y, int Z) other)
-        {
-            return (main.X + other.X, main.Y + other.Y, main.Z + other.Z);
-        }
-
-        private static (int X, int Y, int Z) GetNewPositionAfterRotatingOnXaxis((int X, int Y, int Z) beacon, int degrees) =>
-            degrees switch
-            {
-                0 => (beacon.X, beacon.Y, beacon.Z),
-                90 => (beacon.X, beacon.Z, -beacon.Y),
-                180 => (beacon.X, -beacon.Y, -beacon.Z),
-                _ => (beacon.X, -beacon.Z, beacon.Y)
-            };
-
-        private static (int X, int Y, int Z) GetNewPositionAfterRotatingOnYaxis((int X, int Y, int Z) beacon, int degrees) =>
-            degrees switch
-            {
-                0 => (beacon.X, beacon.Y, beacon.Z),
-                90 => (-beacon.Z, beacon.Y, beacon.X),
-                180 => (-beacon.X, beacon.Y, -beacon.Z),
-                _ => (beacon.Z, beacon.Y, -beacon.X),
-            };
-
-        private static (int X, int Y, int Z) GetNewPositionAfterRotatingOnZaxis((int X, int Y, int Z) beacon, int degrees) =>
-            degrees switch
-            {
-                0 => (beacon.X, beacon.Y, beacon.Z),
-                90 => (beacon.Y, -beacon.X, beacon.Z),
-                180 => (-beacon.X, -beacon.Y, beacon.Z),
-                _ => (-beacon.Y, beacon.X, beacon.Z)
-            };
+        private (int X, int Y, int Z) Offset((int X, int Y, int Z) main, (int X, int Y, int Z) other) =>
+            (main.X + other.X, main.Y + other.Y, main.Z + other.Z);
 
         public void ConsolidateBeacons()
         {
+            var stillAtOrigin = Scanners.Count(p => p.Origin == (0, 0, 0));
+            if (stillAtOrigin != 1)
+            {
+                throw new ArgumentException($"Must reduce even more: {stillAtOrigin} still pointing at origin");
+            }
+
             Beacons.AddRange(Scanners.SelectMany(p => p.Beacons).Distinct());
         }
     }

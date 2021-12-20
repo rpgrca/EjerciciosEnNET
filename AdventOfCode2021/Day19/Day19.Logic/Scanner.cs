@@ -13,6 +13,7 @@ namespace Day19.Logic
         public int Id { get; private set; }
         public List<(int X, int Y, int Z)> Beacons { get; }
         public List<(double Distance, (int X, int Y, int Z) From, (int X, int Y, int Z) To)> Distances { get; set; }
+        public (int X, int Y, int Z) Origin => _origin;
 
         public Scanner(string data)
         {

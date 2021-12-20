@@ -373,5 +373,17 @@ namespace Day19.UnitTests
 
             Assert.Equal(79, sut.Beacons.Count);
         }
+
+        [Fact]
+        public void SolveFirstPuzzle()
+        {
+            var sut = new NavigationSystem(REAL_COORDINATES);
+            sut.CalculateDistances();
+            sut.FindPossibleIntersectingBeacons();
+            sut.ConsolidateBeacons();
+
+            Assert.NotEqual(402, sut.Beacons.Count);
+            Assert.True(sut.Beacons.Count < 402);
+        }
     }
 }
