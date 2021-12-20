@@ -72,5 +72,14 @@ namespace Day20.UnitTests
 
             Assert.Equal(35, sut.CountLitPixels());
         }
+
+        [Fact]
+        public void SolveFirstPuzzle()
+        {
+            var sut = new ImageEnhancement(REAL_INPUT);
+            sut.Enhance(2);
+
+            Assert.Equal(5483, sut.CountLitPixels());
+        }
     }
 }
