@@ -25,7 +25,5 @@ namespace Day19.UnitTests
             var sut = new NavigationSystem(coordinates);
             Assert.Equal(expectedScanners, sut.Scanners.Count);
         }
-
-
     }
 }

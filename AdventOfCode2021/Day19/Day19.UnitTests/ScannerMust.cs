@@ -248,7 +248,7 @@ namespace Day19.UnitTests
             sut.CalculateDistances();
             sut.FindPossibleIntersectingBeacons();
 
-            Assert.Collection(sut.ScannerPositions,
+            Assert.Collection(sut.GetScannerPositions(),
                 p1 => Assert.Equal((0, 0, 0), p1),
                 p2 => Assert.Equal((68,-1246,-43), p2));
         }
@@ -342,7 +342,7 @@ namespace Day19.UnitTests
             sut.CalculateDistances();
             sut.FindPossibleIntersectingBeacons();
 
-            Assert.Collection(sut.ScannerPositions,
+            Assert.Collection(sut.GetScannerPositions(),
                 p1 => Assert.Equal((0, 0, 0), p1),
                 p2 => Assert.Equal((68,-1246,-43), p2),
                 p3 => Assert.Equal((-20,-1133,1061), p3));
@@ -355,7 +355,7 @@ namespace Day19.UnitTests
             sut.CalculateDistances();
             sut.FindPossibleIntersectingBeacons();
 
-            Assert.Collection(sut.ScannerPositions,
+            Assert.Collection(sut.GetScannerPositions(),
                 p0 => Assert.Equal((0, 0, 0), p0),
                 p1 => Assert.Equal((68,-1246,-43), p1),
                 p2 => Assert.Equal((1105,-1205,1229), p2),
@@ -394,7 +394,7 @@ namespace Day19.UnitTests
             sut.FindPossibleIntersectingBeacons();
             sut.ConsolidateBeacons();
 
-            Assert.Equal(3621, sut.GetLargestManhattanDistance());
+            Assert.Equal(3621, sut.GetLargestManhattanDistanceBetweenScanners());
         }
 
         [Fact]
@@ -405,8 +405,7 @@ namespace Day19.UnitTests
             sut.FindPossibleIntersectingBeacons();
             sut.ConsolidateBeacons();
 
-            Assert.Equal(9634, sut.GetLargestManhattanDistance());
+            Assert.Equal(9634, sut.GetLargestManhattanDistanceBetweenScanners());
         }
-
     }
 }
