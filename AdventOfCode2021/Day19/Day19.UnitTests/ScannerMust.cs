@@ -383,7 +383,7 @@ namespace Day19.UnitTests
             sut.ConsolidateBeacons();
 
             Assert.NotEqual(402, sut.Beacons.Count);
-            Assert.True(sut.Beacons.Count < 402);
+            Assert.Equal(330, sut.Beacons.Count);
         }
     }
 }

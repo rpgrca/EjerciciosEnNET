@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using System.Linq;
 using System;
 using System.Collections.Generic;
@@ -77,15 +76,59 @@ namespace Day19.Logic
                 }
             }
 
+
             for (var index = Scanners.Count - 1; index > 0; index--)
             {
-                for (var subIndex = Scanners.Count - 2; subIndex >= 0; subIndex--)
+                for (var subIndex = index - 1; subIndex >= 0; subIndex--)
                 {
                     var possibleHits = Scanners[index].Distances
                         .GroupJoin(Scanners[subIndex].Distances, p => p.Distance, q => q.Distance, (p, q) => new { From = p, To = q })
                         .Where(p => p.To.Any())
                         //.Select(p => ((p.From.From, p.From.To), (p.To.Single().From, p.To.Single().To)))
                         .SelectMany(p => p.To, (x, y) => ((x.From.From, x.From.To), (y.From, y.To)))
+                        .ToList();
+
+                    LocateScannerInFirstScannerScope(possibleHits, index, subIndex);
+                }
+            }
+
+            for (var index = 0; index < Scanners.Count - 1; index++)
+            {
+                for (var subIndex = index + 1; subIndex < Scanners.Count; subIndex++)
+                {
+                    var possibleHits = Scanners[index].Distances
+                        .GroupJoin(Scanners[subIndex].Distances, p => p.Distance, q => q.Distance, (p, q) => new { From = p, To = q })
+                        .Where(p => p.To.Any())
+                        .Select(p => ((p.From.From, p.From.To), (p.To.Single().From, p.To.Single().To)))
+                        .ToList();
+
+                    LocateScannerInFirstScannerScope(possibleHits, index, subIndex);
+                }
+            }
+
+            for (var index = Scanners.Count - 1; index > 0; index--)
+            {
+                for (var subIndex = index - 1; subIndex >= 0; subIndex--)
+                {
+                    var possibleHits = Scanners[index].Distances
+                        .GroupJoin(Scanners[subIndex].Distances, p => p.Distance, q => q.Distance, (p, q) => new { From = p, To = q })
+                        .Where(p => p.To.Any())
+                        //.Select(p => ((p.From.From, p.From.To), (p.To.Single().From, p.To.Single().To)))
+                        .SelectMany(p => p.To, (x, y) => ((x.From.From, x.From.To), (y.From, y.To)))
+                        .ToList();
+
+                    LocateScannerInFirstScannerScope(possibleHits, index, subIndex);
+                }
+            }
+
+            for (var index = 0; index < Scanners.Count - 1; index++)
+            {
+                for (var subIndex = index + 1; subIndex < Scanners.Count; subIndex++)
+                {
+                    var possibleHits = Scanners[index].Distances
+                        .GroupJoin(Scanners[subIndex].Distances, p => p.Distance, q => q.Distance, (p, q) => new { From = p, To = q })
+                        .Where(p => p.To.Any())
+                        .Select(p => ((p.From.From, p.From.To), (p.To.Single().From, p.To.Single().To)))
                         .ToList();
 
                     LocateScannerInFirstScannerScope(possibleHits, index, subIndex);
@@ -113,9 +156,9 @@ namespace Day19.Logic
                         dictionary[subMatch.Item2.To]++;
                     }
 
-                    var found = dictionary.SingleOrDefault(p => p.Value >= 11); //.Single(p => p.Value > 1);
-                    if (found.Value >= 11)
+                    if (dictionary.Any(p => p.Value > 1))
                     {
+                        var found = dictionary.Single(p => p.Value > 1);
                         result.Add((match.Item1.From, found.Key));
                         list.Add(match.Item1.From);
                     }
@@ -124,6 +167,11 @@ namespace Day19.Logic
 
             if (result.Count >= 11)
             {
+                if (! _scannerPositions.ContainsKey(index))
+                {
+                    return;
+                }
+
                 if (! _scannerPositions.ContainsKey(subIndex))
                 {
                     GuessOriginFrom(result, index, subIndex);
@@ -132,6 +180,7 @@ namespace Day19.Logic
                 {
                     if (! _scannerPositions.ContainsKey(index))
                     {
+                        Console.WriteLine($"{subIndex} is already processed butt {index} not");
                     }
                 }
             }
