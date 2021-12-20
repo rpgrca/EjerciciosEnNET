@@ -44,21 +44,15 @@ namespace Day11.Logic
             }
         }
 
-        public int GetOctopusEnergyLevelAt(int x, int y)
-        {
-            return _map[(y * _width) + x];
-        }
+        public int GetOctopusEnergyLevelAt(int x, int y) => _map[(y * _width) + x];
 
         public void Step(int steps)
         {
             while (steps-- > 0)
             {
-                for (var y = 0; y < _height; y++)
+                for (var x = 0; x < _width * _height; x++)
                 {
-                    for (var x = 0; x < _width; x++)
-                    {
-                        _map[(y * _width) + x]++;
-                    }
+                    _map[x]++;
                 }
 
                 for (var y = 0; y < _height; y++)
@@ -69,14 +63,11 @@ namespace Day11.Logic
                     }
                 }
 
-                for (var y = 0; y < _height; y++)
+                for (var x = 0; x < _width * _height; x++)
                 {
-                    for (var x = 0; x < _width; x++)
+                    if (_map[x] == -1)
                     {
-                        if (_map[(y * _width) + x] == -1)
-                        {
-                            _map[(y * _width) + x] = 0;
-                        }
+                        _map[x] = 0;
                     }
                 }
             }
@@ -84,16 +75,19 @@ namespace Day11.Logic
 
         private void TryFlash(int x, int y)
         {
-            if (_map[(y * _width) + x] > 9)
+            int index;
+
+            index = (y * _width) + x;
+            if (_map[index] > 9)
             {
-                _map[(y * _width) + x] = -1;
+                _map[index] = -1;
                 FlashCount++;
 
                 if (x > 0)
                 {
-                    if (_map[(y * _width) + x - 1] != -1)
+                    if (_map[index - 1] != -1)
                     {
-                        _map[(y * _width) + x - 1]++;
+                        _map[index - 1]++;
                         TryFlash(x - 1, y);
                     }
 
@@ -143,22 +137,18 @@ namespace Day11.Logic
                     }
                 }
 
-                if (y > 0)
+                index = ((y - 1) * _width) + x;
+                if (y > 0 && _map[index] != -1)
                 {
-                    if (_map[(y - 1) * _width + x] != -1)
-                    {
-                        _map[(y - 1) * _width + x]++;
-                        TryFlash(x, y - 1);
-                    }
+                    _map[index]++;
+                    TryFlash(x, y - 1);
                 }
 
-                if (y < _height - 1)
+                index = ((y + 1) * _width) + x;
+                if (y < _height - 1 && _map[index] != -1)
                 {
-                    if (_map[(y + 1) * _width + x] != -1)
-                    {
-                        _map[(y + 1) * _width + x]++;
-                        TryFlash(x, y + 1);
-                    }
+                    _map[index]++;
+                    TryFlash(x, y + 1);
                 }
             }
         }

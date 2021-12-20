@@ -23,7 +23,6 @@ namespace Day20.Logic
 
             _input = input;
             _image = new List<char[]>();
-
             _infinitePixels = new char[] { '.', '.', '.', '.', '.', '.', '.', '.', '.' };
 
             Parse();
@@ -47,7 +46,7 @@ namespace Day20.Logic
         {
             for (var level = 0; level < levels; level++)
             {
-                var enhancedImage = ZoomInImage();
+                var enhancedImage = new BlankCanvas(_image, GetInfinitePixel()).Value;
 
                 for (var y = 0; y < ImageHeight + 2; y++)
                 {
@@ -59,46 +58,35 @@ namespace Day20.Logic
                 }
 
                 UpdateInfinitePixel();
-
-                _image.Clear();
-                _image.AddRange(enhancedImage);
-
-                ImageWidth += 2;
-                ImageHeight += 2;
+                CopyImageFrom(enhancedImage);
+                UpdateImageSize();
             }
         }
 
-        private List<char[]> ZoomInImage()
-        {
-            var image = new List<char[]>();
-            for (var y = 0; y < ImageHeight + 2; y++)
-            {
-                image.Add(new string(GetInfinitePixel(), ImageWidth + 2).ToCharArray());
-            }
-
-            return image;
-        }
+        private char GetInfinitePixel() => _infinitePixels[4];
 
         private int GetSurroundingPixelsFromImage(int x, int y)
         {
             var enhancedPixel = string.Empty;
 
-            foreach (var pixel in new[] { (y-1, x-1), (y-1, x), (y-1, x+1), (y, x-1), (y, x), (y, x+1), (y+1, x-1), (y+1, x), (y+1, x+1) })
+            foreach (var pixel in GetSurroundingPixelCoordinatesFor(x, y))
             {
-                var (oldX, oldY) = ConvertToOldImageCoordinates(pixel.Item1, pixel.Item2);
+                var (oldX, oldY) = ConvertToOldImageCoordinates(pixel);
 
                 if (oldX >= 0 && oldX < ImageWidth && oldY >= 0 && oldY < ImageHeight)
                 {
-                    enhancedPixel += _image[oldY][oldX] == '.' ? "0" : "1";
+                    enhancedPixel += ConvertPixelToNumber(_image[oldY][oldX]);
                 }
                 else
                 {
-                    enhancedPixel += GetInfinitePixel() == '.' ? "0" : "1";
+                    enhancedPixel += ConvertPixelToNumber(GetInfinitePixel());
                 }
             }
 
             return Convert.ToInt32(enhancedPixel, 2);
         }
+
+        private char EnhancePixel(int index) => Algorithm[index];
 
         private void UpdateInfinitePixel()
         {
@@ -106,20 +94,41 @@ namespace Day20.Logic
             _infinitePixels = new string(pixel, 9).ToCharArray();
         }
 
+        private void CopyImageFrom(List<char[]> newImage)
+        {
+            _image.Clear();
+            _image.AddRange(newImage);
+        }
+
+        private void UpdateImageSize()
+        {
+            ImageWidth += 2;
+            ImageHeight += 2;
+        }
+
+        private static IEnumerable<(int X, int Y)> GetSurroundingPixelCoordinatesFor(int x, int y) => new[]
+            {
+                (y - 1, x - 1),
+                (y - 1, x),
+                (y - 1, x + 1),
+                (y, x - 1),
+                (y, x),
+                (y, x + 1),
+                (y + 1, x - 1),
+                (y + 1, x),
+                (y + 1, x + 1)
+            };
+
+        private static (int, int) ConvertToOldImageCoordinates((int X, int Y) pixel) =>
+            (pixel.Y - 1, pixel.X - 1);
+
+        private static char ConvertPixelToNumber(char pixel) => pixel == '.' ? '0' : '1';
+
         private int GetSurroundingPixelsFromInfiniteCanvas() =>
             Convert.ToInt32(new string(_infinitePixels.Select(p => p == '.'? '0' : '1').ToArray()), 2);
 
-        private char GetInfinitePixel() => _infinitePixels[4];
-
-        private static (int, int) ConvertToOldImageCoordinates(int x, int y) => (y - 1, x - 1);
-
-        private char EnhancePixel(int index) => Algorithm[index];
-
         public string GetOutputImage() => string.Join('\n', _image.Select(p => new string(p)));
 
-        public int CountLitPixels()
-        {
-            return _image.Sum(p => p.Count(q => q == '#'));
-        }
+        public int CountLitPixels() => _image.Sum(p => p.Count(q => q == '#'));
     }
 }

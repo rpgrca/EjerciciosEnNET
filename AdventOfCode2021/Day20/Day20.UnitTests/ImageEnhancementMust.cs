@@ -1,4 +1,3 @@
-using System.Net.Mime;
 using System;
 using Xunit;
 using Day20.Logic;
@@ -35,15 +34,13 @@ namespace Day20.UnitTests
             var sut = new ImageEnhancement(SAMPLE_INPUT);
             sut.Enhance(1);
 
-            var image = sut.GetOutputImage();
-
             Assert.Equal(@".##.##.
 #..#.#.
 ##.#..#
 ####..#
 .#..##.
 ..##..#
-...#.#.", image);
+...#.#.", sut.GetOutputImage());
         }
 
         [Fact]
@@ -52,7 +49,6 @@ namespace Day20.UnitTests
             var sut = new ImageEnhancement(SAMPLE_INPUT);
             sut.Enhance(2);
 
-            var image = sut.GetOutputImage();
             Assert.Equal(@".......#.
 .#..#.#..
 #.#...###
@@ -61,7 +57,7 @@ namespace Day20.UnitTests
 .#.#####.
 ..#.#####
 ...##.##.
-....###..", image);
+....###..", sut.GetOutputImage());
         }
 
         [Fact]
@@ -88,7 +84,7 @@ namespace Day20.UnitTests
             var sut = new ImageEnhancement(SAMPLE_INPUT);
             sut.Enhance(50);
 
-            Assert.Equal(3351, sut.CountLitPixels() );
+            Assert.Equal(3351, sut.CountLitPixels());
         }
 
         [Fact]
