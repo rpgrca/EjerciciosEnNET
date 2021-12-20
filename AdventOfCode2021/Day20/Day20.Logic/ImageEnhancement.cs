@@ -8,7 +8,7 @@ namespace Day20.Logic
     {
         private readonly string _input;
         private readonly List<char[]> _image;
-        private char _infinitePixel;
+        private char[] _infinitePixels;
 
         public int ImageWidth { get; private set; }
         public int ImageHeight { get; private set; }
@@ -23,7 +23,8 @@ namespace Day20.Logic
 
             _input = input;
             _image = new List<char[]>();
-            _infinitePixel = '.';
+
+            _infinitePixels = new char[] { '.', '.', '.', '.', '.', '.', '.', '.', '.' };
 
             Parse();
         }
@@ -67,29 +68,29 @@ namespace Day20.Logic
                 {
                     for (var x = 0; x < ImageWidth; x++)
                     {
-                        var index = GetSurroundingPixelsFromlImage(x, y);
+                        var index = GetSurroundingPixelsFromImage(x, y);
                         enhancedImage[y][x] = EnhancePixel(index);
                     }
                 }
 
-                _infinitePixel = EnhancePixel(GetSurroundingPixelsFromlImage(2, 2));
+                UpdateInfinitePixel();
 
                 _image.Clear();
                 _image.AddRange(enhancedImage);
 
                 for (var x = 0; x < ImageWidth; x++)
                 {
-                    _image[0][x] = _infinitePixel;
+                    _image[0][x] = GetInfinitePixel();
                 }
 
                 for (var y = 0; y < ImageHeight; y++)
                 {
-                    _image[y][0] = _image[y][ImageWidth - 1] = _infinitePixel;
+                    _image[y][0] = _image[y][ImageWidth - 1] = GetInfinitePixel();
                 }
 
                 for (var x = 0; x < ImageWidth; x++)
                 {
-                    _image[ImageHeight - 1][x] = _infinitePixel;
+                    _image[ImageHeight - 1][x] = GetInfinitePixel();
                 }
             }
         }
@@ -105,15 +106,7 @@ namespace Day20.Logic
             return image;
         }
 
-        /*
-                 .....
-         ...  →  .....
-         .#.     ..#..
-         ###     .###.
-                 .....
-        */
-
-        private int GetSurroundingPixelsFromlImage(int x, int y)
+        private int GetSurroundingPixelsFromImage(int x, int y)
         {
             var enhancedPixel = string.Empty;
 
@@ -127,12 +120,23 @@ namespace Day20.Logic
                 }
                 else
                 {
-                    enhancedPixel += _infinitePixel == '.' ? "0" : "1";
+                    enhancedPixel += GetInfinitePixel() == '.' ? "0" : "1";
                 }
             }
 
             return Convert.ToInt32(enhancedPixel, 2);
         }
+
+        private void UpdateInfinitePixel()
+        {
+            var pixel = EnhancePixel(GetSurroundingPixelsFromInfiniteCanvas());
+            _infinitePixels = new string(pixel, 9).ToCharArray();
+        }
+
+        private int GetSurroundingPixelsFromInfiniteCanvas() =>
+            Convert.ToInt32(new string(_infinitePixels.Select(p => p == '.'? '0' : '1').ToArray()), 2);
+
+        private char GetInfinitePixel() => _infinitePixels[4];
 
         private static (int, int) ConvertToOldImageCoordinates(int x, int y) => (y, x);
 
