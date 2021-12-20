@@ -19,8 +19,8 @@ namespace Day20.UnitTests
         }
 
         [Theory]
-        [InlineData(SAMPLE_INPUT, 5, 5)]
-        [InlineData(REAL_INPUT, 100, 100)]
+        [InlineData(SAMPLE_INPUT, 125, 125)]
+        [InlineData(REAL_INPUT, 220, 220)]
         public void BeInitializedCorrectly(string input, int expectedWidth, int expectedHeight)
         {
             var sut = new ImageEnhancement(input);
@@ -65,7 +65,7 @@ namespace Day20.UnitTests
         }
 
         [Fact]
-        public void CountLitPixelsInImage()
+        public void CountLitPixelsInSampleImage_WhenEnhancingTwice()
         {
             var sut = new ImageEnhancement(SAMPLE_INPUT);
             sut.Enhance(2);
@@ -80,6 +80,24 @@ namespace Day20.UnitTests
             sut.Enhance(2);
 
             Assert.Equal(5483, sut.CountLitPixels());
+        }
+
+        [Fact]
+        public void CountLitPixelsInSampleImage_WhenEnhancing50Times()
+        {
+            var sut = new ImageEnhancement(SAMPLE_INPUT);
+            sut.Enhance(50);
+
+            Assert.Equal(3351, sut.CountLitPixels() );
+        }
+
+        [Fact]
+        public void SolveSecondPuzzle()
+        {
+            var sut = new ImageEnhancement(REAL_INPUT);
+            sut.Enhance(50);
+
+            Assert.Equal(18732, sut.CountLitPixels());
         }
     }
 }
