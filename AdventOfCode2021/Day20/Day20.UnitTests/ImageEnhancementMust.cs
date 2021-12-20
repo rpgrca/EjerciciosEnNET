@@ -1,3 +1,4 @@
+using System.Net.Mime;
 using System;
 using Xunit;
 using Day20.Logic;
@@ -26,6 +27,23 @@ namespace Day20.UnitTests
             Assert.Equal(512, sut.Algorithm.Length);
             Assert.Equal(expectedWidth, sut.ImageWidth);
             Assert.Equal(expectedHeight, sut.ImageHeight);
+        }
+
+        [Fact]
+        public void Test1()
+        {
+            var sut = new ImageEnhancement(SAMPLE_INPUT);
+            sut.Enhance(1);
+
+            var image = sut.GetOutputImage();
+
+            Assert.Equal(@".##.##.
+#..#.#.
+##.#..#
+####..#
+.#..##.
+..##..#
+...#.#.", image);
         }
     }
 }
