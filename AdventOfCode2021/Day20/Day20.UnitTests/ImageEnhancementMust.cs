@@ -63,5 +63,14 @@ namespace Day20.UnitTests
 ...##.##.
 ....###..", image);
         }
+
+        [Fact]
+        public void CountLitPixelsInImage()
+        {
+            var sut = new ImageEnhancement(SAMPLE_INPUT);
+            sut.Enhance(2);
+
+            Assert.Equal(35, sut.CountLitPixels());
+        }
     }
 }

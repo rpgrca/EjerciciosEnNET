@@ -102,5 +102,12 @@ namespace Day20.Logic
         private char EnhancePixel(int index) => Algorithm[index];
 
         public string GetOutputImage() => string.Join('\n', _image.Select(p => new string(p)));
+
+        public int CountLitPixels()
+        {
+            return _image.Sum(p => p.Count(q => q == '#'));
+        }
+
+
     }
 }
