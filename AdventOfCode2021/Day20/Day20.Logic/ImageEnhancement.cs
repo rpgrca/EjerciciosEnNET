@@ -43,24 +43,30 @@ namespace Day20.Logic
         public void Enhance(int levels)
         {
             var enhancedImage = new List<char[]>();
-            for (var index = 0; index < ImageHeight + 2; index ++)
-            {
-                enhancedImage.Add(new string('.', ImageWidth + 2).ToCharArray());
-            }
 
-            for (var y = 0; y < ImageHeight + 2; y++)
+            for (var level = 0; level < levels; level++)
             {
-                for (var x = 0; x < ImageWidth + 2; x++)
+                enhancedImage.Clear();
+
+                for (var index = 0; index < ImageHeight + 2; index ++)
                 {
-                    var index = GetSurroundingPixelsFromlImage(x, y);
-                    enhancedImage[y][x] = EnhancePixel(index);
+                    enhancedImage.Add(new string('.', ImageWidth + 2).ToCharArray());
                 }
-            }
 
-            _image.Clear();
-            _image.AddRange(enhancedImage);
-            ImageHeight += 2;
-            ImageWidth += 2;
+                for (var y = 0; y < ImageHeight + 2; y++)
+                {
+                    for (var x = 0; x < ImageWidth + 2; x++)
+                    {
+                        var index = GetSurroundingPixelsFromlImage(x, y);
+                        enhancedImage[y][x] = EnhancePixel(index);
+                    }
+                }
+
+                _image.Clear();
+                _image.AddRange(enhancedImage);
+                ImageHeight += 2;
+                ImageWidth += 2;
+            }
         }
 
         /*

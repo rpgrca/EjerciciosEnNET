@@ -30,7 +30,7 @@ namespace Day20.UnitTests
         }
 
         [Fact]
-        public void Test1()
+        public void EnhanceImageCorrectly_WhenOneEnhancementIsApplied()
         {
             var sut = new ImageEnhancement(SAMPLE_INPUT);
             sut.Enhance(1);
@@ -44,6 +44,24 @@ namespace Day20.UnitTests
 .#..##.
 ..##..#
 ...#.#.", image);
+        }
+
+        [Fact]
+        public void EnhanceImageCorrectly_WhenTwoEnhancementsAreApplied()
+        {
+            var sut = new ImageEnhancement(SAMPLE_INPUT);
+            sut.Enhance(2);
+
+            var image = sut.GetOutputImage();
+            Assert.Equal(@".......#.
+.#..#.#..
+#.#...###
+#...##.#.
+#.....#.#
+.#.#####.
+..#.#####
+...##.##.
+....###..", image);
         }
     }
 }
