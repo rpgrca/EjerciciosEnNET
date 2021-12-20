@@ -1,6 +1,7 @@
 using System;
 using Xunit;
 using Day19.Logic;
+using static Day19.UnitTests.Constants;
 
 namespace Day19.UnitTests
 {
@@ -345,6 +346,21 @@ namespace Day19.UnitTests
                 p1 => Assert.Equal((0, 0, 0), p1),
                 p2 => Assert.Equal((68,-1246,-43), p2),
                 p3 => Assert.Equal((-20,-1133,1061), p3));
+        }
+
+        [Fact]
+        public void LocateAllScanners()
+        {
+            var sut = new NavigationSystem(SAMPLE_COORDINATES);
+            sut.CalculateDistances();
+            sut.FindPossibleIntersectingBeacons();
+
+            Assert.Collection(sut.ScannerPositions,
+                p0 => Assert.Equal((0, 0, 0), p0),
+                p1 => Assert.Equal((68,-1246,-43), p1),
+                p3 => Assert.Equal((-92,-2380,-20), p3),
+                p4 => Assert.Equal((-20,-1133,1061), p4),
+                p2 => Assert.Equal((1105,-1205,1229), p2));
         }
     }
 }

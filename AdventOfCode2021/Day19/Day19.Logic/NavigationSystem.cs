@@ -8,9 +8,10 @@ namespace Day19.Logic
     public class NavigationSystem
     {
         private readonly string _data;
+        private readonly Dictionary<int, (int X, int Y, int Z)> _scannerPositions;
 
         public List<Scanner> Scanners { get; set; }
-        public List<(int X, int Y, int Z)> ScannerPositions { get; }
+        public List<(int X, int Y, int Z)> ScannerPositions => _scannerPositions.Values.ToList();
 
         public NavigationSystem(string data)
         {
@@ -21,9 +22,9 @@ namespace Day19.Logic
 
             _data = data;
             Scanners = new List<Scanner>();
-            ScannerPositions = new List<(int X, int Y, int Z)>
+            _scannerPositions = new Dictionary<int, (int X, int Y, int Z)>
             {
-                (0, 0, 0)
+                { 0, (0, 0, 0 ) }
             };
 
             Parse();
@@ -69,12 +70,27 @@ namespace Day19.Logic
                         .Select(p => ((p.From.From, p.From.To), (p.To.Single().From, p.To.Single().To)))
                         .ToList();
 
-                    LocateScannerInFirstScannerScope(possibleHits);
+                    LocateScannerInFirstScannerScope(possibleHits, index, subIndex);
                 }
             }
+
+            for (var index = Scanners.Count - 1; index > 0; index--)
+            {
+                for (var subIndex = Scanners.Count - 2; subIndex >= 0; subIndex--)
+                {
+                    var possibleHits = Scanners[index].Distances
+                        .GroupJoin(Scanners[subIndex].Distances, p => p.Distance, q => q.Distance, (p, q) => new { From = p, To = q })
+                        .Where(p => p.To.Any())
+                        .Select(p => ((p.From.From, p.From.To), (p.To.Single().From, p.To.Single().To)))
+                        .ToList();
+
+                    LocateScannerInFirstScannerScope(possibleHits, index, subIndex);
+                }
+            }
+
         }
 
-        private void LocateScannerInFirstScannerScope(List<(((int X, int Y, int Z) From, (int X, int Y, int Z) To), ((int X, int Y, int Z) From, (int X, int Y, int Z) To))> matches)
+        private void LocateScannerInFirstScannerScope(List<(((int X, int Y, int Z) From, (int X, int Y, int Z) To), ((int X, int Y, int Z) From, (int X, int Y, int Z) To))> matches, int index, int subIndex)
         {
             var list = new List<(int X, int Y, int Z)>();
             var result = new List<((int X, int Y, int Z) Main, (int X, int Y, int Z) Other)>();
@@ -106,11 +122,21 @@ namespace Day19.Logic
 
             if (result.Count >= 11)
             {
-                GuessOriginFrom(result);
+                if (! _scannerPositions.ContainsKey(subIndex))
+                {
+                    GuessOriginFrom(result, index, subIndex);
+                }
+                else
+                {
+                    if (! _scannerPositions.ContainsKey(index))
+                    {
+            
+                    }
+                }
             }
         }
 
-        private void GuessOriginFrom(List<((int X, int Y, int Z) Main, (int X, int Y, int Z) Other)> beacons)
+        private void GuessOriginFrom(List<((int X, int Y, int Z) Main, (int X, int Y, int Z) Other)> beacons, int index, int subIndex)
         {
             foreach (var rotation in new List<(Func<(int X, int Y, int Z), (int X, int Y, int Z)>, Func<(int X, int Y, int Z), (int X, int Y, int Z)>)>()
             {
@@ -262,8 +288,8 @@ namespace Day19.Logic
                 var origins = beacons.GroupBy(p => Offset(p.Main, rotation.Item1(p.Other))).Distinct().ToList();
                 if (origins.Count == 1)
                 {
-                    Scanners[ScannerPositions.Count].SetOriginTo(origins[0].Key, x => Offset(origins[0].Key, rotation.Item2(x)));
-                    ScannerPositions.Add(origins[0].Key);
+                    Scanners[subIndex].SetOriginTo(origins[0].Key, x => Offset(origins[0].Key, rotation.Item2(x)));
+                    _scannerPositions.Add(subIndex, origins[0].Key);
                     return;
                 }
             }
