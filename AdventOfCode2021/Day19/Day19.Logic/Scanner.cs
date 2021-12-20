@@ -6,6 +6,7 @@ namespace Day19.Logic
 {
     public class Scanner
     {
+        private (int X, int Y, int Z) _origin;
         private readonly string _data;
         private readonly List<List<(int X, int Y, int Z)>> _rotations;
 
@@ -118,6 +119,16 @@ namespace Day19.Logic
             };
         }
 
+        public void SetOriginTo((int X, int Y, int Z) origin, Func<(int X, int Y, int Z), (int X, int Y, int Z)> callback)
+        {
+            _origin = origin;
+            var beacons = Beacons.ConvertAll(p => callback(p));
+            Beacons.Clear();
+            Beacons.AddRange(beacons);
+
+            CalculateDistances();
+        }
+
         public double CalculateDistanceBetweenBeaconsWithIndex(int firstBeacon, int secondBeacon)
         {
             var p = Beacons[firstBeacon];
@@ -132,6 +143,8 @@ namespace Day19.Logic
 
         public void CalculateDistances()
         {
+            Distances.Clear();
+
             for (var index = 0; index < Beacons.Count - 1; index++)
             {
                 for (var subIndex = index + 1; subIndex < Beacons.Count; subIndex++)
