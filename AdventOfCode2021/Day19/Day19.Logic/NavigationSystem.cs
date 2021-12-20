@@ -11,7 +11,9 @@ namespace Day19.Logic
         private readonly Dictionary<int, (int X, int Y, int Z)> _scannerPositions;
 
         public List<Scanner> Scanners { get; set; }
-        public List<(int X, int Y, int Z)> ScannerPositions => _scannerPositions.Values.ToList();
+        public List<(int X, int Y, int Z)> ScannerPositions => _scannerPositions.OrderBy(p => p.Key).Select(p => p.Value).ToList();
+
+        public List<(int X, int Y, int Z)> Beacons { get; }
 
         public NavigationSystem(string data)
         {
@@ -26,6 +28,7 @@ namespace Day19.Logic
             {
                 { 0, (0, 0, 0 ) }
             };
+            Beacons = new List<(int X, int Y, int Z)>();
 
             Parse();
         }
@@ -329,6 +332,9 @@ namespace Day19.Logic
                 _ => (-beacon.Y, beacon.X, beacon.Z)
             };
 
-
+        public void ConsolidateBeacons()
+        {
+            Beacons.AddRange(Scanners.SelectMany(p => p.Beacons).Distinct());
+        }
     }
 }

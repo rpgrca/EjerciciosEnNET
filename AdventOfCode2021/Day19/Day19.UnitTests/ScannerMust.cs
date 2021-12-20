@@ -358,9 +358,20 @@ namespace Day19.UnitTests
             Assert.Collection(sut.ScannerPositions,
                 p0 => Assert.Equal((0, 0, 0), p0),
                 p1 => Assert.Equal((68,-1246,-43), p1),
+                p2 => Assert.Equal((1105,-1205,1229), p2),
                 p3 => Assert.Equal((-92,-2380,-20), p3),
-                p4 => Assert.Equal((-20,-1133,1061), p4),
-                p2 => Assert.Equal((1105,-1205,1229), p2));
+                p4 => Assert.Equal((-20,-1133,1061), p4));
+        }
+
+        [Fact]
+        public void LocateAllBeacons()
+        {
+            var sut = new NavigationSystem(SAMPLE_COORDINATES);
+            sut.CalculateDistances();
+            sut.FindPossibleIntersectingBeacons();
+            sut.ConsolidateBeacons();
+
+            Assert.Equal(79, sut.Beacons.Count);
         }
     }
 }
