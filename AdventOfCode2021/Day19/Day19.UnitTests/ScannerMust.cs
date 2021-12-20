@@ -396,5 +396,17 @@ namespace Day19.UnitTests
 
             Assert.Equal(3621, sut.GetLargestManhattanDistance());
         }
+
+        [Fact]
+        public void SolveSecondPuzzle()
+        {
+            var sut = new NavigationSystem(REAL_COORDINATES);
+            sut.CalculateDistances();
+            sut.FindPossibleIntersectingBeacons();
+            sut.ConsolidateBeacons();
+
+            Assert.Equal(9634, sut.GetLargestManhattanDistance());
+        }
+
     }
 }
