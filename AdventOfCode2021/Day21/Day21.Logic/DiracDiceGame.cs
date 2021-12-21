@@ -27,7 +27,8 @@ namespace Day21.Logic
         public void ThrowDice()
         {
             var currentThrow = ThrowDiceWith(100) + ThrowDiceWith(100) + ThrowDiceWith(100);
-            _players[_currentPlayer] += currentThrow;
+            var newPosition = _players[_currentPlayer] + currentThrow;
+            _players[_currentPlayer] = newPosition > 10 ? newPosition % 10 : newPosition;
             _scores[_currentPlayer] += _players[_currentPlayer];
 
             NextPlayer();

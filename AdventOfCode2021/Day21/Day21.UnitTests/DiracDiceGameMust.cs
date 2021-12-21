@@ -28,13 +28,70 @@ namespace Day21.UnitTests
         }
 
         [Fact]
-        public void UpdatePlayerPosition_WhenThrowingAdice()
+        public void UpdatePlayerPositionCorrectly_AfterOneRound()
         {
             var sut = new DiracDiceGame(4, 8);
 
             sut.ThrowDice();
+            sut.ThrowDice();
             Assert.True(sut.IsPlayerAt(0, 10));
             Assert.Equal(10, sut.GetScoreFor(0));
+            Assert.True(sut.IsPlayerAt(1, 3));
+            Assert.Equal(3, sut.GetScoreFor(1));
+        }
+
+        [Fact]
+        public void UpdatePlayerPositionCorrectly_AfterTwoRounds()
+        {
+            var sut = new DiracDiceGame(4, 8);
+
+            sut.ThrowDice();
+            sut.ThrowDice();
+            sut.ThrowDice();
+            sut.ThrowDice();
+
+            Assert.True(sut.IsPlayerAt(0, 4));
+            Assert.Equal(14, sut.GetScoreFor(0));
+            Assert.True(sut.IsPlayerAt(1, 6));
+            Assert.Equal(9, sut.GetScoreFor(1));
+        }
+
+        [Fact]
+        public void UpdatePlayerPositionCorrectly_AfterThreeRounds()
+        {
+            var sut = new DiracDiceGame(4, 8);
+
+            sut.ThrowDice();
+            sut.ThrowDice();
+            sut.ThrowDice();
+            sut.ThrowDice();
+            sut.ThrowDice();
+            sut.ThrowDice();
+
+            Assert.True(sut.IsPlayerAt(0, 6));
+            Assert.Equal(20, sut.GetScoreFor(0));
+            Assert.True(sut.IsPlayerAt(1, 7));
+            Assert.Equal(16, sut.GetScoreFor(1));
+        }
+
+        [Fact]
+        public void UpdatePlayerPositionCorrectly_AfterFourRounds()
+        {
+            var sut = new DiracDiceGame(4, 8);
+
+            sut.ThrowDice();
+            sut.ThrowDice();
+            sut.ThrowDice();
+            sut.ThrowDice();
+            sut.ThrowDice();
+            sut.ThrowDice();
+            sut.ThrowDice();
+            sut.ThrowDice();
+
+            Assert.True(sut.IsPlayerAt(0, 6));
+            Assert.Equal(26, sut.GetScoreFor(0));
+            Assert.True(sut.IsPlayerAt(1, 6));
+            Assert.Equal(22, sut.GetScoreFor(1));
         }
     }
 }
