@@ -10,6 +10,7 @@ namespace Day21.Logic
         private int _currentPlayer;
         private Dictionary<int, long> _xyz;
         private readonly List<int> _positionsWithUniverses;
+        private readonly long[] _universesWonByPlayer = { 0, 0 };
 
         public DiracDiceRealGame(int player1position, int player2position)
         {
@@ -81,23 +82,52 @@ namespace Day21.Logic
                     {
                         var newPosition = (position1 + diceThrow.Roll) switch
                         {
-                            var x when x >= 0 && x <= 10 => x,
-                            11 => 1,
-                            12 => 2,
-                            13 => 3
+                            var x when x >= 1 && x <= 10 => x,
+                            var x when x >= 11 => x % 10
                         };
 
-                        var newPosition1 = position1 + newPosition;
-                        var newScore1 = score1 + newPosition1;
-                        xyz.TryAdd(GetKey(newPosition1, position2, newScore1, score2), 0);
-                        xyz[GetKey(newPosition1, position2, newScore1, score2)] += value + diceThrow.Universes;
+                        var newScore1 = score1 + newPosition;
+                        if (newScore1 < 21)
+                        {
+                            xyz.TryAdd(GetKey(newPosition, position2, newScore1, score2), 0);
 
-                        TotalUniverses += diceThrow.Universes;
+                            var universes = value * diceThrow.Universes;
+                            xyz[GetKey(newPosition, position2, newScore1, score2)] += universes;
+                        }
+                        else
+                        {
+                            _universesWonByPlayer[0] += value * diceThrow.Universes;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var diceThrow in throws)
+                    {
+                        var newPosition = (position2 + diceThrow.Roll) switch
+                        {
+                            var x when x >= 1 && x <= 10 => x,
+                            var x when x >= 11 => x % 10
+                        };
+
+                        var newScore2 = score2 + newPosition;
+                        if (newScore2 < 21)
+                        {
+                            xyz.TryAdd(GetKey(position1, newPosition, score1, newScore2), 0);
+
+                            var universes = value * diceThrow.Universes;
+                            xyz[GetKey(position1, newPosition, score1, newScore2)] += universes;
+                        }
+                        else
+                        {
+                            _universesWonByPlayer[1] += value * diceThrow.Universes;
+                        }
                     }
                 }
             }
 
             _xyz = xyz;
+            TotalUniverses = _xyz.Sum(p => p.Value);
 
             NextPlayer();
         }
@@ -109,6 +139,19 @@ namespace Day21.Logic
             new() { (3, 1), (4, 3), (5, 6), (6, 7), (7, 6), (8, 3), (9, 1) };
 
         private void NextPlayer() => _currentPlayer = (_currentPlayer + 1) % 2;
+
+        public void PlayGame()
+        {
+            while (_xyz.Count > 0)
+            {
+                ThrowDice();
+            }
+        }
+
+        public long UniversesWonByPlayer(int player)
+        {
+            return _universesWonByPlayer[player];
+        }
 
         /*
 

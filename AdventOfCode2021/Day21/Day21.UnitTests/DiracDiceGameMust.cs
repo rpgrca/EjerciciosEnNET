@@ -147,12 +147,40 @@ namespace Day21.UnitTests
         }
 
         [Fact]
-        public void ThrowDiceCorrectly()
+        public void CalculateCorrectly_WhenFirstPlayerThrowsDice()
         {
             var sut = new DiracDiceRealGame(4, 8);
             sut.ThrowDice();
 
             Assert.Equal(27, sut.TotalUniverses);
+            Assert.Equal(1, sut.UniversesWithPlayersAtPositionWithScore(7, 8, 7, 0));
+            Assert.Equal(3, sut.UniversesWithPlayersAtPositionWithScore(8, 8, 8, 0));
+            Assert.Equal(6, sut.UniversesWithPlayersAtPositionWithScore(9, 8, 9, 0));
+            Assert.Equal(7, sut.UniversesWithPlayersAtPositionWithScore(10, 8, 10, 0));
+            Assert.Equal(6, sut.UniversesWithPlayersAtPositionWithScore(1, 8, 1, 0));
+            Assert.Equal(3, sut.UniversesWithPlayersAtPositionWithScore(2, 8, 2, 0));
+            Assert.Equal(1, sut.UniversesWithPlayersAtPositionWithScore(3, 8, 3, 0));
+        }
+
+        [Fact]
+        public void CalculateCorrectly_WhenSecondPlayerThrowsDice()
+        {
+            var sut = new DiracDiceRealGame(4, 8);
+            sut.ThrowDice();
+            sut.ThrowDice();
+
+            Assert.Equal(729, sut.TotalUniverses);
+            Assert.Equal(1, sut.UniversesWithPlayersAtPositionWithScore(7, 1, 7, 1));
+        }
+
+        [Fact]
+        public void PlayArealDiracGameToTheEnd()
+        {
+            var sut = new DiracDiceRealGame(4, 8);
+            sut.PlayGame();
+
+            Assert.Equal(444356092776315, sut.UniversesWonByPlayer(0));
+            Assert.Equal(341960390180808, sut.UniversesWonByPlayer(1));
         }
     }
 }
