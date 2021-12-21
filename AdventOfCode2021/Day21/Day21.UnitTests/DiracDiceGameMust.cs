@@ -93,5 +93,46 @@ namespace Day21.UnitTests
             Assert.True(sut.IsPlayerAt(1, 6));
             Assert.Equal(22, sut.GetScoreFor(1));
         }
+
+        [Fact]
+        public void UpdatePlayerPositionCorrectly_After16Rounds()
+        {
+            var sut = new DiracDiceGame(4, 8);
+
+            sut.ThrowDice();
+            sut.ThrowDice();
+            sut.ThrowDice();
+            sut.ThrowDice();
+            sut.ThrowDice();
+            sut.ThrowDice();
+            sut.ThrowDice();
+            sut.ThrowDice();
+            sut.ThrowDice();
+            sut.ThrowDice();
+            sut.ThrowDice();
+
+            Assert.True(sut.IsPlayerAt(0, 10));
+            Assert.Equal(40, sut.GetScoreFor(0));
+            Assert.True(sut.IsPlayerAt(1, 3));
+            Assert.Equal(25, sut.GetScoreFor(1));
+        }
+
+        [Fact]
+        public void PlayFullGameUntilReaching1000Points()
+        {
+            var sut = new DiracDiceGame(4, 8);
+            sut.PlayGame();
+
+            Assert.Equal(739785, sut.NumberOfDiceThrowsTimesLoserScore);
+        }
+
+        [Fact]
+        public void SolveFirstPuzzle()
+        {
+            var sut = new DiracDiceGame(10, 8);
+            sut.PlayGame();
+
+            Assert.Equal(752247, sut.NumberOfDiceThrowsTimesLoserScore);
+        }
     }
 }
