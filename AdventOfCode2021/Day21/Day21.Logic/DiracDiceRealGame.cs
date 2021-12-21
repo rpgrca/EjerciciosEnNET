@@ -8,37 +8,37 @@ namespace Day21.Logic
     {
         public long TotalUniverses { get; private set; }
         private int _currentPlayer;
-        private readonly Dictionary<int, Dictionary<int, long>> _xyz;
+        private Dictionary<int, long> _xyz;
+        private readonly List<int> _positionsWithUniverses;
 
         public DiracDiceRealGame(int player1position, int player2position)
         {
             ValidatePlayerPosition(player1position);
             ValidatePlayerPosition(player2position);
 
-            TotalUniverses = 1;
+            _positionsWithUniverses = new List<int>();
 
-            _xyz = new Dictionary<int, Dictionary<int, long>>();
-
+            _xyz = new Dictionary<int, long>();
             for (var position1 = 1; position1 <= 10; position1++)
             {
                 for (var position2 = 1; position2 <= 10; position2++)
                 {
-                    _xyz.Add(GetKey(position1, position2), new Dictionary<int, long>());
-
                     for (var score1 = 0; score1 <= 21; score1++)
                     {
                         for (var score2 = 0; score2 <= 21; score2++)
                         {
-                            _xyz[GetKey(position1, position2)].Add(GetKey(score1, score2), 0);
+                            _xyz.Add(GetKey(position1, position2, score1, score2), 0);
                         }
                     }
                 }
             }
 
-            _xyz[GetKey(player1position, player2position)][GetKey(0, 0)]++;
+            TotalUniverses = 0;
+            _xyz[GetKey(player1position, player2position, 0, 0)]++;
         }
 
-        private static int GetKey(int player1, int player2) => player1 << 8 | player2;
+        private static int GetKey(int player1, int player2, int score1, int score2) =>
+            player1 << 24 | player2 << 16 | score1 << 8 | score2;
 
         private static void ValidatePlayerPosition(int position)
         {
@@ -56,30 +56,54 @@ namespace Day21.Logic
             }
         }
 
-        public long UniversesWithPlayersAtPosition(int position1, int position2)
+        public long UniversesWithPlayersAtPositionWithScore(int position1, int position2, int score1, int score2)
         {
             ValidatePlayerPosition(position1);
             ValidatePlayerPosition(position2);
 
-            var sum = 0L;
-            foreach (var score in _xyz[GetKey(position1, position2)])
+            return _xyz[GetKey(position1, position2, score1, score2)];
+        }
+
+        public void ThrowDice()
+        {
+            var throws = TripleThrow();
+
+            var xyz = new Dictionary<int, long>();
+            foreach (var (key, value) in _xyz.Where(p => p.Value > 0))
             {
-                sum += score.Value;
+                var (position1, position2, score1, score2) = SplitKey(key);
+                ValidatePlayerPosition(position1);
+                ValidatePlayerPosition(position2);
+
+                if (_currentPlayer == 0)
+                {
+                    foreach (var diceThrow in throws)
+                    {
+                        var newPosition = (position1 + diceThrow.Roll) switch
+                        {
+                            var x when x >= 0 && x <= 10 => x,
+                            11 => 1,
+                            12 => 2,
+                            13 => 3
+                        };
+
+                        var newPosition1 = position1 + newPosition;
+                        var newScore1 = score1 + newPosition1;
+                        xyz.TryAdd(GetKey(newPosition1, position2, newScore1, score2), 0);
+                        xyz[GetKey(newPosition1, position2, newScore1, score2)] += value + diceThrow.Universes;
+
+                        TotalUniverses += diceThrow.Universes;
+                    }
+                }
             }
 
-            return sum;
+            _xyz = xyz;
+
+            NextPlayer();
         }
 
-        private static int ExtractPositionFromKeyForPlayer(int key, int player)
-        {
-            ValidatePlayer(player);
-            return (player == 0) ? key & 0xff : key >> 8;
-        }
-
-        public long UniversesWithPlayersWithScores(int scorePlayer1, int scorePlayer2) => _xyz
-                .Select(p => p.Value)
-                .Select(p => p[GetKey(scorePlayer1, scorePlayer2)])
-                .Sum(p => p);
+        private static (int, int, int, int) SplitKey(int key) =>
+            (key >> 24, (key >> 16) & 0xff, (key >> 8) & 0xff, key & 0xff);
 
         private static List<(int Roll, long Universes)> TripleThrow() =>
             new() { (3, 1), (4, 3), (5, 6), (6, 7), (7, 6), (8, 3), (9, 1) };
@@ -112,6 +136,5 @@ namespace Day21.Logic
              8 = 3
              9 = 1
 */
-
     }
 }

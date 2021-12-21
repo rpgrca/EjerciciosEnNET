@@ -142,12 +142,10 @@ namespace Day21.UnitTests
         public void BeInitializedCorrectly()
         {
             var sut = new DiracDiceRealGame(4, 8);
-            Assert.Equal(1, sut.TotalUniverses);
-
-            Assert.Equal(1, sut.UniversesWithPlayersWithScores(0, 0));
-            Assert.Equal(1, sut.UniversesWithPlayersAtPosition(4, 8));
+            Assert.Equal(0, sut.TotalUniverses);
+            Assert.Equal(1, sut.UniversesWithPlayersAtPositionWithScore(4, 8, 0, 0));
         }
-/*
+
         [Fact]
         public void ThrowDiceCorrectly()
         {
@@ -155,14 +153,6 @@ namespace Day21.UnitTests
             sut.ThrowDice();
 
             Assert.Equal(27, sut.TotalUniverses);
-            Assert.Equal(0, sut.UniversesWithPlayersWithScores(0, 0));
-            Assert.Equal(1, sut.UniversesWithPlayersWithScores(3, 0));
-            Assert.Equal(3, sut.UniversesWithPlayersWithScores(4, 0));
-            Assert.Equal(6, sut.UniversesWithPlayersWithScores(5, 0));
-            Assert.Equal(7, sut.UniversesWithPlayersWithScores(6, 0));
-            Assert.Equal(6, sut.UniversesWithPlayersWithScores(7, 0));
-            Assert.Equal(3, sut.UniversesWithPlayersWithScores(8, 0));
-            Assert.Equal(1, sut.UniversesWithPlayersWithScores(9, 0));
-        }*/
+        }
     }
 }
