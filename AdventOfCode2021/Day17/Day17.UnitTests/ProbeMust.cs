@@ -13,6 +13,22 @@ namespace Day17.UnitTests
             Assert.True(probe.IsCurrentVelocityEqualTo(7, 2));
         }
 
+        [Fact]
+        public void CheckPositionCorrectly()
+        {
+            var probe = new Probe(7, 2);
+            Assert.False(probe.IsPositionedAt(0, 1));
+            Assert.False(probe.IsPositionedAt(1, 0));
+        }
+
+        [Fact]
+        public void CheckVelocityCorrectly()
+        {
+            var probe = new Probe(7, 2);
+            Assert.False(probe.IsCurrentVelocityEqualTo(7, 1));
+            Assert.False(probe.IsCurrentVelocityEqualTo(6, 2));
+        }
+
         [Theory]
         [InlineData(7, 2, 1, 7, 2, 6, 1)]
         [InlineData(7, 2, 2, 13, 3, 5, 0)]
@@ -58,6 +74,9 @@ namespace Day17.UnitTests
         [InlineData(7, 9, 18, 28, 9, 0, -9)]
         [InlineData(7, 9, 19, 28, 0, 0, -10)]
         [InlineData(7, 9, 20, 28, -10, 0, -11)]
+        [InlineData(-2, 3, 1, -2, 3, -1, 2)]
+        [InlineData(-2, 3, 2, -3, 5, 0, 1)]
+        [InlineData(-2, 3, 3, -3, 6, 0, 0)]
         public void ExecuteStepCorrectly(int initialX, int initialY, int steps, int expectedPositionX, int expectedPositionY,
             int expectedVelocityX, int expectedVelocityY)
         {

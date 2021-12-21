@@ -7,7 +7,6 @@ namespace Day17.Logic
         private int _velocityX;
         private int _velocityY;
         public int HighestPoint { get; private set; }
-        public (int X, int Y) BestVelocity { get; set; }
 
         public Probe(int velocityX, int velocityY)
         {
