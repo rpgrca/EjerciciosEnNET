@@ -23,8 +23,18 @@ namespace Day21.UnitTests
         public void BeInitializedCorrectly(int player1Position, int player2Position)
         {
             var sut = new DiracDiceGame(player1Position, player2Position);
-            Assert.True(sut.IsPlayer1At(player1Position));
-            Assert.True(sut.IsPlayer2At(player2Position));
+            Assert.True(sut.IsPlayerAt(0, player1Position));
+            Assert.True(sut.IsPlayerAt(1, player2Position));
+        }
+
+        [Fact]
+        public void UpdatePlayerPosition_WhenThrowingAdice()
+        {
+            var sut = new DiracDiceGame(4, 8);
+
+            sut.ThrowDice();
+            Assert.True(sut.IsPlayerAt(0, 10));
+            Assert.Equal(10, sut.GetScoreFor(0));
         }
     }
 }
