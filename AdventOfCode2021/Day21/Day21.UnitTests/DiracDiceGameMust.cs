@@ -182,5 +182,15 @@ namespace Day21.UnitTests
             Assert.Equal(444356092776315, sut.UniversesWonByPlayer(0));
             Assert.Equal(341960390180808, sut.UniversesWonByPlayer(1));
         }
+
+        [Fact]
+        public void SolveSecondPuzzle()
+        {
+            var sut = new DiracDiceRealGame(10, 8);
+            sut.PlayGame();
+
+            Assert.Equal(221109915584112, sut.UniversesWonByPlayer(0));
+            Assert.Equal(117096403483545, sut.UniversesWonByPlayer(1));
+        }
     }
 }
