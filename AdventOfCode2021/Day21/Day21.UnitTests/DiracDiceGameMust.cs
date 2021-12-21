@@ -134,7 +134,6 @@ namespace Day21.UnitTests
 
             Assert.Equal(752247, sut.NumberOfDiceThrowsTimesLoserScore);
         }
-
     }
 
     public class DiracDiceRealGameMust
@@ -144,26 +143,26 @@ namespace Day21.UnitTests
         {
             var sut = new DiracDiceRealGame(4, 8);
             Assert.Equal(1, sut.TotalUniverses);
-            Assert.Equal(0L, sut.UniversesWithPlayerAtPosition(0, 1));
-            Assert.Equal(0, sut.UniversesWithPlayerAtPosition(0, 2));
-            Assert.Equal(0, sut.UniversesWithPlayerAtPosition(0, 3));
-            Assert.Equal(1, sut.UniversesWithPlayerAtPosition(0, 4));
-            Assert.Equal(0, sut.UniversesWithPlayerAtPosition(0, 5));
-            Assert.Equal(0, sut.UniversesWithPlayerAtPosition(0, 6));
-            Assert.Equal(0, sut.UniversesWithPlayerAtPosition(0, 7));
-            Assert.Equal(0, sut.UniversesWithPlayerAtPosition(0, 8));
-            Assert.Equal(0, sut.UniversesWithPlayerAtPosition(0, 9));
-            Assert.Equal(0, sut.UniversesWithPlayerAtPosition(0, 10));
-            Assert.Equal(0, sut.UniversesWithPlayerAtPosition(1, 1));
-            Assert.Equal(0, sut.UniversesWithPlayerAtPosition(1, 2));
-            Assert.Equal(0, sut.UniversesWithPlayerAtPosition(1, 3));
-            Assert.Equal(0, sut.UniversesWithPlayerAtPosition(1, 4));
-            Assert.Equal(0, sut.UniversesWithPlayerAtPosition(1, 5));
-            Assert.Equal(0, sut.UniversesWithPlayerAtPosition(1, 6));
-            Assert.Equal(0, sut.UniversesWithPlayerAtPosition(1, 7));
-            Assert.Equal(1, sut.UniversesWithPlayerAtPosition(1, 8));
-            Assert.Equal(0, sut.UniversesWithPlayerAtPosition(1, 9));
-            Assert.Equal(0, sut.UniversesWithPlayerAtPosition(1, 10));
+
+            Assert.Equal(1, sut.UniversesWithPlayersWithScores(0, 0));
+            Assert.Equal(1, sut.UniversesWithPlayersAtPosition(4, 8));
         }
+/*
+        [Fact]
+        public void ThrowDiceCorrectly()
+        {
+            var sut = new DiracDiceRealGame(4, 8);
+            sut.ThrowDice();
+
+            Assert.Equal(27, sut.TotalUniverses);
+            Assert.Equal(0, sut.UniversesWithPlayersWithScores(0, 0));
+            Assert.Equal(1, sut.UniversesWithPlayersWithScores(3, 0));
+            Assert.Equal(3, sut.UniversesWithPlayersWithScores(4, 0));
+            Assert.Equal(6, sut.UniversesWithPlayersWithScores(5, 0));
+            Assert.Equal(7, sut.UniversesWithPlayersWithScores(6, 0));
+            Assert.Equal(6, sut.UniversesWithPlayersWithScores(7, 0));
+            Assert.Equal(3, sut.UniversesWithPlayersWithScores(8, 0));
+            Assert.Equal(1, sut.UniversesWithPlayersWithScores(9, 0));
+        }*/
     }
 }

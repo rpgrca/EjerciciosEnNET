@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Day21.Logic
 {
@@ -94,30 +93,6 @@ namespace Day21.Logic
 
             var loserScore = (_scores[0] >= 1000) ? _scores[1] : _scores[0];
             NumberOfDiceThrowsTimesLoserScore = _diceThrows * loserScore;
-        }
-    }
-
-    public class DiracDiceRealGame
-    {
-        public long TotalUniverses { get; private set; }
-        private readonly int[][] _positions;
-
-        public DiracDiceRealGame(int player1position, int player2position)
-        {
-            TotalUniverses = 1;
-
-            _positions = new int[2][]
-            {
-                new int[10],
-                new int[10]
-            };
-            _positions[0][player1position - 1]++;
-            _positions[1][player2position - 1]++;
-        }
-
-        public long UniversesWithPlayerAtPosition(int player, int position)
-        {
-            return _positions[player][position - 1];
         }
     }
 }
