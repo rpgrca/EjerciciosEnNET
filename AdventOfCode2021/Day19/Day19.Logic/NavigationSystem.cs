@@ -139,13 +139,6 @@ namespace Day19.Logic
                 {
                     GuessOriginFrom(result, index, subIndex);
                 }
-                else
-                {
-                    if (! _scannerPositions.ContainsKey(index))
-                    {
-                        Console.WriteLine($"{subIndex} is already processed butt {index} not");
-                    }
-                }
             }
         }
 
