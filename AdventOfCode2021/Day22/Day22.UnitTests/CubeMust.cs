@@ -36,8 +36,8 @@ namespace Day22.UnitTests
             var other = new Cube("x=11..13,y=11..13,z=11..13");
             var sut = new Cube("x=10..12,y=10..12,z=10..12");
 
-            Assert.True(sut.Intersects(other));
-            Assert.True(other.Intersects(sut));
+            Assert.True(sut.IntersectsWith(other));
+            Assert.True(other.IntersectsWith(sut));
         }
 
         [Fact]
@@ -46,8 +46,62 @@ namespace Day22.UnitTests
             var other = new Cube("x=10..10,y=10..10,z=10..10");
             var sut = new Cube("x=11..13,y=11..13,z=11..13");
 
-            Assert.False(sut.Intersects(other));
-            Assert.False(other.Intersects(sut));
+            Assert.False(sut.IntersectsWith(other));
+            Assert.False(other.IntersectsWith(sut));
+        }
+
+        [Fact]
+        public void ReturnNoCubes_WhenSubstractingTheSameCube()
+        {
+            var other = new Cube("x=10..12,y=10..12,z=10..12");
+            var sut = new Cube("x=10..12,y=10..12,z=10..12");
+
+            var cubes = sut.Subtract(other);
+            Assert.Empty(cubes);
+        }
+
+        [Fact]
+        public void ReturnNoCubes_WhenSubstractingCubeThatContainsTheOther()
+        {
+            var other = new Cube("x=8..15,y=8..15,z=8..15");
+            var sut = new Cube("x=10..12,y=10..12,z=10..12");
+
+            var cubes = sut.Subtract(other);
+            Assert.Empty(cubes);
+        }
+
+        [Fact]
+        public void ReturnSameCube_WhenSubstractingAcubeThatDoesNotIntersect()
+        {
+            var other = new Cube("x=10..10,y=10..10,z=10..10");
+            var sut = new Cube("x=11..13,y=11..13,z=11..13");
+
+            var cubes = sut.Subtract(other);
+            Assert.Single(cubes, sut);
+        }
+/*
+        [Fact]
+        public void ReturnCubes_WhenSubstractingCubeThatLeavesOneFace()
+        {
+            var other = new Cube("x=8..15,y=8..11,z=8..15");
+            var sut = new Cube("x=10..12,y=10..12,z=10..12");
+
+            var cubes = sut.Subtract(other);
+            Assert.Collection(cubes,
+                p1 => {
+                    Assert.Equal(1, p1.Depth);
+                    Assert.Equal(3, p1.Width);
+                    Assert.Equal(3, p1.Height);
+                });
+        }*/
+    }
+
+    public class EdgeMust
+    {
+        [Fact]
+        public void Test1()
+        {
+            //var sut = new Edge((10, 12, 10), (12, 12, 10), (10, 12, 12), (12, 12, 12));
         }
     }
 }

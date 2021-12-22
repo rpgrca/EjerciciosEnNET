@@ -4,6 +4,10 @@ using System.Linq;
 
 namespace Day22.Logic
 {
+    internal class Edge
+    {
+    }
+
     public class Cube
     {
         private readonly string _vertexes;
@@ -46,14 +50,14 @@ namespace Day22.Logic
                 }
             }
 
-            Width = int.Parse(axis[0][1]) - int.Parse(axis[0][0]) + 1;
-            Height = int.Parse(axis[1][1]) - int.Parse(axis[1][0]) + 1;
-            Depth = int.Parse(axis[2][1]) - int.Parse(axis[2][0]) + 1;
+            Width = int.Parse(axis[0][1]) - int.Parse(axis[0][0]) + 1; // x
+            Depth = int.Parse(axis[1][1]) - int.Parse(axis[1][0]) + 1; // y
+            Height = int.Parse(axis[2][1]) - int.Parse(axis[2][0]) + 1; // z
         }
 
         public long GetArea() => Width * Height * Depth;
 
-        public bool Intersects(Cube other)
+        public bool IntersectsWith(Cube other)
         {
             foreach (var vertex in other.Vertexes)
             {
@@ -63,7 +67,28 @@ namespace Day22.Logic
                 }
             }
 
+            foreach (var vertex in Vertexes)
+            {
+                if (other._intersector(vertex))
+                {
+                    return true;
+                }
+            }
+
             return false;
+        }
+
+        public List<Cube> Subtract(Cube other)
+        {
+            var cubes = new List<Cube>();
+
+            if (! IntersectsWith(other))
+            {
+                cubes.Add(this);
+                return cubes;
+            }
+
+            return cubes;
         }
     }
 }
