@@ -41,7 +41,16 @@ namespace Day22.Logic
         private void TurnOn(string area)
         {
             var axis = area.Split(",").Select(p => p.Split("=")).Select(p => p[1]).Select(p => p.Split("..")).ToArray();
-            for (var x = int.Parse(axis[0][0]); x <= int.Parse(axis[0][1]); x++)
+
+            var minimumX = int.Parse(axis[0][0]);
+            var maximumX = int.Parse(axis[0][1]);
+
+            if (minimumX < -50 || minimumX > 50 || maximumX < -50 || maximumX > 50)
+            {
+                return;
+            }
+
+            for (var x = minimumX; x <= maximumX; x++)
             {
                 for (var y = int.Parse(axis[1][0]); y <= int.Parse(axis[1][1]); y++)
                 {
@@ -57,7 +66,16 @@ namespace Day22.Logic
         private void TurnOff(string area)
         {
             var axis = area.Split(",").Select(p => p.Split("=")).Select(p => p[1]).Select(p => p.Split("..")).ToArray();
-            for (var x = int.Parse(axis[0][0]); x <= int.Parse(axis[0][1]); x++)
+
+            var minimumX = int.Parse(axis[0][0]);
+            var maximumX = int.Parse(axis[0][1]);
+
+            if (minimumX < -50 || minimumX > 50 || maximumX < -50 || maximumX > 50)
+            {
+                return;
+            }
+
+            for (var x = minimumX; x <= maximumX; x++)
             {
                 for (var y = int.Parse(axis[1][0]); y <= int.Parse(axis[1][1]); y++)
                 {
