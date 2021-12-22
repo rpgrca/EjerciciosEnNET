@@ -82,6 +82,11 @@ namespace Day22.Logic
         {
             var cubes = new List<Cube>();
 
+            if (other.FullyContains(this))
+            {
+                return cubes;
+            }
+
             if (! IntersectsWith(other))
             {
                 cubes.Add(this);
@@ -90,5 +95,8 @@ namespace Day22.Logic
 
             return cubes;
         }
+
+        public bool FullyContains(Cube other) =>
+            other.Vertexes.All(p => _intersector(p));
     }
 }

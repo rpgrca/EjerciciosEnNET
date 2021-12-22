@@ -79,8 +79,36 @@ namespace Day22.UnitTests
             var cubes = sut.Subtract(other);
             Assert.Single(cubes, sut);
         }
-/*
+
         [Fact]
+        public void ReturnTrue_WhenCubeFullyContainsAnother()
+        {
+            var other = new Cube("x=10..12,y=10..12,z=10..12");
+            var sut = new Cube("x=8..15,y=8..15,z=8..15");
+
+            Assert.True(sut.FullyContains(other));
+        }
+
+        [Fact]
+        public void ReturnFalse_WhenCubeDoesNotFullyContainsAnother()
+        {
+            var other = new Cube("x=8..15,y=8..15,z=8..15");
+            var sut = new Cube("x=10..12,y=10..12,z=10..12");
+
+            Assert.False(sut.FullyContains(other));
+        }
+
+        [Fact]
+        public void ReturnFalse_WhenCheckingIfNonIntersectingCubesFullyContainEachOther()
+        {
+            var other = new Cube("x=10..10,y=10..10,z=10..10");
+            var sut = new Cube("x=11..13,y=11..13,z=11..13");
+
+            Assert.False(sut.FullyContains(other));
+            Assert.False(other.FullyContains(sut));
+        }
+
+        /*[Fact]
         public void ReturnCubes_WhenSubstractingCubeThatLeavesOneFace()
         {
             var other = new Cube("x=8..15,y=8..11,z=8..15");
@@ -94,6 +122,7 @@ namespace Day22.UnitTests
                     Assert.Equal(3, p1.Height);
                 });
         }*/
+
     }
 
     public class EdgeMust
