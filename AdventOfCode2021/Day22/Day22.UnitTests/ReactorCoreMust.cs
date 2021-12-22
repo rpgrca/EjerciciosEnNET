@@ -34,6 +34,7 @@ on x=10..10,y=10..10,z=10..10", 39)]
             Assert.Equal(expectedCount, sut.GetTurnedOnCubesCount());
         }
 
+/*
         [Fact]
         public void TurnOnCubes_WhenTheyAreInA50PositiveNegativeRange()
         {
@@ -47,5 +48,12 @@ on x=10..10,y=10..10,z=10..10", 39)]
             var sut = new ReactorCore(REAL_INSTRUCTIONS);
             Assert.Equal(647062, sut.GetTurnedOnCubesCount());
         }
+
+        [Fact]
+        public void TurnOnCubes_WhenTheyAreInA50PositiveNegativeRangeWithBiggerSample()
+        {
+            var sut = new ReactorCore(SAMPLE_REBOOT_INSTRUCTIONS);
+            Assert.Equal(474140, sut.GetTurnedOnCubesCount());
+        }*/
     }
 }
