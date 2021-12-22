@@ -29,5 +29,25 @@ namespace Day22.UnitTests
             var sut = new Cube("x=10..12,y=10..12,z=10..12");
             Assert.Equal(27, sut.GetArea());
         }
+
+        [Fact]
+        public void ReturnTrue_WhenIntersectingWithAnother()
+        {
+            var other = new Cube("x=11..13,y=11..13,z=11..13");
+            var sut = new Cube("x=10..12,y=10..12,z=10..12");
+
+            Assert.True(sut.Intersects(other));
+            Assert.True(other.Intersects(sut));
+        }
+
+        [Fact]
+        public void ReturnFalse_WhenCubeDoesNotIntersectWithAnother()
+        {
+            var other = new Cube("x=10..10,y=10..10,z=10..10");
+            var sut = new Cube("x=11..13,y=11..13,z=11..13");
+
+            Assert.False(sut.Intersects(other));
+            Assert.False(other.Intersects(sut));
+        }
     }
 }

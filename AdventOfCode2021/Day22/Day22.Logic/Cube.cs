@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,6 +7,7 @@ namespace Day22.Logic
     public class Cube
     {
         private readonly string _vertexes;
+        private Func<(int X, int Y, int Z), bool> _intersector;
 
         public List<(int X, int Y, int Z)> Vertexes { get; }
         public int Width { get; private set; }
@@ -22,7 +24,16 @@ namespace Day22.Logic
 
         private void Parse()
         {
-            var axis = _vertexes.Split(",").Select(p => p.Split("=")).Select(p => p[1]).Select(p => p.Split("..")).ToArray();
+            var axis = _vertexes.Split(",")
+                .Select(p => p.Split("="))
+                .Select(p => p[1])
+                .Select(p => p.Split(".."))
+                .ToArray();
+
+            _intersector = v =>
+                v.X >= int.Parse(axis[0][0]) && v.X <= int.Parse(axis[0][1]) &&
+                v.Y >= int.Parse(axis[1][0]) && v.Y <= int.Parse(axis[1][1]) &&
+                v.Z >= int.Parse(axis[2][0]) && v.Z <= int.Parse(axis[2][1]);
 
             foreach (var x in axis[0])
             {
@@ -41,5 +52,18 @@ namespace Day22.Logic
         }
 
         public long GetArea() => Width * Height * Depth;
+
+        public bool Intersects(Cube other)
+        {
+            foreach (var vertex in other.Vertexes)
+            {
+                if (_intersector(vertex))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }
