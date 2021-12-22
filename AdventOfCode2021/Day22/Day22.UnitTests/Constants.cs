@@ -2,6 +2,10 @@ namespace Day22.UnitTests
 {
     public static class Constants
     {
+        public static readonly (int, int, int) FRONT_BOTTOM_LEFT = (10, 12, 10);
+        public static readonly (int, int, int) FRONT_BOTTOM_RIGHT = (12, 12, 10);
+        public static readonly (int, int, int) BACK_BOTTOM_LEFT = (10, 10, 10);
+
         public const string SAMPLE_INSTRUCTIONS = @"on x=-20..26,y=-36..17,z=-47..7
 on x=-20..33,y=-21..23,z=-26..28
 on x=-22..28,y=-29..23,z=-38..16

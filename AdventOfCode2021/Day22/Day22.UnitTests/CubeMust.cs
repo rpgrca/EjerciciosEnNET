@@ -1,5 +1,6 @@
 using Xunit;
 using Day22.Logic;
+using static Day22.UnitTests.Constants;
 
 namespace Day22.UnitTests
 {
@@ -13,13 +14,13 @@ namespace Day22.UnitTests
             Assert.Equal(3, sut.Depth);
             Assert.Equal(3, sut.Height);
             Assert.Equal(3, sut.Width);
-            Assert.Contains((10, 10, 10), sut.Vertexes);
+            Assert.Contains(BACK_BOTTOM_LEFT, sut.Vertexes);
             Assert.Contains((10, 10, 12), sut.Vertexes);
-            Assert.Contains((10, 12, 10), sut.Vertexes);
+            Assert.Contains(FRONT_BOTTOM_LEFT, sut.Vertexes);
             Assert.Contains((10, 12, 12), sut.Vertexes);
             Assert.Contains((12, 10, 10), sut.Vertexes);
             Assert.Contains((12, 10, 12), sut.Vertexes);
-            Assert.Contains((12, 12, 10), sut.Vertexes);
+            Assert.Contains(FRONT_BOTTOM_RIGHT, sut.Vertexes);
             Assert.Contains((12, 12, 12), sut.Vertexes);
         }
 
@@ -108,7 +109,37 @@ namespace Day22.UnitTests
             Assert.False(other.FullyContains(sut));
         }
 
-        /*[Fact]
+        [Fact]
+        public void ReturnNoCube_WhenSubstractingAcubeFromContainingCube()
+        {
+            var sut = new Cube("x=10..12,y=10..12,z=10..12");
+            var other = new Cube("x=8..15,y=8..15,z=8..15");
+
+            Assert.Empty(sut.Subtract(other));
+        }
+
+        [Fact]
+        public void ReturnSameEdge_WhenCubeDoesNotClipEdge()
+        {
+            var sut = new Cube("x=8..15,y=8..11,z=8..15");
+            var edge = new Edge(FRONT_BOTTOM_LEFT, FRONT_BOTTOM_RIGHT);
+
+            var edges = sut.Clip(edge);
+            Assert.Collection(edges, p1 => Assert.Equal(p1, new Edge(FRONT_BOTTOM_LEFT, FRONT_BOTTOM_RIGHT)));
+        }
+
+/*
+        [Fact]
+        public void ReturnSmallerEdge_WhenCubeClipsEdge()
+        {
+            var sut = new Cube("x=8..15,y=8..11,z=8..15");
+            var edge = new Edge(FRONT_BOTTOM_LEFT, BACK_BOTTOM_LEFT);
+
+            var edges = sut.Clip(edge);
+            Assert.Collection(edges, p1 => Assert.Equal(p1, new Edge(FRONT_BOTTOM_LEFT, (10, 11, 10))));
+        }
+
+        [Fact]
         public void ReturnCubes_WhenSubstractingCubeThatLeavesOneFace()
         {
             var other = new Cube("x=8..15,y=8..11,z=8..15");
@@ -122,15 +153,5 @@ namespace Day22.UnitTests
                     Assert.Equal(3, p1.Height);
                 });
         }*/
-
-    }
-
-    public class EdgeMust
-    {
-        [Fact]
-        public void Test1()
-        {
-            //var sut = new Edge((10, 12, 10), (12, 12, 10), (10, 12, 12), (12, 12, 12));
-        }
     }
 }

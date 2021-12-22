@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using System;
 using Xunit;
 using Day22.Logic;
@@ -32,6 +33,65 @@ on x=10..10,y=10..10,z=10..10", 39)]
         {
             var sut = new ReactorCore(steps);
             Assert.Equal(expectedCount, sut.GetTurnedOnCubesCount());
+        }
+
+        [Fact]
+        public void Test1()
+        {
+            var sut = new ReactorCore(@"on x=-5..47,y=-31..22,z=-19..33
+on x=-44..5,y=-27..21,z=-14..35");
+            Assert.Equal(248314, sut.GetTurnedOnCubesCount());
+        }
+
+        [Fact]
+        public void Test2()
+        {
+            var sut = new ReactorCore(
+@"on x=-44..-6,y=-27..21,z=-14..35
+on x=-5..5,y=-31..22,z=-19..33
+on x=-5..5,y=-27..21,z=-14..35
+on x=6..47,y=-31..22,z=-19..33");
+            Assert.Equal(248314, sut.GetTurnedOnCubesCount());
+        }
+
+        [Fact]
+        public void Test3()
+        {
+            var sut = new ReactorCore(
+@"on x=-44..-6,y=-27..21,z=-14..35
+on x=-5..5,y=-31..-27,z=-19..33
+on x=-5..5,y=-27..21,z=-19..35
+on x=-5..5,y=21..22,z=-19..33
+on x=6..47,y=-31..22,z=-19..33");
+            Assert.Equal(248314, sut.GetTurnedOnCubesCount());
+        }
+
+        [Fact]
+        public void Test4()
+        {
+            var sut = new ReactorCore(
+@"on x=-44..-6,y=-27..21,z=-14..35
+on x=-5..5,y=-31..-28,z=-19..33
+on x=-5..5,y=-27..21,z=-14..35
+on x=-5..5,y=-27..21,z=-19..33
+on x=-5..5,y=22..22,z=-19..33
+on x=6..47,y=-31..22,z=-19..33");
+            Assert.Equal(248314, sut.GetTurnedOnCubesCount());
+        }
+
+        [Fact]
+        public void Test5()
+        {
+            var sut = new ReactorCore(
+                @"on x=-44..-6,y=-27..21,z=-14..35
+on x=-5..5,y=-31..-28,z=-19..33
+on x=-5..5,y=-27..21,z=-19..-15
+on x=-5..5,y=-27..21,z=-14..33
+on x=-5..5,y=-27..21,z=34..35
+on x=-5..5,y=22..22,z=-19..33
+on x=6..47,y=-31..22,z=-19..33");
+
+            Assert.Equal(248314, sut.GetTurnedOnCubesCount());
         }
 
 /*
