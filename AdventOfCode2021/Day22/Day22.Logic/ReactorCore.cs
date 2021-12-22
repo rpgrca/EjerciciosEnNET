@@ -31,6 +31,10 @@ namespace Day22.Logic
                 {
                     TurnOn(location[1]);
                 }
+                else
+                {
+                    TurnOff(location[1]);
+                }
             }
         }
 
@@ -45,6 +49,21 @@ namespace Day22.Logic
                     {
                         _turnedOn.TryAdd((x, y, z), 0);
                         _turnedOn[(x, y, z)]++;
+                    }
+                }
+            }
+        }
+
+        private void TurnOff(string area)
+        {
+            var axis = area.Split(",").Select(p => p.Split("=")).Select(p => p[1]).Select(p => p.Split("..")).ToArray();
+            for (var x = int.Parse(axis[0][0]); x <= int.Parse(axis[0][1]); x++)
+            {
+                for (var y = int.Parse(axis[1][0]); y <= int.Parse(axis[1][1]); y++)
+                {
+                    for (var z = int.Parse(axis[2][0]); z <= int.Parse(axis[2][1]); z++)
+                    {
+                        _turnedOn.Remove((x, y, z));
                     }
                 }
             }

@@ -20,6 +20,9 @@ namespace Day22.UnitTests
         [InlineData("on x=10..12,y=10..12,z=10..12", 27)]
         [InlineData(@"on x=10..12,y=10..12,z=10..12
 on x=11..13,y=11..13,z=11..13", 46)]
+        [InlineData(@"on x=10..12,y=10..12,z=10..12
+on x=11..13,y=11..13,z=11..13
+off x=9..11,y=9..11,z=9..11", 38)]
         public void BeInitializedCorrectly(string steps, int expectedCount)
         {
             var sut = new ReactorCore(steps);
