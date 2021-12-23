@@ -78,16 +78,102 @@ on x=-33..-33,y=-27..19,z=-34..11
 on x=-32..15,y=-32..19,z=-34..11", sut.ToString());
         }
 
-/*
         [Fact]
-        public void MustSplitCubeDismissingOverlaps_3()
+        public void MustSplitCubeDismissingOverlaps_7()
         {
-            var sut = new CubeSplitter((10, 12, 10, 12, 10, 12), (11, 13, 11, 13, 11 ,13));
-            var steps = sut.ToString();
+            var sut = new CubeSplitter((-33, 15, -32, 19, -34, 11), (35, 47, -46, -34, -11, 5));
+            Assert.Equal(@"on x=-33..15,y=-32..19,z=-34..11
+on x=35..47,y=-46..-34,z=-11..5", sut.ToString());
+        }
 
-            var reactorCore = new ReactorCore(steps);
-            Assert.Equal(46, reactorCore.GetTurnedOnCubesCount());
-            Assert.False(reactorCore.HasOverlaps);
-        }*/
+        [Fact]
+        public void MustSplitCubeDismissingOverlaps_8()
+        {
+            var sut = new CubeSplitter((35, 47, -46, -34, -11, 5), (-14, 36, -6, 44, -16, 29));
+            Assert.Equal(@"on x=35..47,y=-46..-34,z=-11..5
+on x=-14..36,y=-6..44,z=-16..29", sut.ToString());
+        }
+
+        [Fact]
+        public void MustSplitCubeDismissingOverlaps_9()
+        {
+            var sut = new CubeSplitter((-5, 47, -31, 22, -19, 33), (-49, -1, -11, 42, -10, 38));
+            Assert.Equal(@"on x=-49..-6,y=-11..42,z=-10..38
+on x=-5..-1,y=-31..-12,z=-19..33
+on x=-5..-1,y=-11..22,z=-19..-11
+on x=-5..-1,y=-11..22,z=-10..33
+on x=-5..-1,y=-11..22,z=34..38
+on x=-5..-1,y=23..42,z=-10..38
+on x=0..47,y=-31..22,z=-19..33", sut.ToString());
+        }
+
+        [Fact]
+        public void MustSplitCubeDismissingOverlaps_10()
+        {
+            var sut = new CubeSplitter((-5, 47, -31, 22, -19, 33), (-20, 34, -40, 6, -44, 1));
+            Assert.Equal(@"on x=-20..-6,y=-40..6,z=-44..1
+on x=-5..34,y=-40..-32,z=-44..1
+on x=-5..34,y=-31..6,z=-44..-20
+on x=-5..34,y=-31..6,z=-19..1
+on x=-5..34,y=-31..6,z=2..33
+on x=-5..34,y=7..22,z=-19..33
+on x=35..47,y=-31..22,z=-19..33", sut.ToString());
+        }
+
+        [Fact]
+        public void MustSplitCubeDismissingOverlaps_11()
+        {
+            var sut = new CubeSplitter((-5, 47, -31, 22, -19, 33), (26, 39, 40, 50, -2, 11));
+            Assert.Equal(@"on x=-5..47,y=-31..22,z=-19..33
+on x=26..39,y=40..50,z=-2..11", sut.ToString());
+        }
+
+        [Fact]
+        public void MustSplitCubeDismissingOverlaps_12()
+        {
+            var sut = new CubeSplitter((-5, 47, -31, 22, -19, 33), (-41, 5, -41, 6, -36, 8));
+            Assert.Equal(@"on x=-41..-6,y=-41..6,z=-36..8
+on x=-5..5,y=-41..-32,z=-36..8
+on x=-5..5,y=-31..6,z=-36..-20
+on x=-5..5,y=-31..6,z=-19..8
+on x=-5..5,y=-31..6,z=9..33
+on x=-5..5,y=7..22,z=-19..33
+on x=6..47,y=-31..22,z=-19..33", sut.ToString());
+        }
+
+        [Fact]
+        public void MustSplitCubeDismissingOverlaps_13()
+        {
+            var sut = new CubeSplitter((-5, 47, -31, 22, -19, 33), (-43, -33, -45, -28, 7, 25));
+            Assert.Equal(@"on x=-5..47,y=-31..22,z=-19..33
+on x=-43..-33,y=-45..-28,z=7..25", sut.ToString());
+        }
+
+        [Fact]
+        public void MustSplitCubeDismissingOverlaps_14()
+        {
+            var sut = new CubeSplitter((-5, 47, -31, 22, -19, 33), (-33, 15, -32, 19, -34, 11));
+            Assert.Equal(@"on x=-33..-6,y=-32..19,z=-34..11
+on x=-5..15,y=-32..-32,z=-34..11
+on x=-5..15,y=-31..19,z=-34..-20
+on x=-5..15,y=-31..19,z=-19..11
+on x=-5..15,y=-31..19,z=12..33
+on x=-5..15,y=20..22,z=-19..33
+on x=16..47,y=-31..22,z=-19..33", sut.ToString());
+        }
+
+        [Fact]
+        public void MustSplitCubeDismissingOverlaps_15()
+        {
+            var sut = new CubeSplitter((-33, 15, -32, 19, -34, 11),(-5, 47, -31, 22, -19, 33));
+            Assert.Equal(@"on x=-33..-6,y=-32..19,z=-34..11
+on x=-5..15,y=-32..-32,z=-34..11
+on x=-5..15,y=-31..19,z=-34..-20
+on x=-5..15,y=-31..19,z=-19..11
+on x=-5..15,y=-31..19,z=12..33
+on x=-5..15,y=20..22,z=-19..33
+on x=16..47,y=-31..22,z=-19..33", sut.ToString());
+        }
+
     }
 }

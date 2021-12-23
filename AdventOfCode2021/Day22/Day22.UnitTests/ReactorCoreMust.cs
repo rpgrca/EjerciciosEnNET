@@ -234,6 +234,74 @@ on x=-32..15,y=-32..19,z=-34..11");
             Assert.False(sut.HasOverlaps);
         }
 
+        [Fact]
+        public void Test16()
+        {
+            var original = new ReactorCore(@"on x=-5..47,y=-31..22,z=-19..33
+on x=-49..-1,y=-11..42,z=-10..38");
+            var sut = new ReactorCore(@"on x=-49..-6,y=-11..42,z=-10..38
+on x=-5..-1,y=-31..-12,z=-19..33
+on x=-5..-1,y=-11..22,z=-19..-11
+on x=-5..-1,y=-11..22,z=-10..33
+on x=-5..-1,y=-11..22,z=34..38
+on x=-5..-1,y=23..42,z=-10..38
+on x=0..47,y=-31..22,z=-19..33");
+            Assert.Equal(original.GetTurnedOnCubesCount(), sut.GetTurnedOnCubesCount());
+            Assert.True(original.HasOverlaps);
+            Assert.False(sut.HasOverlaps);
+        }
+
+        [Fact]
+        public void Test17()
+        {
+            var original = new ReactorCore(@"on x=-5..47,y=-31..22,z=-19..33
+on x=-20..34,y=-40..6,z=-44..1");
+            var sut = new ReactorCore(@"on x=-20..-6,y=-40..6,z=-44..1
+on x=-5..34,y=-40..-32,z=-44..1
+on x=-5..34,y=-31..6,z=-44..-20
+on x=-5..34,y=-31..6,z=-19..1
+on x=-5..34,y=-31..6,z=2..33
+on x=-5..34,y=7..22,z=-19..33
+on x=35..47,y=-31..22,z=-19..33");
+            Assert.Equal(original.GetTurnedOnCubesCount(), sut.GetTurnedOnCubesCount());
+            Assert.True(original.HasOverlaps);
+            Assert.False(sut.HasOverlaps);
+        }
+
+        [Fact]
+        public void Test18()
+        {
+            var original = new ReactorCore(@"on x=-5..47,y=-31..22,z=-19..33
+on x=-41..5,y=-41..6,z=-36..8");
+            var sut = new ReactorCore(@"on x=-41..-6,y=-41..6,z=-36..8
+on x=-5..5,y=-41..-32,z=-36..8
+on x=-5..5,y=-31..6,z=-36..-20
+on x=-5..5,y=-31..6,z=-19..8
+on x=-5..5,y=-31..6,z=9..33
+on x=-5..5,y=7..22,z=-19..33
+on x=6..47,y=-31..22,z=-19..33");
+            Assert.Equal(original.GetTurnedOnCubesCount(), sut.GetTurnedOnCubesCount());
+            Assert.True(original.HasOverlaps);
+            Assert.False(sut.HasOverlaps);
+        }
+
+        [Fact]
+        public void Test19()
+        {
+            var original = new ReactorCore(@"on x=-5..47,y=-31..22,z=-19..33
+on x=-33..15,y=-32..19,z=-34..11");
+            var sut = new ReactorCore(@"on x=-33..-6,y=-32..19,z=-34..11
+on x=-5..15,y=-32..-32,z=-34..11
+on x=-5..15,y=-31..19,z=-34..-20
+on x=-5..15,y=-31..19,z=-19..11
+on x=-5..15,y=-31..19,z=12..33
+on x=-5..15,y=20..22,z=-19..33
+on x=16..47,y=-31..22,z=-19..33");
+            Assert.Equal(original.GetTurnedOnCubesCount(), sut.GetTurnedOnCubesCount());
+            Assert.True(original.HasOverlaps);
+            Assert.False(sut.HasOverlaps);
+        }
+
 /*
         [Fact]
         public void TurnOnCubes_WhenTheyAreInA50PositiveNegativeRange()
