@@ -51,5 +51,14 @@ namespace Day23.UnitTests
             var exception = Assert.Throws<ArgumentException>(() => sut.GetAmphipodAt(0, 0));
             Assert.Equal("No amphipod there", exception.Message);
         }
+
+        [Fact]
+        public void MakeAmphipodMoveNorth()
+        {
+            var sut = new AmphipodSorter(SAMPLE_MAP);
+            sut.MoveAmphipodFrom(7, 2).To(7, 1);
+            Assert.Equal((7, 1, 10, 'B'), sut.GetAmphipodAt(7, 1));
+            Assert.Equal(10, sut.TotalCost);
+        }
     }
 }

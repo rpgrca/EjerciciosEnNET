@@ -3,12 +3,20 @@ using System.Collections.Generic;
 
 namespace Day23.Logic
 {
-    public class AmphipodSorter
+    public interface IMovementFrom
+    {
+        void To(int x, int y);
+    }
+
+    public class AmphipodSorter : IMovementFrom
     {
         private readonly string _data;
 
         private readonly char[][] _map;
         private readonly Dictionary<char, int> _amphipodes;
+        private (int X, int Y) _currentAmphipod;
+
+        public int TotalCost { get; private set; }
 
         public AmphipodSorter(string data)
         {
@@ -77,6 +85,12 @@ namespace Day23.Logic
             return map.Trim();
         }
 
+        public IMovementFrom MoveAmphipodFrom(int x, int y)
+        {
+            _currentAmphipod = (x, y);
+            return this;
+        }
+
         public (int X, int Y, int Cost, char Name) GetAmphipodAt(int x, int y)
         {
             if (IsThereAnAmphipodAt(_map[y][x]))
@@ -90,5 +104,17 @@ namespace Day23.Logic
         private int GetCostFor(char amphipod) => _amphipodes[amphipod];
 
         private static bool IsThereAnAmphipodAt(char room) => room is 'A' or 'B' or 'C' or 'D';
+
+        public void To(int x, int y)
+        {
+            if (CurrentAmphipodCanMoveTo(x, y))
+            {
+                _map[y][x] = _map[_currentAmphipod.Y][_currentAmphipod.X];
+                _map[_currentAmphipod.Y][_currentAmphipod.X] = '.';
+                TotalCost += _amphipodes[_map[y][x]];
+            }
+        }
+
+        private bool CurrentAmphipodCanMoveTo(int x, int y) => _map[y][x] == '.';
     }
 }
