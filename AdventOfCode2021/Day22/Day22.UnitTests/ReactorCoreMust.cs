@@ -1,12 +1,10 @@
-using System.Runtime.InteropServices;
 using System;
 using Xunit;
 using Day22.Logic;
-using static Day22.UnitTests.Constants;
 
 namespace Day22.UnitTests
 {
-    public class ReactorCoreMustst
+    public class ReactorCoreMust
     {
         [Theory]
         [InlineData(null)]
@@ -41,6 +39,7 @@ on x=10..10,y=10..10,z=10..10", 39)]
             var sut = new ReactorCore(@"on x=-5..47,y=-31..22,z=-19..33
 on x=-44..5,y=-27..21,z=-14..35");
             Assert.Equal(248314, sut.GetTurnedOnCubesCount());
+            Assert.True(sut.HasOverlaps);
         }
 
         [Fact]
@@ -52,6 +51,7 @@ on x=-5..5,y=-31..22,z=-19..33
 on x=-5..5,y=-27..21,z=-14..35
 on x=6..47,y=-31..22,z=-19..33");
             Assert.Equal(248314, sut.GetTurnedOnCubesCount());
+            Assert.True(sut.HasOverlaps);
         }
 
         [Fact]
@@ -64,6 +64,7 @@ on x=-5..5,y=-27..21,z=-19..35
 on x=-5..5,y=21..22,z=-19..33
 on x=6..47,y=-31..22,z=-19..33");
             Assert.Equal(248314, sut.GetTurnedOnCubesCount());
+            Assert.True(sut.HasOverlaps);
         }
 
         [Fact]
@@ -77,6 +78,7 @@ on x=-5..5,y=-27..21,z=-19..33
 on x=-5..5,y=22..22,z=-19..33
 on x=6..47,y=-31..22,z=-19..33");
             Assert.Equal(248314, sut.GetTurnedOnCubesCount());
+            Assert.True(sut.HasOverlaps);
         }
 
         [Fact]
@@ -92,6 +94,130 @@ on x=-5..5,y=22..22,z=-19..33
 on x=6..47,y=-31..22,z=-19..33");
 
             Assert.Equal(248314, sut.GetTurnedOnCubesCount());
+            Assert.False(sut.HasOverlaps);
+        }
+
+        [Fact]
+        public void Test7()
+        {
+            var sut = new ReactorCore(@"on x=-44..5,y=-27..21,z=-14..35
+on x=-49..-1,y=-11..42,z=-10..38");
+            Assert.Equal(185362, sut.GetTurnedOnCubesCount());
+            Assert.True(sut.HasOverlaps);
+        }
+
+        [Fact]
+        public void Test8()
+        {
+            var sut = new ReactorCore(@"on x=-49..-45,y=-11..42,z=-10..38
+on x=-44..-1,y=-27..21,z=-14..35
+on x=-44..-1,y=-11..42,z=-10..38
+on x=0..5,y=-27..21,z=-14..35");
+            Assert.Equal(185362, sut.GetTurnedOnCubesCount());
+            Assert.True(sut.HasOverlaps);
+        }
+
+        [Fact]
+        public void Test9()
+        {
+            var sut = new ReactorCore(@"on x=-49..-45,y=-11..42,z=-10..38
+on x=-44..-1,y=-27..-12,z=-14..35
+on x=-44..-1,y=-11..21,z=-14..35
+on x=-44..-1,y=-11..21,z=-10..38
+on x=-44..-1,y=22..42,z=-10..38
+on x=0..5,y=-27..21,z=-14..35");
+            Assert.Equal(185362, sut.GetTurnedOnCubesCount());
+            Assert.True(sut.HasOverlaps);
+        }
+
+        [Fact]
+        public void DetectNoOverlaps()
+        {
+            var sut = new ReactorCore(@"on x=-49..-45,y=-11..42,z=-10..38
+on x=-44..-1,y=-27..-12,z=-14..35
+on x=-44..-1,y=-11..21,z=-14..-11
+on x=-44..-1,y=-11..21,z=-10..35
+on x=-44..-1,y=-11..21,z=36..38
+on x=-44..-1,y=22..42,z=-10..38
+on x=0..5,y=-27..21,z=-14..35");
+            Assert.Equal(185362, sut.GetTurnedOnCubesCount());
+            Assert.False(sut.HasOverlaps);
+        }
+
+        [Fact]
+        public void Test10()
+        {
+            var sut = new ReactorCore(@"on x=-49..-1,y=-11..42,z=-10..38
+on x=-20..34,y=-40..6,z=-44..1");
+            Assert.Equal(244244, sut.GetTurnedOnCubesCount());
+            Assert.True(sut.HasOverlaps);
+        }
+
+        [Fact]
+        public void Test11()
+        {
+            var sut = new ReactorCore(@"on x=-49..-21,y=-11..42,z=-10..38
+on x=-20..-1,y=-11..42,z=-10..38
+on x=-20..-1,y=-40..6,z=-44..1
+on x=0..34,y=-40..6,z=-44..1");
+
+            Assert.Equal(244244, sut.GetTurnedOnCubesCount());
+            Assert.True(sut.HasOverlaps);
+        }
+
+        [Fact]
+        public void Test12()
+        {
+            var sut = new ReactorCore(@"on x=-49..-21,y=-11..42,z=-10..38
+on x=-20..-1,y=-40..-12,z=-44..1
+on x=-20..-1,y=-11..6,z=-10..38
+on x=-20..-1,y=-11..6,z=-44..1
+on x=-20..-1,y=7..42,z=-10..38
+on x=0..34,y=-40..6,z=-44..1");
+
+            Assert.Equal(244244, sut.GetTurnedOnCubesCount());
+            Assert.True(sut.HasOverlaps);
+        }
+
+        [Fact]
+        public void Test13()
+        {
+            var sut = new ReactorCore(@"on x=-49..-21,y=-11..42,z=-10..38
+on x=-20..-1,y=-40..-12,z=-44..1
+on x=-20..-1,y=-11..6,z=-44..-11
+on x=-20..-1,y=-11..6,z=-10..1
+on x=-20..-1,y=-11..6,z=2..38
+on x=-20..-1,y=7..42,z=-10..38
+on x=0..34,y=-40..6,z=-44..1");
+
+            Assert.Equal(244244, sut.GetTurnedOnCubesCount());
+            Assert.False(sut.HasOverlaps);
+        }
+
+        [Theory]
+        [InlineData(@"on x=-20..34,y=-40..6,z=-44..1
+on x=26..39,y=40..50,z=-2..11", 121066)]
+        [InlineData(@"off x=26..39,y=40..50,z=-2..11
+on x=-41..5,y=-41..6,z=-36..8", 101520)]
+        public void DetectNonOverlappedCubes(string core, int expectedCubes)
+        {
+            var sut = new ReactorCore(core);
+            Assert.Equal(expectedCubes, sut.GetTurnedOnCubesCount());
+            Assert.False(sut.HasOverlaps);
+        }
+
+        [Fact]
+        public void Test14()
+        {
+            var sut = new ReactorCore(@"on x=-43..-42,y=-45..-28,z=7..25
+on x=-41..-33,y=-45..-42,z=7..25
+on x=-41..-33,y=-41..-28,z=-36..6
+on x=-41..-33,y=-41..-28,z=7..8
+on x=-41..-33,y=-41..-28,z=9..25
+on x=-41..-33,y=-27..6,z=-36..8
+on x=-32..5,y=-41..6,z=-36..8");
+            Assert.Equal(105030, sut.GetTurnedOnCubesCount());
+            Assert.False(sut.HasOverlaps);
         }
 
 /*

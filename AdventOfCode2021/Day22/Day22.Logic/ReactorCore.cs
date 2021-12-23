@@ -9,6 +9,8 @@ namespace Day22.Logic
         private readonly string _steps;
         private readonly Dictionary<(int X, int Y, int Z), int> _turnedOn;
 
+        public bool HasOverlaps { get; private set; }
+
         public ReactorCore(string steps)
         {
             if (string.IsNullOrWhiteSpace(steps))
@@ -27,6 +29,7 @@ namespace Day22.Logic
             foreach (var line in _steps.Split("\n"))
             {
                 var location = line.Split(" ");
+
                 if (location[0] == "on")
                 {
                     TurnOn(location[1]);
@@ -45,11 +48,6 @@ namespace Day22.Logic
             var minimumX = int.Parse(axis[0][0]);
             var maximumX = int.Parse(axis[0][1]);
 
-            if (minimumX < -50 || minimumX > 50 || maximumX < -50 || maximumX > 50)
-            {
-                return;
-            }
-
             for (var x = minimumX; x <= maximumX; x++)
             {
                 for (var y = int.Parse(axis[1][0]); y <= int.Parse(axis[1][1]); y++)
@@ -58,7 +56,7 @@ namespace Day22.Logic
                     {
                         if (_turnedOn.ContainsKey((x, y, z)))
                         {
-                            System.Diagnostics.Debugger.Break();
+                            HasOverlaps = true;
                         }
                         _turnedOn.TryAdd((x, y, z), 0);
                         _turnedOn[(x, y, z)]++;
@@ -142,6 +140,8 @@ namespace Day22.Logic
 
             var minimumY = int.Parse(axis[1][0]);
             var maximumY = int.Parse(axis[1][1]);
+            var minimumZ = int.Parse(axis[2][0]);
+            var maximumZ = int.Parse(axis[2][1]);
 
             for (var z = int.Parse(axis[2][0]); z <= int.Parse(axis[2][1]); z++)
             {
