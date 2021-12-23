@@ -65,6 +65,19 @@ on x=-41..-33,y=-27..6,z=-36..8
 on x=-32..5,y=-41..6,z=-36..8", sut.ToString());
         }
 
+        [Fact]
+        public void MustSplitCubeDismissingOverlaps_6()
+        {
+            var sut = new CubeSplitter((-43, -33, -45, -28, 7, 25), (-33, 15, -32, 19, -34, 11));
+            Assert.Equal(@"on x=-43..-34,y=-45..-28,z=7..25
+on x=-33..-33,y=-45..-33,z=7..25
+on x=-33..-33,y=-32..-28,z=-34..6
+on x=-33..-33,y=-32..-28,z=7..11
+on x=-33..-33,y=-32..-28,z=12..25
+on x=-33..-33,y=-27..19,z=-34..11
+on x=-32..15,y=-32..19,z=-34..11", sut.ToString());
+        }
+
 /*
         [Fact]
         public void MustSplitCubeDismissingOverlaps_3()
