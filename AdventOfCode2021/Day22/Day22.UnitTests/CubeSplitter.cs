@@ -72,7 +72,19 @@ namespace Day22.UnitTests
                                 }
                                 else
                                 {
-                                    throw new NotImplementedException();
+                                    /* ? */
+                                    _cache[1].Add((fixedMinimumX, fixedMaximumX, _first.MinimumY, _first.MaximumY, _second.MinimumZ, _first.MinimumZ - 1));
+
+                                    if (_first.MaximumZ < _second.MaximumZ)
+                                    {
+                                        throw new NotImplementedException();
+                                    }
+                                    else
+                                    {
+                                        _cache[1].Add((fixedMinimumX, fixedMaximumX, _first.MinimumY, _first.MaximumY, _first.MinimumZ, _second.MaximumZ));
+                                        _cache[1].Add((fixedMinimumX, fixedMaximumX, _first.MinimumY, _first.MaximumY, _second.MaximumZ + 1, _first.MaximumZ));
+                                        _cache[1].Add((fixedMinimumX, fixedMaximumX, _first.MaximumY + 1, _second.MaximumY, _second.MinimumZ, _second.MaximumZ));
+                                    }
                                 }
                             }
                             else
@@ -82,6 +94,14 @@ namespace Day22.UnitTests
                         }
                         else
                         {
+                            if (_second.MaximumY < _first.MinimumY)
+                            {
+                                // No intersection
+                                _output.Add(_first);
+                                _output.Add(_second);
+                                return;
+                            }
+
                             if (_first.MinimumZ < _second.MinimumZ)
                             {
                                 throw new NotImplementedException();
@@ -159,6 +179,7 @@ namespace Day22.UnitTests
                             }
                             else
                             {
+                                // No intersection
                                 _output.Add(_first);
                                 _output.Add(_second);
                                 return;
@@ -180,7 +201,7 @@ namespace Day22.UnitTests
             }
             else
             {
-                if (_first.MinimumX < _second.MaximumX)
+                if (_first.MinimumX <= _second.MaximumX)
                 {
                     var fixedMinimumX = _first.MinimumX;
                     int fixedMaximumX = int.MinValue;
@@ -190,23 +211,21 @@ namespace Day22.UnitTests
 
                     if (_first.MaximumX < _second.MaximumX) // 5 < -1
                     {
-                        throw new NotImplementedException();
+                        fixedMaximumX = _first.MaximumX;
+                        _cache[2].Add((_first.MaximumX + 1, _second.MaximumX, _second.MinimumY, _second.MaximumY, _second.MinimumZ, _second.MaximumZ));
                     }
                     else
                     {
-                        // Add (0..5, -27..21, -14..35)
                         fixedMaximumX = _second.MaximumX;
                         _cache[2].Add((fixedMaximumX + 1, _first.MaximumX, _first.MinimumY, _first.MaximumY, _first.MinimumZ, _first.MaximumZ));
                     }
 
-                    // -44..-1 en comun
                     if (_first.MinimumY < _second.MinimumY)
-                    {   // Add (-44..-1, -27..-12, -14..35)
+                    {
                         _cache[1].Add((fixedMinimumX, fixedMaximumX, _first.MinimumY, _second.MinimumY - 1, _first.MinimumZ, _first.MaximumZ));
 
                         if (_first.MaximumY < _second.MaximumY)
                         {
-                            // -11 < 21
                             if (_second.MinimumY < _first.MaximumY)
                             {
                                 if (_first.MinimumZ < _second.MinimumZ)
@@ -285,55 +304,60 @@ namespace Day22.UnitTests
                     {
                         _cache[1].Add((fixedMinimumX, fixedMaximumX, _second.MinimumY, _first.MinimumY - 1, _second.MinimumZ, _second.MaximumZ));
 
-                        if (_first.MaximumY < _second.MaximumY)
+                        // 50 > 22
+                        if (_first.MaximumY < _second.MaximumY) // repetida
                         {
                             throw new NotImplementedException();
                         }
                         else
                         {
-                            if (_first.MaximumY < _second.MaximumY)
+                            if (_second.MaximumY < _first.MinimumY)
                             {
-                                throw new NotImplementedException();
+                                // No intersection
+                                _output.Add(_first);
+                                _output.Add(_second);
+                                return;
                             }
-                            else
-                            {
-                                if (_first.MinimumZ < _second.MinimumZ)
-                                {
-                                    if (_second.MinimumZ < _first.MaximumZ)
-                                    {
-                                        _cache[1].Add((fixedMinimumX, fixedMaximumX, _first.MinimumY, _second.MaximumY, _first.MinimumZ, _second.MinimumZ - 1));
 
-                                        if (_first.MaximumZ < _second.MaximumZ)
-                                        {
-                                            _cache[1].Add((fixedMinimumX, fixedMaximumX, _first.MinimumY, _second.MaximumY, _second.MinimumZ, _first.MaximumZ));
-                                            _cache[1].Add((fixedMinimumX, fixedMaximumX, _first.MinimumY, _second.MaximumY, _first.MaximumZ + 1, _second.MaximumZ));
-                                            _cache[1].Add((fixedMinimumX, fixedMaximumX, _second.MaximumY + 1, _first.MaximumY, _first.MinimumZ, _first.MaximumZ));
-                                        }
-                                        else
-                                        {
-                                            throw new NotImplementedException();
-                                        }
+                            if (_first.MinimumZ < _second.MinimumZ)
+                            {
+                                if (_second.MinimumZ < _first.MaximumZ)
+                                {
+                                    _cache[1].Add((fixedMinimumX, fixedMaximumX, _first.MinimumY, _second.MaximumY, _first.MinimumZ, _second.MinimumZ - 1));
+
+                                    if (_first.MaximumZ < _second.MaximumZ)
+                                    {
+                                        _cache[1].Add((fixedMinimumX, fixedMaximumX, _first.MinimumY, _second.MaximumY, _second.MinimumZ, _first.MaximumZ));
+                                        _cache[1].Add((fixedMinimumX, fixedMaximumX, _first.MinimumY, _second.MaximumY, _first.MaximumZ + 1, _second.MaximumZ));
+                                        _cache[1].Add((fixedMinimumX, fixedMaximumX, _second.MaximumY + 1, _first.MaximumY, _first.MinimumZ, _first.MaximumZ));
                                     }
                                     else
                                     {
-                                        _cache[1].Add((fixedMinimumX, fixedMaximumX, _second.MinimumY, _first.MaximumY, _second.MinimumZ, _second.MaximumZ));
+                                        throw new NotImplementedException();
                                     }
                                 }
                                 else
                                 {
-                                    /* ? */
-                                   _cache[1].Add((fixedMinimumX, fixedMaximumX, _first.MinimumY, _second.MaximumY, _second.MinimumZ, _first.MinimumZ - 1));
+                                    _cache[1].Add((fixedMinimumX, fixedMaximumX, _second.MinimumY, _first.MaximumY, _second.MinimumZ, _second.MaximumZ));
+                                }
+                            }
+                            else
+                            {
+                                /* ? */
+                               _cache[1].Add((fixedMinimumX, fixedMaximumX, _first.MinimumY, _second.MaximumY, _second.MinimumZ, _first.MinimumZ - 1));
 
-                                    if (_first.MaximumZ < _second.MaximumZ)
-                                    {
-                                        throw new NotImplementedException();
-                                    }
-                                    else
-                                    {
-                                        _cache[1].Add((fixedMinimumX, fixedMaximumX, _first.MinimumY, _second.MaximumY, _first.MinimumZ, _second.MaximumZ));
-                                        _cache[1].Add((fixedMinimumX, fixedMaximumX, _first.MinimumY, _second.MaximumY, _second.MaximumZ + 1, _first.MaximumZ));
-                                        _cache[1].Add((fixedMinimumX, fixedMaximumX, _second.MaximumY + 1, _first.MaximumY, _first.MinimumZ, _first.MaximumZ));
-                                    }
+                                if (_first.MaximumZ < _second.MaximumZ)
+                                {
+                                    // Y 50 > 22
+                                    // Z -2 > -19
+                                    // Z 11 < 33
+                                    throw new NotImplementedException();
+                                }
+                                else
+                                {
+                                    _cache[1].Add((fixedMinimumX, fixedMaximumX, _first.MinimumY, _second.MaximumY, _first.MinimumZ, _second.MaximumZ));
+                                    _cache[1].Add((fixedMinimumX, fixedMaximumX, _first.MinimumY, _second.MaximumY, _second.MaximumZ + 1, _first.MaximumZ));
+                                    _cache[1].Add((fixedMinimumX, fixedMaximumX, _second.MaximumY + 1, _first.MaximumY, _first.MinimumZ, _first.MaximumZ));
                                 }
                             }
                         }
