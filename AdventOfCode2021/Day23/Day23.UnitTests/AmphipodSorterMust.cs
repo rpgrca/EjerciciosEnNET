@@ -60,5 +60,14 @@ namespace Day23.UnitTests
             Assert.Equal((7, 1, 10, 'B'), sut.GetAmphipodAt(7, 1));
             Assert.Equal(10, sut.TotalCost);
         }
+
+        [Fact]
+        public void MakeAmphipodMoveNorthThenWestThrice()
+        {
+            var sut = new AmphipodSorter(SAMPLE_MAP);
+            sut.MoveAmphipodFrom(7, 2).To(7, 1).To(6, 1).To(5, 1).To(4, 1);
+            Assert.Equal((4, 1, 10, 'B'), sut.GetAmphipodAt(4, 1));
+            Assert.Equal(40, sut.TotalCost);
+        }
     }
 }

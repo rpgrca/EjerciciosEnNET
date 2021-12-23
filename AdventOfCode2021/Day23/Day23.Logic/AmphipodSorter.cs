@@ -5,7 +5,7 @@ namespace Day23.Logic
 {
     public interface IMovementFrom
     {
-        void To(int x, int y);
+        IMovementFrom To(int x, int y);
     }
 
     public class AmphipodSorter : IMovementFrom
@@ -105,14 +105,17 @@ namespace Day23.Logic
 
         private static bool IsThereAnAmphipodAt(char room) => room is 'A' or 'B' or 'C' or 'D';
 
-        public void To(int x, int y)
+        public IMovementFrom To(int x, int y)
         {
             if (CurrentAmphipodCanMoveTo(x, y))
             {
                 _map[y][x] = _map[_currentAmphipod.Y][_currentAmphipod.X];
                 _map[_currentAmphipod.Y][_currentAmphipod.X] = '.';
+                _currentAmphipod = (x, y);
                 TotalCost += _amphipodes[_map[y][x]];
             }
+
+            return this;
         }
 
         private bool CurrentAmphipodCanMoveTo(int x, int y) => _map[y][x] == '.';
