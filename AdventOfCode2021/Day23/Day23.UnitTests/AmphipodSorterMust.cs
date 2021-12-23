@@ -70,4 +70,56 @@ namespace Day23.UnitTests
             Assert.Equal(40, sut.TotalCost);
         }
     }
+
+    public class AmphipodSorter2Must
+    {
+        private const string SAMPLE_LONG_MAP = @"#############
+#...........#
+###B#C#B#D###
+  #D#C#B#A#
+  #D#B#A#C#
+  #A#D#C#A#
+  #########";
+
+        private const string REAL_LONG_MAP = @"#############
+#...........#
+###B#D#C#A###
+  #D#C#B#A#
+  #D#B#A#C#
+  #C#D#B#A#
+  #########";
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void ThrowException_WhenInitializedWithInvalidLongMap(string invalidData)
+        {
+            var exception = Assert.Throws<ArgumentException>(() => new AmphipodSorter2(invalidData));
+            Assert.Equal("Invalid data", exception.Message);
+        }
+
+        [Theory]
+        [InlineData(SAMPLE_LONG_MAP)]
+        [InlineData(REAL_LONG_MAP)]
+        public void LoadLongMapCorrectly(string map)
+        {
+            var sut = new AmphipodSorter2(map);
+            Assert.Equal(map, sut.ToString());
+        }
+
+        [Fact]
+        public void Test1()
+        {
+            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            sut.MoveAmphipodFrom(5).To(0);
+            Assert.Equal(@"#############
+#B..........#
+###.#C#B#D###
+  #D#C#B#A#
+  #D#B#A#C#
+  #A#D#C#A#
+  #########", sut.ToString());
+        }
+    }
 }
