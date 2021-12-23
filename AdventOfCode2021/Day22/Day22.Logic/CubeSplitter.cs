@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Day22.UnitTests
+namespace Day22.Logic
 {
     public class CubeSplitter
     {
@@ -344,7 +344,7 @@ namespace Day22.UnitTests
                             else
                             {
                                 /* ? */
-                               _cache[1].Add((fixedMinimumX, fixedMaximumX, _first.MinimumY, _second.MaximumY, _second.MinimumZ, _first.MinimumZ - 1));
+                                _cache[1].Add((fixedMinimumX, fixedMaximumX, _first.MinimumY, _second.MaximumY, _second.MinimumZ, _first.MinimumZ - 1));
 
                                 if (_first.MaximumZ < _second.MaximumZ)
                                 {

@@ -1,4 +1,5 @@
 using Xunit;
+using Day22.Logic;
 
 namespace Day22.UnitTests
 {
@@ -277,7 +278,6 @@ on x=-5..5,y=-31..6,z=9..33
 on x=-5..5,y=7..22,z=-19..33
 on x=6..47,y=-31..22,z=-19..33", sut.ToString());
         }
-
 
         [Fact]
         public void MustSplitCubeDismissingOverlaps_14()
