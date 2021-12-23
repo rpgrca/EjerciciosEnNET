@@ -36,5 +36,20 @@ namespace Day23.UnitTests
             var sut = new AmphipodSorter(map);
             Assert.Equal(map, sut.ToString());
         }
+
+        [Fact]
+        public void IndividualizeEveryAmphipod()
+        {
+            var sut = new AmphipodSorter(SAMPLE_MAP);
+            Assert.Equal((3, 3, 1, 'A'), sut.GetAmphipodAt(3, 3));
+        }
+
+        [Fact]
+        public void ThrowException_WhenAskingForAnAmphipodThatIsNotThere()
+        {
+            var sut = new AmphipodSorter(SAMPLE_MAP);
+            var exception = Assert.Throws<ArgumentException>(() => sut.GetAmphipodAt(0, 0));
+            Assert.Equal("No amphipod there", exception.Message);
+        }
     }
 }

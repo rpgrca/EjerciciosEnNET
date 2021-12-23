@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Day23.Logic
 {
@@ -7,6 +8,7 @@ namespace Day23.Logic
         private readonly string _data;
 
         private readonly char[][] _map;
+        private readonly Dictionary<char, int> _amphipodes;
 
         public AmphipodSorter(string data)
         {
@@ -16,6 +18,14 @@ namespace Day23.Logic
             }
 
             _data = data;
+            _amphipodes = new Dictionary<char, int>
+            {
+                { 'A', 1 },
+                { 'B', 10 },
+                { 'C', 100 },
+                { 'D', 1000 }
+            };
+
             _map = new char[5][]
             {
                 new char[13],
@@ -66,5 +76,19 @@ namespace Day23.Logic
 
             return map.Trim();
         }
+
+        public (int X, int Y, int Cost, char Name) GetAmphipodAt(int x, int y)
+        {
+            if (IsThereAnAmphipodAt(_map[y][x]))
+            {
+                return (x, y, GetCostFor(_map[y][x]), _map[y][x]);
+            }
+
+            throw new ArgumentException("No amphipod there");
+        }
+
+        private int GetCostFor(char amphipod) => _amphipodes[amphipod];
+
+        private static bool IsThereAnAmphipodAt(char room) => room is 'A' or 'B' or 'C' or 'D';
     }
 }
