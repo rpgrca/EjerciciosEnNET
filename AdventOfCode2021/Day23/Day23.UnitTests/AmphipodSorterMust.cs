@@ -110,24 +110,10 @@ namespace Day23.UnitTests
         }
 
         [Fact]
-        public void Test1()
-        {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(5).To(0);
-            Assert.Equal(@"#############
-#B..........#
-###.#C#B#D###
-  #D#C#B#A#
-  #D#B#A#C#
-  #A#D#C#A#
-  #########", sut.ToString());
-        }
-
-        [Fact]
         public void WalkStep1InSolution()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(23).To(26);
+            sut.MoveAmphipodFrom(23).To(26).OrFail();
             Assert.Equal(@"#############
 #..........D#
 ###B#C#B#.###
@@ -141,8 +127,8 @@ namespace Day23.UnitTests
         public void Walk2StepsInSolution()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(23).To(26);
-            sut.MoveAmphipodFrom(22).To(0);
+            sut.MoveAmphipodFrom(23).To(26).OrFail();
+            sut.MoveAmphipodFrom(22).To(0).OrFail();
             Assert.Equal(@"#############
 #A.........D#
 ###B#C#B#.###
@@ -156,9 +142,9 @@ namespace Day23.UnitTests
         public void Walk3StepsInSolution()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(23).To(26);
-            sut.MoveAmphipodFrom(22).To(0);
-            sut.MoveAmphipodFrom(17).To(25);
+            sut.MoveAmphipodFrom(23).To(26).OrFail();
+            sut.MoveAmphipodFrom(22).To(0).OrFail();
+            sut.MoveAmphipodFrom(17).To(25).OrFail();
             Assert.Equal(@"#############
 #A........BD#
 ###B#C#.#.###
@@ -172,10 +158,10 @@ namespace Day23.UnitTests
         public void Walk4StepsInSolution()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(23).To(26);
-            sut.MoveAmphipodFrom(22).To(0);
-            sut.MoveAmphipodFrom(17).To(25);
-            sut.MoveAmphipodFrom(16).To(19);
+            sut.MoveAmphipodFrom(23).To(26).OrFail();
+            sut.MoveAmphipodFrom(22).To(0).OrFail();
+            sut.MoveAmphipodFrom(17).To(25).OrFail();
+            sut.MoveAmphipodFrom(16).To(19).OrFail();
             Assert.Equal(@"#############
 #A......B.BD#
 ###B#C#.#.###
@@ -189,11 +175,11 @@ namespace Day23.UnitTests
         public void Walk5StepsInSolution()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(23).To(26);
-            sut.MoveAmphipodFrom(22).To(0);
-            sut.MoveAmphipodFrom(17).To(25);
-            sut.MoveAmphipodFrom(16).To(19);
-            sut.MoveAmphipodFrom(15).To(1);
+            sut.MoveAmphipodFrom(23).To(26).OrFail();
+            sut.MoveAmphipodFrom(22).To(0).OrFail();
+            sut.MoveAmphipodFrom(17).To(25).OrFail();
+            sut.MoveAmphipodFrom(16).To(19).OrFail();
+            sut.MoveAmphipodFrom(15).To(1).OrFail();
             Assert.Equal(@"#############
 #AA.....B.BD#
 ###B#C#.#.###
@@ -207,12 +193,12 @@ namespace Day23.UnitTests
         public void Walk6StepsInSolution()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(23).To(26);
-            sut.MoveAmphipodFrom(22).To(0);
-            sut.MoveAmphipodFrom(17).To(25);
-            sut.MoveAmphipodFrom(16).To(19);
-            sut.MoveAmphipodFrom(15).To(1);
-            sut.MoveAmphipodFrom(11).To(15);
+            sut.MoveAmphipodFrom(23).To(26).OrFail();
+            sut.MoveAmphipodFrom(22).To(0).OrFail();
+            sut.MoveAmphipodFrom(17).To(25).OrFail();
+            sut.MoveAmphipodFrom(16).To(19).OrFail();
+            sut.MoveAmphipodFrom(15).To(1).OrFail();
+            sut.MoveAmphipodFrom(11).To(15).OrFail();
             Assert.Equal(@"#############
 #AA.....B.BD#
 ###B#.#.#.###
@@ -226,13 +212,13 @@ namespace Day23.UnitTests
         public void Walk7StepsInSolution()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(23).To(26);
-            sut.MoveAmphipodFrom(22).To(0);
-            sut.MoveAmphipodFrom(17).To(25);
-            sut.MoveAmphipodFrom(16).To(19);
-            sut.MoveAmphipodFrom(15).To(1);
-            sut.MoveAmphipodFrom(11).To(15);
-            sut.MoveAmphipodFrom(10).To(16);
+            sut.MoveAmphipodFrom(23).To(26).OrFail();
+            sut.MoveAmphipodFrom(22).To(0).OrFail();
+            sut.MoveAmphipodFrom(17).To(25).OrFail();
+            sut.MoveAmphipodFrom(16).To(19).OrFail();
+            sut.MoveAmphipodFrom(15).To(1).OrFail();
+            sut.MoveAmphipodFrom(11).To(15).OrFail();
+            sut.MoveAmphipodFrom(10).To(16).OrFail();
             Assert.Equal(@"#############
 #AA.....B.BD#
 ###B#.#.#.###
@@ -246,14 +232,14 @@ namespace Day23.UnitTests
         public void Walk8StepsInSolution()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(23).To(26);
-            sut.MoveAmphipodFrom(22).To(0);
-            sut.MoveAmphipodFrom(17).To(25);
-            sut.MoveAmphipodFrom(16).To(19);
-            sut.MoveAmphipodFrom(15).To(1);
-            sut.MoveAmphipodFrom(11).To(15);
-            sut.MoveAmphipodFrom(10).To(16);
-            sut.MoveAmphipodFrom(9).To(13);
+            sut.MoveAmphipodFrom(23).To(26).OrFail();
+            sut.MoveAmphipodFrom(22).To(0).OrFail();
+            sut.MoveAmphipodFrom(17).To(25).OrFail();
+            sut.MoveAmphipodFrom(16).To(19).OrFail();
+            sut.MoveAmphipodFrom(15).To(1).OrFail();
+            sut.MoveAmphipodFrom(11).To(15).OrFail();
+            sut.MoveAmphipodFrom(10).To(16).OrFail();
+            sut.MoveAmphipodFrom(9).To(13).OrFail();
             Assert.Equal(@"#############
 #AA...B.B.BD#
 ###B#.#.#.###
@@ -267,15 +253,15 @@ namespace Day23.UnitTests
         public void Walk9StepsInSolution()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(23).To(26);
-            sut.MoveAmphipodFrom(22).To(0);
-            sut.MoveAmphipodFrom(17).To(25);
-            sut.MoveAmphipodFrom(16).To(19);
-            sut.MoveAmphipodFrom(15).To(1);
-            sut.MoveAmphipodFrom(11).To(15);
-            sut.MoveAmphipodFrom(10).To(16);
-            sut.MoveAmphipodFrom(9).To(13);
-            sut.MoveAmphipodFrom(8).To(7);
+            sut.MoveAmphipodFrom(23).To(26).OrFail();
+            sut.MoveAmphipodFrom(22).To(0).OrFail();
+            sut.MoveAmphipodFrom(17).To(25).OrFail();
+            sut.MoveAmphipodFrom(16).To(19).OrFail();
+            sut.MoveAmphipodFrom(15).To(1).OrFail();
+            sut.MoveAmphipodFrom(11).To(15).OrFail();
+            sut.MoveAmphipodFrom(10).To(16).OrFail();
+            sut.MoveAmphipodFrom(9).To(13).OrFail();
+            sut.MoveAmphipodFrom(8).To(7).OrFail();
             Assert.Equal(@"#############
 #AA.D.B.B.BD#
 ###B#.#.#.###
@@ -289,16 +275,16 @@ namespace Day23.UnitTests
         public void Walk10StepsInSolution()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(23).To(26);
-            sut.MoveAmphipodFrom(22).To(0);
-            sut.MoveAmphipodFrom(17).To(25);
-            sut.MoveAmphipodFrom(16).To(19);
-            sut.MoveAmphipodFrom(15).To(1);
-            sut.MoveAmphipodFrom(11).To(15);
-            sut.MoveAmphipodFrom(10).To(16);
-            sut.MoveAmphipodFrom(9).To(13);
-            sut.MoveAmphipodFrom(8).To(7);
-            sut.MoveAmphipodFrom(13).To(8);
+            sut.MoveAmphipodFrom(23).To(26).OrFail();
+            sut.MoveAmphipodFrom(22).To(0).OrFail();
+            sut.MoveAmphipodFrom(17).To(25).OrFail();
+            sut.MoveAmphipodFrom(16).To(19).OrFail();
+            sut.MoveAmphipodFrom(15).To(1).OrFail();
+            sut.MoveAmphipodFrom(11).To(15).OrFail();
+            sut.MoveAmphipodFrom(10).To(16).OrFail();
+            sut.MoveAmphipodFrom(9).To(13).OrFail();
+            sut.MoveAmphipodFrom(8).To(7).OrFail();
+            sut.MoveAmphipodFrom(13).To(8).OrFail();
             Assert.Equal(@"#############
 #AA.D...B.BD#
 ###B#.#.#.###
@@ -312,17 +298,17 @@ namespace Day23.UnitTests
         public void Walk11StepsInSolution()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(23).To(26);
-            sut.MoveAmphipodFrom(22).To(0);
-            sut.MoveAmphipodFrom(17).To(25);
-            sut.MoveAmphipodFrom(16).To(19);
-            sut.MoveAmphipodFrom(15).To(1);
-            sut.MoveAmphipodFrom(11).To(15);
-            sut.MoveAmphipodFrom(10).To(16);
-            sut.MoveAmphipodFrom(9).To(13);
-            sut.MoveAmphipodFrom(8).To(7);
-            sut.MoveAmphipodFrom(13).To(8);
-            sut.MoveAmphipodFrom(19).To(9);
+            sut.MoveAmphipodFrom(23).To(26).OrFail();
+            sut.MoveAmphipodFrom(22).To(0).OrFail();
+            sut.MoveAmphipodFrom(17).To(25).OrFail();
+            sut.MoveAmphipodFrom(16).To(19).OrFail();
+            sut.MoveAmphipodFrom(15).To(1).OrFail();
+            sut.MoveAmphipodFrom(11).To(15).OrFail();
+            sut.MoveAmphipodFrom(10).To(16).OrFail();
+            sut.MoveAmphipodFrom(9).To(13).OrFail();
+            sut.MoveAmphipodFrom(8).To(7).OrFail();
+            sut.MoveAmphipodFrom(13).To(8).OrFail();
+            sut.MoveAmphipodFrom(19).To(9).OrFail();
             Assert.Equal(@"#############
 #AA.D.....BD#
 ###B#.#.#.###
@@ -336,18 +322,18 @@ namespace Day23.UnitTests
         public void Walk12StepsInSolution()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(23).To(26);
-            sut.MoveAmphipodFrom(22).To(0);
-            sut.MoveAmphipodFrom(17).To(25);
-            sut.MoveAmphipodFrom(16).To(19);
-            sut.MoveAmphipodFrom(15).To(1);
-            sut.MoveAmphipodFrom(11).To(15);
-            sut.MoveAmphipodFrom(10).To(16);
-            sut.MoveAmphipodFrom(9).To(13);
-            sut.MoveAmphipodFrom(8).To(7);
-            sut.MoveAmphipodFrom(13).To(8);
-            sut.MoveAmphipodFrom(19).To(9);
-            sut.MoveAmphipodFrom(25).To(10);
+            sut.MoveAmphipodFrom(23).To(26).OrFail();
+            sut.MoveAmphipodFrom(22).To(0).OrFail();
+            sut.MoveAmphipodFrom(17).To(25).OrFail();
+            sut.MoveAmphipodFrom(16).To(19).OrFail();
+            sut.MoveAmphipodFrom(15).To(1).OrFail();
+            sut.MoveAmphipodFrom(11).To(15).OrFail();
+            sut.MoveAmphipodFrom(10).To(16).OrFail();
+            sut.MoveAmphipodFrom(9).To(13).OrFail();
+            sut.MoveAmphipodFrom(8).To(7).OrFail();
+            sut.MoveAmphipodFrom(13).To(8).OrFail();
+            sut.MoveAmphipodFrom(19).To(9).OrFail();
+            sut.MoveAmphipodFrom(25).To(10).OrFail();
             Assert.Equal(@"#############
 #AA.D......D#
 ###B#.#.#.###
@@ -361,19 +347,19 @@ namespace Day23.UnitTests
         public void Walk13StepsInSolution()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(23).To(26);
-            sut.MoveAmphipodFrom(22).To(0);
-            sut.MoveAmphipodFrom(17).To(25);
-            sut.MoveAmphipodFrom(16).To(19);
-            sut.MoveAmphipodFrom(15).To(1);
-            sut.MoveAmphipodFrom(11).To(15);
-            sut.MoveAmphipodFrom(10).To(16);
-            sut.MoveAmphipodFrom(9).To(13);
-            sut.MoveAmphipodFrom(8).To(7);
-            sut.MoveAmphipodFrom(13).To(8);
-            sut.MoveAmphipodFrom(19).To(9);
-            sut.MoveAmphipodFrom(25).To(10);
-            sut.MoveAmphipodFrom(21).To(17);
+            sut.MoveAmphipodFrom(23).To(26).OrFail();
+            sut.MoveAmphipodFrom(22).To(0).OrFail();
+            sut.MoveAmphipodFrom(17).To(25).OrFail();
+            sut.MoveAmphipodFrom(16).To(19).OrFail();
+            sut.MoveAmphipodFrom(15).To(1).OrFail();
+            sut.MoveAmphipodFrom(11).To(15).OrFail();
+            sut.MoveAmphipodFrom(10).To(16).OrFail();
+            sut.MoveAmphipodFrom(9).To(13).OrFail();
+            sut.MoveAmphipodFrom(8).To(7).OrFail();
+            sut.MoveAmphipodFrom(13).To(8).OrFail();
+            sut.MoveAmphipodFrom(19).To(9).OrFail();
+            sut.MoveAmphipodFrom(25).To(10).OrFail();
+            sut.MoveAmphipodFrom(21).To(17).OrFail();
             Assert.Equal(@"#############
 #AA.D......D#
 ###B#.#C#.###
@@ -387,20 +373,20 @@ namespace Day23.UnitTests
         public void Walk14StepsInSolution()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(23).To(26);
-            sut.MoveAmphipodFrom(22).To(0);
-            sut.MoveAmphipodFrom(17).To(25);
-            sut.MoveAmphipodFrom(16).To(19);
-            sut.MoveAmphipodFrom(15).To(1);
-            sut.MoveAmphipodFrom(11).To(15);
-            sut.MoveAmphipodFrom(10).To(16);
-            sut.MoveAmphipodFrom(9).To(13);
-            sut.MoveAmphipodFrom(8).To(7);
-            sut.MoveAmphipodFrom(13).To(8);
-            sut.MoveAmphipodFrom(19).To(9);
-            sut.MoveAmphipodFrom(25).To(10);
-            sut.MoveAmphipodFrom(21).To(17);
-            sut.MoveAmphipodFrom(20).To(25);
+            sut.MoveAmphipodFrom(23).To(26).OrFail();
+            sut.MoveAmphipodFrom(22).To(0).OrFail();
+            sut.MoveAmphipodFrom(17).To(25).OrFail();
+            sut.MoveAmphipodFrom(16).To(19).OrFail();
+            sut.MoveAmphipodFrom(15).To(1).OrFail();
+            sut.MoveAmphipodFrom(11).To(15).OrFail();
+            sut.MoveAmphipodFrom(10).To(16).OrFail();
+            sut.MoveAmphipodFrom(9).To(13).OrFail();
+            sut.MoveAmphipodFrom(8).To(7).OrFail();
+            sut.MoveAmphipodFrom(13).To(8).OrFail();
+            sut.MoveAmphipodFrom(19).To(9).OrFail();
+            sut.MoveAmphipodFrom(25).To(10).OrFail();
+            sut.MoveAmphipodFrom(21).To(17).OrFail();
+            sut.MoveAmphipodFrom(20).To(25).OrFail();
             Assert.Equal(@"#############
 #AA.D.....AD#
 ###B#.#C#.###
@@ -414,21 +400,21 @@ namespace Day23.UnitTests
         public void Walk15StepsInSolution()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(23).To(26);
-            sut.MoveAmphipodFrom(22).To(0);
-            sut.MoveAmphipodFrom(17).To(25);
-            sut.MoveAmphipodFrom(16).To(19);
-            sut.MoveAmphipodFrom(15).To(1);
-            sut.MoveAmphipodFrom(11).To(15);
-            sut.MoveAmphipodFrom(10).To(16);
-            sut.MoveAmphipodFrom(9).To(13);
-            sut.MoveAmphipodFrom(8).To(7);
-            sut.MoveAmphipodFrom(13).To(8);
-            sut.MoveAmphipodFrom(19).To(9);
-            sut.MoveAmphipodFrom(25).To(10);
-            sut.MoveAmphipodFrom(21).To(17);
-            sut.MoveAmphipodFrom(20).To(25);
-            sut.MoveAmphipodFrom(7).To(20);
+            sut.MoveAmphipodFrom(23).To(26).OrFail();
+            sut.MoveAmphipodFrom(22).To(0).OrFail();
+            sut.MoveAmphipodFrom(17).To(25).OrFail();
+            sut.MoveAmphipodFrom(16).To(19).OrFail();
+            sut.MoveAmphipodFrom(15).To(1).OrFail();
+            sut.MoveAmphipodFrom(11).To(15).OrFail();
+            sut.MoveAmphipodFrom(10).To(16).OrFail();
+            sut.MoveAmphipodFrom(9).To(13).OrFail();
+            sut.MoveAmphipodFrom(8).To(7).OrFail();
+            sut.MoveAmphipodFrom(13).To(8).OrFail();
+            sut.MoveAmphipodFrom(19).To(9).OrFail();
+            sut.MoveAmphipodFrom(25).To(10).OrFail();
+            sut.MoveAmphipodFrom(21).To(17).OrFail();
+            sut.MoveAmphipodFrom(20).To(25).OrFail();
+            sut.MoveAmphipodFrom(7).To(20).OrFail();
             Assert.Equal(@"#############
 #AA.......AD#
 ###B#.#C#.###
@@ -442,22 +428,22 @@ namespace Day23.UnitTests
         public void Walk16StepsInSolution()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(23).To(26);
-            sut.MoveAmphipodFrom(22).To(0);
-            sut.MoveAmphipodFrom(17).To(25);
-            sut.MoveAmphipodFrom(16).To(19);
-            sut.MoveAmphipodFrom(15).To(1);
-            sut.MoveAmphipodFrom(11).To(15);
-            sut.MoveAmphipodFrom(10).To(16);
-            sut.MoveAmphipodFrom(9).To(13);
-            sut.MoveAmphipodFrom(8).To(7);
-            sut.MoveAmphipodFrom(13).To(8);
-            sut.MoveAmphipodFrom(19).To(9);
-            sut.MoveAmphipodFrom(25).To(10);
-            sut.MoveAmphipodFrom(21).To(17);
-            sut.MoveAmphipodFrom(20).To(25);
-            sut.MoveAmphipodFrom(7).To(20);
-            sut.MoveAmphipodFrom(5).To(11);
+            sut.MoveAmphipodFrom(23).To(26).OrFail();
+            sut.MoveAmphipodFrom(22).To(0).OrFail();
+            sut.MoveAmphipodFrom(17).To(25).OrFail();
+            sut.MoveAmphipodFrom(16).To(19).OrFail();
+            sut.MoveAmphipodFrom(15).To(1).OrFail();
+            sut.MoveAmphipodFrom(11).To(15).OrFail();
+            sut.MoveAmphipodFrom(10).To(16).OrFail();
+            sut.MoveAmphipodFrom(9).To(13).OrFail();
+            sut.MoveAmphipodFrom(8).To(7).OrFail();
+            sut.MoveAmphipodFrom(13).To(8).OrFail();
+            sut.MoveAmphipodFrom(19).To(9).OrFail();
+            sut.MoveAmphipodFrom(25).To(10).OrFail();
+            sut.MoveAmphipodFrom(21).To(17).OrFail();
+            sut.MoveAmphipodFrom(20).To(25).OrFail();
+            sut.MoveAmphipodFrom(7).To(20).OrFail();
+            sut.MoveAmphipodFrom(5).To(11).OrFail();
             Assert.Equal(@"#############
 #AA.......AD#
 ###.#B#C#.###
@@ -471,23 +457,23 @@ namespace Day23.UnitTests
         public void Walk17StepsInSolution()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(23).To(26);
-            sut.MoveAmphipodFrom(22).To(0);
-            sut.MoveAmphipodFrom(17).To(25);
-            sut.MoveAmphipodFrom(16).To(19);
-            sut.MoveAmphipodFrom(15).To(1);
-            sut.MoveAmphipodFrom(11).To(15);
-            sut.MoveAmphipodFrom(10).To(16);
-            sut.MoveAmphipodFrom(9).To(13);
-            sut.MoveAmphipodFrom(8).To(7);
-            sut.MoveAmphipodFrom(13).To(8);
-            sut.MoveAmphipodFrom(19).To(9);
-            sut.MoveAmphipodFrom(25).To(10);
-            sut.MoveAmphipodFrom(21).To(17);
-            sut.MoveAmphipodFrom(20).To(25);
-            sut.MoveAmphipodFrom(7).To(20);
-            sut.MoveAmphipodFrom(5).To(11);
-            sut.MoveAmphipodFrom(4).To(21);
+            sut.MoveAmphipodFrom(23).To(26).OrFail();
+            sut.MoveAmphipodFrom(22).To(0).OrFail();
+            sut.MoveAmphipodFrom(17).To(25).OrFail();
+            sut.MoveAmphipodFrom(16).To(19).OrFail();
+            sut.MoveAmphipodFrom(15).To(1).OrFail();
+            sut.MoveAmphipodFrom(11).To(15).OrFail();
+            sut.MoveAmphipodFrom(10).To(16).OrFail();
+            sut.MoveAmphipodFrom(9).To(13).OrFail();
+            sut.MoveAmphipodFrom(8).To(7).OrFail();
+            sut.MoveAmphipodFrom(13).To(8).OrFail();
+            sut.MoveAmphipodFrom(19).To(9).OrFail();
+            sut.MoveAmphipodFrom(25).To(10).OrFail();
+            sut.MoveAmphipodFrom(21).To(17).OrFail();
+            sut.MoveAmphipodFrom(20).To(25).OrFail();
+            sut.MoveAmphipodFrom(7).To(20).OrFail();
+            sut.MoveAmphipodFrom(5).To(11).OrFail();
+            sut.MoveAmphipodFrom(4).To(21).OrFail();
             Assert.Equal(@"#############
 #AA.......AD#
 ###.#B#C#.###
@@ -501,24 +487,24 @@ namespace Day23.UnitTests
         public void Walk18StepsInSolution()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(23).To(26);
-            sut.MoveAmphipodFrom(22).To(0);
-            sut.MoveAmphipodFrom(17).To(25);
-            sut.MoveAmphipodFrom(16).To(19);
-            sut.MoveAmphipodFrom(15).To(1);
-            sut.MoveAmphipodFrom(11).To(15);
-            sut.MoveAmphipodFrom(10).To(16);
-            sut.MoveAmphipodFrom(9).To(13);
-            sut.MoveAmphipodFrom(8).To(7);
-            sut.MoveAmphipodFrom(13).To(8);
-            sut.MoveAmphipodFrom(19).To(9);
-            sut.MoveAmphipodFrom(25).To(10);
-            sut.MoveAmphipodFrom(21).To(17);
-            sut.MoveAmphipodFrom(20).To(25);
-            sut.MoveAmphipodFrom(7).To(20);
-            sut.MoveAmphipodFrom(5).To(11);
-            sut.MoveAmphipodFrom(4).To(21);
-            sut.MoveAmphipodFrom(3).To(7);
+            sut.MoveAmphipodFrom(23).To(26).OrFail();
+            sut.MoveAmphipodFrom(22).To(0).OrFail();
+            sut.MoveAmphipodFrom(17).To(25).OrFail();
+            sut.MoveAmphipodFrom(16).To(19).OrFail();
+            sut.MoveAmphipodFrom(15).To(1).OrFail();
+            sut.MoveAmphipodFrom(11).To(15).OrFail();
+            sut.MoveAmphipodFrom(10).To(16).OrFail();
+            sut.MoveAmphipodFrom(9).To(13).OrFail();
+            sut.MoveAmphipodFrom(8).To(7).OrFail();
+            sut.MoveAmphipodFrom(13).To(8).OrFail();
+            sut.MoveAmphipodFrom(19).To(9).OrFail();
+            sut.MoveAmphipodFrom(25).To(10).OrFail();
+            sut.MoveAmphipodFrom(21).To(17).OrFail();
+            sut.MoveAmphipodFrom(20).To(25).OrFail();
+            sut.MoveAmphipodFrom(7).To(20).OrFail();
+            sut.MoveAmphipodFrom(5).To(11).OrFail();
+            sut.MoveAmphipodFrom(4).To(21).OrFail();
+            sut.MoveAmphipodFrom(3).To(7).OrFail();
             Assert.Equal(@"#############
 #AA.D.....AD#
 ###.#B#C#.###
@@ -532,25 +518,25 @@ namespace Day23.UnitTests
         public void Walk19StepsInSolution()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(23).To(26);
-            sut.MoveAmphipodFrom(22).To(0);
-            sut.MoveAmphipodFrom(17).To(25);
-            sut.MoveAmphipodFrom(16).To(19);
-            sut.MoveAmphipodFrom(15).To(1);
-            sut.MoveAmphipodFrom(11).To(15);
-            sut.MoveAmphipodFrom(10).To(16);
-            sut.MoveAmphipodFrom(9).To(13);
-            sut.MoveAmphipodFrom(8).To(7);
-            sut.MoveAmphipodFrom(13).To(8);
-            sut.MoveAmphipodFrom(19).To(9);
-            sut.MoveAmphipodFrom(25).To(10);
-            sut.MoveAmphipodFrom(21).To(17);
-            sut.MoveAmphipodFrom(20).To(25);
-            sut.MoveAmphipodFrom(7).To(20);
-            sut.MoveAmphipodFrom(5).To(11);
-            sut.MoveAmphipodFrom(4).To(21);
-            sut.MoveAmphipodFrom(3).To(7);
-            sut.MoveAmphipodFrom(1).To(3);
+            sut.MoveAmphipodFrom(23).To(26).OrFail();
+            sut.MoveAmphipodFrom(22).To(0).OrFail();
+            sut.MoveAmphipodFrom(17).To(25).OrFail();
+            sut.MoveAmphipodFrom(16).To(19).OrFail();
+            sut.MoveAmphipodFrom(15).To(1).OrFail();
+            sut.MoveAmphipodFrom(11).To(15).OrFail();
+            sut.MoveAmphipodFrom(10).To(16).OrFail();
+            sut.MoveAmphipodFrom(9).To(13).OrFail();
+            sut.MoveAmphipodFrom(8).To(7).OrFail();
+            sut.MoveAmphipodFrom(13).To(8).OrFail();
+            sut.MoveAmphipodFrom(19).To(9).OrFail();
+            sut.MoveAmphipodFrom(25).To(10).OrFail();
+            sut.MoveAmphipodFrom(21).To(17).OrFail();
+            sut.MoveAmphipodFrom(20).To(25).OrFail();
+            sut.MoveAmphipodFrom(7).To(20).OrFail();
+            sut.MoveAmphipodFrom(5).To(11).OrFail();
+            sut.MoveAmphipodFrom(4).To(21).OrFail();
+            sut.MoveAmphipodFrom(3).To(7).OrFail();
+            sut.MoveAmphipodFrom(1).To(3).OrFail();
             Assert.Equal(@"#############
 #A..D.....AD#
 ###.#B#C#.###
@@ -564,26 +550,26 @@ namespace Day23.UnitTests
         public void Walk20StepsInSolution()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(23).To(26);
-            sut.MoveAmphipodFrom(22).To(0);
-            sut.MoveAmphipodFrom(17).To(25);
-            sut.MoveAmphipodFrom(16).To(19);
-            sut.MoveAmphipodFrom(15).To(1);
-            sut.MoveAmphipodFrom(11).To(15);
-            sut.MoveAmphipodFrom(10).To(16);
-            sut.MoveAmphipodFrom(9).To(13);
-            sut.MoveAmphipodFrom(8).To(7);
-            sut.MoveAmphipodFrom(13).To(8);
-            sut.MoveAmphipodFrom(19).To(9);
-            sut.MoveAmphipodFrom(25).To(10);
-            sut.MoveAmphipodFrom(21).To(17);
-            sut.MoveAmphipodFrom(20).To(25);
-            sut.MoveAmphipodFrom(7).To(20);
-            sut.MoveAmphipodFrom(5).To(11);
-            sut.MoveAmphipodFrom(4).To(21);
-            sut.MoveAmphipodFrom(3).To(7);
-            sut.MoveAmphipodFrom(1).To(3);
-            sut.MoveAmphipodFrom(0).To(4);
+            sut.MoveAmphipodFrom(23).To(26).OrFail();
+            sut.MoveAmphipodFrom(22).To(0).OrFail();
+            sut.MoveAmphipodFrom(17).To(25).OrFail();
+            sut.MoveAmphipodFrom(16).To(19).OrFail();
+            sut.MoveAmphipodFrom(15).To(1).OrFail();
+            sut.MoveAmphipodFrom(11).To(15).OrFail();
+            sut.MoveAmphipodFrom(10).To(16).OrFail();
+            sut.MoveAmphipodFrom(9).To(13).OrFail();
+            sut.MoveAmphipodFrom(8).To(7).OrFail();
+            sut.MoveAmphipodFrom(13).To(8).OrFail();
+            sut.MoveAmphipodFrom(19).To(9).OrFail();
+            sut.MoveAmphipodFrom(25).To(10).OrFail();
+            sut.MoveAmphipodFrom(21).To(17).OrFail();
+            sut.MoveAmphipodFrom(20).To(25).OrFail();
+            sut.MoveAmphipodFrom(7).To(20).OrFail();
+            sut.MoveAmphipodFrom(5).To(11).OrFail();
+            sut.MoveAmphipodFrom(4).To(21).OrFail();
+            sut.MoveAmphipodFrom(3).To(7).OrFail();
+            sut.MoveAmphipodFrom(1).To(3).OrFail();
+            sut.MoveAmphipodFrom(0).To(4).OrFail();
             Assert.Equal(@"#############
 #...D.....AD#
 ###.#B#C#.###
@@ -597,27 +583,27 @@ namespace Day23.UnitTests
         public void Walk21StepsInSolution()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(23).To(26);
-            sut.MoveAmphipodFrom(22).To(0);
-            sut.MoveAmphipodFrom(17).To(25);
-            sut.MoveAmphipodFrom(16).To(19);
-            sut.MoveAmphipodFrom(15).To(1);
-            sut.MoveAmphipodFrom(11).To(15);
-            sut.MoveAmphipodFrom(10).To(16);
-            sut.MoveAmphipodFrom(9).To(13);
-            sut.MoveAmphipodFrom(8).To(7);
-            sut.MoveAmphipodFrom(13).To(8);
-            sut.MoveAmphipodFrom(19).To(9);
-            sut.MoveAmphipodFrom(25).To(10);
-            sut.MoveAmphipodFrom(21).To(17);
-            sut.MoveAmphipodFrom(20).To(25);
-            sut.MoveAmphipodFrom(7).To(20);
-            sut.MoveAmphipodFrom(5).To(11);
-            sut.MoveAmphipodFrom(4).To(21);
-            sut.MoveAmphipodFrom(3).To(7);
-            sut.MoveAmphipodFrom(1).To(3);
-            sut.MoveAmphipodFrom(0).To(4);
-            sut.MoveAmphipodFrom(7).To(22);
+            sut.MoveAmphipodFrom(23).To(26).OrFail();
+            sut.MoveAmphipodFrom(22).To(0).OrFail();
+            sut.MoveAmphipodFrom(17).To(25).OrFail();
+            sut.MoveAmphipodFrom(16).To(19).OrFail();
+            sut.MoveAmphipodFrom(15).To(1).OrFail();
+            sut.MoveAmphipodFrom(11).To(15).OrFail();
+            sut.MoveAmphipodFrom(10).To(16).OrFail();
+            sut.MoveAmphipodFrom(9).To(13).OrFail();
+            sut.MoveAmphipodFrom(8).To(7).OrFail();
+            sut.MoveAmphipodFrom(13).To(8).OrFail();
+            sut.MoveAmphipodFrom(19).To(9).OrFail();
+            sut.MoveAmphipodFrom(25).To(10).OrFail();
+            sut.MoveAmphipodFrom(21).To(17).OrFail();
+            sut.MoveAmphipodFrom(20).To(25).OrFail();
+            sut.MoveAmphipodFrom(7).To(20).OrFail();
+            sut.MoveAmphipodFrom(5).To(11).OrFail();
+            sut.MoveAmphipodFrom(4).To(21).OrFail();
+            sut.MoveAmphipodFrom(3).To(7).OrFail();
+            sut.MoveAmphipodFrom(1).To(3).OrFail();
+            sut.MoveAmphipodFrom(0).To(4).OrFail();
+            sut.MoveAmphipodFrom(7).To(22).OrFail();
             Assert.Equal(@"#############
 #.........AD#
 ###.#B#C#.###
@@ -631,28 +617,28 @@ namespace Day23.UnitTests
         public void Walk22StepsInSolution()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(23).To(26);
-            sut.MoveAmphipodFrom(22).To(0);
-            sut.MoveAmphipodFrom(17).To(25);
-            sut.MoveAmphipodFrom(16).To(19);
-            sut.MoveAmphipodFrom(15).To(1);
-            sut.MoveAmphipodFrom(11).To(15);
-            sut.MoveAmphipodFrom(10).To(16);
-            sut.MoveAmphipodFrom(9).To(13);
-            sut.MoveAmphipodFrom(8).To(7);
-            sut.MoveAmphipodFrom(13).To(8);
-            sut.MoveAmphipodFrom(19).To(9);
-            sut.MoveAmphipodFrom(25).To(10);
-            sut.MoveAmphipodFrom(21).To(17);
-            sut.MoveAmphipodFrom(20).To(25);
-            sut.MoveAmphipodFrom(7).To(20);
-            sut.MoveAmphipodFrom(5).To(11);
-            sut.MoveAmphipodFrom(4).To(21);
-            sut.MoveAmphipodFrom(3).To(7);
-            sut.MoveAmphipodFrom(1).To(3);
-            sut.MoveAmphipodFrom(0).To(4);
-            sut.MoveAmphipodFrom(7).To(22);
-            sut.MoveAmphipodFrom(25).To(5);
+            sut.MoveAmphipodFrom(23).To(26).OrFail();
+            sut.MoveAmphipodFrom(22).To(0).OrFail();
+            sut.MoveAmphipodFrom(17).To(25).OrFail();
+            sut.MoveAmphipodFrom(16).To(19).OrFail();
+            sut.MoveAmphipodFrom(15).To(1).OrFail();
+            sut.MoveAmphipodFrom(11).To(15).OrFail();
+            sut.MoveAmphipodFrom(10).To(16).OrFail();
+            sut.MoveAmphipodFrom(9).To(13).OrFail();
+            sut.MoveAmphipodFrom(8).To(7).OrFail();
+            sut.MoveAmphipodFrom(13).To(8).OrFail();
+            sut.MoveAmphipodFrom(19).To(9).OrFail();
+            sut.MoveAmphipodFrom(25).To(10).OrFail();
+            sut.MoveAmphipodFrom(21).To(17).OrFail();
+            sut.MoveAmphipodFrom(20).To(25).OrFail();
+            sut.MoveAmphipodFrom(7).To(20).OrFail();
+            sut.MoveAmphipodFrom(5).To(11).OrFail();
+            sut.MoveAmphipodFrom(4).To(21).OrFail();
+            sut.MoveAmphipodFrom(3).To(7).OrFail();
+            sut.MoveAmphipodFrom(1).To(3).OrFail();
+            sut.MoveAmphipodFrom(0).To(4).OrFail();
+            sut.MoveAmphipodFrom(7).To(22).OrFail();
+            sut.MoveAmphipodFrom(25).To(5).OrFail();
             Assert.Equal(@"#############
 #..........D#
 ###A#B#C#.###
@@ -666,29 +652,29 @@ namespace Day23.UnitTests
         public void Walk23StepsInSolution()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
-            sut.MoveAmphipodFrom(23).To(26);
-            sut.MoveAmphipodFrom(22).To(0);
-            sut.MoveAmphipodFrom(17).To(25);
-            sut.MoveAmphipodFrom(16).To(19);
-            sut.MoveAmphipodFrom(15).To(1);
-            sut.MoveAmphipodFrom(11).To(15);
-            sut.MoveAmphipodFrom(10).To(16);
-            sut.MoveAmphipodFrom(9).To(13);
-            sut.MoveAmphipodFrom(8).To(7);
-            sut.MoveAmphipodFrom(13).To(8);
-            sut.MoveAmphipodFrom(19).To(9);
-            sut.MoveAmphipodFrom(25).To(10);
-            sut.MoveAmphipodFrom(21).To(17);
-            sut.MoveAmphipodFrom(20).To(25);
-            sut.MoveAmphipodFrom(7).To(20);
-            sut.MoveAmphipodFrom(5).To(11);
-            sut.MoveAmphipodFrom(4).To(21);
-            sut.MoveAmphipodFrom(3).To(7);
-            sut.MoveAmphipodFrom(1).To(3);
-            sut.MoveAmphipodFrom(0).To(4);
-            sut.MoveAmphipodFrom(7).To(22);
-            sut.MoveAmphipodFrom(25).To(5);
-            sut.MoveAmphipodFrom(26).To(23);
+            sut.MoveAmphipodFrom(23).To(26).OrFail();
+            sut.MoveAmphipodFrom(22).To(0).OrFail();
+            sut.MoveAmphipodFrom(17).To(25).OrFail();
+            sut.MoveAmphipodFrom(16).To(19).OrFail();
+            sut.MoveAmphipodFrom(15).To(1).OrFail();
+            sut.MoveAmphipodFrom(11).To(15).OrFail();
+            sut.MoveAmphipodFrom(10).To(16).OrFail();
+            sut.MoveAmphipodFrom(9).To(13).OrFail();
+            sut.MoveAmphipodFrom(8).To(7).OrFail();
+            sut.MoveAmphipodFrom(13).To(8).OrFail();
+            sut.MoveAmphipodFrom(19).To(9).OrFail();
+            sut.MoveAmphipodFrom(25).To(10).OrFail();
+            sut.MoveAmphipodFrom(21).To(17).OrFail();
+            sut.MoveAmphipodFrom(20).To(25).OrFail();
+            sut.MoveAmphipodFrom(7).To(20).OrFail();
+            sut.MoveAmphipodFrom(5).To(11).OrFail();
+            sut.MoveAmphipodFrom(4).To(21).OrFail();
+            sut.MoveAmphipodFrom(3).To(7).OrFail();
+            sut.MoveAmphipodFrom(1).To(3).OrFail();
+            sut.MoveAmphipodFrom(0).To(4).OrFail();
+            sut.MoveAmphipodFrom(7).To(22).OrFail();
+            sut.MoveAmphipodFrom(25).To(5).OrFail();
+            sut.MoveAmphipodFrom(26).To(23).OrFail();
             Assert.Equal(@"#############
 #...........#
 ###A#B#C#D###
@@ -699,13 +685,75 @@ namespace Day23.UnitTests
             Assert.Equal(44169, sut.TotalCost);
         }
 
+        [Theory]
+        [InlineData(5, 4)]
+        [InlineData(5, 16)]
+        [InlineData(5, 2)]
+        [InlineData(23, 2)]
+        [InlineData(23, 5)]
+        public void ReturnToStartingPoint_WhenCannotWalkToTarget(int startingPoint, int target)
+        {
+            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            sut.MoveAmphipodFrom(startingPoint).To(target).OrReturnBack();
+            Assert.Equal(@"#############
+#...........#
+###B#C#B#D###
+  #D#C#B#A#
+  #D#B#A#C#
+  #A#D#C#A#
+  #########", sut.ToString());
+        }
+
+        [Theory]
+        [InlineData(5, 4)]
+        [InlineData(5, 16)]
+        [InlineData(5, 2)]
+        [InlineData(23, 2)]
+        [InlineData(23, 5)]
+        public void ThrowException_WhenCannotWalkToTarget(int startingPoint, int target)
+        {
+            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var exception = Assert.Throws<ArgumentException>(() => sut.MoveAmphipodFrom(startingPoint).To(target).OrFail());
+            Assert.Equal("Could not complete path", exception.Message);
+        }
+
+        [Fact]
+        public void StayInSamePosition_WhenCannotStartWalkingToTarget()
+        {
+            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            sut.MoveAmphipodFrom(5).To(4).AndStopOnFail();
+            Assert.Equal(@"#############
+#...........#
+###B#C#B#D###
+  #D#C#B#A#
+  #D#B#A#C#
+  #A#D#C#A#
+  #########", sut.ToString());
+        }
+
+        [Fact]
+        public void StayInLastPosition_WhenCannotWalkToTarget()
+        {
+            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            sut.MoveAmphipodFrom(5).To(11).AndStopOnFail();
+            Assert.Equal(@"#############
+#...B.......#
+###.#C#B#D###
+  #D#C#B#A#
+  #D#B#A#C#
+  #A#D#C#A#
+  #########", sut.ToString());
+
+        }
+
+/*
         [Fact]
         public void SolveSecondPuzzle()
         {
             var sut = new Walker(REAL_LONG_MAP);
             sut.Run();
             Assert.Equal(0, sut.LowestTotalCost);
-        }
+        }*/
     }
 
     public class Walker
@@ -715,13 +763,18 @@ namespace Day23.UnitTests
         public Walker(string map) =>
             _map = map;
 
-        public IEnumerable<object> LowestTotalCost { get; internal set; }
+        public int LowestTotalCost { get; internal set; }
 
         public void Run()
         {
+            var totalCost = int.MaxValue;
             int[] initialAmphipods = { 5, 11, 17, 23 };
-            var amphipodSorter = new AmphipodSorter2(_map);
-            foreach (var amphipod in )
+            foreach (var amphipod in initialAmphipods)
+            {
+                var amphipodSorter = new AmphipodSorter2(_map);
+                amphipodSorter.OnFinalPositionReached(s => totalCost = s.TotalCost < totalCost ? s.TotalCost : totalCost);
+                amphipodSorter.WalkWith(amphipod);
+            }
         }
     }
 }
