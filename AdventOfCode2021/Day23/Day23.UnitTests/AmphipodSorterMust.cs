@@ -766,7 +766,14 @@ namespace Day23.UnitTests
         public void Run()
         {
             var amphipodSorter = new AmphipodSorter2(_map);
-            amphipodSorter.OnFinalPositionReached(s => LowestTotalCost = s.TotalCost < LowestTotalCost ? s.TotalCost : LowestTotalCost);
+            amphipodSorter.OnFinalPositionReached((s, c) =>
+            {
+              if (s.TotalCost < LowestTotalCost)
+              {
+                LowestTotalCost = s.TotalCost;
+                Console.WriteLine($"Found new lowest cost of {LowestTotalCost} on step {c}");
+              }
+            });
 
             var amphipodes = amphipodSorter.GetAmphipods();
             amphipodSorter.WalkWith(amphipodes);

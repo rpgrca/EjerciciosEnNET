@@ -34,8 +34,9 @@ namespace Day23.Logic
         private readonly Dictionary<string, int> _amphipodeTypes;
         private int _currentAmphipod;
         private int _currentTarget;
-        private Action<AmphipodSorter2> _onFinalPositionCallback;
+        private Action<AmphipodSorter2, int> _onFinalPositionCallback;
         private int _count;
+        private int _minimumCost;
 
         public int TotalCost { get; private set; }
 
@@ -46,6 +47,7 @@ namespace Day23.Logic
                 throw new ArgumentException("Invalid data");
             }
 
+            _minimumCost = int.MaxValue;
             _data = data;
             _amphipodeTypes = new Dictionary<string, int>
             {
@@ -469,7 +471,7 @@ namespace Day23.Logic
         public int[] GetAmphipods() =>
             new int[] { 5, 11, 17, 23, 4, 10, 16, 22, 3, 9, 15, 21, 2, 8, 14, 20 };
 
-        public void OnFinalPositionReached(Action<AmphipodSorter2> onFinalPositionCallback) =>
+        public void OnFinalPositionReached(Action<AmphipodSorter2, int> onFinalPositionCallback) =>
             _onFinalPositionCallback = onFinalPositionCallback;
 
         private void Parse()
@@ -521,6 +523,12 @@ namespace Day23.Logic
         public void WalkWith(int[] amphipods, List<(int From, int To)> stack = null)
         {
             _count++;
+
+            if (TotalCost > _minimumCost)
+            {
+                return;
+            }
+
             if (stack is null)
             {
                 stack = new List<(int From, int To)>();
@@ -528,7 +536,11 @@ namespace Day23.Logic
 
             if (HasFinalPositionBeenReached())
             {
-                _onFinalPositionCallback(this);
+                if (TotalCost < _minimumCost)
+                {
+                    _minimumCost = TotalCost;
+                    _onFinalPositionCallback(this, _count);
+                }
             }
 
             foreach (var amphipod in amphipods)
@@ -538,7 +550,86 @@ namespace Day23.Logic
                     continue;
                 }
 
-                for (var option = 0; option < 27; option++) // TODO: Complete _options[amphipod])
+                var options = new List<int> { 0, 1 };
+
+                if (_rooms[2] == ".")
+                {
+                    options.Add(2);
+                }
+                else if (_rooms[3] == ".")
+                {
+                    options.Add(3);
+                }
+                else if (_rooms[4] == ".")
+                {
+                    options.Add(4);
+                }
+                else if (_rooms[5] == ".")
+                {
+                    options.Add(5);
+                }
+
+                options.Add(7);
+
+                if (_rooms[8] == ".")
+                {
+                    options.Add(8);
+                }
+                else if (_rooms[9] == ".")
+                {
+                    options.Add(9);
+                }
+                else if (_rooms[10] == ".")
+                {
+                    options.Add(10);
+                }
+                else if (_rooms[11] == ".")
+                {
+                    options.Add(11);
+                }
+
+                options.Add(13);
+
+                if (_rooms[14] == ".")
+                {
+                    options.Add(14);
+                }
+                else if (_rooms[15] == ".")
+                {
+                    options.Add(15);
+                }
+                else if (_rooms[16] == ".")
+                {
+                    options.Add(16);
+                }
+                else if (_rooms[17] == ".")
+                {
+                    options.Add(17);
+                }
+
+                options.Add(19);
+
+                if (_rooms[20] == ".")
+                {
+                    options.Add(20);
+                }
+                else if (_rooms[21] == ".")
+                {
+                    options.Add(21);
+                }
+                else if (_rooms[22] == ".")
+                {
+                    options.Add(22);
+                }
+                else if (_rooms[23] == ".")
+                {
+                    options.Add(23);
+                }
+
+                options.Add(25);
+                options.Add(26);
+
+                foreach (var option in options)
                 {
                     if (option == amphipod)
                     {
@@ -553,30 +644,27 @@ namespace Day23.Logic
                         }
                     }
 
-                    if ((stack.Count == 0) || ((amphipod, option) != stack[0] && (option, amphipod) != stack[0]))
+                    var anyPossiblePath = MoveAmphipodFrom(amphipod).To(option).OrReturnBack();
+                    if (anyPossiblePath)
                     {
-                        var anyPossiblePath = MoveAmphipodFrom(amphipod).To(option).OrReturnBack();
-                        if (anyPossiblePath)
+                        stack.Insert(0, (amphipod, option));
+
+                        if (_count == 129524)
                         {
-                            stack.Insert(0, (amphipod, option));
-
-                            if (_count == 129524)
-                            {
-                                System.Diagnostics.Debugger.Break();
-                            }
-
-                            var amphipodsAbleToMove = CalculateAmphipodsAbleToMove();
-
-                            //System.IO.File.AppendAllText("./paths.txt", $"{ToString()} [{_count} - {TotalCost}]\n\n");
-                            //Console.WriteLine($"{TotalCost}: {ToString()}");
-                            WalkWith(amphipodsAbleToMove, stack);
-
-                            var reset = stack[0];
-                            stack.RemoveAt(0);
-                            ResetAmphipodBackFrom(reset.To).To(reset.From);
-                            //Console.WriteLine($"{TotalCost}: {ToString()}");
-                            //System.IO.File.AppendAllText("./paths.txt", $"{ToString()} [{_count} - {TotalCost}]\n\n");
+                            System.Diagnostics.Debugger.Break();
                         }
+
+                        var amphipodsAbleToMove = CalculateAmphipodsAbleToMove();
+
+                        //System.IO.File.AppendAllText("./paths.txt", $"{ToString()} [{_count} - {TotalCost}]\n\n");
+                        //Console.WriteLine($"{TotalCost}: {ToString()}");
+                        WalkWith(amphipodsAbleToMove, stack);
+
+                        var reset = stack[0];
+                        stack.RemoveAt(0);
+                        ResetAmphipodBackFrom(reset.To).To(reset.From);
+                        //Console.WriteLine($"{TotalCost}: {ToString()}");
+                        //System.IO.File.AppendAllText("./paths.txt", $"{ToString()} [{_count} - {TotalCost}]\n\n");
                     }
                 }
             }
@@ -618,17 +706,30 @@ namespace Day23.Logic
         }
 
         private bool ForeignersInOwnHomeArea(int amphipod) =>
+            ((amphipod is >= 2 and <= 5) && ((_rooms[2] is not "." and not "A") || (_rooms[3] is not "." and not "A") || (_rooms[4] is not "." and not "A") || (_rooms[5] is not "." and not "A"))) ||
+            ((amphipod is >= 8 and <= 11) && ((_rooms[8] is not "." and not "B") || (_rooms[9] is not "." and not "B") || (_rooms[10] is not "." and not "B") || (_rooms[11] is not "." and not "B"))) ||
+            ((amphipod is >= 14 and <= 17) && ((_rooms[14] is not "." and not "C") || (_rooms[15] is not "." and not "C") || (_rooms[16] is not "." and not "C") || (_rooms[17] is not "." and not "C"))) ||
+            ((amphipod is >= 20 and <= 23) && ((_rooms[20] is not "." and not "D") || (_rooms[21] is not "." and not "D") || (_rooms[22] is not "." and not "D") || (_rooms[23] is not "." and not "D")));
+                
+                /*
+                string.Format("{0}{1}{2}{3}", _rooms[2..6]).Replace(".", string.Empty).Replace("A", string.Empty)?.Length != 0)) ||
+
             ((amphipod is >= 2 and <= 5) && (string.Format("{0}{1}{2}{3}", _rooms[2..6]).Replace(".", string.Empty).Replace("A", string.Empty)?.Length != 0)) ||
             ((amphipod is >= 8 and <= 11) && (string.Format("{0}{1}{2}{3}", _rooms[8..12]).Replace(".", string.Empty).Replace("B", string.Empty)?.Length != 0)) ||
             ((amphipod is >= 14 and <= 17) && (string.Format("{0}{1}{2}{3}", _rooms[14..18]).Replace(".", string.Empty).Replace("C", string.Empty)?.Length != 0)) ||
-            ((amphipod is >= 20 and <= 23) && (string.Format("{0}{1}{2}{3}", _rooms[20..24]).Replace(".", string.Empty).Replace("D", string.Empty)?.Length != 0));
+            ((amphipod is >= 20 and <= 23) && (string.Format("{0}{1}{2}{3}", _rooms[20..24]).Replace(".", string.Empty).Replace("D", string.Empty)?.Length != 0));*/
 
         private bool IsHomeAreaBeingCompleted(string amphipod) =>
+            ((amphipod == "A") && (_rooms[2] is "." or "A") && (_rooms[3] is "." or "A") && (_rooms[4] is "." or "A") && (_rooms[5] is "." or "A")) ||
+            ((amphipod == "B") && (_rooms[8] is "." or "B") && (_rooms[9] is "." or "B") && (_rooms[10] is "." or "B") && (_rooms[11] is "." or "B")) ||
+            ((amphipod == "C") && (_rooms[14] is "." or "C") && (_rooms[15] is "." or "C") && (_rooms[16] is "." or "C") && (_rooms[17] is "." or "C")) ||
+            ((amphipod == "D") && (_rooms[20] is "." or "D") && (_rooms[21] is "." or "D") && (_rooms[22] is "." or "D") && (_rooms[23] is "." or "D"));
+/*
             ((amphipod == "A") && (string.Format("{0}{1}{2}{3}", _rooms[2..6]).Replace(".", string.Empty).Replace("A", string.Empty)?.Length == 0)) ||
             ((amphipod == "B") && (string.Format("{0}{1}{2}{3}", _rooms[8..12]).Replace(".", string.Empty).Replace("B", string.Empty)?.Length == 0)) ||
             ((amphipod == "C") && (string.Format("{0}{1}{2}{3}", _rooms[14..18]).Replace(".", string.Empty).Replace("C", string.Empty)?.Length == 0)) ||
             ((amphipod == "D") && (string.Format("{0}{1}{2}{3}", _rooms[20..24]).Replace(".", string.Empty).Replace("D", string.Empty)?.Length == 0));
-
+*/
         private bool HasFinalPositionBeenReached() =>
             _rooms[2] == "A" && _rooms[3] == "A" && _rooms[4] == "A" && _rooms[5] == "A" &&
             _rooms[8] == "B" && _rooms[9] == "B" && _rooms[10] == "B" && _rooms[11] == "B" &&
@@ -798,6 +899,5 @@ namespace Day23.Logic
             (amphipod == "B" && ((_rooms[8] is "A" or "C" or "D") || (_rooms[9] is "A" or "C" or "D") || (_rooms[10] is "A" or "C" or "D"))) ||
             (amphipod == "C" && ((_rooms[14] is "A" or "B" or "D") || (_rooms[15] is "A" or "B" or "D") || (_rooms[16] is "A" or "B" or "D"))) ||
             (amphipod == "D" && ((_rooms[20] is "A" or "B" or "C") || (_rooms[21] is "A" or "B" or "C") || (_rooms[22] is "A" or "B" or "C")));
-
     }
 }
