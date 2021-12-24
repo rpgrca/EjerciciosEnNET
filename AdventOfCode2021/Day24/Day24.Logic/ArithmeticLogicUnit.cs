@@ -117,6 +117,54 @@ namespace Day24.Logic
                                 break;
                         }
                         break;
+
+                    case "eql":
+                        switch (operands[1])
+                        {
+                            case "w":
+                                switch (operands[2])
+                                {
+                                    case "w": _opcodes.Add(alu => alu.W = alu.W == alu.W ? 1 : 0); break;
+                                    case "x": _opcodes.Add(alu => alu.W = alu.W == alu.X ? 1 : 0); break;
+                                    case "y": _opcodes.Add(alu => alu.W = alu.W == alu.Y ? 1 : 0); break;
+                                    case "z": _opcodes.Add(alu => alu.W = alu.W == alu.Z ? 1 : 0); break;
+                                    default: _opcodes.Add(alu => alu.W = alu.W == TakeValue() ? 1 : 0); break;
+                                }
+                                break;
+                            case "x":
+                                switch (operands[2])
+                                {
+                                    case "w": _opcodes.Add(alu => alu.X = alu.X == alu.W ? 1 : 0); break;
+                                    case "x": _opcodes.Add(alu => alu.X = alu.X == alu.X ? 1 : 0); break;
+                                    case "y": _opcodes.Add(alu => alu.X = alu.X == alu.Y ? 1 : 0); break;
+                                    case "z": _opcodes.Add(alu => alu.X = alu.X == alu.Z ? 1 : 0); break;
+                                    default: _opcodes.Add(alu => alu.X = alu.X == TakeValue() ? 1 : 0); break;
+                                }
+
+                                break;
+                            case "y":
+                                switch (operands[2])
+                                {
+                                    case "w": _opcodes.Add(alu => alu.Y = alu.Y == alu.W ? 1 : 0); break;
+                                    case "x": _opcodes.Add(alu => alu.Y = alu.Y == alu.X ? 1 : 0); break;
+                                    case "y": _opcodes.Add(alu => alu.Y = alu.Y == alu.Y ? 1 : 0); break;
+                                    case "z": _opcodes.Add(alu => alu.Y = alu.Y == alu.Z ? 1 : 0); break;
+                                    default: _opcodes.Add(alu => alu.Y = alu.Y == TakeValue() ? 1 : 0); break;
+                                }
+
+                                break;
+                            default:
+                                switch (operands[2])
+                                {
+                                    case "w": _opcodes.Add(alu => alu.Z = alu.Z == alu.W ? 1 : 0); break;
+                                    case "x": _opcodes.Add(alu => alu.Z = alu.Z == alu.X ? 1 : 0); break;
+                                    case "y": _opcodes.Add(alu => alu.Z = alu.Z == alu.Y ? 1 : 0); break;
+                                    case "z": _opcodes.Add(alu => alu.Z = alu.Z == alu.Z ? 1 : 0); break;
+                                    default: _opcodes.Add(alu => alu.Z = alu.Z == TakeValue() ? 1 : 0); break;
+                                }
+                                break;
+                        }
+                        break;
                 }
             }
         }

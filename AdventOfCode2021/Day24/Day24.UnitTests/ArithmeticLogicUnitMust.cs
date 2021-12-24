@@ -108,8 +108,6 @@ namespace Day24.UnitTests
             Assert.Equal(6, sut.Z);
         }
 
-
-/*
         [Theory]
         [InlineData(4, 8)]
         public void DuplicateNumberStoredInX(int input, int expectedX)
@@ -117,10 +115,10 @@ namespace Day24.UnitTests
             var sut = new ArithmeticLogicUnit(@"inp x
 mul x 2");
             sut.Input(input);
+            sut.Run();
             Assert.Equal(expectedX, sut.X);
         }
 
-/*
         [Theory]
         [InlineData(4, -4)]
         [InlineData(7, -7)]
@@ -129,18 +127,54 @@ mul x 2");
             var sut = new ArithmeticLogicUnit(@"inp x
 mul x -1");
             sut.Input(input);
+            sut.Run();
             Assert.Equal(expectedX, sut.X);
         }
 
         [Theory]
-        [InlineData(4, 8)]
-        public void DuplicateNumberStoredInX(int input, int expectedX)
+        [InlineData("inp w\ninp x\nmul w 3\neql w x", 10, 30, 1)]
+        public void VerifyWhetherAvalueIsTripleTheOtherWithRegisterW(string instructions, int firstInput, int secondInput, int expectedResult)
         {
-            var sut = new ArithmeticLogicUnit(@"inp x
-mul x 2");
-            sut.Input(input);
-            Assert.Equal(expectedX, sut.X);
+            var sut = new ArithmeticLogicUnit(instructions);
+            sut.Input(firstInput);
+            sut.Input(secondInput);
+            sut.Run();
+            Assert.Equal(expectedResult, sut.W);
         }
-        */
+
+        [Theory]
+        [InlineData("inp x\ninp y\nmul x 3\neql x y", 10, 30, 1)]
+        public void VerifyWhetherAvalueIsTripleTheOtherWithRegisterX(string instructions, int firstInput, int secondInput, int expectedResult)
+        {
+            var sut = new ArithmeticLogicUnit(instructions);
+            sut.Input(firstInput);
+            sut.Input(secondInput);
+            sut.Run();
+            Assert.Equal(expectedResult, sut.X);
+        }
+
+        [Theory]
+        [InlineData("inp y\ninp x\nmul y 3\neql y x", 10, 30, 1)]
+        public void VerifyWhetherAvalueIsTripleTheOtherWithRegisterY(string instructions, int firstInput, int secondInput, int expectedResult)
+        {
+            var sut = new ArithmeticLogicUnit(instructions);
+            sut.Input(firstInput);
+            sut.Input(secondInput);
+            sut.Run();
+            Assert.Equal(expectedResult, sut.Y);
+        }
+
+        [Theory]
+        [InlineData("inp z\ninp x\nmul z 3\neql z x", 10, 30, 1)]
+        public void VerifyWhetherAvalueIsTripleTheOtherWithRegisterZ(string instructions, int firstInput, int secondInput, int expectedResult)
+        {
+            var sut = new ArithmeticLogicUnit(instructions);
+            sut.Input(firstInput);
+            sut.Input(secondInput);
+            sut.Run();
+            Assert.Equal(expectedResult, sut.Z);
+        }
+
+
     }
 }
