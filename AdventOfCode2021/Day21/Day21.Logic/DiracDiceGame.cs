@@ -27,57 +27,39 @@ namespace Day21.Logic
 
         public bool IsPlayerAt(int player, int position) => _players[player] == position;
 
-        public void ThrowDice()
+        public void OnePlayerTurn()
         {
-            var currentThrow = ThrowDiceWith(100) + ThrowDiceWith(100) + ThrowDiceWith(100);
-            var advance = currentThrow % 10;
-            var newPosition = (_players[_currentPlayer] + advance) switch
-            {
-                2 => 2,
-                3 => 3,
-                4 => 4,
-                5 => 5,
-                6 => 6,
-                7 => 7,
-                8 => 8,
-                9 => 9,
-                10 => 10,
-                11 => 1,
-                12 => 2,
-                13 => 3,
-                14 => 4,
-                15 => 5,
-                16 => 6,
-                17 => 7,
-                18 => 8,
-                19 => 9,
-                _ => throw new ArgumentException("Invalid dice value")
-            };
-            _players[_currentPlayer] = newPosition;
+            var currentThrow = ThrowDice();
 
-            if (_players[_currentPlayer] < 1 || _players[_currentPlayer] > 10)
-            {
-                System.Diagnostics.Debugger.Break();
-            }
-            _scores[_currentPlayer] += _players[_currentPlayer];
-
+            AdvanceCurrentPlayerPawnBy(currentThrow);
+            UpdateCurrentPlayerScore();
             NextPlayer();
         }
 
-        private int ThrowDiceWith(int faces)
+        private void AdvanceCurrentPlayerPawnBy(int steps)
         {
-            _diceThrows++;
-
-            if (_dice + 1 > faces)
+            _players[_currentPlayer] = (_players[_currentPlayer] + (steps % 10)) switch
             {
-                _dice = 1;
-            }
-            else
+                var x when x >= 1 && x <= 10 => x,
+                var x when x >= 11 => x % 10,
+            };
+        }
+
+        private void UpdateCurrentPlayerScore() =>
+            _scores[_currentPlayer] += _players[_currentPlayer];
+
+        private int ThrowDice()
+        {
+            var sum = 0;
+
+            for (var index = 0; index < 3; index++)
             {
-                _dice++;
+                _dice = (_dice + 1 > 100) ? 1 : _dice + 1;
+                _diceThrows++;
+                sum += _dice;
             }
 
-            return _dice;
+            return sum;
         }
 
         private void NextPlayer() => _currentPlayer = (_currentPlayer + 1) % 2;
@@ -86,13 +68,15 @@ namespace Day21.Logic
 
         public void PlayGame()
         {
-            while (_scores[0] < 1000 && _scores[1] < 1000)
+            while (! GameHasEnded())
             {
-                ThrowDice();
+                OnePlayerTurn();
             }
 
-            var loserScore = (_scores[0] >= 1000) ? _scores[1] : _scores[0];
-            NumberOfDiceThrowsTimesLoserScore = _diceThrows * loserScore;
+            NumberOfDiceThrowsTimesLoserScore = _diceThrows * ((_scores[0] >= 1000) ? _scores[1] : _scores[0]);
         }
+
+        private bool GameHasEnded() =>
+            _scores[0] >= 1000 || _scores[1] >= 1000;
     }
 }

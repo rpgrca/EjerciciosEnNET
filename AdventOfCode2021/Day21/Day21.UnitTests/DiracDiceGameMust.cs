@@ -32,8 +32,8 @@ namespace Day21.UnitTests
         {
             var sut = new DiracDiceGame(4, 8);
 
-            sut.ThrowDice();
-            sut.ThrowDice();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
             Assert.True(sut.IsPlayerAt(0, 10));
             Assert.Equal(10, sut.GetScoreFor(0));
             Assert.True(sut.IsPlayerAt(1, 3));
@@ -45,10 +45,10 @@ namespace Day21.UnitTests
         {
             var sut = new DiracDiceGame(4, 8);
 
-            sut.ThrowDice();
-            sut.ThrowDice();
-            sut.ThrowDice();
-            sut.ThrowDice();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
 
             Assert.True(sut.IsPlayerAt(0, 4));
             Assert.Equal(14, sut.GetScoreFor(0));
@@ -61,12 +61,12 @@ namespace Day21.UnitTests
         {
             var sut = new DiracDiceGame(4, 8);
 
-            sut.ThrowDice();
-            sut.ThrowDice();
-            sut.ThrowDice();
-            sut.ThrowDice();
-            sut.ThrowDice();
-            sut.ThrowDice();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
 
             Assert.True(sut.IsPlayerAt(0, 6));
             Assert.Equal(20, sut.GetScoreFor(0));
@@ -79,14 +79,14 @@ namespace Day21.UnitTests
         {
             var sut = new DiracDiceGame(4, 8);
 
-            sut.ThrowDice();
-            sut.ThrowDice();
-            sut.ThrowDice();
-            sut.ThrowDice();
-            sut.ThrowDice();
-            sut.ThrowDice();
-            sut.ThrowDice();
-            sut.ThrowDice();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
 
             Assert.True(sut.IsPlayerAt(0, 6));
             Assert.Equal(26, sut.GetScoreFor(0));
@@ -99,17 +99,17 @@ namespace Day21.UnitTests
         {
             var sut = new DiracDiceGame(4, 8);
 
-            sut.ThrowDice();
-            sut.ThrowDice();
-            sut.ThrowDice();
-            sut.ThrowDice();
-            sut.ThrowDice();
-            sut.ThrowDice();
-            sut.ThrowDice();
-            sut.ThrowDice();
-            sut.ThrowDice();
-            sut.ThrowDice();
-            sut.ThrowDice();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
 
             Assert.True(sut.IsPlayerAt(0, 10));
             Assert.Equal(40, sut.GetScoreFor(0));
@@ -150,7 +150,7 @@ namespace Day21.UnitTests
         public void CalculateCorrectly_WhenFirstPlayerThrowsDice()
         {
             var sut = new DiracDiceRealGame(4, 8);
-            sut.ThrowDice();
+            sut.OnePlayerTurn();
 
             Assert.Equal(27, sut.TotalUniverses);
             Assert.Equal(1, sut.UniversesWithPlayersAtPositionWithScore(7, 8, 7, 0));
@@ -166,8 +166,8 @@ namespace Day21.UnitTests
         public void CalculateCorrectly_WhenSecondPlayerThrowsDice()
         {
             var sut = new DiracDiceRealGame(4, 8);
-            sut.ThrowDice();
-            sut.ThrowDice();
+            sut.OnePlayerTurn();
+            sut.OnePlayerTurn();
 
             Assert.Equal(729, sut.TotalUniverses);
             Assert.Equal(1, sut.UniversesWithPlayersAtPositionWithScore(7, 1, 7, 1));
