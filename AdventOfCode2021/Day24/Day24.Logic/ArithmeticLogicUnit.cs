@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Net;
+using System;
 using System.Collections.Generic;
 
 namespace Day24.Logic
@@ -161,6 +162,55 @@ namespace Day24.Logic
                                     case "y": _opcodes.Add(alu => alu.Z = alu.Z == alu.Y ? 1 : 0); break;
                                     case "z": _opcodes.Add(alu => alu.Z = alu.Z == alu.Z ? 1 : 0); break;
                                     default: _opcodes.Add(alu => alu.Z = alu.Z == TakeValue() ? 1 : 0); break;
+                                }
+                                break;
+                        }
+                        break;
+
+                    case "add":
+                        switch (operands[1])
+                        {
+                            case "w":
+                                switch (operands[2])
+                                {
+                                    case "w": _opcodes.Add(alu => alu.W += alu.W); break;
+                                    case "x": _opcodes.Add(alu => alu.W += alu.X); break;
+                                    case "y": _opcodes.Add(alu => alu.W += alu.Y); break;
+                                    case "z": _opcodes.Add(alu => alu.W += alu.Z); break;
+                                    default: _opcodes.Add(alu => alu.W += TakeValue()); break;
+                                }
+                                break;
+
+                            case "x":
+                                switch (operands[2])
+                                {
+                                    case "w": _opcodes.Add(alu => alu.X += alu.W); break;
+                                    case "x": _opcodes.Add(alu => alu.X += alu.X); break;
+                                    case "y": _opcodes.Add(alu => alu.X += alu.Y); break;
+                                    case "z": _opcodes.Add(alu => alu.X += alu.Z); break;
+                                    default: _opcodes.Add(alu => alu.X += TakeValue()); break;
+                                }
+                                break;
+
+                            case "y":
+                                switch (operands[2])
+                                {
+                                    case "w": _opcodes.Add(alu => alu.Y += alu.W); break;
+                                    case "x": _opcodes.Add(alu => alu.Y += alu.X); break;
+                                    case "y": _opcodes.Add(alu => alu.Y += alu.Y); break;
+                                    case "z": _opcodes.Add(alu => alu.Y += alu.Z); break;
+                                    default: _opcodes.Add(alu => alu.Y += TakeValue()); break;
+                                }
+                                break;
+
+                            case "z":
+                                switch (operands[2])
+                                {
+                                    case "w": _opcodes.Add(alu => alu.Z += alu.W); break;
+                                    case "x": _opcodes.Add(alu => alu.Z += alu.X); break;
+                                    case "y": _opcodes.Add(alu => alu.Z += alu.Y); break;
+                                    case "z": _opcodes.Add(alu => alu.Z += alu.Z); break;
+                                    default: _opcodes.Add(alu => alu.Z += TakeValue()); break;
                                 }
                                 break;
                         }
