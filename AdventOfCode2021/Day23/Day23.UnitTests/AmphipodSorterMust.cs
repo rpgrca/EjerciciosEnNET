@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
-using Day23.Logic;
 using Xunit;
+using Day23.Logic;
 
 namespace Day23.UnitTests
 {
@@ -746,14 +745,13 @@ namespace Day23.UnitTests
 
         }
 
-/*
         [Fact]
-        public void SolveSecondPuzzle()
+        public void SolveFirstSample()
         {
-            var sut = new Walker(REAL_LONG_MAP);
+            var sut = new Walker(SAMPLE_LONG_MAP);
             sut.Run();
-            Assert.Equal(0, sut.LowestTotalCost);
-        }*/
+            Assert.Equal(44169, sut.LowestTotalCost);
+        }
     }
 
     public class Walker
@@ -763,18 +761,15 @@ namespace Day23.UnitTests
         public Walker(string map) =>
             _map = map;
 
-        public int LowestTotalCost { get; internal set; }
+        public int LowestTotalCost { get; internal set; } = int.MaxValue;
 
         public void Run()
         {
-            var totalCost = int.MaxValue;
-            int[] initialAmphipods = { 5, 11, 17, 23 };
-            foreach (var amphipod in initialAmphipods)
-            {
-                var amphipodSorter = new AmphipodSorter2(_map);
-                amphipodSorter.OnFinalPositionReached(s => totalCost = s.TotalCost < totalCost ? s.TotalCost : totalCost);
-                amphipodSorter.WalkWith(amphipod);
-            }
+            var amphipodSorter = new AmphipodSorter2(_map);
+            amphipodSorter.OnFinalPositionReached(s => LowestTotalCost = s.TotalCost < LowestTotalCost ? s.TotalCost : LowestTotalCost);
+
+            var amphipodes = amphipodSorter.GetAmphipods();
+            amphipodSorter.WalkWith(amphipodes);
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Day23.Logic
 {
@@ -15,12 +16,18 @@ namespace Day23.Logic
         void OrFail();
     }
 
-    public class AmphipodSorter2 : IMovementFrom2, IMovementTo
+    public interface IMovementBackFrom
+    {
+        void To(int node);
+    }
+
+    public class AmphipodSorter2 : IMovementFrom2, IMovementTo, IMovementBackFrom
     {
         private readonly string _data;
 
         private readonly int[][] _graph;
         private readonly int[][] _paths;
+        private readonly int[][][] _options;
         private string _map;
         private readonly int[] _mapRelocator;
         private readonly string[] _rooms;
@@ -28,6 +35,7 @@ namespace Day23.Logic
         private int _currentAmphipod;
         private int _currentTarget;
         private Action<AmphipodSorter2> _onFinalPositionCallback;
+        private int _count;
 
         public int TotalCost { get; private set; }
 
@@ -121,8 +129,7 @@ namespace Day23.Logic
                 new[] { 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, -1 }
             };
 
-#if false
-            var _options = new int[][][]
+            _options = new int[][][]
             {
                 new int[][]
                 {
@@ -455,10 +462,12 @@ namespace Day23.Logic
                     /* 10 to 26 */ new int[] { 11, 12, 13, 18, 19, 24, 25, 26 }
                 }
             };
-#endif
 
             Parse();
         }
+
+        public int[] GetAmphipods() =>
+            new int[] { 5, 11, 17, 23, 4, 10, 16, 22, 3, 9, 15, 21, 2, 8, 14, 20 };
 
         public void OnFinalPositionReached(Action<AmphipodSorter2> onFinalPositionCallback) =>
             _onFinalPositionCallback = onFinalPositionCallback;
@@ -509,38 +518,150 @@ namespace Day23.Logic
 
         private bool IsThereAnAmphipodAt(int node) => _rooms[node] is "A" or "B" or "C" or "D";
 
-        public void WalkWith(int amphipod)
+        public void WalkWith(int[] amphipods, List<(int From, int To)> stack = null)
         {
-            if (! IsThereAnAmphipodAt(amphipod))
+            _count++;
+            if (stack is null)
             {
-                throw new ArgumentException("No amphipod there");
+                stack = new List<(int From, int To)>();
             }
 
-            foreach (var newPosition in _paths[amphipod])
+            if (HasFinalPositionBeenReached())
             {
-                MoveAmphipodFrom(amphipod).To(newPosition);
+                _onFinalPositionCallback(this);
+            }
+
+            foreach (var amphipod in amphipods)
+            {
+                if (! IsThereAnAmphipodAt(amphipod))
+                {
+                    continue;
+                }
+
+                for (var option = 0; option < 27; option++) // TODO: Complete _options[amphipod])
+                {
+                    if (option == amphipod)
+                    {
+                        continue;
+                    }
+
+                    if (amphipod is 0 or 1 or 7 or 13 or 19 or 25 or 26)
+                    {
+                        if (option is 0 or 1 or 7 or 13 or 19 or 25 or 26)
+                        {
+                            continue;
+                        }
+                    }
+
+                    if ((stack.Count == 0) || ((amphipod, option) != stack[0] && (option, amphipod) != stack[0]))
+                    {
+                        var anyPossiblePath = MoveAmphipodFrom(amphipod).To(option).OrReturnBack();
+                        if (anyPossiblePath)
+                        {
+                            stack.Insert(0, (amphipod, option));
+
+                            if (_count == 129524)
+                            {
+                                System.Diagnostics.Debugger.Break();
+                            }
+
+                            var amphipodsAbleToMove = CalculateAmphipodsAbleToMove();
+
+                            //System.IO.File.AppendAllText("./paths.txt", $"{ToString()} [{_count} - {TotalCost}]\n\n");
+                            //Console.WriteLine($"{TotalCost}: {ToString()}");
+                            WalkWith(amphipodsAbleToMove, stack);
+
+                            var reset = stack[0];
+                            stack.RemoveAt(0);
+                            ResetAmphipodBackFrom(reset.To).To(reset.From);
+                            //Console.WriteLine($"{TotalCost}: {ToString()}");
+                            //System.IO.File.AppendAllText("./paths.txt", $"{ToString()} [{_count} - {TotalCost}]\n\n");
+                        }
+                    }
+                }
             }
         }
 
- /*       public void AndStopOnFail()
+        private int[] CalculateAmphipodsAbleToMove()
+        {
+            var amphipodsAbleToMove = new List<int>();
+
+            for (var index = 0; index < _rooms.Length; index++)
+            {
+                if (IsThereAnAmphipodAt(index))
+                {
+                    if (InHomeArea(index))
+                    {
+                        if (InOwnHomeArea(_rooms[index], index))
+                        {
+                            if (ForeignersInOwnHomeArea(index))
+                            {
+                                amphipodsAbleToMove.Add(index);
+                            }
+                        }
+                        else
+                        {
+                            amphipodsAbleToMove.Add(index);
+                        }
+                    }
+                    else
+                    {
+                        if (IsHomeAreaBeingCompleted(_rooms[index]))
+                        {
+                            amphipodsAbleToMove.Add(index);
+                        }
+                    }
+                }
+            }
+
+            return amphipodsAbleToMove.ToArray();
+        }
+
+        private bool ForeignersInOwnHomeArea(int amphipod) =>
+            ((amphipod is >= 2 and <= 5) && (string.Format("{0}{1}{2}{3}", _rooms[2..6]).Replace(".", string.Empty).Replace("A", string.Empty)?.Length != 0)) ||
+            ((amphipod is >= 8 and <= 11) && (string.Format("{0}{1}{2}{3}", _rooms[8..12]).Replace(".", string.Empty).Replace("B", string.Empty)?.Length != 0)) ||
+            ((amphipod is >= 14 and <= 17) && (string.Format("{0}{1}{2}{3}", _rooms[14..18]).Replace(".", string.Empty).Replace("C", string.Empty)?.Length != 0)) ||
+            ((amphipod is >= 20 and <= 23) && (string.Format("{0}{1}{2}{3}", _rooms[20..24]).Replace(".", string.Empty).Replace("D", string.Empty)?.Length != 0));
+
+        private bool IsHomeAreaBeingCompleted(string amphipod) =>
+            ((amphipod == "A") && (string.Format("{0}{1}{2}{3}", _rooms[2..6]).Replace(".", string.Empty).Replace("A", string.Empty)?.Length == 0)) ||
+            ((amphipod == "B") && (string.Format("{0}{1}{2}{3}", _rooms[8..12]).Replace(".", string.Empty).Replace("B", string.Empty)?.Length == 0)) ||
+            ((amphipod == "C") && (string.Format("{0}{1}{2}{3}", _rooms[14..18]).Replace(".", string.Empty).Replace("C", string.Empty)?.Length == 0)) ||
+            ((amphipod == "D") && (string.Format("{0}{1}{2}{3}", _rooms[20..24]).Replace(".", string.Empty).Replace("D", string.Empty)?.Length == 0));
+
+        private bool HasFinalPositionBeenReached() =>
+            _rooms[2] == "A" && _rooms[3] == "A" && _rooms[4] == "A" && _rooms[5] == "A" &&
+            _rooms[8] == "B" && _rooms[9] == "B" && _rooms[10] == "B" && _rooms[11] == "B" &&
+            _rooms[14] == "C" && _rooms[15] == "C" && _rooms[16] == "C" && _rooms[17] == "C" &&
+            _rooms[20] == "D" && _rooms[21] == "D" && _rooms[22] == "D" && _rooms[23] == "D";
+
+        private IMovementBackFrom ResetAmphipodBackFrom(int amphipod)
+        {
+            _currentAmphipod = amphipod;
+            return this;
+        }
+
+        void IMovementBackFrom.To(int node)
         {
             var currentLocation = _currentAmphipod;
+            _currentTarget = node;
+
             while (_paths[currentLocation][_currentTarget] != -1)
             {
                 var nextRoom = _paths[currentLocation][_currentTarget];
                 if (_rooms[nextRoom] == ".")
                 {
-                    TotalCost += _amphipodeTypes[_rooms[currentLocation]];
+                    TotalCost -= _amphipodeTypes[_rooms[currentLocation]];
                     _rooms[nextRoom] = _rooms[currentLocation];
                     _rooms[currentLocation] = ".";
                     currentLocation = nextRoom;
                 }
                 else
                 {
-                    break;
+                    throw new ArgumentException("Impossible to move through here");
                 }
             }
-        }*/
+        }
 
         public bool AndStopOnFail()
         {
@@ -590,7 +711,6 @@ namespace Day23.Logic
 
             return true;
         }
-
 
         public void OrFail()
         {
@@ -678,5 +798,6 @@ namespace Day23.Logic
             (amphipod == "B" && ((_rooms[8] is "A" or "C" or "D") || (_rooms[9] is "A" or "C" or "D") || (_rooms[10] is "A" or "C" or "D"))) ||
             (amphipod == "C" && ((_rooms[14] is "A" or "B" or "D") || (_rooms[15] is "A" or "B" or "D") || (_rooms[16] is "A" or "B" or "D"))) ||
             (amphipod == "D" && ((_rooms[20] is "A" or "B" or "C") || (_rooms[21] is "A" or "B" or "C") || (_rooms[22] is "A" or "B" or "C")));
+
     }
 }
