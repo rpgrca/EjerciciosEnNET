@@ -349,7 +349,22 @@ mul x -1");
 
         [Theory]
         [InlineData(15, 1, 1, 1, 1)]
-        public void ConvertValueInBinary(int value, int expectedZ, int expectedY, int expectedX, int expectedW)
+        [InlineData(14, 0, 1, 1, 1)]
+        [InlineData(13, 1, 0, 1, 1)]
+        [InlineData(12, 0, 0, 1, 1)]
+        [InlineData(11, 1, 1, 0, 1)]
+        [InlineData(10, 0, 1, 0, 1)]
+        [InlineData(9, 1, 0, 0, 1)]
+        [InlineData(8, 0, 0, 0, 1)]
+        [InlineData(7, 1, 1, 1, 0)]
+        [InlineData(6, 0, 1, 1, 0)]
+        [InlineData(5, 1, 0, 1, 0)]
+        [InlineData(4, 0, 0, 1, 0)]
+        [InlineData(3, 1, 1, 0, 0)]
+        [InlineData(2, 0, 1, 0, 0)]
+        [InlineData(1, 1, 0, 0, 0)]
+        [InlineData(0, 0, 0, 0, 0)]
+        public void ConvertValueToBinary(int value, int expectedZ, int expectedY, int expectedX, int expectedW)
         {
             var sut = new ArithmeticLogicUnit(@"inp w
 add z w
