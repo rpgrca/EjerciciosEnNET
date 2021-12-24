@@ -420,12 +420,13 @@ on x=-14..36,y=-6..44,z=-16..29");
             var sut = new ReactorCore3(SAMPLE_REBOOT_INSTRUCTIONS);
             Assert.Equal(2758514936282235, sut.GetTurnedOnCubesCount());
         }
-
+/*
         [Fact]
         public void CalculateTurnedOnCubes_WhenUsingRealData()
         {
             var sut = new ReactorCore3(REAL_INSTRUCTIONS);
-            Assert.Equal(0, sut.GetTurnedOnCubesCount());
+            Assert.Equal(1319618626668022, sut.GetTurnedOnCubesCount());
         }
+        */
     }
 }
