@@ -52,19 +52,68 @@ namespace Day24.Logic
                         switch (operands[1])
                         {
                             case "w":
-                                _opcodes.Add(a => a.W = Pop());
+                                _opcodes.Add(a => a.W = TakeValue());
                                 break;
 
                             case "x":
-                                _opcodes.Add(a => a.X = Pop());
+                                _opcodes.Add(a => a.X = TakeValue());
                                 break;
 
                             case "y":
-                                _opcodes.Add(a => a.Y = Pop());
+                                _opcodes.Add(a => a.Y = TakeValue());
                                 break;
 
                             default:
-                                _opcodes.Add(a => a.Z = Pop());
+                                _opcodes.Add(a => a.Z = TakeValue());
+                                break;
+                        }
+                        break;
+
+                    case "mul":
+                        switch (operands[1])
+                        {
+                            case "w":
+                                switch (operands[2])
+                                {
+                                    case "w": _opcodes.Add(alu => alu.W *= alu.W); break;
+                                    case "x": _opcodes.Add(alu => alu.W *= alu.X); break;
+                                    case "y": _opcodes.Add(alu => alu.W *= alu.Y); break;
+                                    case "z": _opcodes.Add(alu => alu.W *= alu.Z); break;
+                                    default: _opcodes.Add(alu => alu.W *= int.Parse(operands[2])); break;
+                                }
+                                break;
+
+                            case "x":
+                                switch (operands[2])
+                                {
+                                    case "w": _opcodes.Add(alu => alu.X *= alu.W); break;
+                                    case "x": _opcodes.Add(alu => alu.X *= alu.X); break;
+                                    case "y": _opcodes.Add(alu => alu.X *= alu.Y); break;
+                                    case "z": _opcodes.Add(alu => alu.X *= alu.Z); break;
+                                    default: _opcodes.Add(alu => alu.X *= int.Parse(operands[2])); break;
+                                }
+                                break;
+
+                            case "y":
+                                switch (operands[2])
+                                {
+                                    case "w": _opcodes.Add(alu => alu.Y *= alu.W); break;
+                                    case "x": _opcodes.Add(alu => alu.Y *= alu.X); break;
+                                    case "y": _opcodes.Add(alu => alu.Y *= alu.Y); break;
+                                    case "z": _opcodes.Add(alu => alu.Y *= alu.Z); break;
+                                    default: _opcodes.Add(alu => alu.Y *= int.Parse(operands[2])); break;
+                                }
+                                break;
+
+                            default:
+                                switch (operands[2])
+                                {
+                                    case "w": _opcodes.Add(alu => alu.Z *= alu.W); break;
+                                    case "x": _opcodes.Add(alu => alu.Z *= alu.X); break;
+                                    case "y": _opcodes.Add(alu => alu.Z *= alu.Y); break;
+                                    case "z": _opcodes.Add(alu => alu.Z *= alu.Z); break;
+                                    default: _opcodes.Add(alu => alu.Z *= int.Parse(operands[2])); break;
+                                }
                                 break;
                         }
                         break;
@@ -72,11 +121,11 @@ namespace Day24.Logic
             }
         }
 
-        public void Input(int value) => Push(value);
+        public void Input(int value) => AddValue(value);
 
-        private void Push(int value) => _stack.Insert(0, value);
+        private void AddValue(int value) => _stack.Add(value);
 
-        private int Pop()
+        private int TakeValue()
         {
             var result = _stack[0];
             _stack.RemoveAt(0);
