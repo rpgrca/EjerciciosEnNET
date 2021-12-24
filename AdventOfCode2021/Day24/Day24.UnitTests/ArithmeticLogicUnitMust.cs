@@ -183,7 +183,7 @@ mul x -1");
         [InlineData("inp w\ninp x\nadd w x")]
         [InlineData("inp w\ninp y\nadd w y")]
         [InlineData("inp w\ninp z\nadd w z")]
-        [InlineData("inp w\nadd w 3")]
+        [InlineData("inp w\nadd w 6")]
         public void AddRegisterWcorrectly(string instructions)
         {
             var sut = new ArithmeticLogicUnit(instructions);
@@ -197,7 +197,7 @@ mul x -1");
         [InlineData("inp x\ninp w\nadd x w")]
         [InlineData("inp x\ninp y\nadd x y")]
         [InlineData("inp x\ninp z\nadd x z")]
-        [InlineData("inp x\nadd x 3")]
+        [InlineData("inp x\nadd x 6")]
         public void AddRegisterXcorrectly(string instructions)
         {
             var sut = new ArithmeticLogicUnit(instructions);
@@ -211,7 +211,7 @@ mul x -1");
         [InlineData("inp y\ninp w\nadd y w")]
         [InlineData("inp y\ninp x\nadd y x")]
         [InlineData("inp y\ninp z\nadd y z")]
-        [InlineData("inp y\nadd y 3")]
+        [InlineData("inp y\nadd y 6")]
         public void AddRegisterYcorrectly(string instructions)
         {
             var sut = new ArithmeticLogicUnit(instructions);
@@ -225,7 +225,7 @@ mul x -1");
         [InlineData("inp z\ninp w\nadd z w")]
         [InlineData("inp z\ninp x\nadd z x")]
         [InlineData("inp z\ninp y\nadd z y")]
-        [InlineData("inp z\nadd z 3")]
+        [InlineData("inp z\nadd z 6")]
         public void AddRegisterZcorrectly(string instructions)
         {
             var sut = new ArithmeticLogicUnit(instructions);
@@ -345,6 +345,29 @@ mul x -1");
             sut.Input(7);
             sut.Run();
             Assert.Equal(5, sut.Z);
+        }
+
+        [Theory]
+        [InlineData(15, 1, 1, 1, 1)]
+        public void ConvertValueInBinary(int value, int expectedZ, int expectedY, int expectedX, int expectedW)
+        {
+            var sut = new ArithmeticLogicUnit(@"inp w
+add z w
+mod z 2
+div w 2
+add y w
+mod y 2
+div w 2
+add x w
+mod x 2
+div w 2
+mod w 2");
+            sut.Input(value);
+            sut.Run();
+            Assert.Equal(expectedZ, sut.Z);
+            Assert.Equal(expectedY, sut.Y);
+            Assert.Equal(expectedX, sut.X);
+            Assert.Equal(expectedW, sut.W);
         }
     }
 }

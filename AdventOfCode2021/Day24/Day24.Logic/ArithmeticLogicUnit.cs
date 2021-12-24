@@ -52,21 +52,10 @@ namespace Day24.Logic
                     case "inp":
                         switch (operands[1])
                         {
-                            case "w":
-                                _opcodes.Add(a => a.W = TakeValue());
-                                break;
-
-                            case "x":
-                                _opcodes.Add(a => a.X = TakeValue());
-                                break;
-
-                            case "y":
-                                _opcodes.Add(a => a.Y = TakeValue());
-                                break;
-
-                            default:
-                                _opcodes.Add(a => a.Z = TakeValue());
-                                break;
+                            case "w": _opcodes.Add(a => a.W = TakeValue()); break;
+                            case "x": _opcodes.Add(a => a.X = TakeValue()); break;
+                            case "y": _opcodes.Add(a => a.Y = TakeValue()); break;
+                            default: _opcodes.Add(a => a.Z = TakeValue()); break;
                         }
                         break;
 
@@ -129,7 +118,7 @@ namespace Day24.Logic
                                     case "x": _opcodes.Add(alu => alu.W = alu.W == alu.X ? 1 : 0); break;
                                     case "y": _opcodes.Add(alu => alu.W = alu.W == alu.Y ? 1 : 0); break;
                                     case "z": _opcodes.Add(alu => alu.W = alu.W == alu.Z ? 1 : 0); break;
-                                    default: _opcodes.Add(alu => alu.W = alu.W == TakeValue() ? 1 : 0); break;
+                                    default: _opcodes.Add(alu => alu.W = alu.W == int.Parse(operands[2]) ? 1 : 0); break;
                                 }
                                 break;
                             case "x":
@@ -139,7 +128,7 @@ namespace Day24.Logic
                                     case "x": _opcodes.Add(alu => alu.X = alu.X == alu.X ? 1 : 0); break;
                                     case "y": _opcodes.Add(alu => alu.X = alu.X == alu.Y ? 1 : 0); break;
                                     case "z": _opcodes.Add(alu => alu.X = alu.X == alu.Z ? 1 : 0); break;
-                                    default: _opcodes.Add(alu => alu.X = alu.X == TakeValue() ? 1 : 0); break;
+                                    default: _opcodes.Add(alu => alu.X = alu.X == int.Parse(operands[2]) ? 1 : 0); break;
                                 }
 
                                 break;
@@ -150,7 +139,7 @@ namespace Day24.Logic
                                     case "x": _opcodes.Add(alu => alu.Y = alu.Y == alu.X ? 1 : 0); break;
                                     case "y": _opcodes.Add(alu => alu.Y = alu.Y == alu.Y ? 1 : 0); break;
                                     case "z": _opcodes.Add(alu => alu.Y = alu.Y == alu.Z ? 1 : 0); break;
-                                    default: _opcodes.Add(alu => alu.Y = alu.Y == TakeValue() ? 1 : 0); break;
+                                    default: _opcodes.Add(alu => alu.Y = alu.Y == int.Parse(operands[2]) ? 1 : 0); break;
                                 }
 
                                 break;
@@ -161,7 +150,7 @@ namespace Day24.Logic
                                     case "x": _opcodes.Add(alu => alu.Z = alu.Z == alu.X ? 1 : 0); break;
                                     case "y": _opcodes.Add(alu => alu.Z = alu.Z == alu.Y ? 1 : 0); break;
                                     case "z": _opcodes.Add(alu => alu.Z = alu.Z == alu.Z ? 1 : 0); break;
-                                    default: _opcodes.Add(alu => alu.Z = alu.Z == TakeValue() ? 1 : 0); break;
+                                    default: _opcodes.Add(alu => alu.Z = alu.Z == int.Parse(operands[2]) ? 1 : 0); break;
                                 }
                                 break;
                         }
@@ -177,7 +166,7 @@ namespace Day24.Logic
                                     case "x": _opcodes.Add(alu => alu.W += alu.X); break;
                                     case "y": _opcodes.Add(alu => alu.W += alu.Y); break;
                                     case "z": _opcodes.Add(alu => alu.W += alu.Z); break;
-                                    default: _opcodes.Add(alu => alu.W += TakeValue()); break;
+                                    default: _opcodes.Add(alu => alu.W += int.Parse(operands[2])); break;
                                 }
                                 break;
 
@@ -188,7 +177,7 @@ namespace Day24.Logic
                                     case "x": _opcodes.Add(alu => alu.X += alu.X); break;
                                     case "y": _opcodes.Add(alu => alu.X += alu.Y); break;
                                     case "z": _opcodes.Add(alu => alu.X += alu.Z); break;
-                                    default: _opcodes.Add(alu => alu.X += TakeValue()); break;
+                                    default: _opcodes.Add(alu => alu.X += int.Parse(operands[2])); break;
                                 }
                                 break;
 
@@ -199,7 +188,7 @@ namespace Day24.Logic
                                     case "x": _opcodes.Add(alu => alu.Y += alu.X); break;
                                     case "y": _opcodes.Add(alu => alu.Y += alu.Y); break;
                                     case "z": _opcodes.Add(alu => alu.Y += alu.Z); break;
-                                    default: _opcodes.Add(alu => alu.Y += TakeValue()); break;
+                                    default: _opcodes.Add(alu => alu.Y += int.Parse(operands[2])); break;
                                 }
                                 break;
 
@@ -210,7 +199,7 @@ namespace Day24.Logic
                                     case "x": _opcodes.Add(alu => alu.Z += alu.X); break;
                                     case "y": _opcodes.Add(alu => alu.Z += alu.Y); break;
                                     case "z": _opcodes.Add(alu => alu.Z += alu.Z); break;
-                                    default: _opcodes.Add(alu => alu.Z += TakeValue()); break;
+                                    default: _opcodes.Add(alu => alu.Z += int.Parse(operands[2])); break;
                                 }
                                 break;
                         }
@@ -226,7 +215,7 @@ namespace Day24.Logic
                                     case "x": _opcodes.Add(alu => alu.W /= alu.X); break;
                                     case "y": _opcodes.Add(alu => alu.W /= alu.Y); break;
                                     case "z": _opcodes.Add(alu => alu.W /= alu.Z); break;
-                                    default: _opcodes.Add(alu => alu.W /= TakeValue()); break;
+                                    default: _opcodes.Add(alu => alu.W /= int.Parse(operands[2])); break;
                                 }
                                 break;
 
@@ -237,7 +226,7 @@ namespace Day24.Logic
                                     case "x": _opcodes.Add(alu => alu.X /= alu.X); break;
                                     case "y": _opcodes.Add(alu => alu.X /= alu.Y); break;
                                     case "z": _opcodes.Add(alu => alu.X /= alu.Z); break;
-                                    default: _opcodes.Add(alu => alu.X /= TakeValue()); break;
+                                    default: _opcodes.Add(alu => alu.X /= int.Parse(operands[2])); break;
                                 }
                                 break;
 
@@ -248,7 +237,7 @@ namespace Day24.Logic
                                     case "x": _opcodes.Add(alu => alu.Y /= alu.X); break;
                                     case "y": _opcodes.Add(alu => alu.Y /= alu.Y); break;
                                     case "z": _opcodes.Add(alu => alu.Y /= alu.Z); break;
-                                    default: _opcodes.Add(alu => alu.Y /= TakeValue()); break;
+                                    default: _opcodes.Add(alu => alu.Y /= int.Parse(operands[2])); break;
                                 }
                                 break;
 
@@ -259,7 +248,7 @@ namespace Day24.Logic
                                     case "x": _opcodes.Add(alu => alu.Z /= alu.X); break;
                                     case "y": _opcodes.Add(alu => alu.Z /= alu.Y); break;
                                     case "z": _opcodes.Add(alu => alu.Z /= alu.Z); break;
-                                    default: _opcodes.Add(alu => alu.Z /= TakeValue()); break;
+                                    default: _opcodes.Add(alu => alu.Z /= int.Parse(operands[2])); break;
                                 }
                                 break;
                         }
@@ -275,7 +264,7 @@ namespace Day24.Logic
                                     case "x": _opcodes.Add(alu => alu.W %= alu.X); break;
                                     case "y": _opcodes.Add(alu => alu.W %= alu.Y); break;
                                     case "z": _opcodes.Add(alu => alu.W %= alu.Z); break;
-                                    default: _opcodes.Add(alu => alu.W %= TakeValue()); break;
+                                    default: _opcodes.Add(alu => alu.W %= int.Parse(operands[2])); break;
                                 }
                                 break;
 
@@ -286,7 +275,7 @@ namespace Day24.Logic
                                     case "x": _opcodes.Add(alu => alu.X %= alu.X); break;
                                     case "y": _opcodes.Add(alu => alu.X %= alu.Y); break;
                                     case "z": _opcodes.Add(alu => alu.X %= alu.Z); break;
-                                    default: _opcodes.Add(alu => alu.X %= TakeValue()); break;
+                                    default: _opcodes.Add(alu => alu.X %= int.Parse(operands[2])); break;
                                 }
                                 break;
 
@@ -297,7 +286,7 @@ namespace Day24.Logic
                                     case "x": _opcodes.Add(alu => alu.Y %= alu.X); break;
                                     case "y": _opcodes.Add(alu => alu.Y %= alu.Y); break;
                                     case "z": _opcodes.Add(alu => alu.Y %= alu.Z); break;
-                                    default: _opcodes.Add(alu => alu.Y %= TakeValue()); break;
+                                    default: _opcodes.Add(alu => alu.Y %= int.Parse(operands[2])); break;
                                 }
                                 break;
 
@@ -308,7 +297,7 @@ namespace Day24.Logic
                                     case "x": _opcodes.Add(alu => alu.Z %= alu.X); break;
                                     case "y": _opcodes.Add(alu => alu.Z %= alu.Y); break;
                                     case "z": _opcodes.Add(alu => alu.Z %= alu.Z); break;
-                                    default: _opcodes.Add(alu => alu.Z %= TakeValue()); break;
+                                    default: _opcodes.Add(alu => alu.Z %= int.Parse(operands[2])); break;
                                 }
                                 break;
                         }
