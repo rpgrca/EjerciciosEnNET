@@ -742,9 +742,9 @@ namespace Day23.UnitTests
   #D#B#A#C#
   #A#D#C#A#
   #########", sut.ToString());
-
         }
 
+/*
         [Fact]
         public void SolveFirstSample()
         {
@@ -752,6 +752,14 @@ namespace Day23.UnitTests
             sut.Run();
             Assert.Equal(44169, sut.LowestTotalCost);
         }
+
+        [Fact]
+        public void SolveSecondPuzzle()
+        {
+            var sut = new Walker(REAL_LONG_MAP);
+            sut.Run();
+            Assert.Equal(56324, sut.LowestTotalCost);
+        }*/
     }
 
     public class Walker
