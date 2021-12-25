@@ -32,5 +32,14 @@ namespace Day25.UnitTests
             Assert.Equal(137, sut.Height);
             Assert.Equal(139, sut.Width);
         }
+
+        [Fact]
+        public void MoveCucumbersOnePositionEast()
+        {
+            var sut = new SeaCucumberHerd("...>>>>>...");
+            sut.Step();
+
+            Assert.Equal("...>>>>.>..", sut.ToString());
+        }
     }
 }

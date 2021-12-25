@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Day25.Logic
 {
@@ -37,5 +38,42 @@ namespace Day25.Logic
 
             Width = _map[0].Length;
         }
+
+        public void Step()
+        {
+            var moves = new List<((int X, int Y) Source, (int X, int Y) Target)>();
+            for (var y = 0; y < Height; y++)
+            {
+                for (var x = 0; x < Width; x++)
+                {
+                    if (_map[y][x] == '>')
+                    {
+                        if (x + 1 < Width)
+                        {
+                            if (_map[y][x + 1] == '.')
+                            {
+                                moves.Add(((x, y),(x+1, y)));
+                            }
+                        }
+                        else
+                        {
+                            if (_map[y][0] == '.')
+                            {
+                                moves.Add(((x, y), (0, y)));
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach (var (source, target) in moves)
+            {
+                _map[target.Y][target.X] = '>';
+                _map[source.Y][source.X] = '.';
+            }
+        }
+
+        public override string ToString() =>
+            _map.Aggregate(string.Empty, (t, i) => string.Join("\n", t, new string(i))).Trim();
     }
 }
