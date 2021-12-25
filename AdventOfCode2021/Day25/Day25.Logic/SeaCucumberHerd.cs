@@ -8,9 +8,11 @@ namespace Day25.Logic
     {
         private readonly string _seafloor;
         private char[][] _map;
+        private bool _cucumbersMoved;
 
         public int Height { get; private set; }
         public int Width { get; private set; }
+        public int StepCount { get; private set; }
 
         public SeaCucumberHerd(string seafloor)
         {
@@ -70,6 +72,16 @@ namespace Day25.Logic
             {
                 _map[target.Y][target.X] = '>';
                 _map[source.Y][source.X] = '.';
+                _cucumbersMoved = true;
+            }
+        }
+
+        public void Step(int steps)
+        {
+            for (var step = 0; step < steps; step++)
+            {
+                MoveEast();
+                MoveSouth();
             }
         }
 
@@ -104,11 +116,21 @@ namespace Day25.Logic
             {
                 _map[target.Y][target.X] = 'v';
                 _map[source.Y][source.X] = '.';
+                _cucumbersMoved = true;
             }
-
         }
 
         public override string ToString() =>
             _map.Aggregate(string.Empty, (t, i) => string.Join("\n", t, new string(i))).Trim();
+
+        public void StepUntilNoMovement()
+        {
+            do
+            {
+                _cucumbersMoved = false;
+                Step(1);
+                StepCount++;
+            } while (_cucumbersMoved);
+        }
     }
 }
