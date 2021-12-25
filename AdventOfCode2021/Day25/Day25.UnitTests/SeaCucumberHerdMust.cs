@@ -37,9 +37,47 @@ namespace Day25.UnitTests
         public void MoveCucumbersOnePositionEast()
         {
             var sut = new SeaCucumberHerd("...>>>>>...");
-            sut.Step();
+            sut.MoveEast();
 
             Assert.Equal("...>>>>.>..", sut.ToString());
+        }
+
+        [Fact]
+        public void MoveCucumbersTwoPositionsEast()
+        {
+            var sut = new SeaCucumberHerd("...>>>>>...");
+            sut.MoveEast();
+            sut.MoveEast();
+
+            Assert.Equal("...>>>.>.>.", sut.ToString());
+        }
+
+        [Fact]
+        public void MoveCucumbersOnePositionSout()
+        {
+            var sut = new SeaCucumberHerd(@".
+.
+.
+v
+v
+v
+v
+v
+.
+.
+.");
+            sut.MoveSouth();
+            Assert.Equal(@".
+.
+.
+v
+v
+v
+v
+.
+v
+.
+.", sut.ToString());
         }
     }
 }

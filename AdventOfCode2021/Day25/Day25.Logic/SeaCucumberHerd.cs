@@ -39,7 +39,7 @@ namespace Day25.Logic
             Width = _map[0].Length;
         }
 
-        public void Step()
+        public void MoveEast()
         {
             var moves = new List<((int X, int Y) Source, (int X, int Y) Target)>();
             for (var y = 0; y < Height; y++)
@@ -71,6 +71,41 @@ namespace Day25.Logic
                 _map[target.Y][target.X] = '>';
                 _map[source.Y][source.X] = '.';
             }
+        }
+
+        public void MoveSouth()
+        {
+            var moves = new List<((int X, int Y) Source, (int X, int Y) Target)>();
+            for (var y = 0; y < Height; y++)
+            {
+                for (var x = 0; x < Width; x++)
+                {
+                    if (_map[y][x] == 'v')
+                    {
+                        if (y + 1 < Height)
+                        {
+                            if (_map[y + 1][x] == '.')
+                            {
+                                moves.Add(((x, y),(x, y + 1)));
+                            }
+                        }
+                        else
+                        {
+                            if (_map[0][x] == '.')
+                            {
+                                moves.Add(((x, y), (x, 0)));
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach (var (source, target) in moves)
+            {
+                _map[target.Y][target.X] = 'v';
+                _map[source.Y][source.X] = '.';
+            }
+
         }
 
         public override string ToString() =>
