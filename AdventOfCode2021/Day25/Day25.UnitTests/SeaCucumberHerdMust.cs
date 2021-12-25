@@ -408,5 +408,13 @@ vvv.....>>
             sut.StepUntilNoMovement();
             Assert.Equal(58, sut.StepCount);
         }
+
+        [Fact]
+        public void SolveFirstPuzzle()
+        {
+            var sut = new SeaCucumberHerd(REAL_SEAFLOOR);
+            sut.StepUntilNoMovement();
+            Assert.Equal(334, sut.StepCount);
+        }
     }
 }
