@@ -1,11 +1,103 @@
 using System;
 using Xunit;
 using Day24.Logic;
+using static Day24.UnitTests.Constants;
 
 namespace Day24.UnitTests
 {
     public class ArithmeticLogicUnitMust
     {
+        private const string FIVE_LOOP_INSTRUCTIONS = @"inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 12
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 14
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -9
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -7
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y";
+
         [Theory]
         [InlineData(null)]
         [InlineData("")]
@@ -383,6 +475,2019 @@ mod w 2");
             Assert.Equal(expectedY, sut.Y);
             Assert.Equal(expectedX, sut.X);
             Assert.Equal(expectedW, sut.W);
+        }
+
+        [Theory]
+        [InlineData(1, 1, 1, 16, 16)] // everything is 16..24
+        [InlineData(2, 2, 1, 17, 17)]
+        [InlineData(3, 3, 1, 18, 18)]
+        [InlineData(4, 4, 1, 19, 19)]
+        [InlineData(5, 5, 1, 20, 20)]
+        [InlineData(6, 6, 1, 21, 21)]
+        [InlineData(7, 7, 1, 22, 22)]
+        [InlineData(8, 8, 1, 23, 23)]
+        [InlineData(9, 9, 1, 24, 24)]
+        public void RunFirstSectionOfMonadCode(int inputValue, int expectedW, int expectedX, int expectedY, int expectedZ)
+        {
+            var sut = new ArithmeticLogicUnit(@"inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 12
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y");
+            sut.Input(inputValue);
+            sut.Run();
+            Assert.Equal(expectedW, sut.W);
+            Assert.Equal(expectedX, sut.X);
+            Assert.Equal(expectedY, sut.Y);
+            Assert.Equal(expectedZ, sut.Z);
+        }
+
+        [Theory]
+        [InlineData(1, 1,   1, 1, 13, 429)]
+        [InlineData(2, 1,   1, 1, 13, 455)]
+        [InlineData(3, 1,   1, 1, 13, 481)]
+        [InlineData(4, 1,   1, 1, 13, 507)]
+        [InlineData(5, 1,   1, 1, 13, 533)]
+        [InlineData(6, 1,   1, 1, 13, 559)]
+        [InlineData(7, 1,   1, 1, 13, 585)]
+        [InlineData(8, 1,   1, 1, 13, 611)]
+        [InlineData(9, 1,   1, 1, 13, 637)]
+        [InlineData(9, 2,   2, 1, 14, 638)]
+        [InlineData(9, 3,   3, 1, 15, 639)]
+        [InlineData(9, 4,   4, 1, 16, 640)]
+        [InlineData(9, 5,   5, 1, 17, 641)]
+        [InlineData(9, 6,   6, 1, 18, 642)]
+        [InlineData(9, 7,   7, 1, 19, 643)]
+        [InlineData(9, 8,   8, 1, 20, 644)]
+        [InlineData(9, 9,   9, 1, 21, 645)] // 99 z = 645
+        public void RunSecondSectionOfMonadCode(int firstInput, int secondInput, int expectedW, int expectedX, int expectedY, int expectedZ)
+        {
+            var sut = new ArithmeticLogicUnit(@"inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 12
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 14
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y");
+            sut.Input(firstInput);
+            sut.Input(secondInput);
+            sut.Run();
+            Assert.Equal(expectedW, sut.W);
+            Assert.Equal(expectedX, sut.X);
+            Assert.Equal(expectedY, sut.Y);
+            Assert.Equal(expectedZ, sut.Z);
+        }
+
+        [Theory]
+        [InlineData(1, 1, 1,   1, 1, 16, 11170)]
+        [InlineData(1, 1, 2,   2, 1, 17, 11171)]
+        [InlineData(9, 9, 1,   1, 1, 16, 16786)]
+        [InlineData(9, 9, 2,   2, 1, 17, 16787)]
+        [InlineData(9, 9, 3,   3, 1, 18, 16788)] // biggest number which mod 26 between 10 and 18
+        [InlineData(9, 9, 6,   6, 1, 21, 16791)]
+        [InlineData(9, 9, 7,   7, 1, 22, 16792)]
+        [InlineData(9, 9, 8,   8, 1, 23, 16793)]
+        [InlineData(9, 9, 9,   9, 1, 24, 16794)]
+        public void RunThirdSectionOfMonadCode(int firstInput, int secondInput, int thirdInput, int expectedW, int expectedX, int expectedY, int expectedZ)
+        {
+            var sut = new ArithmeticLogicUnit(@"inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 12
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 14
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y");
+            sut.Input(firstInput);
+            sut.Input(secondInput);
+            sut.Input(thirdInput);
+            sut.Run();
+            Assert.Equal(expectedW, sut.W);
+            Assert.Equal(expectedX, sut.X);
+            Assert.Equal(expectedY, sut.Y);
+            Assert.Equal(expectedZ, sut.Z);
+        }
+
+        [Theory]
+        //                      w  x   y      z
+        [InlineData(1, 1, 1, 1,   1, 1, 13, 11167)]
+        [InlineData(9, 9, 1, 1,   1, 1, 13, 16783)]
+        [InlineData(9, 9, 1, 6,   6, 1, 18, 16788)]
+        [InlineData(9, 9, 1, 7,   7, 0, 0, 645)] // 9917, z = 645
+        [InlineData(9, 9, 1, 8,   8, 1, 20, 16790)]
+        [InlineData(9, 9, 1, 9,   9, 1, 21, 16791)]
+        [InlineData(9, 9, 2, 1,   1, 1, 13, 16783)]
+        [InlineData(9, 9, 3, 1,   1, 1, 13, 16783)]
+        [InlineData(9, 9, 3, 2,   2, 1, 14, 16784)]
+        [InlineData(9, 9, 3, 3,   3, 1, 15, 16785)]
+        [InlineData(9, 9, 3, 4,   4, 1, 16, 16786)]
+        [InlineData(9, 9, 3, 5,   5, 1, 17, 16787)]
+        [InlineData(9, 9, 3, 6,   6, 1, 18, 16788)]
+        [InlineData(9, 9, 3, 7,   7, 1, 19, 16789)]
+        [InlineData(9, 9, 3, 8,   8, 1, 20, 16790)]
+        [InlineData(9, 9, 3, 9,   9, 0, 0, 645)] // 9939, z = 645
+        [InlineData(9, 9, 4, 1,   1, 1, 13, 16783)]
+        [InlineData(9, 9, 5, 1,   1, 1, 13, 16783)]
+        [InlineData(9, 9, 6, 1,   1, 1, 13, 16783)]
+        [InlineData(9, 9, 7, 1,   1, 1, 13, 16783)]
+        [InlineData(9, 9, 8, 1,   1, 1, 13, 16783)]
+        [InlineData(9, 9, 9, 1,   1, 1, 13, 16783)]
+        public void RunFourthSectionOfMonadCode(int firstInput, int secondInput, int thirdInput, int fourthInput, int expectedW, int expectedX, int expectedY, int expectedZ)
+        {
+            var sut = new ArithmeticLogicUnit(@"inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 12
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 14
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -9
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y");
+
+            sut.Input(firstInput);
+            sut.Input(secondInput);
+            sut.Input(thirdInput);
+            sut.Input(fourthInput);
+            sut.Run();
+            Assert.Equal(expectedW, sut.W);
+            Assert.Equal(expectedX, sut.X);
+            Assert.Equal(expectedY, sut.Y);
+            Assert.Equal(expectedZ, sut.Z);
+        }
+
+        [Theory]
+        [InlineData(1, 1, 1, 1, 1,  1, 1, 16, 11170)]
+        [InlineData(9, 9, 1, 6, 9,  9, 1, 24, 16794)]
+        [InlineData(9, 9, 1, 7, 1,  1, 1, 16, 640)]
+        [InlineData(9, 9, 1, 7, 2,  2, 1, 17, 641)]
+        [InlineData(9, 9, 1, 7, 3,  3, 1, 18, 642)]
+        [InlineData(9, 9, 1, 7, 4,  4, 1, 19, 643)]
+        [InlineData(9, 9, 1, 7, 5,  5, 1, 20, 644)]
+        [InlineData(9, 9, 1, 7, 6,  6, 1, 21, 645)]
+        [InlineData(9, 9, 1, 7, 7,  7, 1, 22, 646)]
+        [InlineData(9, 9, 1, 7, 8,  8, 1, 23, 647)]
+        [InlineData(9, 9, 1, 7, 9,  9, 1, 24, 648)]
+        [InlineData(9, 9, 1, 8, 1,  1, 1, 16, 16786)]
+        [InlineData(9, 9, 3, 9, 1,  1, 1, 16, 640)] // 99391..99399
+        [InlineData(9, 9, 3, 9, 2,  2, 1, 17, 641)]
+        [InlineData(9, 9, 3, 9, 3,  3, 1, 18, 642)]
+        [InlineData(9, 9, 3, 9, 4,  4, 1, 19, 643)]
+        [InlineData(9, 9, 3, 9, 5,  5, 1, 20, 644)]
+        [InlineData(9, 9, 3, 9, 6,  6, 1, 21, 645)]
+        [InlineData(9, 9, 3, 9, 7,  7, 1, 22, 646)]
+        [InlineData(9, 9, 3, 9, 8,  8, 1, 23, 647)]
+        [InlineData(9, 9, 3, 9, 9,  9, 1, 24, 648)]
+        [InlineData(9, 9, 4, 1, 1,  1, 1, 16, 16786)]
+        [InlineData(9, 9, 9, 9, 9,  9, 1, 24, 16794)]
+        public void RunFifthSectionOfMonadCode(int i1, int i2, int i3, int i4, int i5, int expectedW, int expectedX, int expectedY, int expectedZ)
+        {
+            var sut = new ArithmeticLogicUnit(FIVE_LOOP_INSTRUCTIONS);
+
+            sut.Input(i1);
+            sut.Input(i2);
+            sut.Input(i3);
+            sut.Input(i4);
+            sut.Input(i5);
+            sut.Run();
+            Assert.Equal(expectedW, sut.W);
+            Assert.Equal(expectedX, sut.X);
+            Assert.Equal(expectedY, sut.Y);
+            Assert.Equal(expectedZ, sut.Z);
+
+
+        }
+
+        [Theory]
+        [InlineData(9, 9, 1, 6, 9, 9,   9, 1, 11, 436655)]
+        [InlineData(9, 9, 1, 7, 1, 1,   1, 1, 3, 16643)]
+        [InlineData(9, 9, 1, 7, 1, 2,   2, 1, 4, 16644)]
+        [InlineData(9, 9, 1, 7, 1, 9,   9, 1, 11, 16651)]
+        [InlineData(9, 9, 1, 7, 2, 1,   1, 1, 3, 16669)]
+        [InlineData(9, 9, 1, 7, 2, 2,   2, 1, 4, 16670)]
+        [InlineData(9, 9, 1, 7, 2, 7,   7, 1, 9, 16675)]
+        [InlineData(9, 9, 1, 7, 2, 9,   9, 1, 11, 16677)]
+        [InlineData(9, 9, 1, 7, 3, 9,   9, 1, 11, 16703)]
+        [InlineData(9, 9, 1, 7, 4, 9,   9, 1, 11, 16729)]
+        [InlineData(9, 9, 1, 7, 5, 9,   9, 1, 11, 16755)]
+        [InlineData(9, 9, 1, 7, 6, 9,   9, 1, 11, 16781)]
+        [InlineData(9, 9, 1, 7, 7, 1,   1, 1, 3, 16799)]
+        [InlineData(9, 9, 1, 7, 8, 1,   1, 1, 3, 16825)]
+        [InlineData(9, 9, 1, 7, 9, 1,   1, 1, 3, 16851)]
+        [InlineData(9, 9, 1, 7, 9, 9,   9, 1, 11, 16859)]
+        [InlineData(9, 9, 3, 8, 9, 9,   9, 1, 11, 436655)]
+        [InlineData(9, 9, 3, 9, 1, 1,   1, 1, 3, 16643)] // 993911..993999
+        [InlineData(9, 9, 3, 9, 8, 9,   9, 1, 11, 16833)]
+        [InlineData(9, 9, 3, 9, 9, 1,   1, 1, 3, 16851)]
+        [InlineData(9, 9, 3, 9, 9, 2,   2, 1, 4, 16852)]
+        [InlineData(9, 9, 3, 9, 9, 3,   3, 1, 5, 16853)]
+        [InlineData(9, 9, 3, 9, 9, 4,   4, 1, 6, 16854)]
+        [InlineData(9, 9, 3, 9, 9, 5,   5, 1, 7, 16855)]
+        [InlineData(9, 9, 3, 9, 9, 6,   6, 1, 8, 16856)]
+        [InlineData(9, 9, 3, 9, 9, 7,   7, 1, 9, 16857)]
+        [InlineData(9, 9, 3, 9, 9, 8,   8, 1, 10, 16858)]
+        [InlineData(9, 9, 3, 9, 9, 9,   9, 1, 11, 16859)]
+        [InlineData(9, 9, 1, 8, 1, 9,   9, 1, 11, 436447)]
+        public void RunSixthSectionOfMonadCode(int i1, int i2, int i3, int i4, int i5, int i6, int expectedW, int expectedX, int expectedY, int expectedZ)
+        {
+            var sut = new ArithmeticLogicUnit(@"inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 12
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 14
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -9
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -7
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 2
+mul y x
+add z y");
+
+            sut.Input(i1);
+            sut.Input(i2);
+            sut.Input(i3);
+            sut.Input(i4);
+            sut.Input(i5);
+            sut.Input(i6);
+            sut.Run();
+            Assert.Equal(expectedW, sut.W);
+            Assert.Equal(expectedX, sut.X);
+            Assert.Equal(expectedY, sut.Y);
+            Assert.Equal(expectedZ, sut.Z);
+        }
+
+        [Theory]
+        [InlineData(9, 9, 1, 6, 9, 9, 9,   9, 1, 20, 436664)]
+        [InlineData(9, 9, 1, 7, 1, 1, 1,   1, 1, 12, 16652)]
+        [InlineData(9, 9, 1, 7, 1, 1, 3,   3, 1, 14, 16654)]
+        [InlineData(9, 9, 1, 7, 1, 2, 1,   1, 1, 12, 16652)]
+        [InlineData(9, 9, 1, 7, 1, 9, 1,   1, 1, 12, 16652)]
+        [InlineData(9, 9, 1, 7, 1, 9, 6,   6, 1, 17, 16657)]
+        [InlineData(9, 9, 1, 7, 9, 9, 9,   9, 1, 20, 16868)]
+        [InlineData(9, 9, 1, 8, 1, 1, 1,   1, 1, 12, 436448)]
+        [InlineData(9, 9, 1, 8, 1, 9, 9,   9, 1, 20, 436456)]
+        [InlineData(9, 9, 3, 8, 9, 9, 9,   9, 1, 20, 436664)]
+        [InlineData(9, 9, 3, 9, 1, 1, 1,   1, 1, 12, 16652)] // 9939111..9939999
+        [InlineData(9, 9, 3, 9, 8, 9, 9,   9, 1, 20, 16842)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9,   9, 1, 20, 16868)]
+        [InlineData(9, 9, 4, 1, 1, 1, 1,   1, 1, 12, 436448)]
+        public void RunSeventhSectionOfMonadCode(int i1, int i2, int i3, int i4, int i5, int i6, int i7, int expectedW, int expectedX, int expectedY, int expectedZ)
+        {
+            var sut = new ArithmeticLogicUnit(@"inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 12
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 14
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -9
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -7
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 2
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -1
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 11
+mul y x
+add z y");
+
+            sut.Input(i1);
+            sut.Input(i2);
+            sut.Input(i3);
+            sut.Input(i4);
+            sut.Input(i5);
+            sut.Input(i6);
+            sut.Input(i7);
+            sut.Run();
+            Assert.Equal(expectedW, sut.W);
+            Assert.Equal(expectedX, sut.X);
+            Assert.Equal(expectedY, sut.Y);
+            Assert.Equal(expectedZ, sut.Z);
+        }
+
+        [Theory]
+        [InlineData(9, 9, 1, 6, 9, 9, 9, 9,   9, 1, 24, 436668)]
+        [InlineData(9, 9, 1, 7, 1, 1, 1, 1,   1, 1, 16, 16656)]
+        [InlineData(9, 9, 1, 7, 1, 1, 1, 2,   2, 1, 17, 16657)]
+        [InlineData(9, 9, 1, 7, 1, 9, 6, 1,   1, 0, 0, 640)]
+        [InlineData(9, 9, 1, 7, 1, 9, 6, 6,   6, 1, 21, 16661)]
+        [InlineData(9, 9, 1, 7, 9, 9, 9, 3,   3, 1, 18, 16866)]
+        [InlineData(9, 9, 1, 7, 9, 9, 9, 4,   4, 0, 0, 648)]
+        [InlineData(9, 9, 1, 7, 9, 9, 9, 5,   5, 1, 20, 16868)]
+        [InlineData(9, 9, 1, 7, 9, 9, 9, 9,   9, 1, 24, 16872)]
+        [InlineData(9, 9, 1, 8, 1, 1, 1, 1,   1, 1, 16, 436452)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4,   4, 0, 0, 648)] // 99399994
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 5,   5, 1, 20, 16868)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 6,   6, 1, 21, 16869)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 7,   7, 1, 22, 16870)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 8,   8, 1, 23, 16871)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 9,   9, 1, 24, 16872)]
+        [InlineData(9, 9, 4, 1, 1, 1, 1, 1,   1, 1, 16, 436452)]
+        public void RunEighthSectionOfMonadCode(int i1, int i2, int i3, int i4, int i5, int i6, int i7, int i8, int expectedW, int expectedX, int expectedY, int expectedZ)
+        {
+            var sut = new ArithmeticLogicUnit(@"inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 12
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 14
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -9
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -7
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 2
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -1
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 11
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -16
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y");
+            sut.Input(i1);
+            sut.Input(i2);
+            sut.Input(i3);
+            sut.Input(i4);
+            sut.Input(i5);
+            sut.Input(i6);
+            sut.Input(i7);
+            sut.Input(i8);
+            sut.Run();
+            Assert.Equal(expectedW, sut.W);
+            Assert.Equal(expectedX, sut.X);
+            Assert.Equal(expectedY, sut.Y);
+            Assert.Equal(expectedZ, sut.Z);
+        }
+
+        [Theory]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 3, 9,   9, 1, 19, 438535)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 1,   1, 1, 11, 16859)] // 993999941..99399949
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 2,   2, 1, 12, 16860)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 3,   3, 1, 13, 16861)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 4,   4, 1, 14, 16862)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 5,   5, 1, 15, 16863)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 6,   6, 1, 16, 16864)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 7,   7, 1, 17, 16865)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 8,   8, 1, 18, 16866)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9,   9, 1, 19, 16867)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 5, 1,   1, 1, 11, 438579)]
+        public void RunNinthSectionOfMonadCode(int i1, int i2, int i3, int i4, int i5, int i6, int i7, int i8, int i9, int expectedW, int expectedX, int expectedY, int expectedZ)
+        {
+            var sut = new ArithmeticLogicUnit(@"inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 12
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 14
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -9
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -7
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 2
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -1
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 11
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -16
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 10
+mul y x
+add z y");
+
+            sut.Input(i1);
+            sut.Input(i2);
+            sut.Input(i3);
+            sut.Input(i4);
+            sut.Input(i5);
+            sut.Input(i6);
+            sut.Input(i7);
+            sut.Input(i8);
+            sut.Input(i9);
+            sut.Run();
+            Assert.Equal(expectedW, sut.W);
+            Assert.Equal(expectedX, sut.X);
+            Assert.Equal(expectedY, sut.Y);
+            Assert.Equal(expectedZ, sut.Z);
+        }
+
+        [Theory]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 3, 9, 9,   9, 1, 11, 438527)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 1, 1,   1, 1, 3, 16851)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 3,   3, 1, 5, 16853)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4,   4, 0, 0, 648)] // 9939999494
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 5,   5, 1, 7, 16855)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 9,   9, 1, 11, 16859)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 5, 1, 1,   1, 1, 3, 438571)]
+        public void RunTenthSectionOfMonadCode(int i1, int i2, int i3, int i4, int i5, int i6, int i7, int i8, int i9, int i10, int expectedW, int expectedX, int expectedY, int expectedZ)
+        {
+            var sut = new ArithmeticLogicUnit(@"inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 12
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 14
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -9
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -7
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 2
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -1
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 11
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -16
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 10
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -15
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 2
+mul y x
+add z y");
+
+            sut.Input(i1);
+            sut.Input(i2);
+            sut.Input(i3);
+            sut.Input(i4);
+            sut.Input(i5);
+            sut.Input(i6);
+            sut.Input(i7);
+            sut.Input(i8);
+            sut.Input(i9);
+            sut.Input(i10);
+            sut.Run();
+            Assert.Equal(expectedW, sut.W);
+            Assert.Equal(expectedX, sut.X);
+            Assert.Equal(expectedY, sut.Y);
+            Assert.Equal(expectedZ, sut.Z);
+        }
+
+        [Theory]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 3, 9,   9, 1, 9, 438187)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 1,   1, 1, 1, 16849)] // 99399994941 .. 99399994949
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 2,   2, 1, 2, 16850)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 3,   3, 1, 3, 16851)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 4,   4, 1, 4, 16852)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 5,   5, 1, 5, 16853)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 6,   6, 1, 6, 16854)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 7,   7, 1, 7, 16855)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 8,   8, 1, 8, 16856)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 9,   9, 1, 9, 16857)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 5, 1,   1, 1, 1, 438231)]
+        public void RunEleventhSectionOfMonadCode(int i1, int i2, int i3, int i4, int i5, int i6, int i7, int i8, int i9, int i10, int i11, int expectedW, int expectedX, int expectedY, int expectedZ)
+        {
+            var sut = new ArithmeticLogicUnit(@"inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 12
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 14
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -9
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -7
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 2
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -1
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 11
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -16
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 10
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -15
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 2
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 10
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 0
+mul y x
+add z y");
+
+            sut.Input(i1);
+            sut.Input(i2);
+            sut.Input(i3);
+            sut.Input(i4);
+            sut.Input(i5);
+            sut.Input(i6);
+            sut.Input(i7);
+            sut.Input(i8);
+            sut.Input(i9);
+            sut.Input(i10);
+            sut.Input(i11);
+            sut.Run();
+            Assert.Equal(expectedW, sut.W);
+            Assert.Equal(expectedX, sut.X);
+            Assert.Equal(expectedY, sut.Y);
+            Assert.Equal(expectedZ, sut.Z);
+        }
+
+        [Theory]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 3, 9, 9,   9, 1, 9, 11392871)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 1, 1,   1, 1, 1, 438075)] // 993999949411..993999949499
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 1, 2,   2, 1, 2, 438076)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 1, 3,   3, 1, 3, 438077)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 1, 4,   4, 1, 4, 438078)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 1, 5,   5, 1, 5, 438079)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 1, 6,   6, 1, 6, 438080)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 1, 7,   7, 1, 7, 438081)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 1, 8,   8, 1, 8, 438082)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 1, 9,   9, 1, 9, 438083)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 2, 1,   1, 1, 1, 438101)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 3, 1,   1, 1, 1, 438127)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 4, 1,   1, 1, 1, 438153)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 5, 1,   1, 1, 1, 438179)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 6, 1,   1, 1, 1, 438205)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 7, 1,   1, 1, 1, 438231)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 8, 1,   1, 1, 1, 438257)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 9, 1,   1, 1, 1, 438283)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 9, 9,   9, 1, 9, 438291)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 5, 1, 1,   1, 1, 1, 11394007)]
+        public void RunTwelfthSectionOfMonadCode(int i1, int i2, int i3, int i4, int i5, int i6, int i7, int i8, int i9, int i10, int i11, int i12, int expectedW, int expectedX, int expectedY, int expectedZ)
+        {
+            var sut = new ArithmeticLogicUnit(@"inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 12
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 14
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -9
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -7
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 2
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -1
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 11
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -16
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 10
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -15
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 2
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 10
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 0
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 12
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 0
+mul y x
+add z y");
+
+            sut.Input(i1);
+            sut.Input(i2);
+            sut.Input(i3);
+            sut.Input(i4);
+            sut.Input(i5);
+            sut.Input(i6);
+            sut.Input(i7);
+            sut.Input(i8);
+            sut.Input(i9);
+            sut.Input(i10);
+            sut.Input(i11);
+            sut.Input(i12);
+            sut.Run();
+            Assert.Equal(expectedW, sut.W);
+            Assert.Equal(expectedX, sut.X);
+            Assert.Equal(expectedY, sut.Y);
+            Assert.Equal(expectedZ, sut.Z);
+        }
+
+        [Theory]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 1, 1, 1,  1, 1, 16, 438090)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 9, 9, 4,  4, 1, 19, 438301)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 9, 9, 5,  5, 0, 0, 16857)] // 9939999494995
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 9, 9, 6,  6, 1, 21, 438303)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 9, 9, 7,  7, 1, 22, 438304)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 9, 9, 8,  8, 1, 23, 438305)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 9, 9, 9,  9, 1, 24, 438306)]
+        public void RunThirteenthSectionOfMonadCode(int i1, int i2, int i3, int i4, int i5, int i6, int i7, int i8, int i9, int i10, int i11, int i12, int i13, int expectedW, int expectedX, int expectedY, int expectedZ)
+        {
+            var sut = new ArithmeticLogicUnit(@"inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 12
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 14
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -9
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -7
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 2
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -1
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 11
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -16
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 10
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -15
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 2
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 10
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 0
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 12
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 0
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -4
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y");
+
+            sut.Input(i1);
+            sut.Input(i2);
+            sut.Input(i3);
+            sut.Input(i4);
+            sut.Input(i5);
+            sut.Input(i6);
+            sut.Input(i7);
+            sut.Input(i8);
+            sut.Input(i9);
+            sut.Input(i10);
+            sut.Input(i11);
+            sut.Input(i12);
+            sut.Input(i13);
+            sut.Run();
+            Assert.Equal(expectedW, sut.W);
+            Assert.Equal(expectedX, sut.X);
+            Assert.Equal(expectedY, sut.Y);
+            Assert.Equal(expectedZ, sut.Z);
+        }
+
+        [Theory]
+        [InlineData(1, 3, 5, 7, 9, 2, 4, 6, 8, 9, 9, 9, 9, 9,   9, 1, 24, 32201934)]
+        [InlineData(9, 9, 3, 9, 8, 9, 9, 4, 9, 4, 9, 8, 5, 9,   9, 1, 24, 437630)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 9, 8, 5, 9,   9, 1, 24, 438306)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 9, 9, 4, 9,   9, 1, 24, 438306)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 9, 9, 5, 1,   1, 1, 16, 16864)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 9, 9, 5, 8,   8, 1, 23, 16871)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 9, 9, 5, 9,   9, 0, 0, 648)]
+        [InlineData(9, 9, 3, 9, 9, 9, 9, 4, 9, 4, 9, 9, 6, 1,   1, 1, 16, 438298)]
+        public void ValidateSerialNumber(int i1, int i2, int i3, int i4, int i5, int i6, int i7, int i8, int i9, int i10, int i11, int i12, int i13, int i14, int expectedW, int expectedX, int expectedY, int expectedZ)
+        {
+            var sut = new ArithmeticLogicUnit(REAL_INSTRUCTIONS);
+            sut.Input(i1);
+            sut.Input(i2);
+            sut.Input(i3);
+            sut.Input(i4);
+            sut.Input(i5);
+            sut.Input(i6);
+            sut.Input(i7);
+            sut.Input(i8);
+            sut.Input(i9);
+            sut.Input(i10);
+            sut.Input(i11);
+            sut.Input(i12);
+            sut.Input(i13);
+            sut.Input(i14);
+            sut.Run();
+
+            Assert.Equal(expectedW, sut.W);
+            Assert.Equal(expectedX, sut.X);
+            Assert.Equal(expectedY, sut.Y);
+            Assert.Equal(expectedZ, sut.Z);
+
         }
     }
 }
