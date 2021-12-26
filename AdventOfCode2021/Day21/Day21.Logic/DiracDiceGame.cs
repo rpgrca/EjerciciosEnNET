@@ -38,11 +38,8 @@ namespace Day21.Logic
 
         private void AdvanceCurrentPlayerPawnBy(int steps)
         {
-            _players[_currentPlayer] = (_players[_currentPlayer] + (steps % 10)) switch
-            {
-                var x when x >= 1 && x <= 10 => x,
-                var x when x >= 11 => x % 10,
-            };
+            var step = _players[_currentPlayer] + (steps % 10);
+            _players[_currentPlayer] = (step >= 11) ? step % 10 : step;
         }
 
         private void UpdateCurrentPlayerScore() =>

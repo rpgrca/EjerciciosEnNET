@@ -117,13 +117,15 @@ namespace Day21.UnitTests
             Assert.Equal(25, sut.GetScoreFor(1));
         }
 
-        [Fact]
-        public void PlayFullGameUntilReaching1000Points()
+        [Theory]
+        [InlineData(4, 8, 739785)]
+        [InlineData(1, 4, 598416)]
+        public void PlayFullGameUntilReaching1000Points(int firstPlayerStartingPosition, int secondPlayerStartingPosition, int expectedScore)
         {
-            var sut = new DiracDiceGame(4, 8);
+            var sut = new DiracDiceGame(firstPlayerStartingPosition, secondPlayerStartingPosition);
             sut.PlayGame();
 
-            Assert.Equal(739785, sut.NumberOfDiceThrowsTimesLoserScore);
+            Assert.Equal(expectedScore, sut.NumberOfDiceThrowsTimesLoserScore);
         }
 
         [Fact]
