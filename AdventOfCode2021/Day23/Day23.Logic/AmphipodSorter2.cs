@@ -468,7 +468,7 @@ namespace Day23.Logic
             Parse();
         }
 
-        public int[] GetAmphipods() =>
+        public static int[] GetAmphipods() =>
             new int[] { 5, 11, 17, 23, 4, 10, 16, 22, 3, 9, 15, 21, 2, 8, 14, 20 };
 
         public void OnFinalPositionReached(Action<AmphipodSorter2, int> onFinalPositionCallback) =>

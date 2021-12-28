@@ -783,7 +783,7 @@ namespace Day23.UnitTests
               }
             });
 
-            var amphipodes = amphipodSorter.GetAmphipods();
+            var amphipodes = AmphipodSorter2.GetAmphipods();
             amphipodSorter.WalkWith(amphipodes);
         }
     }
