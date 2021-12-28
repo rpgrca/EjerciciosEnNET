@@ -1,190 +1,117 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Day15.Logic
 {
-    public class CaveMap
+    public interface ISearch
     {
-        private readonly string _input;
-        private List<int> _minimumRiskPath;
-        private (int RiskLevel, int TotalRiskSoFar)[][] _map;
-        private int _minimumRisk;
-
-        public int Width { get; private set; }
-        public int Height { get; private set; }
-
-        public CaveMap(string input)
-        {
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                throw new ArgumentException("Invalid map");
-            }
-
-            _input = input;
-            _minimumRiskPath = new List<int>();
-
-            Parse();
-        }
-
-        private void Parse()
-        {
-            var lines = _input.Split("\n");
-            var index = 0;
-
-            _map = new (int, int)[lines.Length][];
-            foreach (var line in lines)
-            {
-                _map[index++] = line.Select(p => (p - '0', int.MaxValue)).ToArray();
-            }
-
-            Height = _map.Length;
-            Width = _map[0].Length;
-        }
-
-        public List<int> GetPath()
-        {
-            CalculateBorderPathRisk();
-            CalculateLowestRiskPath2();
-
-            return _minimumRiskPath;
-        }
-
-        private void CalculateBorderPathRisk()
-        {
-            foreach (var (RiskLevel, _) in _map[0][1..])
-            {
-                _minimumRisk += RiskLevel;
-            }
-
-            for (var index = 1; index < Height; index++)
-            {
-                _minimumRisk += _map[index][Width - 1].RiskLevel;
-            }
-        }
-
-        private void CalculateLowestRiskPath2()
-        {
-            CalculateLowestRiskPath2(0, 0, 0, true);
-        }
-
-        private void CalculateLowestRiskPath2(int x, int y, int accumulatedRiskLevel, bool firstTime)
-        {
-            if (! firstTime)
-            {
-                accumulatedRiskLevel += _map[y][x].RiskLevel;
-            }
-
-            if (accumulatedRiskLevel >= _minimumRisk)
-            {
-                return;
-            }
-
-            if (_map[y][x].TotalRiskSoFar <= accumulatedRiskLevel)
-            {
-                return;
-            }
-
-            _map[y][x].TotalRiskSoFar = accumulatedRiskLevel;
-
-            if (x == Width - 1 && y == Height - 1)
-            {
-                var sum = accumulatedRiskLevel;
-                if (sum < _minimumRisk)
-                {
-                    _minimumRisk = sum;
-                }
-
-                return;
-            }
-
-            var sortedList = new SortedList<int, (int X, int Y)>();
-            if (y > 0) sortedList.Add(_map[y - 1][x].RiskLevel << 14 | (y - 1) << 7 | x, (x, y - 1));
-            if (y + 1 < Height) sortedList.Add(_map[y + 1][x].RiskLevel << 14 | (y + 1) << 7 | x, (x, y + 1));
-            if (x > 0) sortedList.Add(_map[y][x - 1].RiskLevel << 14 | y << 7 | (x - 1), (x - 1, y));
-            if (x + 1 < Width) sortedList.Add(_map[y][x + 1].RiskLevel << 14 | y << 7 | (x + 1), (x + 1, y));
-
- /*           if (y > 0) sortedList.Add(_map[y - 1][x].RiskLevel << 14 | (y - 1) << 7 | x, (x, y - 1));
-            if (y + 1 < Height) sortedList.Add(_map[y + 1][x].RiskLevel << 14 | (y + 1) << 7 | x, (x, y + 1));
-            if (x > 0) sortedList.Add(_map[y][x - 1].RiskLevel << 14 | y << 7 | (x - 1), (x - 1, y));
-            if (x + 1 < Width) sortedList.Add(_map[y][x + 1].RiskLevel << 14 | y << 7 | (x + 1), (x + 1, y));*/
-            foreach (var coordinates in sortedList)
-            {
-                CalculateLowestRiskPath2(coordinates.Value.X, coordinates.Value.Y, accumulatedRiskLevel, false);
-            }
-        }
-/*
-        private void CalculateLowestRiskPath()
-        {
-            var path = new List<int>();
-            var positions = new List<(int, int)>();
-
-            CalculateLowestRiskPath(0, 0, path, positions);
-        }
-
-
-        private void CalculateLowestRiskPath(int x, int y, List<int> path, List<(int, int)> positions)
-        {
-            if (path.Sum() + _map[y][x] > _minimumRisk)
-            {
-                return;
-            }
-
-            if (positions.Contains((x, y)))
-            {
-                return;
-            }
-
-            positions.Add((x, y));
-            path.Add(_map[y][x]);
-
-            if (x == Width - 1 && y == Height - 1)
-            {
-                var sum = path.Sum() - path[0];
-                if (sum < _minimumRisk)
-                {
-                    _minimumRiskPath = new List<int>(path);
-                    _minimumRisk = sum;
-                }
-
-                positions.RemoveAt(positions.Count - 1);
-                path.RemoveAt(path.Count - 1);
-
-                return;
-            }
-
-            var sortedList = new List<(int X, int Y)>();
-            if (y > 0) sortedList.Add((x, y - 1));
-            if (y + 1 < Height) sortedList.Add((x, y + 1));
-            if (x > 0) sortedList.Add((x - 1, y));
-            if (x + 1 < Width) sortedList.Add((x + 1, y));
-
-            foreach (var coordinates in sortedList.OrderBy(p => _map[p.Y][p.X]))
-            {
-                CalculateLowestRiskPath(coordinates.X, coordinates.Y, path, positions);
-            }
-
-            positions.RemoveAt(positions.Count - 1);
-            path.RemoveAt(path.Count - 1);
-        }*/
-
-        public int GetPathLevel()
-        {
-            return _minimumRisk;
-        }
+        void CalculateLowestRiskPathFor((int RiskLevel, int TotalRiskSoFar, bool Visited)[][] map);
+        int MinimumRisk { get; }
     }
 
-    public class FullCaveMap
+    public class OptimizedSearch : ISearch
     {
-        private readonly string _input;
-        private List<int> _minimumRiskPath;
-        private (int RiskLevel, int TotalRiskSoFar)[][] _map;
+        private readonly DummyPriorityQueue _queue;
+        private (int RiskLevel, int TotalRiskSoFar, bool Visited)[][] _map;
+        private int _height;
+        private int _width;
+        private int _x;
+        private int _y;
+
+        public int MinimumRisk { get; private set; }
+
+        public OptimizedSearch() => _queue = new DummyPriorityQueue();
+
+        public void CalculateLowestRiskPathFor((int RiskLevel, int TotalRiskSoFar, bool Visited)[][] map)
+        {
+            SetupInternalMapWith(map);
+
+            while (GoalHasntBeenVisitedYet())
+            {
+                UpdateSouthNeighbour();
+                UpdateEastNeighbour();
+                UpdateNorthNeighbour();
+                UpdateWestNeighbour();
+
+                MarkCurrentLocationAsVisited();
+                ChooseHighestPriorityLocation();
+            }
+
+            UpdateMinimumRisk();
+        }
+
+        private void SetupInternalMapWith((int RiskLevel, int TotalRiskSoFar, bool Visited)[][] map)
+        {
+            _map = map;
+            _height = _map.Length;
+            _width = _map[0].Length;
+        }
+
+        private void UpdateSouthNeighbour()
+        {
+            if (_y + 1 < _height) UpdateNeighbour(_x, _y + 1);
+        }
+
+        private void UpdateEastNeighbour()
+        {
+            if (_x + 1 < _width) UpdateNeighbour(_x + 1, _y);
+        }
+
+        private void UpdateNorthNeighbour()
+        {
+            if (_y - 1 > 0) UpdateNeighbour(_x, _y - 1);
+        }
+
+        private void UpdateWestNeighbour()
+        {
+            if (_x - 1 > 0) UpdateNeighbour(_x - 1, _y);
+        }
+
+        private void UpdateNeighbour(int neighbourX, int neighbourY)
+        {
+            if (!_map[neighbourY][neighbourX].Visited)
+            {
+                var totalRisk = _map[neighbourY][neighbourX].RiskLevel + _map[_y][_x].TotalRiskSoFar;
+                if (_map[neighbourY][neighbourX].TotalRiskSoFar > totalRisk)
+                {
+                    _map[neighbourY][neighbourX].TotalRiskSoFar = totalRisk;
+                    _queue.Insert(_map[neighbourY][neighbourX].TotalRiskSoFar, neighbourX, neighbourY);
+                }
+            }
+        }
+
+        private bool GoalHasntBeenVisitedYet() => !_map[_height - 1][_width - 1].Visited;
+
+        private void MarkCurrentLocationAsVisited() => _map[_y][_x].Visited = true;
+
+        private void ChooseHighestPriorityLocation()
+        {
+            if (_queue.Count > 0)
+            {
+                do
+                {
+                    (_, _x, _y) = _queue.Pull();
+                }
+                while (_map[_y][_x].Visited);
+            }
+        }
+
+        private void UpdateMinimumRisk() => MinimumRisk = _map[_height - 1][_width - 1].TotalRiskSoFar;
+    }
+
+    public class CaveMap
+    {
+        protected readonly string _input;
+        protected (int RiskLevel, int TotalRiskSoFar, bool Visited)[][] _map;
         private int _minimumRisk;
+        private readonly ISearch _search;
 
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public int Width { get; protected set; }
+        public int Height { get; protected set; }
 
-        public FullCaveMap(string input)
+        public static CaveMap CreateWithOptimizedSearch(string input) => new(input, new OptimizedSearch());
+
+        protected CaveMap(string input, ISearch search)
         {
             if (string.IsNullOrWhiteSpace(input))
             {
@@ -192,150 +119,34 @@ namespace Day15.Logic
             }
 
             _input = input;
-            _minimumRiskPath = new List<int>();
+            _search = search;
 
             Parse();
+            CalculatePath();
         }
 
-        private void Parse()
+        protected virtual void Parse()
         {
             var lines = _input.Split("\n");
             var index = 0;
 
-            _map = new (int, int)[lines.Length * 5][];
+            _map = new (int, int, bool)[lines.Length][];
             foreach (var line in lines)
             {
-                var convertedLine = line.Select(p => (p - '0', int.MaxValue)).ToList();
-                convertedLine.AddRange(line.Select(p => (p - '0' + 1, int.MaxValue)));
-                convertedLine.AddRange(line.Select(p => (p - '0' + 2, int.MaxValue)));
-                convertedLine.AddRange(line.Select(p => (p - '0' + 3, int.MaxValue)));
-                convertedLine.AddRange(line.Select(p => (p - '0' + 4, int.MaxValue)));
-
-                _map[index++] = convertedLine.ToArray();
-            }
-
-            for (var y = 0; y < lines.Length; y++)
-            {
-                _map[index++] = _map[y].Select(p => (p.RiskLevel + 1, p.TotalRiskSoFar)).ToArray();
-            }
-
-            for (var y = 0; y < lines.Length; y++)
-            {
-                _map[index++] = _map[y].Select(p => (p.RiskLevel + 2, p.TotalRiskSoFar)).ToArray();
-            }
-
-            for (var y = 0; y < lines.Length; y++)
-            {
-                _map[index++] = _map[y].Select(p => (p.RiskLevel + 3, p.TotalRiskSoFar)).ToArray();
-            }
-
-            for (var y = 0; y < lines.Length; y++)
-            {
-                _map[index++] = _map[y].Select(p => (p.RiskLevel + 4, p.TotalRiskSoFar)).ToArray();
+                _map[index++] = line.Select(p => (p - '0', int.MaxValue, false)).ToArray();
             }
 
             Height = _map.Length;
             Width = _map[0].Length;
-
-            for (var y = 0; y < Height; y++)
-            {
-                for (var x = 0; x < Width; x++)
-                {
-                    if (_map[y][x].RiskLevel > 9)
-                    {
-                        _map[y][x].RiskLevel -= 9;
-                    }
-                }
-            }
         }
 
-        public List<int> GetPath()
+        private void CalculatePath()
         {
-            CalculateBorderPathRisk();
-            CalculateLowestRiskPath2();
-
-            return _minimumRiskPath;
+            _map[0][0].TotalRiskSoFar = 0;
+            _search.CalculateLowestRiskPathFor(_map);
+            _minimumRisk = _search.MinimumRisk;
         }
 
-        private void CalculateBorderPathRisk()
-        {
-            foreach (var (RiskLevel, _) in _map[0][1..])
-            {
-                _minimumRisk += RiskLevel;
-            }
-
-            for (var index = 1; index < Height; index++)
-            {
-                _minimumRisk += _map[index][Width - 1].RiskLevel;
-            }
-        }
-
-        private void CalculateLowestRiskPath2()
-        {
-            CalculateLowestRiskPath2(0, 0, 0, true);
-        }
-
-        private void CalculateLowestRiskPath2(int x, int y, int accumulatedRiskLevel, bool firstTime)
-        {
-            if (! firstTime)
-            {
-                accumulatedRiskLevel += _map[y][x].RiskLevel;
-            }
-
-            if (accumulatedRiskLevel >= _minimumRisk)
-            {
-                return;
-            }
-
-            if (_map[y][x].TotalRiskSoFar <= accumulatedRiskLevel)
-            {
-                return;
-            }
-
-            _map[y][x].TotalRiskSoFar = accumulatedRiskLevel;
-
-            if (x == Width - 1 && y == Height - 1)
-            {
-                var sum = accumulatedRiskLevel;
-                if (sum < _minimumRisk)
-                {
-                    _minimumRisk = sum;
-                }
-
-                return;
-            }
-
-            var sortedList = new SortedList<int, (int X, int Y)>();
-            if (y + 1 < Height) sortedList.Add(_map[y + 1][x].RiskLevel << 16 | (y + 1) << 8 | x, (x, y + 1));
-            if (x + 1 < Width) sortedList.Add(_map[y][x + 1].RiskLevel << 16 | y << 8 | (x + 1), (x + 1, y));
-            if (y > 0) sortedList.Add(_map[y - 1][x].RiskLevel << 24 | (y - 1) << 8 | x, (x, y - 1));
-            if (x > 0) sortedList.Add(_map[y][x - 1].RiskLevel << 24 | y << 8 | (x - 1), (x - 1, y));
-
-            foreach (var coordinates in sortedList)
-            {
-                CalculateLowestRiskPath2(coordinates.Value.X, coordinates.Value.Y, accumulatedRiskLevel, false);
-            }
-        }
-
-        public int GetPathLevel()
-        {
-            return _minimumRisk;
-        }
-
-        public string GetHorizontalLine(int index)
-        {
-            return _map[index].Aggregate(string.Empty, (t, i) => t += i.RiskLevel);
-        }
-
-        public string GetVerticalLine(int index)
-        {
-            var result = string.Empty;
-            for (var y = 0; y < Height; y++)
-            {
-                result += _map[y][index].RiskLevel;
-            }
-
-            return result;
-        }
+        public int GetPathLevel() => _minimumRisk;
     }
 }
