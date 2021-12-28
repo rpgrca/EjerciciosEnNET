@@ -3,7 +3,14 @@ using System.Linq;
 
 namespace Day15.Logic
 {
-    public class DummyPriorityQueue
+    public interface IPriorityQueue
+    {
+        void Insert(int totalRisk, int x, int y);
+        int Count { get; }
+        (int TotalRiskSoFar, int X, int Y) Pull();
+    }
+
+    public class DummyPriorityQueue : IPriorityQueue
     {
         private readonly List<(int TotalRiskSoFar, int X, int Y)> _list = new();
 

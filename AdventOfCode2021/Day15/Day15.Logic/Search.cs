@@ -8,7 +8,7 @@ namespace Day15.Logic
 
     public class OptimizedSearch : ISearch
     {
-        private readonly DummyPriorityQueue _queue;
+        private readonly IPriorityQueue _queue;
         private (int RiskLevel, int TotalRiskSoFar, bool Visited)[][] _map;
         private int _height;
         private int _width;

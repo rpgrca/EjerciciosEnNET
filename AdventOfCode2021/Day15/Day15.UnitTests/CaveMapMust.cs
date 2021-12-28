@@ -24,6 +24,7 @@ namespace Day15.UnitTests
         {
             var sut = CaveMap.CreateWithStandardMapperAndOptimizedSearch(map);
             Assert.Equal(expectedWidth, sut.Width);
+            Assert.Equal(expectedWidth, sut.Height);
         }
 
         [Fact]
