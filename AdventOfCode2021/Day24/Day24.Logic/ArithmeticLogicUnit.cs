@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Day24.Logic
@@ -8,7 +7,6 @@ namespace Day24.Logic
     {
         private readonly string _instructions;
 
-        private readonly Dictionary<string, Action<int, int>> _operations;
         private readonly List<Action<ArithmeticLogicUnit>> _opcodes;
         private readonly List<int> _stack;
         public int W { get; set; }
@@ -25,11 +23,6 @@ namespace Day24.Logic
 
             _instructions = instructions;
             _stack = new List<int>();
-            _operations = new Dictionary<string, Action<int, int>>
-            {
-                { "mul", (a, b) => a *= b }
-            };
-
             _opcodes = new List<Action<ArithmeticLogicUnit>>();
             Parse();
         }
