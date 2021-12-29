@@ -1,3 +1,4 @@
+using System.Data.SqlTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -187,7 +188,7 @@ namespace Day23.Logic
            if (amphipod != 26) yield return 26;
         }
 
-        public void WalkWith(IEnumerable<int> amphipods, List<(int From, int To)> stack = null)
+        public void WalkWith(IEnumerable<int> amphipods, List<(int From, int To)> stack)
         {
             _count++;
 
@@ -222,6 +223,7 @@ namespace Day23.Logic
                         }
                     }
 
+                    var totalCostSoFar = TotalCost;
                     var anyPossiblePath = MoveAmphipodFrom(amphipod).To(option).OrReturnBack();
                     if (anyPossiblePath)
                     {
@@ -233,7 +235,12 @@ namespace Day23.Logic
 
                         var reset = stack[^1];
                         stack.Remove(reset);
-                        ResetAmphipodBackFrom(reset.To).To(reset.From);
+
+                        _rooms[reset.From] = _rooms[reset.To];
+                        _rooms[reset.To] = '.';
+                        TotalCost = totalCostSoFar;
+
+                        //ResetAmphipodBackFrom(reset.To).To(reset.From);
                         //Console.WriteLine($"{TotalCost}: {ToString()}");
                         //System.IO.File.AppendAllText("./paths.txt", $"{ToString()} [{_count} - {TotalCost}]\n\n");
                     }
@@ -378,37 +385,43 @@ namespace Day23.Logic
         public bool OrReturnBack()
         {
             var currentLocation = _currentAmphipod;
+            var totalCostSoFar = TotalCost;
+            var originalPosition = currentLocation;
 
-            if (_paths[currentLocation][_currentTarget] != -1)
+            while (_paths[currentLocation][_currentTarget] != -1)
             {
                 var nextRoom = _paths[currentLocation][_currentTarget];
+
                 if (_rooms[nextRoom] == '.')
                 {
-                    var totalCost = _amphipodeTypes[_rooms[currentLocation] - 'A'];
-                    TotalCost += totalCost;
+                    TotalCost += _amphipodeTypes[_rooms[currentLocation] - 'A'];
                     _rooms[nextRoom] = _rooms[currentLocation];
                     _rooms[currentLocation] = '.';
-
-                    if (! MoveAmphipodFrom(nextRoom).To(_currentTarget).OrReturnBack())
-                    {
-                        _currentAmphipod = currentLocation;
-                        _rooms[currentLocation] = _rooms[nextRoom];
-                        _rooms[nextRoom] = '.';
-                        TotalCost -= totalCost;
-                        return false;
-                    }
+                    currentLocation = nextRoom;
                 }
                 else
                 {
+                    if (TotalCost != totalCostSoFar)
+                    {
+                        TotalCost = totalCostSoFar;
+                        _rooms[originalPosition] = _rooms[currentLocation];
+                        _rooms[currentLocation] = '.';
+                    }
+
                     return false;
                 }
             }
-            else
+
+            if (! CanStayInThisPosition(currentLocation))
             {
-                if (! CanStayInThisPosition(currentLocation))
+                if (TotalCost != totalCostSoFar)
                 {
-                    return false;
+                    TotalCost = totalCostSoFar;
+                    _rooms[originalPosition] = _rooms[currentLocation];
+                    _rooms[currentLocation] = '.';
                 }
+
+                return false;
             }
 
             return true;
