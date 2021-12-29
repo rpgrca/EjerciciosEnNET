@@ -18,6 +18,22 @@ namespace Day23.UnitTests
   #C#D#B#A#
   #########";
 
+        private const string SAMPLE_LONG_MAP = @"#############
+#...........#
+###B#C#B#D###
+  #D#C#B#A#
+  #D#B#A#C#
+  #A#D#C#A#
+  #########";
+
+        private const string REAL_LONG_MAP = @"#############
+#...........#
+###B#D#C#A###
+  #D#C#B#A#
+  #D#B#A#C#
+  #C#D#B#A#
+  #########";
+
         [Theory]
         [InlineData(null)]
         [InlineData("")]
@@ -69,25 +85,6 @@ namespace Day23.UnitTests
             Assert.Equal((4, 1, 10, 'B'), sut.GetAmphipodAt(4, 1));
             Assert.Equal(40, sut.TotalCost);
         }
-    }
-
-    public class AmphipodSorter2Must
-    {
-        private const string SAMPLE_LONG_MAP = @"#############
-#...........#
-###B#C#B#D###
-  #D#C#B#A#
-  #D#B#A#C#
-  #A#D#C#A#
-  #########";
-
-        private const string REAL_LONG_MAP = @"#############
-#...........#
-###B#D#C#A###
-  #D#C#B#A#
-  #D#B#A#C#
-  #C#D#B#A#
-  #########";
 
         [Theory]
         [InlineData(null)]
@@ -744,14 +741,13 @@ namespace Day23.UnitTests
   #########", sut.ToString());
         }
 
-/*
-        [Fact]
+/*        [Fact]
         public void SolveFirstSample()
         {
             var sut = new Walker(SAMPLE_LONG_MAP);
             sut.Run();
             Assert.Equal(44169, sut.LowestTotalCost);
-        }
+        }*/
 
         [Fact]
         public void SolveSecondPuzzle()
@@ -759,7 +755,7 @@ namespace Day23.UnitTests
             var sut = new Walker(REAL_LONG_MAP);
             sut.Run();
             Assert.Equal(56324, sut.LowestTotalCost);
-        }*/
+        }
     }
 
     public class Walker
@@ -784,7 +780,7 @@ namespace Day23.UnitTests
             });
 
             var amphipodes = AmphipodSorter2.GetAmphipods();
-            amphipodSorter.WalkWith(amphipodes);
+            amphipodSorter.WalkWith(amphipodes, new System.Collections.Generic.List<(int From, int To)>());
         }
     }
 }
