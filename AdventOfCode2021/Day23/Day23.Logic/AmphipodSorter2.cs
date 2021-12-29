@@ -52,7 +52,7 @@ namespace Day23.Logic
         private string _map;
         private readonly int[] _mapRelocator;
         private readonly char[] _rooms;
-        private readonly Dictionary<char, int> _amphipodeTypes;
+        private readonly int[] _amphipodeTypes;
         private int _currentAmphipod;
         private int _currentTarget;
         private Action<AmphipodSorter2, int> _onFinalPositionCallback;
@@ -70,14 +70,7 @@ namespace Day23.Logic
 
             _minimumCost = int.MaxValue;
             _data = data;
-            _amphipodeTypes = new Dictionary<char, int>
-            {
-                { 'A', 1 },
-                { 'B', 10 },
-                { 'C', 100 },
-                { 'D', 1000 }
-            };
-
+            _amphipodeTypes = new int[] { 1, 10, 100, 1000 };
             _mapRelocator = new int[] { 0, 1, 6, 7, 12, 13, 18, 19, 24, 25, 26, 5, 11, 17, 23, 4, 10, 16, 22, 3, 9, 15, 21, 2, 8, 14, 20 };
             _rooms = new string('.', 27).ToCharArray();
 
@@ -313,7 +306,7 @@ namespace Day23.Logic
                 var nextRoom = _paths[currentLocation][_currentTarget];
                 if (_rooms[nextRoom] == '.')
                 {
-                    TotalCost -= _amphipodeTypes[_rooms[currentLocation]];
+                    TotalCost -= _amphipodeTypes[_rooms[currentLocation] - 'A'];
                     _rooms[nextRoom] = _rooms[currentLocation];
                     _rooms[currentLocation] = '.';
                     currentLocation = nextRoom;
@@ -334,7 +327,7 @@ namespace Day23.Logic
                 var nextRoom = _paths[currentLocation][_currentTarget];
                 if (_rooms[nextRoom] == '.')
                 {
-                    var totalCost = _amphipodeTypes[_rooms[currentLocation]];
+                    var totalCost = _amphipodeTypes[_rooms[currentLocation] - 'A'];
                     TotalCost += totalCost;
                     _rooms[nextRoom] = _rooms[currentLocation];
                     _rooms[currentLocation] = '.';
@@ -391,7 +384,7 @@ namespace Day23.Logic
                 var nextRoom = _paths[currentLocation][_currentTarget];
                 if (_rooms[nextRoom] == '.')
                 {
-                    var totalCost = _amphipodeTypes[_rooms[currentLocation]];
+                    var totalCost = _amphipodeTypes[_rooms[currentLocation] - 'A'];
                     TotalCost += totalCost;
                     _rooms[nextRoom] = _rooms[currentLocation];
                     _rooms[currentLocation] = '.';
@@ -455,10 +448,15 @@ namespace Day23.Logic
                 (amphipod == 'C' && location is >= 14 and <= 17) ||
                 (amphipod == 'D' && location is >= 20 and <= 23);
 
-        private bool StrangersAtHome(char amphipod) =>
+        private bool StrangersAtHome(char amphipod) =>/*
+            (amphipod == 'A' && ((_rooms[2] is not 'A') || (_rooms[3] is not 'A') || (_rooms[4] is not 'A'))) ||
+            (amphipod == 'B' && ((_rooms[8] is not 'B') || (_rooms[9] is not 'B') || (_rooms[10] is not 'B'))) ||
+            (amphipod == 'C' && ((_rooms[14] is not 'C') || (_rooms[15] is not 'C') || (_rooms[16] is not 'C'))) ||
+            (amphipod == 'D' && ((_rooms[20] is not 'D') || (_rooms[21] is not 'D') || (_rooms[22] is not 'D')));*/
             (amphipod == 'A' && ((_rooms[2] is 'B' or 'C' or 'D') || (_rooms[3] is 'B' or 'C' or 'D') || (_rooms[4] is 'B' or 'C' or 'D'))) ||
             (amphipod == 'B' && ((_rooms[8] is 'A' or 'C' or 'D') || (_rooms[9] is 'A' or 'C' or 'D') || (_rooms[10] is 'A' or 'C' or 'D'))) ||
             (amphipod == 'C' && ((_rooms[14] is 'A' or 'B' or 'D') || (_rooms[15] is 'A' or 'B' or 'D') || (_rooms[16] is 'A' or 'B' or 'D'))) ||
             (amphipod == 'D' && ((_rooms[20] is 'A' or 'B' or 'C') || (_rooms[21] is 'A' or 'B' or 'C') || (_rooms[22] is 'A' or 'B' or 'C')));
+
     }
 }
