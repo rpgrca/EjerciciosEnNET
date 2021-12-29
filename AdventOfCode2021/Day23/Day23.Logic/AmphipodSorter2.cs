@@ -176,90 +176,29 @@ namespace Day23.Logic
 
         private bool IsThereAnAmphipodAt(int node) => _rooms[node] is "A" or "B" or "C" or "D";
 
-        private IEnumerable<int> AvailableMovementOptions()
+        private static IEnumerable<int> AvailableMovementOptions(string[] rooms, int amphipod)
         {
-            yield return 0;
-            yield return 1;
+            if (amphipod != 0) yield return 0;
+            if (amphipod != 1) yield return 1;
 
-            if (_rooms[2] == ".")
+            for (var subIndex = 1; subIndex <= 19; subIndex += 6)
             {
-                yield return 2;
-            }
-            else if (_rooms[3] == ".")
-            {
-                yield return 3;
-            }
-            else if (_rooms[4] == ".")
-            {
-                yield return 4;
-            }
-            else if (_rooms[5] == ".")
-            {
-                yield return 5;
+                for (var index = subIndex + 1; index <= subIndex + 4; index++)
+                {
+                    if (rooms[index] == ".")
+                    {
+                        if (amphipod != index) yield return index;
+                        break;
+                    }
+                }
+
+                if (amphipod != (subIndex + 6)) yield return subIndex + 6;
             }
 
-            yield return 7;
-
-            if (_rooms[8] == ".")
-            {
-                yield return 8;
-            }
-            else if (_rooms[9] == ".")
-            {
-                yield return 9;
-            }
-            else if (_rooms[10] == ".")
-            {
-                yield return 10;
-            }
-            else if (_rooms[11] == ".")
-            {
-                yield return 11;
-            }
-
-            yield return 13;
-
-            if (_rooms[14] == ".")
-            {
-                yield return 14;
-            }
-            else if (_rooms[15] == ".")
-            {
-                yield return 15;
-            }
-            else if (_rooms[16] == ".")
-            {
-                yield return 16;
-            }
-            else if (_rooms[17] == ".")
-            {
-                yield return 17;
-            }
-
-            yield return 19;
-
-            if (_rooms[20] == ".")
-            {
-                yield return 20;
-            }
-            else if (_rooms[21] == ".")
-            {
-                yield return 21;
-            }
-            else if (_rooms[22] == ".")
-            {
-                yield return 22;
-            }
-            else if (_rooms[23] == ".")
-            {
-                yield return 23;
-            }
-
-            yield return 25;
-            yield return 26;
+           if (amphipod != 26) yield return 26;
         }
 
-        public void WalkWith(int[] amphipods, List<(int From, int To)> stack = null)
+        public void WalkWith(IEnumerable<int> amphipods, List<(int From, int To)> stack = null)
         {
             _count++;
 
@@ -284,13 +223,8 @@ namespace Day23.Logic
                     continue;
                 }
 
-                foreach (var option in AvailableMovementOptions())
+                foreach (var option in AvailableMovementOptions(_rooms, amphipod))
                 {
-                    if (option == amphipod)
-                    {
-                        continue;
-                    }
-
                     if (amphipod is 0 or 1 or 7 or 13 or 19 or 25 or 26)
                     {
                         if (option is 0 or 1 or 7 or 13 or 19 or 25 or 26)
@@ -304,16 +238,9 @@ namespace Day23.Logic
                     {
                         stack.Insert(0, (amphipod, option));
 
-                        if (_count == 129524)
-                        {
-                            System.Diagnostics.Debugger.Break();
-                        }
-
-                        var amphipodsAbleToMove = CalculateAmphipodsAbleToMove();
-
                         //System.IO.File.AppendAllText("./paths.txt", $"{ToString()} [{_count} - {TotalCost}]\n\n");
                         //Console.WriteLine($"{TotalCost}: {ToString()}");
-                        WalkWith(amphipodsAbleToMove, stack);
+                        WalkWith(CalculateAmphipodsAbleToMove(), stack);
 
                         var reset = stack[0];
                         stack.RemoveAt(0);
@@ -325,10 +252,8 @@ namespace Day23.Logic
             }
         }
 
-        private int[] CalculateAmphipodsAbleToMove()
+        private IEnumerable<int> CalculateAmphipodsAbleToMove()
         {
-            var amphipodsAbleToMove = new List<int>();
-
             for (var index = 0; index < _rooms.Length; index++)
             {
                 if (IsThereAnAmphipodAt(index))
@@ -339,25 +264,23 @@ namespace Day23.Logic
                         {
                             if (ForeignersInOwnHomeArea(index))
                             {
-                                amphipodsAbleToMove.Add(index);
+                                yield return index;
                             }
                         }
                         else
                         {
-                            amphipodsAbleToMove.Add(index);
+                            yield return index;
                         }
                     }
                     else
                     {
                         if (IsHomeAreaBeingCompleted(_rooms[index]))
                         {
-                            amphipodsAbleToMove.Add(index);
+                            yield return index;
                         }
                     }
                 }
             }
-
-            return amphipodsAbleToMove.ToArray();
         }
 
         private bool ForeignersInOwnHomeArea(int amphipod) =>
