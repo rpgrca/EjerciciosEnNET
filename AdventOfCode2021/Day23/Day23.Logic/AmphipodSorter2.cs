@@ -373,10 +373,7 @@ namespace Day23.Logic
                 }
                 else
                 {
-                    if (! CanStayInThisPosition(currentLocation))
-                    {
-                        return false;
-                    }
+                    return false;
                 }
             }
 
