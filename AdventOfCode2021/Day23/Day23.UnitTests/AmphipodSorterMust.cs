@@ -741,13 +741,57 @@ namespace Day23.UnitTests
   #########", sut.ToString());
         }
 
-/*        [Fact]
+        [Fact]
+        public void SolveFirstTrivialSample()
+        {
+          var sut = new Walker(@"#############
+#...........#
+###D#C#B#A###
+  #A#B#C#D#
+  #A#B#C#D#
+  #A#B#C#D#
+  #########");
+          sut.Run();
+          Assert.Equal(8470, sut.LowestTotalCost);
+        }
+
+        [Fact]
+        public void SolveSecondTrivialSample()
+        {
+          var sut = new Walker(@"#############
+#...........#
+###A#B#C#D###
+  #A#B#D#C#
+  #A#B#C#D#
+  #A#B#C#D#
+  #########");
+          sut.Run();
+          Assert.Equal(11200, sut.LowestTotalCost);
+        }
+
+        [Fact]
+        public void SolveThirdTrivialSample()
+        {
+          var sut = new Walker(@"#############
+#...........#
+###A#B#C#D###
+  #B#A#C#D#
+  #A#B#C#D#
+  #A#B#C#D#
+  #########");
+          sut.Run();
+          Assert.Equal(112, sut.LowestTotalCost);
+        }
+
+/*
+        // Taking too long still (42m, 9m). Commenting til better solution found
+        [Fact]
         public void SolveFirstSample()
         {
             var sut = new Walker(SAMPLE_LONG_MAP);
             sut.Run();
             Assert.Equal(44169, sut.LowestTotalCost);
-        }*/
+        }
 
         [Fact]
         public void SolveSecondPuzzle()
@@ -755,32 +799,6 @@ namespace Day23.UnitTests
             var sut = new Walker(REAL_LONG_MAP);
             sut.Run();
             Assert.Equal(56324, sut.LowestTotalCost);
-        }
-    }
-
-    public class Walker
-    {
-        private readonly string _map;
-
-        public Walker(string map) =>
-            _map = map;
-
-        public int LowestTotalCost { get; internal set; } = int.MaxValue;
-
-        public void Run()
-        {
-            var amphipodSorter = new AmphipodSorter2(_map);
-            amphipodSorter.OnFinalPositionReached((s, c) =>
-            {
-              if (s.TotalCost < LowestTotalCost)
-              {
-                LowestTotalCost = s.TotalCost;
-                Console.WriteLine($"Found new lowest cost of {LowestTotalCost} on step {c}");
-              }
-            });
-
-            var amphipodes = AmphipodSorter2.GetAmphipods();
-            amphipodSorter.WalkWith(amphipodes, new System.Collections.Generic.List<(int From, int To)>());
-        }
+        }*/
     }
 }
