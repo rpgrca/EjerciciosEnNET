@@ -714,6 +714,32 @@ namespace Day23.UnitTests
         }
 
         [Fact]
+        public void ThrowException_WhenThereIsNoAmphipodAtStartingPoint()
+        {
+          var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+          var exception = Assert.Throws<ArgumentException>(() => sut.MoveAmphipodFrom(0).To(1).OrFail());
+          Assert.Equal("No amphipod there", exception.Message);
+        }
+
+        [Fact]
+        public void NeverReachFinalPosition_WhenInitialAmphipodListIsInvalid()
+        {
+          var flag = false;
+          var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+          sut.OnFinalPositionReached((_, __) => flag = true);
+          sut.WalkWith(new [] { 0, 1 }, new System.Collections.Generic.List<(int From, int To)>());
+          Assert.False(flag);
+        }
+
+        [Fact]
+        public void ReturnTrue_WhenAskedToMoveToSamePlaceAsOrigin()
+        {
+          var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+          var stayInSamePlace = sut.MoveAmphipodFrom(5).To(5).AndStopOnFail();
+          Assert.True(stayInSamePlace);
+        }
+
+        [Fact]
         public void StayInSamePosition_WhenCannotStartWalkingToTarget()
         {
             var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
@@ -782,6 +808,21 @@ namespace Day23.UnitTests
           sut.Run();
           Assert.Equal(112, sut.LowestTotalCost);
         }
+
+        [Fact]
+        public void SolveFourthTrivialSample()
+        {
+          var sut = new Walker(@"#############
+#...........#
+###D#A#A#C###
+  #B#B#C#D#
+  #A#B#C#D#
+  #A#B#C#D#
+  #########");
+          sut.Run();
+          Assert.Equal(8465, sut.LowestTotalCost);
+        }
+
 
 /*
         // Taking too long still (42m, 9m). Commenting til better solution found

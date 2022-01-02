@@ -16,11 +16,6 @@ namespace Day23.Logic
         void OrFail();
     }
 
-    public interface IMovementBackFrom
-    {
-        void To(int node);
-    }
-
 /*
     +---+   +---+   +---+   +---+   +---+   +---+   +---+   +---+   +---+   +---+   +---+ 
     | 0 |---| 1 |---| 6 |---| 7 |---|12 |---|13 |---|18 |---|19 |---|24 |---|25 |---|26 |
@@ -215,9 +210,11 @@ namespace Day23.Logic
         public char GetRoomAt(int nextRoom) => _rooms[nextRoom];
 
         public int GetRoomLength() => _rooms.Length;
+
+        public bool AtHomeAreaEntrance(int currentLocation) => currentLocation is 6 or 12 or 18 or 24;
     }
 
-    public class AmphipodSorter2 : IMovementFrom2, IMovementTo, IMovementBackFrom
+    public class AmphipodSorter2 : IMovementFrom2, IMovementTo
     {
         private readonly LongMap _mapInformation;
 
@@ -346,27 +343,6 @@ namespace Day23.Logic
             }
         }
 
-        void IMovementBackFrom.To(int node)
-        {
-            var currentLocation = _currentAmphipod;
-            _currentTarget = node;
-
-            while (_mapInformation.GetNextStep(currentLocation, _currentTarget) != -1)
-            {
-                var nextRoom = _mapInformation.GetNextStep(currentLocation, _currentTarget);
-                if (_mapInformation.GetRoomAt(nextRoom) == '.')
-                {
-                    TotalCost -= _amphipodeTypes[_mapInformation.GetRoomAt(currentLocation) - 'A'];
-                    _mapInformation.MoveFrom(nextRoom, currentLocation);
-                    currentLocation = nextRoom;
-                }
-                else
-                {
-                    throw new ArgumentException("Impossible to move through here");
-                }
-            }
-        }
-
         public bool AndStopOnFail()
         {
             var currentLocation = _currentAmphipod;
@@ -401,13 +377,6 @@ namespace Day23.Logic
                     {
                         return false;
                     }
-                }
-            }
-            else
-            {
-                if (! CanStayInThisPosition(currentLocation))
-                {
-                    return false;
                 }
             }
 
@@ -466,7 +435,7 @@ namespace Day23.Logic
 
         private bool CanStayInThisPosition(int currentLocation)
         {
-            if (currentLocation is 6 or 12 or 18 or 24)
+            if (_mapInformation.AtHomeAreaEntrance(currentLocation))
             {
                 return false;
             }
@@ -488,6 +457,5 @@ namespace Day23.Logic
 
             return true;
         }
-
     }
 }
