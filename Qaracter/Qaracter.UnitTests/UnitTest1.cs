@@ -23,18 +23,27 @@ namespace Qaracter.UnitTests
                 .WithRectanglePerimeterOf(8)
                 .Build();
 
-            Assert.Equal(8, sut.RABC);
+            Assert.Equal(8, sut.RAC);
         }
 
         [Fact]
-        public void CalculateCirclePerimeter()
+        public void CalculateQuarterOfCirclePerimeter()
         {
-            var sut = new ArcQuestion.Builder()
+            var sut = GetSubjectUnderTest();
+            Assert.Equal(Math.PI * 3, sut.ST);
+        }
+
+        private static ArcQuestion GetSubjectUnderTest() =>
+            new ArcQuestion.Builder()
                 .WithRatioOf(6)
                 .WithRectanglePerimeterOf(8)
                 .Build();
 
-            Assert.Equal(2 * Math.PI * 6, sut.STPerimeter);
+        [Fact]
+        public void CalculateRectangleBisector()
+        {
+            var sut = GetSubjectUnderTest();
+            Assert.Equal(6, sut.AC);
         }
     }
 }

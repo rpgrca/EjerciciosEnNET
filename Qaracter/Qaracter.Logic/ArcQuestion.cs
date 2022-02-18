@@ -6,13 +6,15 @@ namespace Qarater.Logic
     public class ArcQuestion
     {
         public int R { get; }
-        public int RABC { get; }
-        public double STPerimeter { get; private set; }
+        public int RAC { get; }
+        public double ST { get; private set; }
+        public double AC { get; private set; }
+        private int RB { get; set; }
 
         public class Builder
         {
             private int _ratio;
-            private int _rectanglePerimeter;
+            private int _rectangleBasePlusHeight;
 
             public Builder WithRatioOf(int value)
             {
@@ -22,21 +24,24 @@ namespace Qarater.Logic
 
             public Builder WithRectanglePerimeterOf(int value)
             {
-                _rectanglePerimeter = value;
+                _rectangleBasePlusHeight = value;
                 return this;
             }
 
-            public ArcQuestion Build() => new(_ratio, _rectanglePerimeter);
+            public ArcQuestion Build() => new(_ratio, _rectangleBasePlusHeight);
         }
 
-        private ArcQuestion(int r, int rabc)
+        private ArcQuestion(int r, int rac)
         {
             R = r;
-            RABC = rabc;
+            RAC = rac;
 
             CalculateQuarterOfCircle();
+            CalculateRectangleBisector();
         }
 
-        private void CalculateQuarterOfCircle() => STPerimeter = 2 * Math.PI * R;
+        private void CalculateQuarterOfCircle() => ST = 0.5 * Math.PI * R;
+
+        private void CalculateRectangleBisector() => AC = RB = R;
     }
 }
