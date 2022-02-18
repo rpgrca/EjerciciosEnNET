@@ -17,5 +17,16 @@ namespace Qaracter.UnitTests
 
             Assert.Equal(6, sut.R);
         }
+
+        [Fact]
+        public void SetRectanglePerimeterCorrectly()
+        {
+            var sut = new ArcQuestion
+            {
+                RABC = 8
+            };
+
+            Assert.Equal(8, sut.RABC);
+        }
     }
 }
