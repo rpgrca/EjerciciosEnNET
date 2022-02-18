@@ -1,5 +1,6 @@
 using Xunit;
 using Qarater.Logic;
+using System;
 
 namespace Qaracter.UnitTests
 {
@@ -23,6 +24,17 @@ namespace Qaracter.UnitTests
                 .Build();
 
             Assert.Equal(8, sut.RABC);
+        }
+
+        [Fact]
+        public void CalculateCirclePerimeter()
+        {
+            var sut = new ArcQuestion.Builder()
+                .WithRatioOf(6)
+                .WithRectanglePerimeterOf(8)
+                .Build();
+
+            Assert.Equal(2 * Math.PI * 6, sut.STPerimeter);
         }
     }
 }

@@ -7,6 +7,7 @@ namespace Qarater.Logic
     {
         public int R { get; }
         public int RABC { get; }
+        public double STPerimeter { get; private set; }
 
         public class Builder
         {
@@ -32,6 +33,10 @@ namespace Qarater.Logic
         {
             R = r;
             RABC = rabc;
+
+            CalculateQuarterOfCircle();
         }
+
+        private void CalculateQuarterOfCircle() => STPerimeter = 2 * Math.PI * R;
     }
 }
