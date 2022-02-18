@@ -1,5 +1,3 @@
-using System.Runtime.InteropServices;
-using System;
 using Xunit;
 using Qarater.Logic;
 
@@ -10,10 +8,9 @@ namespace Qaracter.UnitTests
         [Fact]
         public void SetRatioCorrectly()
         {
-            var sut = new ArcQuestion
-            {
-                R = 6
-            };
+            var sut = new ArcQuestion.Builder()
+                .WithRatioOf(6)
+                .Build();
 
             Assert.Equal(6, sut.R);
         }
@@ -21,10 +18,9 @@ namespace Qaracter.UnitTests
         [Fact]
         public void SetRectanglePerimeterCorrectly()
         {
-            var sut = new ArcQuestion
-            {
-                RABC = 8
-            };
+            var sut = new ArcQuestion.Builder()
+                .WithRectanglePerimeterOf(8)
+                .Build();
 
             Assert.Equal(8, sut.RABC);
         }
