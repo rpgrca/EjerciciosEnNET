@@ -45,5 +45,12 @@ namespace Qaracter.UnitTests
             var sut = GetSubjectUnderTest();
             Assert.Equal(6, sut.AC);
         }
+
+        [Fact]
+        public void CalculateShadowedPerimeterCorrectly()
+        {
+            var sut = GetSubjectUnderTest();
+            Assert.Equal(10 + 3 * Math.PI, sut.Perimeter);
+        }
     }
 }

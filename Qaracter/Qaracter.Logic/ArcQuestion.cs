@@ -10,6 +10,7 @@ namespace Qarater.Logic
         public double ST { get; private set; }
         public double AC { get; private set; }
         private int RB { get; set; }
+        public double Perimeter { get; private set; }
 
         public class Builder
         {
@@ -38,10 +39,13 @@ namespace Qarater.Logic
 
             CalculateQuarterOfCircle();
             CalculateRectangleBisector();
+            CalculateShadowedPerimeter();
         }
 
         private void CalculateQuarterOfCircle() => ST = 0.5 * Math.PI * R;
 
         private void CalculateRectangleBisector() => AC = RB = R;
+
+        private void CalculateShadowedPerimeter() => Perimeter = (R * 2) - RAC + AC + ST;
     }
 }
