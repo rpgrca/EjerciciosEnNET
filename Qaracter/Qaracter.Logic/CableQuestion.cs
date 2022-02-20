@@ -6,11 +6,13 @@ namespace Qaracter.Logic
     {
         public int PoleHeight { get; }
         public int CableLength { get; }
+        public int HeightAtCenter { get; }
 
-        public CableQuestion(int height, int length)
+        public CableQuestion(int poleHeight, int cableLength, int heightAtCenter)
         {
-            PoleHeight = height;
-            CableLength = length;
+            PoleHeight = poleHeight;
+            CableLength = cableLength;
+            HeightAtCenter = heightAtCenter;
         }
     }
 }
