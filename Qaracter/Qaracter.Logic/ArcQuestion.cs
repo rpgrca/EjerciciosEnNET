@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Qarater.Logic
+namespace Qaracter.Logic
 {
     public class ArcQuestion
     {

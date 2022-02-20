@@ -1,5 +1,5 @@
 using Xunit;
-using Qarater.Logic;
+using Qaracter.Logic;
 using System;
 
 namespace Qaracter.UnitTests
