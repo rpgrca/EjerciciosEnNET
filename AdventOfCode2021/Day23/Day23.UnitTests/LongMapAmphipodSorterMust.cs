@@ -4,20 +4,8 @@ using Day23.Logic;
 
 namespace Day23.UnitTests
 {
-    public class AmphipodSorterMust
+    public class LongMapAmphipodSorterMust
     {
-        private const string SAMPLE_MAP = @"#############
-#...........#
-###B#C#B#D###
-  #A#D#C#A#
-  #########";
-
-        private const string REAL_MAP = @"#############
-#...........#
-###B#D#C#A###
-  #C#D#B#A#
-  #########";
-
         private const string SAMPLE_LONG_MAP = @"#############
 #...........#
 ###B#C#B#D###
@@ -33,57 +21,24 @@ namespace Day23.UnitTests
   #D#B#A#C#
   #C#D#B#A#
   #########";
-
+/*
         [Theory]
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
         public void ThrowException_WhenInitializedWithInvalidData(string invalidData)
         {
-            var exception = Assert.Throws<ArgumentException>(() => new AmphipodSorter(invalidData));
+            var exception = Assert.Throws<ArgumentException>(() => AmphipodSorter2.CreateLongMapSorter(invalidData));
             Assert.Equal("Invalid data", exception.Message);
         }
 
         [Theory]
-        [InlineData(SAMPLE_MAP)]
-        [InlineData(REAL_MAP)]
+        [InlineData(SAMPLE_LONG_MAP)]
+        [InlineData(REAL_LONG_MAP)]
         public void LoadMapCorrectly(string map)
         {
-            var sut = new AmphipodSorter(map);
+            var sut = AmphipodSorter2.CreateLongMapSorter(map);
             Assert.Equal(map, sut.ToString());
-        }
-
-        [Fact]
-        public void IndividualizeEveryAmphipod()
-        {
-            var sut = new AmphipodSorter(SAMPLE_MAP);
-            Assert.Equal((3, 3, 1, 'A'), sut.GetAmphipodAt(3, 3));
-        }
-
-        [Fact]
-        public void ThrowException_WhenAskingForAnAmphipodThatIsNotThere()
-        {
-            var sut = new AmphipodSorter(SAMPLE_MAP);
-            var exception = Assert.Throws<ArgumentException>(() => sut.GetAmphipodAt(0, 0));
-            Assert.Equal("No amphipod there", exception.Message);
-        }
-
-        [Fact]
-        public void MakeAmphipodMoveNorth()
-        {
-            var sut = new AmphipodSorter(SAMPLE_MAP);
-            sut.MoveAmphipodFrom(7, 2).To(7, 1);
-            Assert.Equal((7, 1, 10, 'B'), sut.GetAmphipodAt(7, 1));
-            Assert.Equal(10, sut.TotalCost);
-        }
-
-        [Fact]
-        public void MakeAmphipodMoveNorthThenWestThrice()
-        {
-            var sut = new AmphipodSorter(SAMPLE_MAP);
-            sut.MoveAmphipodFrom(7, 2).To(7, 1).To(6, 1).To(5, 1).To(4, 1);
-            Assert.Equal((4, 1, 10, 'B'), sut.GetAmphipodAt(4, 1));
-            Assert.Equal(40, sut.TotalCost);
         }
 
         [Theory]
@@ -92,7 +47,7 @@ namespace Day23.UnitTests
         [InlineData(" ")]
         public void ThrowException_WhenInitializedWithInvalidLongMap(string invalidData)
         {
-            var exception = Assert.Throws<ArgumentException>(() => new AmphipodSorter2(invalidData));
+            var exception = Assert.Throws<ArgumentException>(() => AmphipodSorter2.CreateLongMapSorter(invalidData));
             Assert.Equal("Invalid data", exception.Message);
         }
 
@@ -101,14 +56,14 @@ namespace Day23.UnitTests
         [InlineData(REAL_LONG_MAP)]
         public void LoadLongMapCorrectly(string map)
         {
-            var sut = new AmphipodSorter2(map);
+            var sut = AmphipodSorter2.CreateLongMapSorter(map);
             Assert.Equal(map, sut.ToString());
         }
 
         [Fact]
         public void WalkStep1InSolution()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(23).To(26).OrFail();
             Assert.Equal(@"#############
 #..........D#
@@ -122,7 +77,7 @@ namespace Day23.UnitTests
         [Fact]
         public void Walk2StepsInSolution()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(23).To(26).OrFail();
             sut.MoveAmphipodFrom(22).To(0).OrFail();
             Assert.Equal(@"#############
@@ -137,7 +92,7 @@ namespace Day23.UnitTests
         [Fact]
         public void Walk3StepsInSolution()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(23).To(26).OrFail();
             sut.MoveAmphipodFrom(22).To(0).OrFail();
             sut.MoveAmphipodFrom(17).To(25).OrFail();
@@ -153,7 +108,7 @@ namespace Day23.UnitTests
         [Fact]
         public void Walk4StepsInSolution()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(23).To(26).OrFail();
             sut.MoveAmphipodFrom(22).To(0).OrFail();
             sut.MoveAmphipodFrom(17).To(25).OrFail();
@@ -170,7 +125,7 @@ namespace Day23.UnitTests
         [Fact]
         public void Walk5StepsInSolution()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(23).To(26).OrFail();
             sut.MoveAmphipodFrom(22).To(0).OrFail();
             sut.MoveAmphipodFrom(17).To(25).OrFail();
@@ -188,7 +143,7 @@ namespace Day23.UnitTests
         [Fact]
         public void Walk6StepsInSolution()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(23).To(26).OrFail();
             sut.MoveAmphipodFrom(22).To(0).OrFail();
             sut.MoveAmphipodFrom(17).To(25).OrFail();
@@ -207,7 +162,7 @@ namespace Day23.UnitTests
         [Fact]
         public void Walk7StepsInSolution()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(23).To(26).OrFail();
             sut.MoveAmphipodFrom(22).To(0).OrFail();
             sut.MoveAmphipodFrom(17).To(25).OrFail();
@@ -227,7 +182,7 @@ namespace Day23.UnitTests
         [Fact]
         public void Walk8StepsInSolution()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(23).To(26).OrFail();
             sut.MoveAmphipodFrom(22).To(0).OrFail();
             sut.MoveAmphipodFrom(17).To(25).OrFail();
@@ -248,7 +203,7 @@ namespace Day23.UnitTests
         [Fact]
         public void Walk9StepsInSolution()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(23).To(26).OrFail();
             sut.MoveAmphipodFrom(22).To(0).OrFail();
             sut.MoveAmphipodFrom(17).To(25).OrFail();
@@ -270,7 +225,7 @@ namespace Day23.UnitTests
         [Fact]
         public void Walk10StepsInSolution()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(23).To(26).OrFail();
             sut.MoveAmphipodFrom(22).To(0).OrFail();
             sut.MoveAmphipodFrom(17).To(25).OrFail();
@@ -293,7 +248,7 @@ namespace Day23.UnitTests
         [Fact]
         public void Walk11StepsInSolution()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(23).To(26).OrFail();
             sut.MoveAmphipodFrom(22).To(0).OrFail();
             sut.MoveAmphipodFrom(17).To(25).OrFail();
@@ -317,7 +272,7 @@ namespace Day23.UnitTests
         [Fact]
         public void Walk12StepsInSolution()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(23).To(26).OrFail();
             sut.MoveAmphipodFrom(22).To(0).OrFail();
             sut.MoveAmphipodFrom(17).To(25).OrFail();
@@ -342,7 +297,7 @@ namespace Day23.UnitTests
         [Fact]
         public void Walk13StepsInSolution()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(23).To(26).OrFail();
             sut.MoveAmphipodFrom(22).To(0).OrFail();
             sut.MoveAmphipodFrom(17).To(25).OrFail();
@@ -368,7 +323,7 @@ namespace Day23.UnitTests
         [Fact]
         public void Walk14StepsInSolution()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(23).To(26).OrFail();
             sut.MoveAmphipodFrom(22).To(0).OrFail();
             sut.MoveAmphipodFrom(17).To(25).OrFail();
@@ -395,7 +350,7 @@ namespace Day23.UnitTests
         [Fact]
         public void Walk15StepsInSolution()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(23).To(26).OrFail();
             sut.MoveAmphipodFrom(22).To(0).OrFail();
             sut.MoveAmphipodFrom(17).To(25).OrFail();
@@ -423,7 +378,7 @@ namespace Day23.UnitTests
         [Fact]
         public void Walk16StepsInSolution()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(23).To(26).OrFail();
             sut.MoveAmphipodFrom(22).To(0).OrFail();
             sut.MoveAmphipodFrom(17).To(25).OrFail();
@@ -452,7 +407,7 @@ namespace Day23.UnitTests
         [Fact]
         public void Walk17StepsInSolution()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(23).To(26).OrFail();
             sut.MoveAmphipodFrom(22).To(0).OrFail();
             sut.MoveAmphipodFrom(17).To(25).OrFail();
@@ -482,7 +437,7 @@ namespace Day23.UnitTests
         [Fact]
         public void Walk18StepsInSolution()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(23).To(26).OrFail();
             sut.MoveAmphipodFrom(22).To(0).OrFail();
             sut.MoveAmphipodFrom(17).To(25).OrFail();
@@ -513,7 +468,7 @@ namespace Day23.UnitTests
         [Fact]
         public void Walk19StepsInSolution()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(23).To(26).OrFail();
             sut.MoveAmphipodFrom(22).To(0).OrFail();
             sut.MoveAmphipodFrom(17).To(25).OrFail();
@@ -545,7 +500,7 @@ namespace Day23.UnitTests
         [Fact]
         public void Walk20StepsInSolution()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(23).To(26).OrFail();
             sut.MoveAmphipodFrom(22).To(0).OrFail();
             sut.MoveAmphipodFrom(17).To(25).OrFail();
@@ -578,7 +533,7 @@ namespace Day23.UnitTests
         [Fact]
         public void Walk21StepsInSolution()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(23).To(26).OrFail();
             sut.MoveAmphipodFrom(22).To(0).OrFail();
             sut.MoveAmphipodFrom(17).To(25).OrFail();
@@ -612,7 +567,7 @@ namespace Day23.UnitTests
         [Fact]
         public void Walk22StepsInSolution()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(23).To(26).OrFail();
             sut.MoveAmphipodFrom(22).To(0).OrFail();
             sut.MoveAmphipodFrom(17).To(25).OrFail();
@@ -647,7 +602,7 @@ namespace Day23.UnitTests
         [Fact]
         public void Walk23StepsInSolution()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(23).To(26).OrFail();
             sut.MoveAmphipodFrom(22).To(0).OrFail();
             sut.MoveAmphipodFrom(17).To(25).OrFail();
@@ -689,7 +644,7 @@ namespace Day23.UnitTests
         [InlineData(23, 5)]
         public void ReturnToStartingPoint_WhenCannotWalkToTarget(int startingPoint, int target)
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(startingPoint).To(target).OrReturnBack();
             Assert.Equal(@"#############
 #...........#
@@ -708,7 +663,7 @@ namespace Day23.UnitTests
         [InlineData(23, 5)]
         public void ThrowException_WhenCannotWalkToTarget(int startingPoint, int target)
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             var exception = Assert.Throws<ArgumentException>(() => sut.MoveAmphipodFrom(startingPoint).To(target).OrFail());
             Assert.Equal("Could not complete path", exception.Message);
         }
@@ -716,7 +671,7 @@ namespace Day23.UnitTests
         [Fact]
         public void ThrowException_WhenThereIsNoAmphipodAtStartingPoint()
         {
-          var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+          var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
           var exception = Assert.Throws<ArgumentException>(() => sut.MoveAmphipodFrom(0).To(1).OrFail());
           Assert.Equal("No amphipod there", exception.Message);
         }
@@ -725,7 +680,7 @@ namespace Day23.UnitTests
         public void NeverReachFinalPosition_WhenInitialAmphipodListIsInvalid()
         {
           var flag = false;
-          var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+          var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
           sut.OnFinalPositionReached((_, __) => flag = true);
           sut.WalkWith(new [] { 0, 1 }, new System.Collections.Generic.List<(int From, int To)>());
           Assert.False(flag);
@@ -734,7 +689,7 @@ namespace Day23.UnitTests
         [Fact]
         public void ReturnTrue_WhenAskedToMoveToSamePlaceAsOrigin()
         {
-          var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+          var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
           var stayInSamePlace = sut.MoveAmphipodFrom(5).To(5).AndStopOnFail();
           Assert.True(stayInSamePlace);
         }
@@ -742,7 +697,7 @@ namespace Day23.UnitTests
         [Fact]
         public void StayInSamePosition_WhenCannotStartWalkingToTarget()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut = AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(5).To(4).AndStopOnFail();
             Assert.Equal(@"#############
 #...........#
@@ -756,7 +711,7 @@ namespace Day23.UnitTests
         [Fact]
         public void StayInLastPosition_WhenCannotWalkToTarget()
         {
-            var sut = new AmphipodSorter2(SAMPLE_LONG_MAP);
+            var sut =  AmphipodSorter2.CreateLongMapSorter(SAMPLE_LONG_MAP);
             sut.MoveAmphipodFrom(5).To(11).AndStopOnFail();
             Assert.Equal(@"#############
 #...B.......#
@@ -770,7 +725,7 @@ namespace Day23.UnitTests
         [Fact]
         public void SolveFirstTrivialSample()
         {
-          var sut = new Walker(@"#############
+          var sut = Walker.CreateWithLongMapSupport(@"#############
 #...........#
 ###D#C#B#A###
   #A#B#C#D#
@@ -784,7 +739,7 @@ namespace Day23.UnitTests
         [Fact]
         public void SolveSecondTrivialSample()
         {
-          var sut = new Walker(@"#############
+          var sut = Walker.CreateWithLongMapSupport(@"#############
 #...........#
 ###A#B#C#D###
   #A#B#D#C#
@@ -798,7 +753,7 @@ namespace Day23.UnitTests
         [Fact]
         public void SolveThirdTrivialSample()
         {
-          var sut = new Walker(@"#############
+          var sut = Walker.CreateWithLongMapSupport(@"#############
 #...........#
 ###A#B#C#D###
   #B#A#C#D#
@@ -812,7 +767,7 @@ namespace Day23.UnitTests
         [Fact]
         public void SolveFourthTrivialSample()
         {
-          var sut = new Walker(@"#############
+          var sut = Walker.CreateWithLongMapSupport(@"#############
 #...........#
 ###D#A#A#C###
   #B#B#C#D#
@@ -824,7 +779,6 @@ namespace Day23.UnitTests
         }
 
 
-/*
         // Taking too long still (42m, 9m). Commenting til better solution found
         [Fact]
         public void SolveFirstSample()
