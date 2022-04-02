@@ -336,6 +336,7 @@ namespace Day23.UnitTests
           Assert.Equal(12521, sut.LowestTotalCost);
         }
 
+/*
         // 5 min 14 seg
         [Fact]
         public void SolveFirstPuzzle()
@@ -345,7 +346,6 @@ namespace Day23.UnitTests
           Assert.Equal(15322, sut.LowestTotalCost);
         }
 
-/*
         // Taking too long still (42m, 9m). Commenting til better solution found
         [Fact]
         public void SolveFirstSample()
