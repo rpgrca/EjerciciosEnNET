@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if false
+using System;
 using System.Collections.Generic;
 
 namespace Day23.Logic
@@ -157,3 +158,4 @@ namespace Day23.Logic
         private bool CurrentAmphipodCanMoveTo(int x, int y) => _map[y][x] == '.';
     }
 }
+#endif
