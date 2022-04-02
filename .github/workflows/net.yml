@@ -22,8 +22,11 @@ jobs:
     - name: Restore packages
       run: |
            dotnet restore
-           for s in AdventOfCode/2021 AdventOfCode/2020  SistemaDeAparcamiento Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum Codewars SatelliteMessages MarsRover; do
+           for s in SistemaDeAparcamiento Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum Codewars SatelliteMessages MarsRover; do
                dotnet restore $s/$s.sln
+           done
+           for s in 2021 2020; do
+               dotnet restore AdventOfCode/$s/AdventOfCode$s.sln
            done
 
     - name: Install Coverlet
@@ -32,8 +35,11 @@ jobs:
     - name: Build solutions
       run: |
            dotnet build --configuration Debug --no-restore
-           for s in AdventOfCode/2021 AdventOfCode/2020 SistemaDeAparcamiento Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum Codewars SatelliteMessages MarsRover; do
+           for s in SistemaDeAparcamiento Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum Codewars SatelliteMessages MarsRover; do
                dotnet build --configuration Debug --no-restore $s/$s.sln
+           done
+           for s in 2021 2020; do
+               dotnet build --configuration Debug --no-restore AdventOfCode/$s/AdventOfCode$s.sln
            done
 
     - name: Testing AdventOfCode/2021
