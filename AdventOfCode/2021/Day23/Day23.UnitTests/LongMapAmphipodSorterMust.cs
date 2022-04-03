@@ -21,7 +21,7 @@ namespace Day23.UnitTests
   #D#B#A#C#
   #C#D#B#A#
   #########";
-/*
+
         [Theory]
         [InlineData(null)]
         [InlineData("")]
@@ -778,22 +778,21 @@ namespace Day23.UnitTests
           Assert.Equal(8465, sut.LowestTotalCost);
         }
 
-
         // Taking too long still (42m, 9m). Commenting til better solution found
-        [Fact]
+        [Fact(Skip = "slow test, 42m on own machine")]
         public void SolveFirstSample()
         {
-            var sut = new Walker(SAMPLE_LONG_MAP);
+            var sut = Walker.CreateWithLongMapSupport(SAMPLE_LONG_MAP);
             sut.Run();
             Assert.Equal(44169, sut.LowestTotalCost);
         }
 
-        [Fact]
+        [Fact(Skip = "slow test, 2h on own machine")]
         public void SolveSecondPuzzle()
         {
-            var sut = new Walker(REAL_LONG_MAP);
+            var sut = Walker.CreateWithLongMapSupport(REAL_LONG_MAP);
             sut.Run();
             Assert.Equal(56324, sut.LowestTotalCost);
-        }*/
+        }
     }
 }

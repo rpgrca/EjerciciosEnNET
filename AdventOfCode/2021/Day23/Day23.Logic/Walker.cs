@@ -23,8 +23,6 @@ namespace Day23.Logic
                 if (s.TotalCost < LowestTotalCost)
                 {
                     LowestTotalCost = s.TotalCost;
-                    Console.WriteLine($"Path found on {i}: {LowestTotalCost}");
-                    //System.IO.File.AppendAllText("shortmap.txt", $"\n\nShortest path found at {LowestTotalCost}\n\n");
                 }
             });
 

@@ -328,7 +328,8 @@ namespace Day23.UnitTests
           Assert.Equal(4600, sut.LowestTotalCost);
         }
 
-        [Fact]
+
+        [Fact(Skip = "slow test, 14s on Github")]
         public void SolveFirstShortSample()
         {
           var sut = Walker.CreateWithShortMapSupport(SAMPLE_SHORT_MAP);
@@ -336,32 +337,12 @@ namespace Day23.UnitTests
           Assert.Equal(12521, sut.LowestTotalCost);
         }
 
-/*
-        // 5 min 14 seg
-        [Fact]
+        [Fact(Skip = "slow test, 5m 14s on own machine")]
         public void SolveFirstPuzzle()
         {
           var sut = Walker.CreateWithShortMapSupport(REAL_SHORT_MAP);
           sut.Run();
           Assert.Equal(15322, sut.LowestTotalCost);
         }
-
-        // Taking too long still (42m, 9m). Commenting til better solution found
-        [Fact]
-        public void SolveFirstSample()
-        {
-            var sut = new Walker(SAMPLE_LONG_MAP);
-            sut.Run();
-            Assert.Equal(44169, sut.LowestTotalCost);
-        }
-
-        [Fact]
-        public void SolveSecondPuzzle()
-        {
-            var sut = new Walker(REAL_LONG_MAP);
-            sut.Run();
-            Assert.Equal(56324, sut.LowestTotalCost);
-        }
-*/
     }
 }
