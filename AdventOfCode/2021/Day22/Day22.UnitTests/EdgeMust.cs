@@ -1,3 +1,4 @@
+#if false
 using Xunit;
 using Day22.Logic;
 using static Day22.UnitTests.Constants;
@@ -37,3 +38,4 @@ namespace Day22.UnitTests
         }
     }
 }
+#endif
