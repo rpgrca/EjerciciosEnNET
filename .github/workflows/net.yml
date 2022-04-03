@@ -66,8 +66,14 @@ jobs:
 
     - name: Testing Codewars
       run: |
-           for s in `find ./Codewars -maxdepth 1 -type d -printf "%f\n" | grep -v "Codewars"`; do
+           for s in `find ./Codewars -maxdepth 1 -type d -printf "%f\n" | grep -v "Codewars" | grep -v "kyu"`; do
                coverlet Codewars/$s/$s.UnitTests/bin/Debug/net5.0/$s.UnitTests.dll --target "dotnet" --targetargs "test Codewars/$s/$s.UnitTests/$s.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output $s.coverage.xml
+           done
+
+           for n in 8 6; do
+               for s in `find ./Codewars/$nkyu -maxdepth 1 -type d -printf "%f\n" | grep -v "kyu"`; do
+                   coverlet Codewars/$nkyu/$s/$s.UnitTests/bin/Debug/net5.0/$s.UnitTests.dll --target "dotnet" --targetargs "test Codewars/$s/$s.UnitTests/$s.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output $s.coverage.xml
+               done
            done
 
     - name: Upload coverage to CodeCov
