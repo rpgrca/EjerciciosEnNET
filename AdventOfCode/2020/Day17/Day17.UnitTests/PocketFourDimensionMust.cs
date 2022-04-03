@@ -49,7 +49,7 @@ namespace AdventOfCode2020.Day17.UnitTests
             Assert.Equal(848, sut.ActiveCubes);
         }
 
-        [Fact]
+        [Fact(Skip = "slow test, 11s in total at Github")]
         public void SolveSecondPuzzle()
         {
             const string initialState = @".#######

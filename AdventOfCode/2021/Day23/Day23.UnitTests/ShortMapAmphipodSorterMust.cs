@@ -316,7 +316,7 @@ namespace Day23.UnitTests
           Assert.Equal(0, sut.LowestTotalCost);
         }
 
-        [Fact]
+        [Fact(Skip = "slow test, 40s on Github")]
         public void SolveFourthTrivialSample()
         {
           var sut = Walker.CreateWithShortMapSupport(@"#############
@@ -327,7 +327,6 @@ namespace Day23.UnitTests
           sut.Run();
           Assert.Equal(4600, sut.LowestTotalCost);
         }
-
 
         [Fact(Skip = "slow test, 14s on Github")]
         public void SolveFirstShortSample()

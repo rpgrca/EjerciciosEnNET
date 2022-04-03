@@ -1,3 +1,4 @@
+using System.Net;
 using System;
 using Xunit;
 using Day23.Logic;
@@ -764,7 +765,7 @@ namespace Day23.UnitTests
           Assert.Equal(112, sut.LowestTotalCost);
         }
 
-        [Fact]
+        [Fact(Skip = "slow test, 40 second in total on Github")]
         public void SolveFourthTrivialSample()
         {
           var sut = Walker.CreateWithLongMapSupport(@"#############
