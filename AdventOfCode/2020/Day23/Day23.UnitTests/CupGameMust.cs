@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices;
+using System.Reflection;
 using Xunit;
 using AdventOfCode2020.Day23.Logic;
 
@@ -271,6 +273,16 @@ namespace AdventOfCode2020.Day23.UnitTests
         }
 
         [Fact]
+        public void MultiplyResultCorrectly()
+        {
+            var sut = new CupGame(SAMPLE_DATA_2, 100);
+            sut.Moves(100);
+            Assert.Equal(10, sut.FirstNumberAfterOne);
+            Assert.Equal(19, sut.SecondNumberAfterOne);
+            Assert.Equal(190UL, sut.MultiplyFirstAndSecondNumberAfterOne);
+        }
+
+        [Fact(Skip = "slow test, 35s on own computer, 1m 11s in total in Github")]
         public void SolveSecondPuzzle_WhenUsingSampleData()
         {
             var sut = new CupGame(SAMPLE_DATA_2, 1000000);
@@ -281,7 +293,7 @@ namespace AdventOfCode2020.Day23.UnitTests
             Assert.Equal(149245887792UL, sut.MultiplyFirstAndSecondNumberAfterOne);
         }
 
-        [Fact]
+        [Fact(Skip = "slow test, 35s on own computer, 1m 11s in total in Github")]
         public void SolveSecondPuzzle()
         {
             var sut = new CupGame(PUZZLE_DATA, 1000000);
