@@ -47,7 +47,7 @@ namespace AdventOfCode2020.Day15.UnitTests
             Assert.Equal(758, sut.CalculateFor(2020));
         }
 
-        [Theory]
+        [Theory(Skip = "slow test, 15s in total in own machine, 40s at Github")]
         [InlineData(0, 3, 6, 175594)]
         [InlineData(1, 3, 2, 2578)]
         [InlineData(2, 1, 3, 3544142)]
@@ -61,7 +61,7 @@ namespace AdventOfCode2020.Day15.UnitTests
             Assert.Equal(expectedNumber, sut.CalculateFor(30000000));
         }
 
-        [Fact]
+        [Fact(Skip = "slow test, 15s in total in own machine, 40s at Github")]
         public void SolveSecondPuzzle()
         {
             int[] numbers = { 2, 20, 0, 4, 1, 17 };

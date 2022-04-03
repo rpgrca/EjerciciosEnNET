@@ -386,7 +386,7 @@ Player 2:
             Assert.Equal(105, sut.WinnerPoints);
         }
 
-        [Fact]
+        [Fact(Skip = "slow test, 3s on own machine, 1m in Github")]
         public void SolveSecondPuzzle()
         {
             var sut = new RecursiveCombat(PuzzleData.PUZZLE_DATA);
