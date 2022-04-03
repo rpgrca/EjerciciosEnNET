@@ -25,5 +25,22 @@ namespace Pillars.UnitTests
         {
             Assert.AreEqual(15270, Kata.Pillars(11,15,30), "Testing for number of pillars: 11, distance: 15 m and width: 30 cm");
         }
+
+        [Test]
+        public void RandomTests()
+        {
+            Random r = new Random();
+            for(int i = 0; i < 50; i++)
+            {
+                int n = r.Next(1, 1000);
+                int d = r.Next(10, 30);
+                int w = r.Next(10, 50);
+        
+                int result = (n-1)*d*100 + Math.Max(0, n-2)*w;
+        
+                Assert.AreEqual(result, Kata.Pillars(n,d,w), 
+                    "Testing for number of pillars: " + n + ", distance: " + d + " and width: " + w + " cm");
+            }      
+        }
     }
 }
