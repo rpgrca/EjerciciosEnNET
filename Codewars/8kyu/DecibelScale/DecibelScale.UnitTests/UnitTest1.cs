@@ -1,18 +1,28 @@
-using NUnit.Framework;
-
-namespace DecibelScale.UnitTests
+namespace Solution 
 {
-    public class Tests
+  using NUnit.Framework;
+  using System;
+  using System.Collections.Generic;
+  
+  [TestFixture]
+  public class BasicTest
+  {
+    private static IEnumerable<TestCaseData> testCases
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
-
-        [Test]
-        public void Test1()
-        {
-            Assert.Pass();
-        }
+      get
+      {
+        yield return new TestCaseData(1e-12).Returns(0);
+        yield return new TestCaseData(1e-9).Returns(30);
+        yield return new TestCaseData(1e-5).Returns(70);
+        yield return new TestCaseData(10).Returns(130);
+        yield return new TestCaseData(100).Returns(140);
+        yield return new TestCaseData(10000).Returns(160);
+        yield return new TestCaseData(2.48794569 * 1e+173).Returns(1854);
+      }
     }
+  
+    [Test, TestCaseSource("testCases")]
+    public double Test(double intensity) =>
+      Math.Round(Kata.DbScale(intensity), MidpointRounding.AwayFromZero);
+  }
 }

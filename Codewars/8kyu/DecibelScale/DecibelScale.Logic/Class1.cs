@@ -1,8 +1,9 @@
 ﻿using System;
 
-namespace DecibelScale.Logic
+public static class Kata
 {
-    public class Class1
-    {
-    }
+  public static double DbScale(double intensity)
+  {
+    
+  }
 }
