@@ -9,6 +9,8 @@ namespace Day3.Logic
         private int _oxygenRating;
         private int _co2Rating;
 
+        public LifeSupport() => _values = new List<string>();
+
         public override Report With(List<string> values)
         {
             _values = values;

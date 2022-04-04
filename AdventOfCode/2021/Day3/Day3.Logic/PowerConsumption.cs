@@ -9,6 +9,12 @@ namespace Day3.Logic
         private int _gammaRate;
         private int _epsilonRate;
 
+        public PowerConsumption()
+        {
+            _values = new List<string>();
+            _amountOfOnes = Array.Empty<int>();
+        }
+
         public override Report With(List<string> values)
         {
             _values = values;
