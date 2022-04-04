@@ -17,6 +17,9 @@ namespace Codewars.ConnectTheDots.Logic
         public Connector(string inputValue)
         {
             _inputValue = inputValue;
+            _lines = Array.Empty<string>();
+            _canvas = Array.Empty<char[]>();
+            Picture = string.Empty;
             ParseInputValue();
         }
 
@@ -66,7 +69,7 @@ namespace Codewars.ConnectTheDots.Logic
             Picture = string.Join("\n", _canvas.Select(c => new string(c)));
 
         private void CalculateCoordinatesFrom((char From, char To) points) =>
-            new LineFactory()
+            LineFactory
                 .Create(_coordinates[points.From], _coordinates[points.To])
                 .TraceTo(_dots);
     }

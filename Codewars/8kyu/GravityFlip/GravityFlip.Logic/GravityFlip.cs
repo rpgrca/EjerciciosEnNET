@@ -44,6 +44,7 @@ namespace GravityFlip.Logic
             _values = values;
             _flipAction = flipAction;
 
+            NewConfiguration = Array.Empty<int>();
             Flip();
         }
 
