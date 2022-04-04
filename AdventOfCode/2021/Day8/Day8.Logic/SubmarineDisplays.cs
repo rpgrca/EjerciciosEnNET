@@ -21,6 +21,7 @@ namespace Day8.Logic
             }
 
             _data = data;
+            _scannings = new List<(List<string> Signals, List<string> Display)>();
             _displays = new List<DisplayWiring>();
 
             Parse();
