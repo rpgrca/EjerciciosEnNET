@@ -12,6 +12,12 @@ namespace PrimeNumber.Logic
         private int _possibleDivisor;
         private bool ValueHasADivisor { get; set; }
 
+        public PrimeNumber()
+        {
+            _possibleDivisors = new();
+            _previousDivisors = new();
+        }
+
         public bool IsClassificationOf(int value)
         {
             if (value <= 0) return false;

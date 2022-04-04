@@ -19,13 +19,6 @@ namespace MarsRover.UnitTests
         }
 
         [Fact]
-        public void ThrowException_WhenNullMapIsProvided()
-        {
-            var exception = Assert.Throws<Exception>(() => new Logic.MarsRover('N', 0, 0, null));
-            Assert.Equal("Invalid map", exception.Message);
-        }
-
-        [Fact]
         public void ThrowException_WhenMapLackingHeightIsProvided()
         {
             var map = new[,]
@@ -75,7 +68,7 @@ namespace MarsRover.UnitTests
         [InlineData(' ')]
         public void ThrowException_WhenInitializedWithInvalidDirection(char invalidDirection)
         {
-            var exception = Assert.Throws<Exception>(() => new Logic.MarsRover(invalidDirection, 0, 0, null));
+            var exception = Assert.Throws<Exception>(() => new Logic.MarsRover(invalidDirection, 0, 0, new int[,] {}));
             Assert.Equal("Invalid command", exception.Message);
         }
 

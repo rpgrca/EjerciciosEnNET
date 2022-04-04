@@ -17,6 +17,12 @@ namespace DivisorsAndSum.Logic
             private Func<int, IEnumerable<int>> _divisorCalculator;
             private Func<IEnumerable<int>> _valuesGenerator;
 
+            public Builder()
+            {
+                _divisorCalculator = v => Enumerable.Range(1, v / 2).Where(p => v % p == 0);
+                _valuesGenerator = DefaultValuesGenerator;
+            }
+
             public Builder UsingDivisorAlgorithm(Func<int, IEnumerable<int>> algorithm)
             {
                 _divisorCalculator = algorithm;
@@ -57,6 +63,8 @@ namespace DivisorsAndSum.Logic
             _divisorCalculator = divisorCalculator;
             _valuesToTry = valuesGenerator();
             _equations = new List<string>();
+            _divisors = new List<int>();
+            Result = string.Empty;
 
             Calculate();
         }

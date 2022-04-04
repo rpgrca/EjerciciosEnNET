@@ -20,7 +20,7 @@ namespace MarsRover.Logic
                 throw new Exception("Invalid command");
             }
 
-            if (map is null || map.GetLength(0) != 10 || map.GetLength(1) != 10)
+            if (map.GetLength(0) != 10 || map.GetLength(1) != 10)
             {
                 throw new Exception("Invalid map");
             }
