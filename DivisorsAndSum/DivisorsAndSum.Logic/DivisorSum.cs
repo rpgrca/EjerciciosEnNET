@@ -23,12 +23,6 @@ namespace DivisorsAndSum.Logic
                 _valuesGenerator = DefaultValuesGenerator;
             }
 
-            public Builder UsingDivisorAlgorithm(Func<int, IEnumerable<int>> algorithm)
-            {
-                _divisorCalculator = algorithm;
-                return this;
-            }
-
             public Builder UpTo(int amount)
             {
                 _amount = amount;
@@ -41,12 +35,7 @@ namespace DivisorsAndSum.Logic
                 return this;
             }
 
-            public DivisorSum Build()
-            {
-                _divisorCalculator ??= v => Enumerable.Range(1, v / 2).Where(p => v % p == 0);
-                _valuesGenerator ??= DefaultValuesGenerator;
-                return new DivisorSum(_amount, _valuesGenerator, _divisorCalculator);
-            }
+            public DivisorSum Build() => new(_amount, _valuesGenerator, _divisorCalculator);
         }
 
         private readonly int _amount;
