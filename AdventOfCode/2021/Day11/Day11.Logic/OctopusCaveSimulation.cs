@@ -19,6 +19,7 @@ namespace Day11.Logic
             }
 
             _input = input;
+            _map = Array.Empty<int>();
 
             Parse();
         }
