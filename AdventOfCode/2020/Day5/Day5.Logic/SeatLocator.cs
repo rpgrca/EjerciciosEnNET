@@ -15,6 +15,9 @@ namespace AdventOfCode2020.Day5.Logic
         public SeatLocator(string[] seatCodes)
         {
             _seatCodes = seatCodes;
+            _orderedIds = new List<int>();
+            _possibleValues = new List<int>();
+            _missingIds = new List<int>();
             FindSeatId();
         }
 

@@ -17,6 +17,10 @@ namespace AdventOfCode2020.Day5.Logic
         public Seat(string aSeatCode)
         {
             _seatCode = aSeatCode;
+            _seatRowCode = string.Empty;
+            _seatRowBinary = string.Empty;
+            _seatColumnCode = string.Empty;
+            _seatColumnBinary = string.Empty;
 
             CalculateRow();
             CalculateColumn();
