@@ -34,11 +34,9 @@ namespace Day23.Logic
             }
 
             _data = data;
-
+            _map = string.Empty;
             _rooms = new string('.', 19).ToCharArray();
-
             _amphipods = new int[] { 3, 7, 11, 15 };
-
             _mapRelocator = new int[] { 0, 1, 4, 5, 8, 9, 12, 13, 16, 17, 18, 3, 7, 11, 15, 2, 6, 10, 14 };
 
             _paths = new int[][]

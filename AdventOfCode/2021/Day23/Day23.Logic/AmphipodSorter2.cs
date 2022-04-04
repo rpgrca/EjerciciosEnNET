@@ -36,6 +36,7 @@ namespace Day23.Logic
             _mapInformation = mapInformation;
             _minimumCost = int.MaxValue;
             _amphipodeTypes = new int[] { 1, 10, 100, 1000 };
+            _onFinalPositionCallback = (_, __) => {};
         }
 
         public int[] GetAmphipods() => _mapInformation.GetStartingAmphipods();

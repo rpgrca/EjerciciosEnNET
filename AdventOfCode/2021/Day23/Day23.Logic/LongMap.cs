@@ -22,6 +22,7 @@ namespace Day23.Logic
         bool IsThereAnAmphipodAt(int node);
         void MoveFrom(int from, int to);
         bool StrangersAtHome(int amphipod);
+        string ToString();
     }
 
     //
@@ -62,11 +63,9 @@ namespace Day23.Logic
             }
 
             _data = data;
-
+            _map = string.Empty;
             _rooms = new string('.', 27).ToCharArray();
-
             _amphipods = new int[] { 5, 11, 17, 23 };
-
             _mapRelocator = new int[] { 0, 1, 6, 7, 12, 13, 18, 19, 24, 25, 26, 5, 11, 17, 23, 4, 10, 16, 22, 3, 9, 15, 21, 2, 8, 14, 20 };
 
             _paths = new int[][]
