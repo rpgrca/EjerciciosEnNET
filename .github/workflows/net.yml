@@ -42,11 +42,11 @@ jobs:
                dotnet build --configuration Debug --no-restore AdventOfCode/$s/AdventOfCode$s.sln
            done
 
-#    - name: Testing AdventOfCode/2021
-#      run: |
-#           for d in `seq 25`; do
-#               coverlet AdventOfCode/2021/Day$d/Day$d.UnitTests/bin/Debug/net5.0/Day$d.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode/2021/Day$d/Day$d.UnitTests/bin/Debug/net5.0/Day$d.UnitTests.dll --no-build" --format OpenCover --output adventofcode2021day$d.coverage.xml
-#           done
+    - name: Testing AdventOfCode/2021
+      run: |
+           for d in `seq 25`; do
+               coverlet AdventOfCode/2021/Day$d/Day$d.UnitTests/bin/Debug/net6.0/Day$d.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode/2021/Day$d/Day$d.UnitTests/bin/Debug/net6.0/Day$d.UnitTests.dll --no-build" --format OpenCover --output adventofcode2021day$d.coverage.xml
+           done
 
     - name: Testing AdventOfCode/2020
       run: |
