@@ -17,7 +17,11 @@ namespace Day15.Logic
 
         public int MinimumRisk { get; private set; }
 
-        public OptimizedSearch() => _queue = new DummyPriorityQueue();
+        public OptimizedSearch()
+        {
+             _queue = new DummyPriorityQueue();
+             _map = Array.Empty<(int, int, bool)[]>();
+        }
 
         public void CalculateLowestRiskPathFor((int RiskLevel, int TotalRiskSoFar, bool Visited)[][] map)
         {

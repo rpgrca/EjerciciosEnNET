@@ -14,6 +14,11 @@ namespace Day15.Logic
 
         public (int RiskLevel, int TotalRiskSoFar, bool Visited)[][] Map => _map;
 
+        public StandardParser()
+        {
+            _map = Array.Empty<(int, int, bool)[]>();
+        }
+
         public void Parse(string input)
         {
             var lines = input.Split("\n");
@@ -30,6 +35,8 @@ namespace Day15.Logic
     public class BigMapParser : IMapParser
     {
         public (int RiskLevel, int TotalRiskSoFar, bool Visited)[][] Map { get; private set; }
+
+        public BigMapParser() => Map = Array.Empty<(int, int, bool)[]>();
 
         public void Parse(string input)
         {
