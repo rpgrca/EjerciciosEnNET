@@ -10,7 +10,7 @@ namespace AdventOfCode2020.Day18.Logic
         private int _index;
 
         public Parser(string expression) =>
-            _expression = expression;
+            (_expression, _number) = (expression, string.Empty);
 
         public long Parse()
         {

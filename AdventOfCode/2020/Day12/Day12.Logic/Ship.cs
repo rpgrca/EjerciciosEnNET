@@ -28,6 +28,7 @@ namespace AdventOfCode.Day12.Logic
             _waypoint = waypoint;
             _facing = Action.E;
             _instructions = instructions;
+            _parsedInstructions = new List<(Action, int)>();
 
             ParseInstructions();
         }

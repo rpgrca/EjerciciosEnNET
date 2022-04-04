@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Xunit;
 using AdventOfCode2020.Day7.Logic;
 

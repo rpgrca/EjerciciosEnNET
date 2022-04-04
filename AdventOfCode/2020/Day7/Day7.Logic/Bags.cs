@@ -7,11 +7,13 @@ namespace AdventOfCode2020.Day7.Logic
     {
         private readonly string _rules;
         private List<string> _listOfRules;
-        private readonly Dictionary<string, Bag> _bags = new();
+        private readonly Dictionary<string, Bag> _bags;
 
         public Bags(string rules)
         {
             _rules = rules;
+            _listOfRules = new List<string>();
+            _bags = new Dictionary<string, Bag>();
             CreateBagsFromRules();
         }
 

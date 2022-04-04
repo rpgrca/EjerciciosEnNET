@@ -1,6 +1,3 @@
-using System.Linq;
-using System.Collections.Generic;
-
 namespace AdventOfCode2020.Day23.Logic
 {
     public class CupGame
@@ -8,10 +5,10 @@ namespace AdventOfCode2020.Day23.Logic
         private readonly Dictionary<int, LinkedListNode<int>> _index;
         private readonly LinkedList<int> _cups;
         private readonly string _data;
+        private readonly int[] _taken;
         private int _minimum = int.MaxValue;
         private int _maximum = int.MinValue;
         private LinkedListNode<int> _currentCup;
-        private readonly int[] _taken;
         private LinkedListNode<int> _destinationCup;
         private LinkedListNode<int> _first;
 

@@ -9,7 +9,11 @@ namespace AdventOfCode2020.Day19.Logic
         private string[] _lineSplitInHalf;
         private int _id;
 
-        public RuleParser(string rule) => _rule = rule;
+        public RuleParser(string rule)
+        {
+            _lineSplitInHalf = System.Array.Empty<string>();
+            _rule = rule;
+        }
 
         public void Parse(Rule rule)
         {

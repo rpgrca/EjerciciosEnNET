@@ -18,6 +18,7 @@ namespace AdventOfCode2020.Day13.Logic
         public BusStop(string notes)
         {
             _notes = notes;
+            BusesArrivingByOffset = new List<(long BusId, long Offset)>();
 
             ExtractArrivalInMinutesFromNotes();
             ExtractBusIdsFromNotes();

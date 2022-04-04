@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-
 namespace AdventOfCode2020.Day5.Logic
 {
     public class SeatLocator

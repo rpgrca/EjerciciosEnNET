@@ -16,15 +16,10 @@ namespace AdventOfCode2020.Day16.Logic
 
         public Scanner(string data)
         {
+            _data = data;
             _fields = new Dictionary<string, int>();
             _unresolvedFields = new Dictionary<int, List<string>>();
-            _data = data;
 
-            ParseData();
-        }
-
-        private void ParseData()
-        {
             var sections = _data.Split("\n\n");
 
             _rules = new Rules(sections[0]);

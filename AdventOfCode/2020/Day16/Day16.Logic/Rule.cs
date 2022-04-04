@@ -13,6 +13,8 @@ namespace AdventOfCode2020.Day16.Logic
         public Rule(string rules)
         {
             _rules = rules;
+            _ranges = new List<Func<int, bool>>();
+            Name = string.Empty;
 
             ParseRules();
         }

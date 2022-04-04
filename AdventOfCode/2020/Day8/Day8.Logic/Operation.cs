@@ -15,6 +15,7 @@ namespace AdventOfCode2020.Day8.Logic
         {
             _operation = operation;
             _executed = false;
+            _opCode = string.Empty;
             ParseInstruction();
         }
 

@@ -14,6 +14,7 @@ namespace AdventOfCode2020.Day6.Logic
         public Questionnaires(string answers, Func<string, IQuestionnaire> affirmativeQuestionCounter)
         {
             _answers = answers;
+            _answersPerGroup = Array.Empty<string>();
             _affirmativeQuestionCounter = affirmativeQuestionCounter;
             CountAffirmativeAnswers();
         }

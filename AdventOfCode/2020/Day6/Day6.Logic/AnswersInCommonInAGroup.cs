@@ -12,6 +12,7 @@ namespace AdventOfCode2020.Day6.Logic
         public AnswersInCommonInAGroup(string answers)
         {
             _answers = answers;
+            _answersPerGroup = Array.Empty<string>();
             CountCommonAffirmativeAnswersInGroup();
         }
 

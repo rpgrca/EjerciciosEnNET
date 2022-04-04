@@ -63,8 +63,11 @@ namespace AdventOfCode2020.Day17.Logic
         protected virtual bool SameWCoordinates(int[] coordinates) =>
             true;
 
-        public bool Equals(Cube other) =>
-            other.X == X && other.Y == Y && other.Z == Z && other.W == W;
+        public bool Equals(Cube? other)
+        {
+            if (other is null) return false;
+            return other.X == X && other.Y == Y && other.Z == Z && other.W == W;
+        }
 
         public void Toggle() => IsActive = !IsActive;
     }

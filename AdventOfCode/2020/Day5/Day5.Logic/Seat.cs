@@ -1,5 +1,3 @@
-using System;
-
 namespace AdventOfCode2020.Day5.Logic
 {
     public class Seat

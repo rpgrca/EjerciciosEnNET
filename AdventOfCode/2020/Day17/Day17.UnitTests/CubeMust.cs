@@ -59,5 +59,13 @@ namespace AdventOfCode2020.Day17.UnitTests
 
             Assert.False(sut.Equals(otherCube));
         }
+
+        [Fact]
+        public void ReturnFalse_WhenOtherCubeIsNullAndThisExists()
+        {
+            var sut = new Cube("x=2,y=2,z=2", true);
+
+            Assert.False(sut.Equals(null));
+        }
     }
 }

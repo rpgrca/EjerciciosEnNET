@@ -29,6 +29,8 @@ namespace AdventOfCode2020.Day24.Logic
             _position.X = x;
             _position.Y = y;
             IsBlack = 0;
+            _data = string.Empty;
+            _path = new List<string>();
         }
 
         private void TraversePathToLocatePosition()

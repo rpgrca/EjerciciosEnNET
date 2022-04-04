@@ -51,6 +51,8 @@ namespace AdventOfCode2020.Day20.Logic
             Right = tile.Right;
             Bottom = tile.Bottom;
             Position = tile.Position;
+            InnerSide = new Dictionary<string, Tile>();
+            Transformations = new List<Tile>();
 
             _borders = new List<string>(tile._borders);
         }
@@ -61,6 +63,12 @@ namespace AdventOfCode2020.Day20.Logic
             _borders = new List<string>();
             Position = CurrentPosition.Normal;
             Transformations = new List<Tile>();
+            InnerSide = new Dictionary<string, Tile>();
+            Image = string.Empty;
+            Top = string.Empty;
+            Left = string.Empty;
+            Right = string.Empty;
+            Bottom = string.Empty;
 
             ParseTile();
         }
@@ -337,7 +345,6 @@ namespace AdventOfCode2020.Day20.Logic
             if (InnerSide != null)
             {
                 var oldInnerSide = new Dictionary<string, Tile>(InnerSide);
-                Tile temp = null;
                 InnerSide.Clear();
 
                 if (oldInnerSide.ContainsKey(Top))
@@ -346,7 +353,7 @@ namespace AdventOfCode2020.Day20.Logic
                 }
                 else
                 {
-                    temp = oldInnerSide.Values.SingleOrDefault(q => q._borders.Contains(Top));
+                    var temp = oldInnerSide.Values.SingleOrDefault(q => q._borders.Contains(Top));
                     if (temp != null)
                     {
                         InnerSide.Add(Top, temp);
@@ -359,7 +366,7 @@ namespace AdventOfCode2020.Day20.Logic
                 }
                 else
                 {
-                    temp = oldInnerSide.Values.SingleOrDefault(q => q._borders.Contains(Right));
+                    var temp = oldInnerSide.Values.SingleOrDefault(q => q._borders.Contains(Right));
                     if (temp != null)
                     {
                         InnerSide.Add(Right, temp);
@@ -372,7 +379,7 @@ namespace AdventOfCode2020.Day20.Logic
                 }
                 else
                 {
-                    temp = oldInnerSide.Values.SingleOrDefault(q => q._borders.Contains(Bottom));
+                    var temp = oldInnerSide.Values.SingleOrDefault(q => q._borders.Contains(Bottom));
                     if (temp != null)
                     {
                         InnerSide.Add(Bottom, temp);
@@ -385,7 +392,7 @@ namespace AdventOfCode2020.Day20.Logic
                 }
                 else
                 {
-                    temp = oldInnerSide.Values.SingleOrDefault(q => q._borders.Contains(Left));
+                    var temp = oldInnerSide.Values.SingleOrDefault(q => q._borders.Contains(Left));
                     if (temp != null)
                     {
                         InnerSide.Add(Left, temp);

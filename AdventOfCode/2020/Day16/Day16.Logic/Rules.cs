@@ -13,15 +13,11 @@ namespace AdventOfCode2020.Day16.Logic
         public Rules(string rules)
         {
             _rules = rules;
-
-            ParseRules();
-        }
-
-        private void ParseRules() =>
             _activeRules = _rules
                 .Split("\n")
                 .ToList()
                 .ConvertAll(r => new Rule(r));
+        }
 
         public bool Includes(int value) =>
             _activeRules.Any(r => r.Includes(value));

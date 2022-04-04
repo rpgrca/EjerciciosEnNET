@@ -18,6 +18,7 @@ namespace AdventOfCode2020.Day10.Logic
             BuiltInJoltageAdapterRating = _joltages.Max() + 3;
             _joltages.Add(0);
             _joltages.Add(BuiltInJoltageAdapterRating);
+            ChainOfAdapters = new List<long>();
         }
 
         public void CalculateChain()

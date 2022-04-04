@@ -24,6 +24,8 @@ namespace AdventOfCode2020.Day21.Logic
             _foods = new List<Food>();
             _allergens = new Dictionary<string, List<Food>>();
             _allergensByIngredient = new Dictionary<string, List<string>>();
+            _ingredientsThatMayContainAllergen = new List<string>();
+            CanonicalDangerousIngredientList = string.Empty;
             IngredientsWithoutAllergens = new List<string>();
             IngredientsWithAllergens = new List<string>();
 

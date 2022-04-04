@@ -20,6 +20,7 @@ namespace AdventOfCode2020.Day19.Logic
             _message = message;
             _rule = rule;
             _rules = rules;
+            _recentlyConsumed = new List<int>();
             _finalConsumedList = new List<int>();
             _actions = new List<Action<List<int>>>();
             _listOfAmountOfConsumedCharacters = new List<int>();

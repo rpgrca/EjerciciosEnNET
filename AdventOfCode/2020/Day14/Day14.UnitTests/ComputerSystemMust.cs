@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using Xunit;
 
@@ -1372,7 +1371,6 @@ mem[15386] = 126092";
                     for (var n = 0; n < top; n++)
                     {
                         var combo = Convert.ToString(n, 2).PadLeft(xss.Length - 1, '0');
-                        var i = 0;
                         var add = "";
 
                         for (var m = 0; m < xss.Length; m++)

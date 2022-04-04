@@ -14,8 +14,10 @@ namespace AdventOfCode2020.Day7.Logic
 
         public Bag(string rule)
         {
-            ContainedBags = new List<ContainedBagInformation>();
             _rule = rule;
+            ContainedBags = new List<ContainedBagInformation>();
+            _description = string.Empty;
+            _containedBags = new List<string>();
 
             ExtractDescriptionFromRule();
             ExtractContainedBagsFromRule();
@@ -43,9 +45,12 @@ namespace AdventOfCode2020.Day7.Logic
         public bool IsOf(string aDescription) =>
             _description == aDescription;
 
-        public bool CanContainBagOf(string aDescription, Dictionary<string, Bag> bags = null) =>
+        public bool CanContainBagOf(string aDescription, Dictionary<string, Bag> bags) =>
             ContainedBags.Any(b => b.Description == aDescription) ||
-            (bags != null && ContainedBags.Any(b => bags[b.Description].CanContainBagOf(aDescription, bags)));
+            ContainedBags.Any(b => bags[b.Description].CanContainBagOf(aDescription, bags));
+
+        public bool CanContainBagOf(string aDescription) =>
+            ContainedBags.Any(b => b.Description == aDescription);
 
         public int CountBagsThatFitInside(Dictionary<string, Bag> bags) =>
             CountBagsThatFitInside(this, bags);

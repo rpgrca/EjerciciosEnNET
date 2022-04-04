@@ -6,12 +6,11 @@ namespace AdventOfCode2020.Day11.Logic
     public class WaitingArea
     {
         private List<string> _layout;
-
-        public WaitingArea(string layout) =>
-            _layout = new List<string>(layout.Split("\n"));
-
         public string Layout { get; private set; }
         public int OccupiedSeats => Layout.Count(p => p == '#');
+
+        public WaitingArea(string layout) =>
+            (_layout, Layout) = (new List<string>(layout.Split("\n")), string.Empty);
 
         public void AddPassengersWith(IBehaviour passenger)
         {

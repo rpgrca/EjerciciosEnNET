@@ -28,6 +28,7 @@ namespace AdventOfCode2020.Day22.Logic
             Players = new List<int>[2];
             Players[FIRST_PLAYER] = playerOne.ToList();
             Players[SECOND_PLAYER] = playerTwo.ToList();
+            _decks = string.Empty;
         }
 
         private void ParseDecks()

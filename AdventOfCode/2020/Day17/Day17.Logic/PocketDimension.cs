@@ -18,11 +18,12 @@ namespace AdventOfCode2020.Day17.Logic
 
         public PocketThreeDimension(string initialState)
         {
+            _initialState = initialState;
             NeighboursToAdd = new Dictionary<string, Cube>();
             Dimension = new Dictionary<string, Cube>();
             NeighboursPerCube = 26;
+            _currentCoordinates = Array.Empty<int>();
 
-            _initialState = initialState;
             ParseState();
         }
 

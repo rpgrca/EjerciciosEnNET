@@ -9,7 +9,14 @@ namespace AdventOfCode2020.Day2.Logic
         {
             private Func<PasswordEntry, PasswordValidation> _validator;
             private string _entry;
-            private readonly PasswordEntryParser _parser = new PasswordEntryParser();
+            private readonly PasswordEntryParser _parser;
+
+            public Builder()
+            {
+                _parser = new PasswordEntryParser();
+                _entry = string.Empty;
+                _validator = _ => Build();
+            }
 
             public Builder ForEntry(string entry)
             {
@@ -17,26 +24,14 @@ namespace AdventOfCode2020.Day2.Logic
                 return this;
             }
 
-            //public Builder WithParser(PasswordEntryParser parser)
-            //{
-            //    _parser = parser;
-            //    return this;
-            //}
-
             public Builder WithValidator(Func<PasswordEntry, PasswordValidation> validator)
             {
                 _validator = validator;
                 return this;
             }
 
-            public PasswordValidation Build()
-            {
-                //if (string.IsNullOrWhiteSpace(_entry)) throw new ArgumentNullException(nameof(_entry));
-                //if (_validator is null) throw new ArgumentNullException(nameof(_validator));
-                //if (_parser is null) throw new ArgumentNullException(nameof(_parser));
-
-                return _validator(_parser.Parse(_entry));
-            }
+            public PasswordValidation Build() =>
+                _validator(_parser.Parse(_entry));
         }
 
         protected readonly PasswordEntry _entry;

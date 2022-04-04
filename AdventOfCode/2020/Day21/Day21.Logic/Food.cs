@@ -15,6 +15,8 @@ namespace AdventOfCode2020.Day21.Logic
         public Food(string label)
         {
             _label = label;
+            Ingredients = new List<string>();
+            Allergens = new List<string>();
 
             ParseLabel();
         }

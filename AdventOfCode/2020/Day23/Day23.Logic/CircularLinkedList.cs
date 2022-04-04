@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace AdventOfCode2020.Day23.Logic
 {
     public static class CircularLinkedList
