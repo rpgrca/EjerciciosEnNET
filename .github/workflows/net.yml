@@ -42,11 +42,11 @@ jobs:
                dotnet build --configuration Debug --no-restore AdventOfCode/$s/AdventOfCode$s.sln
            done
 
-    - name: Testing AdventOfCode/2021
-      run: |
-           for d in `seq 25`; do
-               coverlet AdventOfCode/2021/Day$d/Day$d.UnitTests/bin/Debug/net5.0/Day$d.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode/2021/Day$d/Day$d.UnitTests/bin/Debug/net5.0/Day$d.UnitTests.dll --no-build" --format OpenCover --output adventofcode2021day$d.coverage.xml
-           done
+#    - name: Testing AdventOfCode/2021
+#      run: |
+#           for d in `seq 25`; do
+#               coverlet AdventOfCode/2021/Day$d/Day$d.UnitTests/bin/Debug/net5.0/Day$d.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode/2021/Day$d/Day$d.UnitTests/bin/Debug/net5.0/Day$d.UnitTests.dll --no-build" --format OpenCover --output adventofcode2021day$d.coverage.xml
+#           done
 
     - name: Testing AdventOfCode/2020
       run: |
@@ -56,12 +56,12 @@ jobs:
 
     - name: Testing Standalone Programs
       run: |
-           coverlet SistemaDeAparcamiento/SistemaDeAparcamiento.Tests/bin/Debug/net5.0/SistemaDeAparcamiento.Tests.dll --target "dotnet" --targetargs "test SistemaDeAparcamiento/SistemaDeAparcamiento.Tests/SistemaDeAparcamiento.Tests.csproj --no-build --verbosity quiet" --format OpenCover --output sistemadeaparcamiento.coverage.xml
+           coverlet SistemaDeAparcamiento/SistemaDeAparcamiento.Tests/bin/Debug/net6.0/SistemaDeAparcamiento.Tests.dll --target "dotnet" --targetargs "test SistemaDeAparcamiento/SistemaDeAparcamiento.Tests/SistemaDeAparcamiento.Tests.csproj --no-build --verbosity quiet" --format OpenCover --output sistemadeaparcamiento.coverage.xml
 
-    - name: Testing NET5 Standalone Programs
+    - name: Testing NET Standalone Programs
       run: |
            for s in Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum SatelliteMessages MarsRover; do
-               coverlet $s/$s.UnitTests/bin/Debug/net5.0/$s.UnitTests.dll --target "dotnet" --targetargs "test $s/$s.UnitTests/$s.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output $s.coverage.xml
+               coverlet $s/$s.UnitTests/bin/Debug/net6.0/$s.UnitTests.dll --target "dotnet" --targetargs "test $s/$s.UnitTests/$s.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output $s.coverage.xml
            done
 
     - name: Testing Codewars
