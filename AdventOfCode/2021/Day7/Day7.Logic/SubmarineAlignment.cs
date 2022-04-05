@@ -24,6 +24,7 @@ namespace Day7.Logic
             }
 
             _input = input;
+            _positions = new List<int>();
             ConsumptionCallback = consumptionCallback;
 
             Parse();

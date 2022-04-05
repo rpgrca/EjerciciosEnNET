@@ -39,6 +39,8 @@ namespace Day18.Logic.Numbers
             return false;
         }
 
+        public override int GetHashCode() => Value.GetHashCode();
+
         public override string ToString() => $"{Value}";
     }
 }

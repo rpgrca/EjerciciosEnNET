@@ -11,7 +11,7 @@ namespace Day14.Logic
 
     internal class TranscientCache : ICache
     {
-        private Dictionary<char, long> _lastValue;
+        private Dictionary<char, long> _lastValue = new();
 
         public Dictionary<char, long> this[string key] => _lastValue;
 

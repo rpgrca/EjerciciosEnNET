@@ -21,6 +21,8 @@ namespace Day16.Logic
             }
 
             _transmission = transmission;
+            _bits = string.Empty;
+            Ignored = string.Empty;
             Packets = new List<Packet>();
 
             Parse();

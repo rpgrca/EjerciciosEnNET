@@ -92,12 +92,12 @@ namespace Day21.Logic
             TotalUniverses = _xyz.Sum(p => p.Value);
         }
 
-        private static int CalculateNewPosition(int position1, (int Roll, long _) diceThrow) =>
-            (position1 + diceThrow.Roll) switch
-            {
-                var x when x is >= 1 and <= 10 => x,
-                var x when x >= 11 => x % 10
-            };
+        private static int CalculateNewPosition(int position1, (int Roll, long _) diceThrow)
+        {
+            var x = position1 + diceThrow.Roll;
+            if (x >= 1 && x <= 10) return x;
+            return x % 10;
+        }
 
         private void AddToUniversesWhereThisPlayerWon(long universes) =>
             _universesWonByPlayer[_currentPlayer] += universes;

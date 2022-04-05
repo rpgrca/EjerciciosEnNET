@@ -63,6 +63,8 @@ namespace Day18.Logic.Numbers
             return false;
         }
 
+        public override int GetHashCode() => LeftSide.GetHashCode() * RightSide.GetHashCode();
+
         public override string ToString() => $"[{LeftSide},{RightSide}]";
 
         public override void Accept(INumberVisitor visitor)

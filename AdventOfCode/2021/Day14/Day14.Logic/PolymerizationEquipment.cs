@@ -33,6 +33,7 @@ namespace Day14.Logic
             _counter = new Dictionary<char, long>();
             _stringAccumulator = stringAccumulator;
             _cache = cache;
+            PolymerTemplate = string.Empty;
 
             Parse();
         }

@@ -22,6 +22,7 @@ namespace Day25.Logic
             }
 
             _seafloor = seafloor;
+            _map = Array.Empty<char[]>();
 
             Parse();
         }

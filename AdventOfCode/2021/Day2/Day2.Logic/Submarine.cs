@@ -41,6 +41,7 @@ namespace Day2.Logic
             }
 
             _interpreter = interpreter;
+            _course = new();
 
             ParseInformationFrom(course);
             RunInstructions();

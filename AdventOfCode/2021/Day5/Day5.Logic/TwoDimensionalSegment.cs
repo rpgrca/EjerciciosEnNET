@@ -13,7 +13,11 @@ namespace Day5.Logic
             private (int X, int Y) _endingPoint;
             private Action<(int X, int Y)> _callback;
 
-            public Builder() => _movements = new List<IMovement>();
+            public Builder()
+            {
+                _movements = new List<IMovement>();
+                _callback = _ => {};
+            }
 
             public Builder CallingInEveryStep(Action<(int X, int Y)> callback)
             {

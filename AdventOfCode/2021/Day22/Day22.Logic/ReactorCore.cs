@@ -26,6 +26,10 @@ namespace Day22.Logic
             _xIndexer = new Dictionary<long, int>();
             _yIndexer = new Dictionary<long, int>();
             _zIndexer = new Dictionary<long, int>();
+            _reactor = Array.Empty<bool[][]>();
+            _xIndexerReverse = Array.Empty<long>();
+            _yIndexerReverse = Array.Empty<long>();
+            _zIndexerReverse = Array.Empty<long>();
 
             Parse();
         }

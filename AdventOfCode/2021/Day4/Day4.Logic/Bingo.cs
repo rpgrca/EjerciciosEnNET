@@ -29,6 +29,7 @@ namespace Day4.Logic
             _boardInformation = boards;
             _winningBoards = new List<int[]>();
             _boards = new List<int[]>();
+            _currentBoard = Array.Empty<int>();
 
             FinalScore = -1;
 

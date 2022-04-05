@@ -13,6 +13,7 @@ namespace Day20.Logic
         {
             _originalImage = originalImage;
             _infinitePixel = infinitePixel;
+            Value = new List<char[]>();
 
             CreateSlightlyBiggerCanvas();
         }

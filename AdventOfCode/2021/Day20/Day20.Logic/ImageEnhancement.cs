@@ -24,6 +24,7 @@ namespace Day20.Logic
             _input = input;
             _image = new List<char[]>();
             _infinitePixels = new char[] { '.', '.', '.', '.', '.', '.', '.', '.', '.' };
+            Algorithm = string.Empty;
 
             Parse();
         }

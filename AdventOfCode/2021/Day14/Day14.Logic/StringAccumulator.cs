@@ -8,7 +8,7 @@ namespace Day14.Logic
 
     internal class StringAccumulator : IStringAccumulator
     {
-        public string Value { get; private set; }
+        public string Value { get; private set; } = string.Empty;
 
         public void Append(char value) => Value += value;
     }
@@ -19,6 +19,6 @@ namespace Day14.Logic
         {
         }
 
-        public string Value { get; }
+        public string Value { get; } = string.Empty;
     }
 }
