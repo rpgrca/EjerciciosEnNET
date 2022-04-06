@@ -39,4 +39,41 @@ public class ReorderingMust
             p2 => Assert.Equal(1, p2),
             p3 => Assert.Equal(2, p3));
     }
+
+    [Fact]
+    public void ReorderFiveElementArrayCorrectly()
+    {
+        var sut = new Reordering(new int[] { 1, 2, 3, 4, 5 });
+        Assert.Collection(sut.ReorderedArray,
+            p1 => Assert.Equal(5, p1),
+            p2 => Assert.Equal(3, p2),
+            p3 => Assert.Equal(1, p3),
+            p4 => Assert.Equal(2, p4),
+            p5 => Assert.Equal(4, p5));
+    }
+
+    [Fact]
+    public void ReorderSixElementArrayCorrectly()
+    {
+        var sut = new Reordering(new int[] { 1, 2, 3, 4, 5, 6 });
+        Assert.Collection(sut.ReorderedArray,
+            p1 => Assert.Equal(6, p1),
+            p2 => Assert.Equal(4, p2),
+            p3 => Assert.Equal(2, p3),
+            p4 => Assert.Equal(1, p4),
+            p5 => Assert.Equal(3, p5),
+            p6 => Assert.Equal(5, p6));
+    }
+
+    [Fact]
+    public void ReorderArrayWithRandomSortedValues()
+    {
+        var sut = new Reordering(new int[] { 2, 4, 6, 8, 10 });
+        Assert.Collection(sut.ReorderedArray,
+            p1 => Assert.Equal(10, p1),
+            p2 => Assert.Equal(6, p2),
+            p3 => Assert.Equal(2, p3),
+            p4 => Assert.Equal(4, p4),
+            p5 => Assert.Equal(8, p5));
+    }
 }
