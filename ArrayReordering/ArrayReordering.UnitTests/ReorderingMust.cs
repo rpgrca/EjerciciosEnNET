@@ -29,4 +29,14 @@ public class ReorderingMust
             p1 => Assert.Equal(2, p1),
             p2 => Assert.Equal(1, p2));
     }
+
+    [Fact]
+    public void ReorderThreeElementArrayCorrectly()
+    {
+        var sut = new Reordering(new int[] { 1, 2, 3 });
+        Assert.Collection(sut.ReorderedArray,
+            p1 => Assert.Equal(3, p1),
+            p2 => Assert.Equal(1, p2),
+            p3 => Assert.Equal(2, p3));
+    }
 }
