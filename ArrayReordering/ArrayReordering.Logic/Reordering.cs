@@ -1,23 +1,32 @@
-﻿using System.Collections;
-
-namespace ArrayReordering.Logic;
+﻿namespace ArrayReordering.Logic;
 
 public class Reordering
 {
     private readonly int[] _values;
 
-    public int[] ReorderedArray { get; set; }
+    public int[] ReorderedArray { get; private set; }
 
-    public Reordering(int[] value)
+    public Reordering(int[] values)
     {
-        _values = value;
+        _values = values;
+        ReorderedArray = Array.Empty<int>();
 
-        if (value.Length < 2)
-        {
-            ReorderedArray = value;
-            return;
-        }
-
-        ReorderedArray = value.Reverse().ToArray();
+        Reorder();
     }
+
+    private void Reorder()
+    {
+        if (_values.Length < 2)
+        {
+            KeepSameOrdering();
+        }
+        else
+        {
+            ReorderByAlgorithm();
+        }
+    }
+
+    private void KeepSameOrdering() => ReorderedArray = _values;
+
+    private void ReorderByAlgorithm() => ReorderedArray = _values.Reverse().ToArray();
 }
