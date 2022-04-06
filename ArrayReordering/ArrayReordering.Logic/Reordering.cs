@@ -14,25 +14,14 @@ public class Reordering
         Reorder();
     }
 
-    private void Reorder()
-    {
-        if (_values.Length < 2)
-        {
-            KeepSameOrdering();
-        }
-        else
-        {
-            ReorderByAlgorithm();
-        }
-    }
-
-    private void KeepSameOrdering() => ReorderedArray = _values;
+    private void Reorder() => ReorderByAlgorithm();
 
     private void ReorderByAlgorithm()
     {
         var toFront = true;
         var firstHalf = new List<int>();
         var secondHalf = new List<int>();
+
         foreach (var number in _values.Reverse())
         {
             if (toFront)
