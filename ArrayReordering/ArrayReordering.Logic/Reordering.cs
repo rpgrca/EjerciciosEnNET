@@ -11,11 +11,13 @@ public class Reordering
     public Reordering(int[] value)
     {
         _values = value;
-        ReorderedArray = Array.Empty<int>();
 
         if (value.Length < 2)
         {
             ReorderedArray = value;
+            return;
         }
+
+        ReorderedArray = value.Reverse().ToArray();
     }
 }

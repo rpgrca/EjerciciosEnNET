@@ -20,4 +20,13 @@ public class ReorderingMust
         Assert.Collection(sut.ReorderedArray,
             p1 => Assert.Equal(1, p1));
     }
+
+    [Fact]
+    public void ReorderTwoElementArrayCorrectly()
+    {
+        var sut = new Reordering(new int[] { 1, 2 });
+        Assert.Collection(sut.ReorderedArray,
+            p1 => Assert.Equal(2, p1),
+            p2 => Assert.Equal(1, p2));
+    }
 }
