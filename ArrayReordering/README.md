@@ -9,3 +9,8 @@ Dado el siguiente vector ordenado de menor a mayor [1, 2, 3, 4, 5] diseñar un a
     - Y el 1 quedaría en la posición del 3
 
 De manera que el vector resultante sea [5, 3, 1, 2, 4], tomando en cuenta que el vector puede ser de tamaño N.
+
+### Addendum
+
+    - El array puede tener valores duplicados
+    - Los valores pueden no ser correlativos
