@@ -9,14 +9,17 @@ public class ReorderingMust
     [Fact]
     public void ReturnSameArray_WhenArrayIsEmpty()
     {
-        var sut = new Reordering(Array.Empty<int>());
+        var sut = CreateSubjectUnderTest(Array.Empty<int>());
         Assert.Empty(sut.ReorderedArray);
     }
+
+    private static Reordering CreateSubjectUnderTest(int[] values) =>
+        new(values, new FromBehindEveryOtherAlgorithm());
 
     [Fact]
     public void ReturnSameArray_WhenArrayHasOneElement()
     {
-        var sut = new Reordering(new int[] { 1 });
+        var sut = CreateSubjectUnderTest(new int[] { 1 });
         Assert.Collection(sut.ReorderedArray,
             p1 => Assert.Equal(1, p1));
     }
@@ -24,7 +27,7 @@ public class ReorderingMust
     [Fact]
     public void ReorderTwoElementArrayCorrectly()
     {
-        var sut = new Reordering(new int[] { 1, 2 });
+        var sut = CreateSubjectUnderTest(new int[] { 1, 2 });
         Assert.Collection(sut.ReorderedArray,
             p1 => Assert.Equal(2, p1),
             p2 => Assert.Equal(1, p2));
@@ -33,7 +36,7 @@ public class ReorderingMust
     [Fact]
     public void ReorderThreeElementArrayCorrectly()
     {
-        var sut = new Reordering(new int[] { 1, 2, 3 });
+        var sut = CreateSubjectUnderTest(new int[] { 1, 2, 3 });
         Assert.Collection(sut.ReorderedArray,
             p1 => Assert.Equal(3, p1),
             p2 => Assert.Equal(1, p2),
@@ -43,7 +46,7 @@ public class ReorderingMust
     [Fact]
     public void ReorderFiveElementArrayCorrectly()
     {
-        var sut = new Reordering(new int[] { 1, 2, 3, 4, 5 });
+        var sut = CreateSubjectUnderTest(new int[] { 1, 2, 3, 4, 5 });
         Assert.Collection(sut.ReorderedArray,
             p1 => Assert.Equal(5, p1),
             p2 => Assert.Equal(3, p2),
@@ -55,7 +58,7 @@ public class ReorderingMust
     [Fact]
     public void ReorderSixElementArrayCorrectly()
     {
-        var sut = new Reordering(new int[] { 1, 2, 3, 4, 5, 6 });
+        var sut = CreateSubjectUnderTest(new int[] { 1, 2, 3, 4, 5, 6 });
         Assert.Collection(sut.ReorderedArray,
             p1 => Assert.Equal(6, p1),
             p2 => Assert.Equal(4, p2),
@@ -68,7 +71,7 @@ public class ReorderingMust
     [Fact]
     public void ReorderArrayWithRandomSortedValues()
     {
-        var sut = new Reordering(new int[] { 2, 4, 6, 8, 10 });
+        var sut = CreateSubjectUnderTest(new int[] { 2, 4, 6, 8, 10 });
         Assert.Collection(sut.ReorderedArray,
             p1 => Assert.Equal(10, p1),
             p2 => Assert.Equal(6, p2),

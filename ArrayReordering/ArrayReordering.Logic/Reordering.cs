@@ -1,28 +1,32 @@
 ﻿namespace ArrayReordering.Logic;
 
+public interface IReorderAlgorithm
+{
+    int[] Reorder(int[] values);
+}
+
 public class Reordering
 {
-    private readonly int[] _values;
+    private readonly IReorderAlgorithm _algorithm;
 
-    public int[] ReorderedArray { get; private set; }
+    public int[] ReorderedArray { get; }
 
-    public Reordering(int[] values)
+    public Reordering(int[] values, IReorderAlgorithm algorithm)
     {
-        _values = values;
-        ReorderedArray = Array.Empty<int>();
-
-        Reorder();
+        _algorithm = algorithm;
+        ReorderedArray = _algorithm.Reorder(values);
     }
+}
 
-    private void Reorder() => ReorderByAlgorithm();
-
-    private void ReorderByAlgorithm()
+public class FromBehindEveryOtherAlgorithm : IReorderAlgorithm
+{
+    public int[] Reorder(int[] values)
     {
         var toFront = true;
         var firstHalf = new List<int>();
         var secondHalf = new List<int>();
 
-        foreach (var number in _values.Reverse())
+        foreach (var number in values.Reverse())
         {
             if (toFront)
             {
@@ -40,6 +44,6 @@ public class Reordering
         total.AddRange(firstHalf);
         total.AddRange(secondHalf);
 
-        ReorderedArray = total.ToArray();
+        return total.ToArray();
     }
 }
