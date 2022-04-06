@@ -12,6 +12,10 @@ public class Reordering
     {
         _values = value;
         ReorderedArray = Array.Empty<int>();
-    }
 
+        if (value.Length < 2)
+        {
+            ReorderedArray = value;
+        }
+    }
 }
