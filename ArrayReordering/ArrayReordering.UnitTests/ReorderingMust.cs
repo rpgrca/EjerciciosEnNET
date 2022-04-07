@@ -95,4 +95,18 @@ public class ReorderingMust
             p5 => Assert.Equal(2, p5),
             p6 => Assert.Equal(3, p6));
      }
+
+    [Fact]
+    public void ReorderArrayWithNegativeNumbers()
+    {
+        var sut = CreateSubjectUnderTest(new int[] { -1, 3, 4, 6, 7, 8, 10});
+        Assert.Collection(sut.ReorderedArray,
+            p1 => Assert.Equal(10, p1),
+            p2 => Assert.Equal(7, p2),
+            p3 => Assert.Equal(4, p3),
+            p4 => Assert.Equal(-1, p4),
+            p5 => Assert.Equal(3, p5),
+            p6 => Assert.Equal(6, p6),
+            p7 => Assert.Equal(8, p7));
+    }
 }
