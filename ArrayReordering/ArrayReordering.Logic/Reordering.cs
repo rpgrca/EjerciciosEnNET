@@ -1,12 +1,12 @@
 ﻿namespace ArrayReordering.Logic;
 
-public class Reordering
+public sealed partial class Reordering
 {
     private readonly IReorderAlgorithm _algorithm;
 
     public int[] ReorderedArray { get; }
 
-    public Reordering(int[] values, IReorderAlgorithm algorithm)
+    private Reordering(int[] values, IReorderAlgorithm algorithm)
     {
         _algorithm = algorithm;
         ReorderedArray = _algorithm.Reorder(values);

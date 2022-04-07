@@ -14,7 +14,10 @@ public class ReorderingMust
     }
 
     private static Reordering CreateSubjectUnderTest(int[] values) =>
-        new(values, new FromBehindEveryOtherAlgorithm());
+        new Reordering.Builder()
+            .Using(new FromBehindEveryOtherAlgorithm())
+            .Sorting(values)
+            .Build();
 
     [Fact]
     public void ReturnSameArray_WhenArrayHasOneElement()
