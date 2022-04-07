@@ -6,7 +6,6 @@ public class Fixer
     public static List<int> PipeFix(List<int> numbers)
     {
         var min = numbers.Min();
-        var length = numbers.Max() - min + 1;
-        return Enumerable.Range(min, length).ToList();
+        return Enumerable.Range(min, numbers.Max() - min + 1).ToList();
     }
 }
