@@ -4,28 +4,24 @@ public class FromBehindEveryOtherAlgorithm : IReorderAlgorithm
 {
     public int[] Reorder(int[] values)
     {
-        var toFront = true;
-        var firstHalf = new List<int>();
-        var secondHalf = new List<int>();
+        var head = 0;
+        var tail = values.Length - 1;
+        var total = new int[values.Length];
+        var index = tail;
 
-        foreach (var number in values.Reverse())
+        while (tail > head)
         {
-            if (toFront)
-            {
-                firstHalf.Add(number);
-            }
-            else
-            {
-                secondHalf.Insert(0, number);
-            }
-
-            toFront = !toFront;
+            total[head++] = values[index--];
+            total[tail--] = values[index--];
         }
 
-        var total = new List<int>();
-        total.AddRange(firstHalf);
-        total.AddRange(secondHalf);
+        if (tail == head)
+        {
+            total[head] = values[index];
+            if (index > 0)
+                total[tail] = values[index - 1];
+        }
 
-        return total.ToArray();
+        return total;
     }
 }
