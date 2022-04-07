@@ -4,6 +4,10 @@ namespace GravityFlip.UnitTests
 {
     public class GravityFlipMust
     {
+        [Fact]
+        public void ThrowException_WhenDirectionIsInvalid() =>
+            Assert.Throws<ArgumentOutOfRangeException>("direction", () => Logic.GravityFlip.For(new int[] { 1 }).To('Z'));
+
         [Theory]
         [InlineData('L', new int[] { 1 })]
         [InlineData('L', new int[] { 2, 2 })]
