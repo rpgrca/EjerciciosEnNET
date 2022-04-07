@@ -82,4 +82,17 @@ public class ReorderingMust
             p4 => Assert.Equal(4, p4),
             p5 => Assert.Equal(8, p5));
     }
+
+    [Fact]
+    public void ReorderArrayWithDuplicatedValues()
+     {
+         var sut = CreateSubjectUnderTest(new int[] { 1, 1, 2, 2, 3, 3 });
+         Assert.Collection(sut.ReorderedArray,
+            p1 => Assert.Equal(3, p1),
+            p2 => Assert.Equal(2, p2),
+            p3 => Assert.Equal(1, p3),
+            p4 => Assert.Equal(1, p4),
+            p5 => Assert.Equal(2, p5),
+            p6 => Assert.Equal(3, p6));
+     }
 }
