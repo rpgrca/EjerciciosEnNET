@@ -6,22 +6,20 @@ public class FromBehindEveryOtherAlgorithm : IReorderAlgorithm
     {
         var head = 0;
         var tail = values.Length - 1;
-        var total = new int[values.Length];
         var index = tail;
+        var reorderedArray = new int[values.Length];
 
         while (tail > head)
         {
-            total[head++] = values[index--];
-            total[tail--] = values[index--];
+            reorderedArray[head++] = values[index--];
+            reorderedArray[tail--] = values[index--];
         }
 
         if (tail == head)
         {
-            total[head] = values[index];
-            if (index > 0)
-                total[tail] = values[index - 1];
+            reorderedArray[head] = values[index];
         }
 
-        return total;
+        return reorderedArray;
     }
 }
