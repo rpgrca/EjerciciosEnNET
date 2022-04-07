@@ -22,7 +22,7 @@ jobs:
     - name: Restore packages
       run: |
            dotnet restore
-           for s in SistemaDeAparcamiento Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum Codewars SatelliteMessages MarsRover; do
+           for s in SistemaDeAparcamiento Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum Codewars SatelliteMessages MarsRover ArrayReordering; do
                dotnet restore $s/$s.sln
            done
            for s in 2021 2020; do
@@ -35,7 +35,7 @@ jobs:
     - name: Build solutions
       run: |
            dotnet build --configuration Debug --no-restore
-           for s in SistemaDeAparcamiento Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum Codewars SatelliteMessages MarsRover; do
+           for s in SistemaDeAparcamiento Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum Codewars SatelliteMessages MarsRover ArrayReordering; do
                dotnet build --configuration Debug --no-restore $s/$s.sln
            done
            for s in 2021 2020; do
@@ -60,7 +60,7 @@ jobs:
 
     - name: Testing NET Standalone Programs
       run: |
-           for s in Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum SatelliteMessages MarsRover; do
+           for s in Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum SatelliteMessages MarsRover ArrayReordering; do
                coverlet $s/$s.UnitTests/bin/Debug/net6.0/$s.UnitTests.dll --target "dotnet" --targetargs "test $s/$s.UnitTests/$s.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output $s.coverage.xml
            done
 
