@@ -3,6 +3,7 @@ public class Kata
 {
     public static double SquareArea(double A)
     {
-        return 0;
+        var radio = A * 2 / Math.PI;
+        return Math.Round(radio * radio, 2);
     }
 }
