@@ -1,7 +1,6 @@
 namespace Solution
 {
     using NUnit.Framework;
-    using System;
 
     [TestFixture]
     public class Sample_Tests
