@@ -14,4 +14,8 @@
     <PackageReference Include="coverlet.collector" Version="3.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RemoveFirstAndLastCharacter2.Logic\RemoveFirstAndLastCharacter2.Logic.csproj" />
+  </ItemGroup>
+
 </Project>
