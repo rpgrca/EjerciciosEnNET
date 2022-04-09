@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoveFirstAndLastCharacter2.Logic", "RemoveFirstAndLastCharacter2.Logic\RemoveFirstAndLastCharacter2.Logic.csproj", "{4841B8DC-F03E-4820-BD91-4A2CCC01D029}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoveFirstAndLastCharacter2.UnitTests", "RemoveFirstAndLastCharacter2.UnitTests\RemoveFirstAndLastCharacter2.UnitTests.csproj", "{018FA595-812E-4B15-AB49-6CED0C967E5A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4841B8DC-F03E-4820-BD91-4A2CCC01D029}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4841B8DC-F03E-4820-BD91-4A2CCC01D029}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4841B8DC-F03E-4820-BD91-4A2CCC01D029}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4841B8DC-F03E-4820-BD91-4A2CCC01D029}.Release|Any CPU.Build.0 = Release|Any CPU
+		{018FA595-812E-4B15-AB49-6CED0C967E5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{018FA595-812E-4B15-AB49-6CED0C967E5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{018FA595-812E-4B15-AB49-6CED0C967E5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{018FA595-812E-4B15-AB49-6CED0C967E5A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
