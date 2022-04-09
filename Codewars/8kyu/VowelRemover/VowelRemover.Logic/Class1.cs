@@ -1,5 +1,10 @@
 ﻿namespace VowelRemover.Logic;
-public class Class1
-{
 
+public class Kata
+{
+  public static string Shortcut(string input)
+  {
+    // TODO: Remove vowels
+    return input;
+  }
 }
