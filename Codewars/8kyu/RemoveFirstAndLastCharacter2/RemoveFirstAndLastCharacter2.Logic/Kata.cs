@@ -2,10 +2,9 @@
 
 public static class Kata
 {
-    public static string Array(string s)
+    public static string? Array(string s)
     {
-        if (string.IsNullOrEmpty(s)) return null;
-        var values = s.Split(",");
+        var values = s?.Split(",");
         if (values.Length < 3) return null;
         return string.Join(" ", values[1..^1]);
     }
