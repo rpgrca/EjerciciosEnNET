@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubtractTheSum.Logic", "SubtractTheSum.Logic\SubtractTheSum.Logic.csproj", "{EF22A449-E043-4F9F-87C7-2B7973B8A624}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubtractTheSum.UnitTests", "SubtractTheSum.UnitTests\SubtractTheSum.UnitTests.csproj", "{9A3DFAAF-E9E2-486E-8517-496477144AAF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EF22A449-E043-4F9F-87C7-2B7973B8A624}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF22A449-E043-4F9F-87C7-2B7973B8A624}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF22A449-E043-4F9F-87C7-2B7973B8A624}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF22A449-E043-4F9F-87C7-2B7973B8A624}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A3DFAAF-E9E2-486E-8517-496477144AAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A3DFAAF-E9E2-486E-8517-496477144AAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A3DFAAF-E9E2-486E-8517-496477144AAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A3DFAAF-E9E2-486E-8517-496477144AAF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
