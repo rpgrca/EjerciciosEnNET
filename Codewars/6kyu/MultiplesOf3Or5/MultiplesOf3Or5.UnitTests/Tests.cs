@@ -11,4 +11,13 @@ public class Tests
     {
         Assert.AreEqual(23, Kata.Solution(10));
     }
+
+    [Test]
+    public void Test2()
+    {
+        Assert.AreEqual(23, Kata.Solution(10));
+        Assert.AreEqual(78, Kata.Solution(20));
+        Assert.AreEqual(9168, Kata.Solution(200));
+        Assert.AreEqual(0, Kata.Solution(0));
+    }
 }
