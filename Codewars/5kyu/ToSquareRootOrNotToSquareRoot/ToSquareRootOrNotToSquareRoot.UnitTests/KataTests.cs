@@ -1,4 +1,6 @@
 using NUnit.Framework;
+using System;
+using System.Linq;
 using ToSquareRootOrNotToSquareRoot.Logic;
 
 namespace ToSquareRootOrNotToSquareRoot.UnitTests;
@@ -19,5 +21,32 @@ public class KataTests
         input = new int[] { 1, 2, 3, 4, 5, 6 };
         expected = new int[] { 1, 4, 9, 2, 25, 36};
         Assert.AreEqual(string.Join(",", expected), string.Join(",", Kata.SquareOrSquareRoot(input)));
+    }
+
+    [Test]
+    public void RandomTests()
+    {
+        var rand = new Random();
+
+        Func<int[],int[]> mySquareOrSquareRoot = delegate (int[] array)
+        {
+            return array.Select(a => 
+            {
+                var sqrt = Math.Sqrt(a);
+                if(sqrt == (int)sqrt)
+                {
+                    return (int)sqrt;
+                }
+                return a * a;
+            }).ToArray();
+        };
+
+        for(int r=0;r<30;r++)
+        {
+            var array = Enumerable.Range(0, rand.Next(3,20)).Select(a => rand.Next(1,101)).ToArray();
+            var expected = mySquareOrSquareRoot(array);
+
+            Assert.AreEqual(string.Join(",", expected), string.Join(",", Kata.SquareOrSquareRoot(array)));
+        }
     }
 }
