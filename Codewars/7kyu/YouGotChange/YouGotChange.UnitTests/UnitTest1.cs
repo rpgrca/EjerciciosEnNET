@@ -1,17 +1,16 @@
-using NUnit.Framework;
+namespace Solution {
+    using System;
+    using NUnit.Framework;
+    using YouGotChange.Logic;
 
-namespace YouGotChange.UnitTests;
-
-public class Tests
-{
-    [SetUp]
-    public void Setup()
+    [TestFixture]
+    public class Test
     {
-    }
-
-    [Test]
-    public void Test1()
-    {
-        Assert.Pass();
+        [Test]
+        public void BasicTest()
+        {
+            Assert.AreEqual(new int[] {0, 1, 1, 0, 1, 3}, Kata.GiveChange(365));
+            Assert.AreEqual(new int[] {2, 1, 1, 0, 0, 2}, Kata.GiveChange(217));
+        }
     }
 }
