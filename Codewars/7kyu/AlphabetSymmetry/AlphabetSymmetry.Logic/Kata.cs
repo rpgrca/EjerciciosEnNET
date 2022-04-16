@@ -7,6 +7,6 @@ public static class Kata
 {
     public static List<int> Solve(List<string> arr) =>
         arr.ConvertAll(p => p
-            .Select((x, i) => (x.ToString().ToLower()[0], i))
+            .Select((x, i) => (Char.ToLower(x), i))
             .Count(t => t.Item1 - 'a' == t.i));
 }
