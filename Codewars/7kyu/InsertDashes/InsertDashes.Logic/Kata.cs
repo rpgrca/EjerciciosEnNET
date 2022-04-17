@@ -2,22 +2,6 @@
 
 public class Kata
 {
-    public static string InsertDash(int num)
-    {
-        var previous = 0;
-        var result = string.Empty;
-        foreach (var character in num.ToString())
-        {
-            var digit = character - '0';
-            if (((previous & 1) == 1) && ((digit & 1) == 1))
-            {
-                result += "-";
-            }
-
-            previous = digit;
-            result += character;
-        }
-
-        return result;
-    }
+    public static string InsertDash(int num) =>
+        num.ToString().Aggregate(string.Empty, (t, i) => $"{t}{(!string.IsNullOrEmpty(t) && ((i - '0') & (t[^1] - '0') & 1) == 1? "-" : "")}{i}");
 }
