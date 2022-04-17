@@ -1,5 +1,11 @@
-﻿namespace GiveMeAdiamond.Logic;
-public class Class1
-{
+﻿using System;
 
+namespace GiveMeAdiamond.Logic;
+
+public class Diamond
+{
+	public static string print(int n)
+	{
+		throw new NotImplementedException();
+	}
 }
