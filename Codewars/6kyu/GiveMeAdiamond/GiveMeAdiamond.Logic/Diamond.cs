@@ -6,7 +6,23 @@ public class Diamond
 {
     public static string? Print(int n)
     {
-        if (n < 0 || n % 2 == 0) return null;
+        var diamondMaker = new DiamondMaker(n);
+        return diamondMaker.Diamond;
+    }
+}
+
+public class DiamondMaker
+{
+    public string? Diamond { get; }
+
+    public DiamondMaker(int n)
+    {
+        if (n < 0 || n % 2 == 0)
+        {
+            Diamond = null;
+            return;
+        }
+
         var result = string.Empty;
 
         for (var index = 1; index <= n; index += 2)
@@ -19,6 +35,6 @@ public class Diamond
             result += new string(' ', (n - index) / 2) + new string('*', index) + "\n";
         }
 
-        return result;
+        Diamond = result;
     }
 }
