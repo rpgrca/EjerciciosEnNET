@@ -4,8 +4,9 @@ namespace GiveMeAdiamond.Logic;
 
 public class Diamond
 {
-	public static string Print(int n)
+	public static string? Print(int n)
 	{
-		throw new NotImplementedException();
+		if (n < 0 || n % 2 == 0) return null;
+		return string.Empty;
 	}
 }
