@@ -4,7 +4,7 @@ namespace GiveMeAdiamond.Logic;
 
 public class Diamond
 {
-	public static string print(int n)
+	public static string Print(int n)
 	{
 		throw new NotImplementedException();
 	}

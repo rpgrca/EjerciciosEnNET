@@ -9,9 +9,9 @@ public class DiamondTest
 	[Test]
 	public void TestNull()
 	{
-		Assert.IsNull(Diamond.print(0));
-		Assert.IsNull(Diamond.print(-2));
-		Assert.IsNull(Diamond.print(2));
+		Assert.IsNull(Diamond.Print(0));
+		Assert.IsNull(Diamond.Print(-2));
+		Assert.IsNull(Diamond.Print(2));
 	}
 
     [Test]
@@ -19,7 +19,7 @@ public class DiamondTest
 	{
 		var expected = new StringBuilder();
 		expected.Append("*\n");
-		Assert.AreEqual(expected.ToString(), Diamond.print(1));
+		Assert.AreEqual(expected.ToString(), Diamond.Print(1));
 	}
 
 	[Test]
@@ -30,7 +30,7 @@ public class DiamondTest
 		expected.Append("***\n");
 		expected.Append(" *\n");
 
-		Assert.AreEqual(expected.ToString(), Diamond.print(3));
+		Assert.AreEqual(expected.ToString(), Diamond.Print(3));
 	}
 
 	[Test]
@@ -43,6 +43,6 @@ public class DiamondTest
 		expected.Append(" ***\n");
 		expected.Append("  *\n");
 
-		Assert.AreEqual(expected.ToString(), Diamond.print(5));
+		Assert.AreEqual(expected.ToString(), Diamond.Print(5));
 	}
 }
