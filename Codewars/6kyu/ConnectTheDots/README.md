@@ -6,28 +6,28 @@ Connect the dots in order to make a picture!
 
 ### Notes
 
-	- There are 2-26 dots labelled *a* *b* *c* ...
-	- Make lines to connect the dots *a* -> *b*, *b* -> *c*, etc
-	- The line char is *
-	- Use only straight lines - vertical, horizontal, or diagonals of a square
-	- The paper is rectangular - *\n* terminates every line
-	- All input is valid
+    - There are 2-26 dots labelled *a* *b* *c* ...
+    - Make lines to connect the dots *a* -> *b*, *b* -> *c*, etc
+    - The line char is *
+    - Use only straight lines - vertical, horizontal, or diagonals of a square
+    - The paper is rectangular - *\n* terminates every line
+    - All input is valid
 
 ### Examples
 
-Input				Expected
+Input               Expected
 
 ```
- a       b 			*********
+ a       b          *********
  e                  *       *
                     *       *
  d       c          *********
 ```
 
-Input				Expected
+Input               Expected
 
 ``` 
-    a				    *
+    a                   *
    e                   * *
                       *   *
  d     b             *     *
