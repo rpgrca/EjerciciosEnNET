@@ -66,10 +66,6 @@ jobs:
 
     - name: Testing Codewars
       run: |
-           for s in `find ./Codewars -maxdepth 1 -type d -printf "%f\n" | grep -v "Codewars" | grep -v "kyu"`; do
-               coverlet Codewars/$s/$s.UnitTests/bin/Debug/net6.0/$s.UnitTests.dll --target "dotnet" --targetargs "test Codewars/$s/$s.UnitTests/$s.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output $s.coverage.xml
-           done
-
            for t in `ls -d1 ./Codewars/[0-9]kyu`; do
                n=$(basename $t)
                for s in `find ./Codewars/$n -maxdepth 1 -type d -printf "%f\n" | grep -v "kyu"`; do
