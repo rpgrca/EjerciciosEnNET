@@ -16,13 +16,13 @@ array[5] ---> represents $100 bills
 
 In the case below, we broke up $365 into 1 $5 bill, 1 $10 bill, 1 $50 bill, and 3 $100 bills.
 
-```
+```javascript
 giveChange(365) // =>  [0,1,1,0,1,3]
 ```
 
 In this next case, we broke $217 into 2 $1 bills, 1 $5 bill, 1 $10 bill, and 2 $100 bills.
 
-```
+```javascript
 giveChange(217) // => [2,1,1,0,0,2]
 ```
 

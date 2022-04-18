@@ -4,7 +4,7 @@ Complete the solution so that it returns true if the first argument(string) pass
 
 Examples:
 
-```
+```javascript
 solution('abc', 'bc') // returns true
 solution('abc', 'd') // returns false
 ```
