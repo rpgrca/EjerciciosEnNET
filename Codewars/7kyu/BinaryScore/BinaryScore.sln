@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryScore.Logic", "BinaryScore.Logic\BinaryScore.Logic.csproj", "{0643D037-B8B2-44ED-A425-3E455327AD21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryScore.UnitTests", "BinaryScore.UnitTests\BinaryScore.UnitTests.csproj", "{5E8F082D-F8AF-4C07-936A-452AA736345C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0643D037-B8B2-44ED-A425-3E455327AD21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0643D037-B8B2-44ED-A425-3E455327AD21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0643D037-B8B2-44ED-A425-3E455327AD21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0643D037-B8B2-44ED-A425-3E455327AD21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E8F082D-F8AF-4C07-936A-452AA736345C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E8F082D-F8AF-4C07-936A-452AA736345C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E8F082D-F8AF-4C07-936A-452AA736345C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E8F082D-F8AF-4C07-936A-452AA736345C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
