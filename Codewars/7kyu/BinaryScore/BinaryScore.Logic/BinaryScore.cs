@@ -9,16 +9,16 @@ public class BinaryScore
 {
     public static BigInteger Score(BigInteger n)
     {
-        if (n < 2) return n;
+        if (n == 0) return 0;
 
-        var count = n.GetByteCount() * 8 + 1;
-        BigInteger oldCount;
+        var maximumAmountOfBits = (n.GetByteCount() * 8) + 1;
+        BigInteger oldCount = BigInteger.Pow(2, maximumAmountOfBits);
         do
         {
-            count--;
-            oldCount = BigInteger.Pow(2, count);
+            maximumAmountOfBits--;
+            oldCount >>= 1;
         } while (oldCount > n);
 
-        return oldCount * 2 - 1;
+        return (oldCount << 1) - 1;
     }
 }
