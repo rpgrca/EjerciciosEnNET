@@ -2,8 +2,5 @@
 
 public class Kata
 {
-    public static string FormatMoney(double amount)
-    {
-        return $"${amount,2}";
-    }
+    public static string FormatMoney(double amount) => $"${amount:F2}";
 }
