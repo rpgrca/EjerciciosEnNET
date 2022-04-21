@@ -1,7 +1,7 @@
 using NUnit.Framework;
+using System;
+using System.Linq;
 using NarcissisticNumbers.Logic;
-
-namespace NarcissisticNumbers.UnitTests;
 
 [TestFixture]
 class Tests
@@ -45,4 +45,17 @@ class Tests
     {
         Assert.IsFalse(Kata.IsNarcissistic(n));
     }
+
+    [Test]
+    public void RandomTests()
+    {
+        var rnd = new Random();
+        var limit = (int)Math.Pow(10,8);
+        for (int i = 0; i < 40; i++)
+        {
+            var n = (long)rnd.Next(0, limit);
+            Assert.That(Kata.IsNarcissistic(n), Is.EqualTo(SolutionIsNarcissistic(n)));
+        }
+    }
+    bool SolutionIsNarcissistic(long n) => n.ToString().Select(x => (long)Math.Pow(char.GetNumericValue(x), n.ToString().Length)).Sum() == n;
 }
