@@ -2,8 +2,5 @@
 
 public class Converter
 {
-    public static string ToBinary(int n)
-    {
-        return Convert.ToString(n, 2);
-    }
+    public static string ToBinary(int n) => Convert.ToString(n, 2);
 }
