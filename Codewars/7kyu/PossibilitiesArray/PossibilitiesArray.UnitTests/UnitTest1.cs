@@ -1,17 +1,17 @@
-using NUnit.Framework;
-
-namespace PossibilitiesArray.UnitTests;
-
-public class Tests
+namespace Solution
 {
-    [SetUp]
-    public void Setup()
-    {
-    }
+    using NUnit.Framework;
+    using System;
+    using PossibilitiesArray.Logic;
 
-    [Test]
-    public void Test1()
+    [TestFixture]
+    public class SolutionTest
     {
-        Assert.Pass();
+        [Test, Description("Sample Tests")]
+        public void SampleTest()
+        {
+            Assert.AreEqual(true, Kata.IsAllPossibilities(new int[] {0, 1, 2, 3}));
+            Assert.AreEqual(false, Kata.IsAllPossibilities(new int[] {1, 2, 3, 4}));
+        }
     }
 }
