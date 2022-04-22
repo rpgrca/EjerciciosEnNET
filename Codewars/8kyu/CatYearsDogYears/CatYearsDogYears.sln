@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatYearsDogYears.Logic", "CatYearsDogYears.Logic\CatYearsDogYears.Logic.csproj", "{DDBC92EF-23DD-4526-8FC7-D62468258327}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatYearsDogYears.UnitTests", "CatYearsDogYears.UnitTests\CatYearsDogYears.UnitTests.csproj", "{AFCE2142-70E2-4CCE-999A-4B39B4D59690}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DDBC92EF-23DD-4526-8FC7-D62468258327}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDBC92EF-23DD-4526-8FC7-D62468258327}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDBC92EF-23DD-4526-8FC7-D62468258327}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDBC92EF-23DD-4526-8FC7-D62468258327}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFCE2142-70E2-4CCE-999A-4B39B4D59690}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFCE2142-70E2-4CCE-999A-4B39B4D59690}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFCE2142-70E2-4CCE-999A-4B39B4D59690}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFCE2142-70E2-4CCE-999A-4B39B4D59690}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
