@@ -221,6 +221,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PossibilitiesArray.Logic", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PossibilitiesArray.UnitTests", "7kyu\PossibilitiesArray\PossibilitiesArray.UnitTests\PossibilitiesArray.UnitTests.csproj", "{761BA43B-7D1E-477B-AE41-A88200409105}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MaximumLengthDifference", "MaximumLengthDifference", "{78850216-F18C-474B-82A4-36AF9FFBB978}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaximumLengthDifference.Logic", "7kyu\MaximumLengthDifference\MaximumLengthDifference.Logic\MaximumLengthDifference.Logic.csproj", "{012D5ECB-D451-4AA4-A12E-385F7A329666}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaximumLengthDifference.UnitTests", "7kyu\MaximumLengthDifference\MaximumLengthDifference.UnitTests\MaximumLengthDifference.UnitTests.csproj", "{8BBBB6D8-556B-4CE1-A6C2-1E2682335F95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -510,6 +516,14 @@ Global
 		{761BA43B-7D1E-477B-AE41-A88200409105}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{761BA43B-7D1E-477B-AE41-A88200409105}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{761BA43B-7D1E-477B-AE41-A88200409105}.Release|Any CPU.Build.0 = Release|Any CPU
+		{012D5ECB-D451-4AA4-A12E-385F7A329666}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{012D5ECB-D451-4AA4-A12E-385F7A329666}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{012D5ECB-D451-4AA4-A12E-385F7A329666}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{012D5ECB-D451-4AA4-A12E-385F7A329666}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BBBB6D8-556B-4CE1-A6C2-1E2682335F95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BBBB6D8-556B-4CE1-A6C2-1E2682335F95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BBBB6D8-556B-4CE1-A6C2-1E2682335F95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BBBB6D8-556B-4CE1-A6C2-1E2682335F95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{76C86F43-09EE-4191-89A6-E3530337CAF9} = {454E5EBA-0E20-467A-8A03-E0920C69C7E6}
@@ -617,5 +631,8 @@ Global
 		{A7BF917B-50CF-41EC-B7DC-35649D032C1C} = {860908B5-7DF3-4D84-9A6F-1C0E8A04E564}
 		{9AA17C05-4FC6-4B39-843A-B3E9669819EB} = {A7BF917B-50CF-41EC-B7DC-35649D032C1C}
 		{761BA43B-7D1E-477B-AE41-A88200409105} = {A7BF917B-50CF-41EC-B7DC-35649D032C1C}
+		{78850216-F18C-474B-82A4-36AF9FFBB978} = {860908B5-7DF3-4D84-9A6F-1C0E8A04E564}
+		{012D5ECB-D451-4AA4-A12E-385F7A329666} = {78850216-F18C-474B-82A4-36AF9FFBB978}
+		{8BBBB6D8-556B-4CE1-A6C2-1E2682335F95} = {78850216-F18C-474B-82A4-36AF9FFBB978}
 	EndGlobalSection
 EndGlobal
