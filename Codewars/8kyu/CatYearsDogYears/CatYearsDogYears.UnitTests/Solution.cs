@@ -1,10 +1,7 @@
 namespace Solution
 {
     using NUnit.Framework;
-    using System;
     using CatYearsDogYears.Logic;
-
-    // TODO: Replace examples and use TDD development by writing your own tests
     [TestFixture]
     public class SolutionTest
     {
