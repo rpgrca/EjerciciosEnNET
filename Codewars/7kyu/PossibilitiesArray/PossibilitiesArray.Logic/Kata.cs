@@ -6,10 +6,12 @@ public static class Kata
 {
     public static bool IsAllPossibilities(int[] arr)
     {
-        var expectedValue = 0;
-        foreach (var index in arr.OrderBy(p => p))
+        if (arr.Length == 0) return false;
+
+        var orderedArray = arr.OrderBy(p => p).ToList();
+        for (var index = 0; index < arr.Length; index++)
         {
-            if (index != expectedValue++) return false;
+            if (orderedArray.IndexOf(index) == -1) return false;
         }
 
         return true;
