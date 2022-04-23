@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LastDigitOfHugeNumber.Logic", "LastDigitOfHugeNumber.Logic\LastDigitOfHugeNumber.Logic.csproj", "{71729B5B-00A6-460E-B7D4-CC1FB07A792B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LastDigitOfHugeNumber.UnitTests", "LastDigitOfHugeNumber.UnitTests\LastDigitOfHugeNumber.UnitTests.csproj", "{397CB4A9-8AA2-4E74-A719-2DDBC250FBAF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{71729B5B-00A6-460E-B7D4-CC1FB07A792B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71729B5B-00A6-460E-B7D4-CC1FB07A792B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71729B5B-00A6-460E-B7D4-CC1FB07A792B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71729B5B-00A6-460E-B7D4-CC1FB07A792B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{397CB4A9-8AA2-4E74-A719-2DDBC250FBAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{397CB4A9-8AA2-4E74-A719-2DDBC250FBAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{397CB4A9-8AA2-4E74-A719-2DDBC250FBAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{397CB4A9-8AA2-4E74-A719-2DDBC250FBAF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
