@@ -76,4 +76,36 @@ public class Calculator
             return value % 100;
         }
     }
+
+    public static int LastDigit(int[] array)
+    {
+        if (array.Length == 0 || array.Length == 1) return 1;
+
+        if (array.Length > 2)
+        {
+            var exponent = LastDigit(array[1..]);
+            var value = array[0] % 10;
+
+            var power = exponent % 4;
+            if (power == 0)
+            {
+                power = 4;
+            }
+
+            return (int)Math.Pow(value, power) % 10;
+        }
+        else
+        {
+            if (array[0] == 0 && array[1] == 0) return 1;
+
+            var value = array[0] % 10;
+            var power = array[1] % 4;
+            if (power == 0)
+            {
+                power = 4;
+            }
+
+            return (int)Math.Pow(value, power) % 100;
+        }
+    }
 }

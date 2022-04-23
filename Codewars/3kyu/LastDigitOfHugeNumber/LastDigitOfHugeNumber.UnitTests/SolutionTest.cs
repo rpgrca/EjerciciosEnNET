@@ -23,12 +23,6 @@ namespace Solution
             int rand2 = rnd.Next(0,10);
 
             LDCase[] allCases = new LDCase[] {
-                new LDCase(new int[] {12,30,21}, 6),
-                new LDCase(new int[] {2,2,2,0},  4),
-                new LDCase(new int[] {937640,767456,981242}, 0),
-                new LDCase(new int[] {123232,694022,140249}, 6),
-                new LDCase(new int[] {499942,898102,846073}, 6),
-
                 new LDCase(new int[] {rand1}, rand1%10),
                 new LDCase(new int[] {rand1,rand2}, (int)Math.Pow(rand1%10,rand2)%10)
             };
@@ -68,6 +62,22 @@ namespace Solution
 
         [Test]
         public void Test8() =>
-            Assert.AreEqual(6, Calculator.LastDigit(new int[] {12,30,21}));
+            Assert.AreEqual(6, Calculator.LastDigit(new int[] { 12, 30, 21 }));
+
+        [Test]
+        public void Test9() =>
+            Assert.AreEqual(4, Calculator.LastDigit(new int[] { 2, 2, 2, 0 }));
+
+        [Test]
+        public void Test10() =>
+            Assert.AreEqual(0, Calculator.LastDigit(new int[] { 937640, 767456, 981242 }));
+
+        [Test]
+        public void Test11() =>
+            Assert.AreEqual(6, Calculator.LastDigit(new int[] { 123232, 694022, 140249 }));
+
+        [Test]
+        public void Test12() =>
+            Assert.AreEqual(6, Calculator.LastDigit(new int[] { 499942, 898102, 846073 }));
     }
 }
