@@ -79,5 +79,9 @@ namespace Solution
         [Test]
         public void Test12() =>
             Assert.AreEqual(6, Calculator.LastDigit(new int[] { 499942, 898102, 846073 }));
+
+        [Test]
+        public void TestA() =>
+            Assert.AreEqual(1, Calculator.LastDigit(new int[] { 331, 8 }));
     }
 }

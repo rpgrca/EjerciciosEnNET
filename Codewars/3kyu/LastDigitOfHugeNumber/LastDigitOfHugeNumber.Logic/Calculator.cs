@@ -1,6 +1,7 @@
 ﻿namespace LastDigitOfHugeNumber.Logic;
 
 using System;
+using System.Numerics;
 
 public class Calculator
 {
@@ -77,13 +78,13 @@ public class Calculator
         }
     }
 
-    public static int LastDigit(int[] array)
+    public static int LastDigit3(int[] array)
     {
         if (array.Length == 0 || array.Length == 1) return 1;
 
         if (array.Length > 2)
         {
-            var exponent = LastDigit(array[1..]);
+            var exponent = LastDigit3(array[1..]);
             var value = array[0] % 10;
 
             var power = exponent % 4;
@@ -98,14 +99,46 @@ public class Calculator
         {
             if (array[0] == 0 && array[1] == 0) return 1;
 
-            var value = array[0] % 10;
-            var power = array[1] % 4;
-            if (power == 0)
+            if (array[0] % 10 == 1)
             {
-                power = 4;
+                return ((array[0] / 10 % 10 * array[1] % 10 * 10) + 1) % 10;
             }
+            else
+            {
+                var value = array[0] % 10;
+                var power = array[1] % 4;
+                if (power == 0)
+                {
+                    power = 4;
+                }
 
-            return (int)Math.Pow(value, power) % 100;
+                return (int)Math.Pow(value, power) % 10;
+            }
         }
+    }
+
+    public static int LastDigit(int[] array)
+    {
+        if (array.Length < 2) return 1;
+
+        var result = LastDigitOf(array.Select(p => new BigInteger(p)).ToArray());
+        BigInteger.DivRem(result, 10, out var remainder);
+        return (int)remainder;
+    }
+
+    private static BigInteger LastDigitOf(BigInteger[] array)
+    {
+        BigInteger exponent;
+        if (array.Length > 2)
+        {
+            exponent = LastDigitOf(array[1..]);
+        }
+        else
+        {
+            exponent = array[1];
+        }
+
+        if (array[0] == 0 && exponent == 0) return 1;
+        return BigInteger.ModPow(array[0], exponent, 10);
     }
 }
