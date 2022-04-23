@@ -117,7 +117,7 @@ public class Calculator
         }
     }
 
-    public static int LastDigit(int[] array)
+    public static int LastDigit4(int[] array)
     {
         if (array.Length < 2) return 1;
 
@@ -140,5 +140,105 @@ public class Calculator
 
         if (array[0] == 0 && exponent == 0) return 1;
         return BigInteger.ModPow(array[0], exponent, 10);
+    }
+
+    public static int LastDigit5(int[] array)
+    {
+        if (array.Length < 2) return 1;
+
+        int exponent;
+        if (array.Length > 2)
+        {
+            exponent = LastDigit5(array[1..]);
+        }
+        else
+        {
+            exponent = array[1];
+        }
+
+        if (array[0] == 0)
+        {
+            return exponent == 0? 1 : 0;
+        }
+
+        if (exponent == 0) return 1;
+
+        if (exponent % 4 == 0)
+        {
+            return (int)(((long)Math.Pow(array[0], 4)) % 10);
+        }
+        else
+        {
+            return (int)(((long)(Math.Pow(array[0], (exponent % 4)))) % 10);
+        }
+    }
+
+    public static int LastDigit6(int[] array)
+    {
+        if (array.Length < 2) return 1;
+
+        int exponent;
+        if (array.Length > 2)
+        {
+            exponent = LastDigit6(array[1..]);
+        }
+        else
+        {
+            exponent = array[1];
+        }
+
+        if (exponent == 0) exponent = 4;
+
+        var value = array[0];
+        var result = 1;
+        while (exponent > 0)
+        {
+            if (exponent % 2 == 1)
+            {
+                result = (result * value) % 10;
+            }
+
+            exponent = exponent / 2;
+            value = (value * value) % 10;
+        }
+
+        return result;
+    }
+
+    public static int LastDigit(int[] array)
+    {
+        if (array.Length == 0) return 1;
+        if (array.Length == 1) return array[0] % 10;
+
+        int exponent;
+        if (array.Length > 2)
+        {
+            exponent = LastDigit(array[1..]);
+            if (exponent == 0 || exponent == 6 || exponent == 2)
+            {
+                exponent = 4;
+            }
+        }
+        else
+        {
+            exponent = array[1];
+        }
+        var value = array[0];
+
+        var conversions = new int[][]
+        {
+            new int[] { 0, 0, 0, 0 },
+            new int[] { 1, 1, 1, 1 },
+            new int[] { 6, 2, 4, 8 },
+            new int[] { 1, 3, 9, 7 },
+            new int[] { 6, 4, 6, 4 },
+            new int[] { 5, 5, 5, 5 },
+            new int[] { 6, 6, 6, 6 },
+            new int[] { 1, 7, 9, 3 },
+            new int[] { 6, 8, 4, 2 },
+            new int[] { 1, 9, 1, 9 }
+        };
+
+        return exponent == 0? 1 : conversions[value % 10][exponent % 4];
     }
 }
