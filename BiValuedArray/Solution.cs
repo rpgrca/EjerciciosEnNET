@@ -66,7 +66,7 @@ namespace BiValuedArray
     {
         private readonly int[] _array;
         private int _maximumLength;
-        private int _currentLength;
+        private (int, int) _currentLength;
         private (int, int) _pair;
         private int _index;
 
@@ -80,7 +80,7 @@ namespace BiValuedArray
             InitializeIndexToStartWithFirstElementOfPair();
         }
 
-        private void InitializeCurrentLengthOfAPair() => _currentLength = 2;
+        private void InitializeCurrentLengthOfAPair() => _currentLength = (1, 1);
 
         private void InitializeIndexToStartWithFirstElementOfPair() => _index = 1;
 
@@ -104,13 +104,14 @@ namespace BiValuedArray
                     if (PairMembersAreIdentical())
                     {
                         AddCurrentValueToPair();
-                        AddOneToCurrentLength();
+                        AccumulateIntoSinglePair();
+                        ShiftCurrentLengthOfAPair();
                     }
                     else
                     {
                         UpdateMaximumValueWhenNecessary();
                         AddCurrentValueShiftingValuesInPair();
-                        InitializeCurrentLengthOfAPair();
+                        ShiftCurrentLengthOfAPair();
                     }
                 }
             }
@@ -126,17 +127,31 @@ namespace BiValuedArray
 
         private bool CurrentValueBelongsToPair() => _pair.Item1 == _array[_index] || _pair.Item2 == _array[_index];
 
-        private void AddOneToCurrentLength() => _currentLength++;
+        private void AddOneToCurrentLength()
+        {
+            if (_array[_index] == _pair.Item1)
+            {
+                _currentLength.Item1++;
+            }
+            else
+            {
+                _currentLength.Item2++;
+            }
+        }
 
         private bool PairMembersAreIdentical() => _pair.Item1 == _pair.Item2;
 
         private void AddCurrentValueToPair() => _pair = (_pair.Item2, _array[_index]);
 
+        private void AccumulateIntoSinglePair() => _currentLength.Item1 += _currentLength.Item2;
+
         public int UpdateMaximumValueWhenNecessary() =>
-            _maximumLength = _currentLength > _maximumLength
-                ? _currentLength
+            _maximumLength = _currentLength.Item1 + _currentLength.Item2 > _maximumLength
+                ? _currentLength.Item1 + _currentLength.Item2
                 : _maximumLength;
 
         private void AddCurrentValueShiftingValuesInPair() => _pair = (_array[_index - 1], _array[_index]);
+
+        private void ShiftCurrentLengthOfAPair() => _currentLength = (_currentLength.Item2, 1);
     }
 }
