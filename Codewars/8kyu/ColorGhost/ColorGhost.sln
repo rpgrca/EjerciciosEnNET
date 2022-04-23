@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorGhost.Logic", "ColorGhost.Logic\ColorGhost.Logic.csproj", "{ACE47F1D-E00A-47D1-99E9-EF3CA8DAF67E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorGhost.UnitTests", "ColorGhost.UnitTests\ColorGhost.UnitTests.csproj", "{724D2AFC-1354-45CC-B9EA-BC71476EBBFB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ACE47F1D-E00A-47D1-99E9-EF3CA8DAF67E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACE47F1D-E00A-47D1-99E9-EF3CA8DAF67E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACE47F1D-E00A-47D1-99E9-EF3CA8DAF67E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACE47F1D-E00A-47D1-99E9-EF3CA8DAF67E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{724D2AFC-1354-45CC-B9EA-BC71476EBBFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{724D2AFC-1354-45CC-B9EA-BC71476EBBFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{724D2AFC-1354-45CC-B9EA-BC71476EBBFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{724D2AFC-1354-45CC-B9EA-BC71476EBBFB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
