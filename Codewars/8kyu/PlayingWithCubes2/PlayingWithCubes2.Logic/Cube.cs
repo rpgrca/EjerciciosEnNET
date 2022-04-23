@@ -2,25 +2,11 @@
 
 public class Cube
 {
-    private int Side;
+    private int _side;
 
-    public Cube(int s)
-    {
-        Side = Math.Abs(s);
-    }
+    public Cube(int s = 0) => SetSide(s);
 
-    public Cube()
-    {
-        Side = 0;
-    }
+    public int GetSide() => _side;
 
-    public int GetSide()
-    {
-        return this.Side;
-    }
-
-    public void SetSide(int s)
-    {
-        this.Side = s;
-    }
+    public void SetSide(int s) => _side = Math.Abs(s);
 }
