@@ -4,8 +4,15 @@ public class Cube
 {
     private int Side;
 
-    //This cube needs your help. 
-    //Define a constructor which takes one integer and assignes its value to 'Side'
+    public Cube(int s)
+    {
+        Side = Math.Abs(s);
+    }
+
+    public Cube()
+    {
+        Side = 0;
+    }
 
     public int GetSide()
     {
