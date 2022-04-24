@@ -259,6 +259,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TakeAnArrowToTheKneeFunctio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TakeAnArrowToTheKneeFunctionally.UnitTests", "8kyu\TakeAnArrowToTheKneeFunctionally\TakeAnArrowToTheKneeFunctionally.UnitTests\TakeAnArrowToTheKneeFunctionally.UnitTests.csproj", "{BAC01AC6-C2D5-410D-8AB7-89C3CE3CE3A6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OnlineRpgPlayerToQualifyingStage", "OnlineRpgPlayerToQualifyingStage", "{7A603CBD-998C-47FB-B081-B3D595917F9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineRpgPlayerToQualifyingStage.Logic", "8kyu\OnlineRpgPlayerToQualifyingStage\OnlineRpgPlayerToQualifyingStage.Logic\OnlineRpgPlayerToQualifyingStage.Logic.csproj", "{93436B73-9556-4261-BA61-2EFF800A4C99}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineRpgPlayerToQualifyingStage.UnitTests", "8kyu\OnlineRpgPlayerToQualifyingStage\OnlineRpgPlayerToQualifyingStage.UnitTests\OnlineRpgPlayerToQualifyingStage.UnitTests.csproj", "{79F2F9D9-B89D-430C-A542-C1C86279435E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -596,6 +602,14 @@ Global
 		{BAC01AC6-C2D5-410D-8AB7-89C3CE3CE3A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAC01AC6-C2D5-410D-8AB7-89C3CE3CE3A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAC01AC6-C2D5-410D-8AB7-89C3CE3CE3A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93436B73-9556-4261-BA61-2EFF800A4C99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93436B73-9556-4261-BA61-2EFF800A4C99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93436B73-9556-4261-BA61-2EFF800A4C99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93436B73-9556-4261-BA61-2EFF800A4C99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79F2F9D9-B89D-430C-A542-C1C86279435E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79F2F9D9-B89D-430C-A542-C1C86279435E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79F2F9D9-B89D-430C-A542-C1C86279435E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79F2F9D9-B89D-430C-A542-C1C86279435E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{76C86F43-09EE-4191-89A6-E3530337CAF9} = {454E5EBA-0E20-467A-8A03-E0920C69C7E6}
@@ -721,5 +735,8 @@ Global
 		{FDEAFF7D-1C34-4A0E-9E2C-B265522181A0} = {0E0D6B6B-8406-4C24-877B-8198105F3F92}
 		{AE3456E0-F34E-47E7-81DD-2F36AC62BA80} = {FDEAFF7D-1C34-4A0E-9E2C-B265522181A0}
 		{BAC01AC6-C2D5-410D-8AB7-89C3CE3CE3A6} = {FDEAFF7D-1C34-4A0E-9E2C-B265522181A0}
+		{7A603CBD-998C-47FB-B081-B3D595917F9E} = {0E0D6B6B-8406-4C24-877B-8198105F3F92}
+		{93436B73-9556-4261-BA61-2EFF800A4C99} = {7A603CBD-998C-47FB-B081-B3D595917F9E}
+		{79F2F9D9-B89D-430C-A542-C1C86279435E} = {7A603CBD-998C-47FB-B081-B3D595917F9E}
 	EndGlobalSection
 EndGlobal
