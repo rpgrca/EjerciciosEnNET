@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WelcomeToTheCity.Logic", "WelcomeToTheCity.Logic\WelcomeToTheCity.Logic.csproj", "{AF73E452-5C3F-449F-93F9-F2158915E134}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WelcomeToTheCity.UnitTests", "WelcomeToTheCity.UnitTests\WelcomeToTheCity.UnitTests.csproj", "{38EB0E93-1F06-4520-9D08-3D7FBAAE32F0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF73E452-5C3F-449F-93F9-F2158915E134}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF73E452-5C3F-449F-93F9-F2158915E134}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF73E452-5C3F-449F-93F9-F2158915E134}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF73E452-5C3F-449F-93F9-F2158915E134}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38EB0E93-1F06-4520-9D08-3D7FBAAE32F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38EB0E93-1F06-4520-9D08-3D7FBAAE32F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38EB0E93-1F06-4520-9D08-3D7FBAAE32F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38EB0E93-1F06-4520-9D08-3D7FBAAE32F0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
