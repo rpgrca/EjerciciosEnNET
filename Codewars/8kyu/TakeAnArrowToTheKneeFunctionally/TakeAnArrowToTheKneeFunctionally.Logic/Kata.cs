@@ -7,8 +7,6 @@ using System.Linq;
 
 public class Kata
 {
-    public static string ArrowFunc(int[] arr)
-    {
-        return string.Join("", arr.Select(  =>  ).ToArray());
-    }
+    public static string ArrowFunc(int[] arr) =>
+        string.Concat(arr.Select(Convert.ToChar).ToArray());
 }
