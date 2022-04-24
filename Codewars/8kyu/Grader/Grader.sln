@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grader.Logic", "Grader.Logic\Grader.Logic.csproj", "{D11AE92A-6270-44B9-94E2-591A14440CDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grader.UnitTests", "Grader.UnitTests\Grader.UnitTests.csproj", "{91633B95-741A-497C-8D22-E269B0802265}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D11AE92A-6270-44B9-94E2-591A14440CDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D11AE92A-6270-44B9-94E2-591A14440CDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D11AE92A-6270-44B9-94E2-591A14440CDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D11AE92A-6270-44B9-94E2-591A14440CDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91633B95-741A-497C-8D22-E269B0802265}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91633B95-741A-497C-8D22-E269B0802265}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91633B95-741A-497C-8D22-E269B0802265}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91633B95-741A-497C-8D22-E269B0802265}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
