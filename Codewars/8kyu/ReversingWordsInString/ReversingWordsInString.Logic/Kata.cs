@@ -2,8 +2,6 @@
 
 public class Kata
 {
-    public static string Reverse(string text)
-    {
-        return text;
-    }
+    public static string Reverse(string text) =>
+        string.Join(" ", text.Split(" ").Reverse());
 }
