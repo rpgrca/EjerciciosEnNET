@@ -7,6 +7,11 @@ BASEDIR=${KYUDIR}/$NAME
 TESTDIR=$NAME.UnitTests
 LOGICDIR=$NAME.Logic
 
+if [ -z $LEVEL ]; then
+    echo "Missing level!"
+	exit 1
+fi
+
 if [ ! -d $KYUDIR ]; then
     echo "Creating directory $KYUDIR"
 	mkdir $KYUDIR
