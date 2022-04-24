@@ -7,6 +7,7 @@ public static class Kata
 {
     public static int Sum(int[] numbers)
     {
-        return 0;
+        if (numbers.Length < 3) return 0;
+        return numbers.OrderBy(p => p).Skip(1).Take(numbers.Length - 2).Sum();
     }
 }
