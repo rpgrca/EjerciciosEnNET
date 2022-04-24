@@ -5,5 +5,14 @@ using System;
 public class Kata
 {
     public static bool IsAscOrder(int[] arr)
-    { /* your code here */}
+    {
+        var previousValue = int.MinValue;
+        foreach (var value in arr)
+        {
+            if (value < previousValue) return false;
+            previousValue = value;
+        }
+
+        return true;
+    }
 }
