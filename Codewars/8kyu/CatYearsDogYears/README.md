@@ -1,4 +1,6 @@
-## Kata Task
+## Cat Years, Dog Years
+
+### Kata Task
 
 I have a cat and a dog.
 
