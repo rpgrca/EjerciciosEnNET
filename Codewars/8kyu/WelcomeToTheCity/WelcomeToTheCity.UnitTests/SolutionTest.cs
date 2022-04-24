@@ -1,6 +1,7 @@
 namespace Solution {
     using NUnit.Framework;
     using System;
+    using WelcomeToTheCity.Logic;
 
     [TestFixture]
     public class SolutionTest
