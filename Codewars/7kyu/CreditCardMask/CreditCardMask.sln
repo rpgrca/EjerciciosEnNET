@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreditCardMask.Logic", "CreditCardMask.Logic\CreditCardMask.Logic.csproj", "{C5E2F528-2028-4303-A1FD-D0FF64D292BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreditCardMask.UnitTests", "CreditCardMask.UnitTests\CreditCardMask.UnitTests.csproj", "{6ACF6E09-49C3-49CF-BEAA-755FA5C6066B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C5E2F528-2028-4303-A1FD-D0FF64D292BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5E2F528-2028-4303-A1FD-D0FF64D292BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5E2F528-2028-4303-A1FD-D0FF64D292BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5E2F528-2028-4303-A1FD-D0FF64D292BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6ACF6E09-49C3-49CF-BEAA-755FA5C6066B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ACF6E09-49C3-49CF-BEAA-755FA5C6066B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ACF6E09-49C3-49CF-BEAA-755FA5C6066B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6ACF6E09-49C3-49CF-BEAA-755FA5C6066B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
