@@ -4,7 +4,7 @@ public class Dinglemouse
 {
     public static int[] HumanYearsCatYearsDogYears(int humanYears)
     {
-        var value = (15 * (humanYears > 0 ? 1 : 0)) + (9 * (humanYears > 1 ? 1 : 0));
+        var value = 15 + (9 * (humanYears > 1 ? 1 : 0));
 
         return new int[]
         {
