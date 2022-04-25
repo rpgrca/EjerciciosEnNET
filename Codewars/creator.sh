@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ $# -ne 2 ]; then
+	echo "Usage: $0 level name"
+	exit 1
+fi
+
 LEVEL=$1
 NAME=$2
 KYUDIR=${LEVEL}kyu
