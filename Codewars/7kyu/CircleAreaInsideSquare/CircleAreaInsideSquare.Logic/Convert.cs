@@ -6,6 +6,7 @@ public class Convert
 {
     public static double SquareAreaToCircle(double size)
     {
-        return size;
+        var side = Math.Sqrt(size);
+        return Math.PI * Math.Pow(side / 2, 2);
     }
 }
