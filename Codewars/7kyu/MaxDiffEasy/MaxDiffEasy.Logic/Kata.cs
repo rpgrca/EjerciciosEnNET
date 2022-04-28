@@ -2,9 +2,5 @@
 
 public class Kata
 {
-    public static int MaxDiff(int[] lst)
-    {
-        if (lst.Length < 2) return 0;
-        return lst.Max() - lst.Min();
-    }
+    public static int MaxDiff(int[] lst) => lst.Length < 2 ? 0 : lst.Max() - lst.Min();
 }
