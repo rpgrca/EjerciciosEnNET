@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoveTheMinimum.Logic", "RemoveTheMinimum.Logic\RemoveTheMinimum.Logic.csproj", "{CCB03F18-739E-4D9A-99E6-07D326B93D53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoveTheMinimum.UnitTests", "RemoveTheMinimum.UnitTests\RemoveTheMinimum.UnitTests.csproj", "{DC2F2053-F3CF-478A-AAC5-A2E5B7DBA161}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CCB03F18-739E-4D9A-99E6-07D326B93D53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCB03F18-739E-4D9A-99E6-07D326B93D53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCB03F18-739E-4D9A-99E6-07D326B93D53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCB03F18-739E-4D9A-99E6-07D326B93D53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC2F2053-F3CF-478A-AAC5-A2E5B7DBA161}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC2F2053-F3CF-478A-AAC5-A2E5B7DBA161}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC2F2053-F3CF-478A-AAC5-A2E5B7DBA161}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC2F2053-F3CF-478A-AAC5-A2E5B7DBA161}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
