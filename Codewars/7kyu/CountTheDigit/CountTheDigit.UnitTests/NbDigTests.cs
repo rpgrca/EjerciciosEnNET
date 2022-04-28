@@ -11,7 +11,7 @@ public static class NbDigTests
     }
 
     [Test]
-    public static void test1() 
+    public static void test1()
     {
         Console.WriteLine("Fixed Tests NbDig");
         testing(CountDig.NbDig(5750, 0), 4700);
