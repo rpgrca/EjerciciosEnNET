@@ -2,8 +2,6 @@
 
 public class Kata
 {
-    public static string Remove(string s, int n)
-    {
-        //coding and coding....
-    }
+    public static string Remove(string s, int n) =>
+        s.Aggregate(string.Empty, (t, i) => t + (i == '!' && n-- > 0 ? "" : i));
 }
