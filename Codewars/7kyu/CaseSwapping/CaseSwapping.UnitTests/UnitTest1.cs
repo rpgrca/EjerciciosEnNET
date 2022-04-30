@@ -1,17 +1,12 @@
+using System;
 using NUnit.Framework;
+using CaseSwapping.Logic;
 
-namespace CaseSwapping.UnitTests;
-
-public class Tests
-{
-    [SetUp]
-    public void Setup()
-    {
-    }
-
-    [Test]
-    public void Test1()
-    {
-        Assert.Pass();
-    }
+[TestFixture]
+public class SwapTest {
+  [Test]
+  public void BasicTests() {
+    Assert.AreEqual("hELLOwORLD", Kata.Swap("HelloWorld"));
+    Assert.AreEqual("cODEwARS", Kata.Swap("CodeWars"));
+  }
 }
