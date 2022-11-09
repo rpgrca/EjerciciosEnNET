@@ -20,3 +20,13 @@ updates:
     schedule:
       interval: "weekly"
 
+  - package-ecosystem: "nuget"
+    directory: "/SistemaDeAparcamiento"
+    schedule:
+      interval: "weekly"
+
+
+  - package-ecosystem: "nuget"
+    directory: "/Codewars"
+    schedule:
+      interval: "weekly"
