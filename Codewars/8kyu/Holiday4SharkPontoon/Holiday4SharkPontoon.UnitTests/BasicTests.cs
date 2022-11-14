@@ -17,4 +17,10 @@ public class BasicTests
         Assert.AreEqual("Alive!", Kata.Shark(7, 8, 3, 4, true));
         Assert.AreEqual("Shark Bait!", Kata.Shark(7, 8, 3, 4, false));
     }
+
+    [Test]
+    public void MustBeEaten_WhenDistanceToSharkIsEqualAtBeginning()
+    {
+        Assert.AreEqual("Shark Bait!", Kata.Shark(35, 35, 3, 3, false));
+    }
 }
