@@ -3,7 +3,7 @@
 public class Kata
 {
     public static string Shark(int pontoonDistance, int sharkDistance, int yourSpeed, int sharkSpeed, bool dolphin) =>
-        sharkDistance / (float)sharkSpeed < pontoonDistance / (float)yourSpeed / (dolphin? 2 : 1)
-            ? "Shark Bait!"
-            : "Alive!";
+        pontoonDistance / (float)yourSpeed < sharkDistance * (dolphin? 2.0 : 1.0) / sharkSpeed
+            ? "Alive!"
+            : "Shark Bait!";
 }
