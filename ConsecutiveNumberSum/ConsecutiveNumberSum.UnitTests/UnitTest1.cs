@@ -8,9 +8,6 @@ namespace ConsecutiveNumberSum.UnitTests
     {
         private void Funcion1(int numero, int[] arreglo)
         {
-            var  arreglo.Zip(arreglo[1..])
-
-
             for (var index = 0; index < arreglo.Length; index++)
             {
                 var sum = 0;
