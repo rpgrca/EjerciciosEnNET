@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<coverage generated="1657403599" clover="4.3.1">
+  <project timestamp="1657403599">
+    <metrics complexity="0" elements="3" coveredelements="3" conditionals="4" coveredconditionals="4" statements="3" coveredstatements="3" coveredmethods="2" methods="2" classes="1" loc="11" ncloc="3" files="1" packages="1" />
+    <package name="LeapYear.Logic">
+      <metrics complexity="0" elements="3" coveredelements="3" conditionals="4" coveredconditionals="4" statements="3" coveredstatements="3" coveredmethods="2" methods="2" classes="1" loc="11" ncloc="3" files="1" />
+      <file path="/home/roberto/src/EjerciciosEnNET/LeapYear/LeapYear.Logic/LeapYearChecker.cs" name="LeapYearChecker.cs">
+        <metrics complexity="0" elements="3" coveredelements="3" conditionals="4" coveredconditionals="4" statements="3" coveredstatements="3" coveredmethods="2" methods="2" classes="1" loc="11" ncloc="3" />
+        <class name="LeapYear.Logic.LeapYearChecker">
+          <metrics complexity="0" elements="3" coveredelements="3" conditionals="4" coveredconditionals="4" statements="3" coveredstatements="3" coveredmethods="2" methods="2" />
+        </class>
+        <line complexity="4" signature=".ctor(System.Int32)" num="7" count="5" type="method" />
+        <line falsecount="0" truecount="4" num="8" type="cond" />
+        <line complexity="1" signature="Confirm()" num="10" count="5" type="method" />
+      </file>
+    </package>
+  </project>
+  <testproject timestamp="1657403599">
+    <metrics complexity="0" elements="0" coveredelements="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" coveredmethods="0" methods="0" classes="0" loc="0" ncloc="0" files="0" packages="0" />
+  </testproject>
+</coverage>
