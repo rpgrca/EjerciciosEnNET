@@ -19,8 +19,8 @@ namespace AdventOfGame2020.Day15.Logic
 
         private int Next()
         {
-            var nextNumber = _numbers.ContainsKey(_lastNumber)
-                ? _index - _numbers[_lastNumber]
+            var nextNumber = _numbers.TryGetValue(_lastNumber, out int value)
+                ? _index - value
                 : 0;
 
             _numbers[_lastNumber] = _index++;
