@@ -51,8 +51,8 @@ public static class NbDigTests
     [Test]
     public static void RandomTest()
     {
-        Console.WriteLine("100 Random Tests");
-        for (int i = 0; i < 100; i++)
+        Console.WriteLine("50 Random Tests");
+        for (int i = 0; i < 50; i++)
         {
             int n = rnd.Next(2000, 15000);
             int d = rnd.Next(0,9);
