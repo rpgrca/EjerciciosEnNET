@@ -42,6 +42,7 @@ namespace Day15.UnitTests
             Assert.Equal(40, sut.GetPathLevel());
         }
 
+#if !CI_CONTEXT
         [Fact]
         public void SolveFirstPuzzle()
         {
@@ -49,5 +50,6 @@ namespace Day15.UnitTests
             Assert.True(sut.GetPathLevel() < 829);
             Assert.Equal(824, sut.GetPathLevel());
         }
+#endif
     }
 }

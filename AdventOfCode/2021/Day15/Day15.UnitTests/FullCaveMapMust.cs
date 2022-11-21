@@ -32,11 +32,13 @@ namespace Day15.UnitTests
             Assert.Equal(315, sut.GetPathLevel());
         }
 
+#if !CI_CONTEXT
         [Fact]
         public void SolveSecondPuzzle()
         {
             var sut = CaveMap.CreateWithBigMapperAndOptimizedSearch(REAL_MAP);
             Assert.Equal(3063, sut.GetPathLevel());
         }
+#endif
     }
 }
