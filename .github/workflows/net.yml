@@ -34,12 +34,12 @@ jobs:
 
     - name: Build solutions
       run: |
-           dotnet build --configuration Debug --no-restore
+           dotnet build --configuration Debug --no-restore /p:DefineConstants="CI_CONTEXT
            for s in SistemaDeAparcamiento Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum Codewars SatelliteMessages MarsRover ArrayReordering; do
-               dotnet build --configuration Debug --no-restore $s/$s.sln
+               dotnet build --configuration Debug --no-restore $s/$s.sln /p:DefineConstants="CI_CONTEXT"
            done
            for s in 2021 2020; do
-               dotnet build --configuration Debug --no-restore AdventOfCode/$s/AdventOfCode$s.sln
+               dotnet build --configuration Debug --no-restore AdventOfCode/$s/AdventOfCode$s.sln /p:DefineConstants="CI_CONTEXT"
            done
 
     - name: Testing AdventOfCode/2021
