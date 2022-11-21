@@ -4,6 +4,7 @@ public class Kata
 {
     public static int NextPal(int value)
     {
-        throw new NotImplementedException();
+        while ((++value).ToString() != string.Join("", value.ToString().Reverse()));
+        return value;
     }
 }
