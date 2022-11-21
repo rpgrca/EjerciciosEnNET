@@ -34,7 +34,7 @@ jobs:
 
     - name: Build solutions
       run: |
-           dotnet build --configuration Debug --no-restore /p:DefineConstants="CI_CONTEXT
+           dotnet build --configuration Debug --no-restore /p:DefineConstants="CI_CONTEXT"
            for s in SistemaDeAparcamiento Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum Codewars SatelliteMessages MarsRover ArrayReordering; do
                dotnet build --configuration Debug --no-restore $s/$s.sln /p:DefineConstants="CI_CONTEXT"
            done
