@@ -15,31 +15,8 @@ namespace Day18.Logic.Numbers
             RightSide = rightSide;
         }
 
-        public int GetMagnitude()
-        {
-            int magnitude;
-            if (LeftSide is SnailFishNumber snailFishNumber)
-            {
-                magnitude = snailFishNumber.GetMagnitude() * 3;
-            }
-            else
-            {
-                var leftNumber = (RegularNumber)LeftSide;
-                magnitude = leftNumber.Value * 3;
-            }
-
-            if (RightSide is SnailFishNumber snailFishNumber1)
-            {
-                magnitude += snailFishNumber1.GetMagnitude() * 2;
-            }
-            else
-            {
-                var rightNumber = (RegularNumber)RightSide;
-                magnitude += rightNumber.Value * 2;
-            }
-
-            return magnitude;
-        }
+        public override int GetMagnitude() =>
+            LeftSide.GetMagnitude() * 3 + RightSide.GetMagnitude() * 2;
 
         internal void ReplaceSideWith(SnailFishNumber oldSnailFishNumber, RegularNumber regularNumber)
         {

@@ -17,9 +17,11 @@ namespace Day18.Logic.Numbers
             _order = order;
         }
 
-        public void Add(RegularNumber number) => _number += number.Value;
+        public override int GetMagnitude() => Value;
 
         public override void Accept(INumberVisitor visitor) => visitor.Visit(this);
+
+        public void Add(RegularNumber number) => _number += number.Value;
 
         public bool IsOrder(int order) => _order == order;
 

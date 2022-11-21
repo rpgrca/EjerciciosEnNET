@@ -1,4 +1,3 @@
-using System;
 using Day18.Logic.Numbers;
 using Day18.Logic.Reducers;
 using Day18.Logic.Visitors;
@@ -29,17 +28,17 @@ namespace Day18.Logic
             _value.Accept(visitor);
             _snailFishNumberToSplitParent = visitor.SnailFishNumberToSplitParent;
 
+            var snailFishNumber = new SnailFishNumber(
+                new RegularNumber((int)(_snailFishNumberToSplit.Value / 2.0)),
+                new RegularNumber((int)((_snailFishNumberToSplit.Value + 1) / 2.0)));
+
             if (_snailFishNumberToSplitParent.LeftSide == _snailFishNumberToSplit)
             {
-                _snailFishNumberToSplitParent.LeftSide = new SnailFishNumber(
-                    new RegularNumber((int)Math.Floor(_snailFishNumberToSplit.Value / 2.0)),
-                    new RegularNumber((int)Math.Ceiling(_snailFishNumberToSplit.Value / 2.0)));
+                _snailFishNumberToSplitParent.LeftSide = snailFishNumber;
             }
             else
             {
-                _snailFishNumberToSplitParent.RightSide = new SnailFishNumber(
-                    new RegularNumber((int)Math.Floor(_snailFishNumberToSplit.Value / 2.0)),
-                    new RegularNumber((int)Math.Ceiling(_snailFishNumberToSplit.Value / 2.0)));
+                _snailFishNumberToSplitParent.RightSide = snailFishNumber;
             }
 
             var orderVisitor = new ReorderRegularNumberVisitor();
