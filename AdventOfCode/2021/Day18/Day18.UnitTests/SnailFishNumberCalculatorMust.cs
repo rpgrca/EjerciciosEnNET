@@ -105,6 +105,7 @@ namespace Day18.UnitTests
             Assert.Equal(4140, sut.Result.GetMagnitude());
         }
 
+#if !CI_CONTEXT
         [Fact]
         public void SolveFirstPuzzle()
         {
@@ -112,6 +113,7 @@ namespace Day18.UnitTests
             sut.AddNumbers();
             Assert.Equal(3411, sut.Result.GetMagnitude());
         }
+#endif
 
         [Fact]
         public void SolveSecondPuzzle_WhenUsingSampleInput()
@@ -121,6 +123,7 @@ namespace Day18.UnitTests
             Assert.Equal(3993, sut.Result.GetMagnitude());
         }
 
+#if !CI_CONTEXT
         [Fact]
         public void SolveSecondPuzzle()
         {
@@ -128,5 +131,6 @@ namespace Day18.UnitTests
             sut.FindLargestMagnitude();
             Assert.Equal(4680, sut.Result.GetMagnitude());
         }
+#endif
     }
 }
