@@ -34,12 +34,12 @@ public class SolutionTest
     [Test]
     public void RandomTest()
     {
-        const int Tests = 300;
+        const int Tests = 100;
 
         for (int i = 0; i < Tests; ++i)
         {
-            int[] a = new int[rnd.Next(0, 10000)].Select(_ => rnd.Next(0, 1001)).ToArray();
-            int[] b = new int[rnd.Next(0, 1000)].Select(_ => rnd.Next(0, 1001)).ToArray();
+            int[] a = new int[rnd.Next(0, 1000)].Select(_ => rnd.Next(0, 1001)).ToArray();
+            int[] b = new int[rnd.Next(0, 100)].Select(_ => rnd.Next(0, 1001)).ToArray();
 
             int[] expected = solution(a, b);
             int[] actual = Kata.ArrayDiff(a, b);
