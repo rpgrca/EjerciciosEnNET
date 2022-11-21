@@ -19,7 +19,7 @@ namespace AdventOfCode2020.Day15.UnitTests
         public void CalculateTheNthElement_WhenItsNoLongerInTheInitializationArray(int order, int expectedResult)
         {
             int[] numbers = { 0, 3, 6 };
-            var sut = new MemoryGame(numbers);
+            var sut = new MemoryGame(numbers, 10);
 
             Assert.Equal(expectedResult, sut.CalculateFor(order));
         }
@@ -34,7 +34,7 @@ namespace AdventOfCode2020.Day15.UnitTests
         [InlineData(3, 1, 2, 1836)]
         public void FindThe2020thElementFromSamples(int firstNumber, int secondNumber, int thirdNumber, int expectedNumber)
         {
-            var sut = new MemoryGame(new int[] { firstNumber, secondNumber, thirdNumber });
+            var sut = new MemoryGame(new int[] { firstNumber, secondNumber, thirdNumber }, 2020);
             Assert.Equal(expectedNumber, sut.CalculateFor(2020));
         }
 
@@ -42,12 +42,13 @@ namespace AdventOfCode2020.Day15.UnitTests
         public void SolveFirstPuzzle()
         {
             int[] numbers = { 2, 20, 0, 4, 1, 17 };
-            var sut = new MemoryGame(numbers);
+            var sut = new MemoryGame(numbers, 2020);
 
             Assert.Equal(758, sut.CalculateFor(2020));
         }
 
-        [Theory(Skip = "slow test, 15s in total in own machine, 40s at Github")]
+#if !CI_CONTEXT
+        [Theory]
         [InlineData(0, 3, 6, 175594)]
         [InlineData(1, 3, 2, 2578)]
         [InlineData(2, 1, 3, 3544142)]
@@ -57,15 +58,16 @@ namespace AdventOfCode2020.Day15.UnitTests
         [InlineData(3, 1, 2, 362)]
         public void FindThe30millionthElementFromSamples(int firstNumber, int secondNumber, int thirdNumber, int expectedNumber)
         {
-            var sut = new MemoryGame(new int[] { firstNumber, secondNumber, thirdNumber });
+            var sut = new MemoryGame(new int[] { firstNumber, secondNumber, thirdNumber }, 30000000);
             Assert.Equal(expectedNumber, sut.CalculateFor(30000000));
         }
+#endif
 
-        [Fact(Skip = "slow test, 15s in total in own machine, 40s at Github")]
+        [Fact]
         public void SolveSecondPuzzle()
         {
             int[] numbers = { 2, 20, 0, 4, 1, 17 };
-            var sut = new MemoryGame(numbers);
+            var sut = new MemoryGame(numbers, 30000000);
 
             Assert.Equal(814, sut.CalculateFor(30000000));
         }
