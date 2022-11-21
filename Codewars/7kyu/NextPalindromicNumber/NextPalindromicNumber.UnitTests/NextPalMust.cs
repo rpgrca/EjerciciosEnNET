@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using NextPalindromicNumber.Logic;
 
 namespace NextPalindromicNumber.Solution;
 
