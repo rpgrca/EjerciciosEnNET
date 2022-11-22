@@ -87,6 +87,7 @@ namespace Day20.UnitTests
             Assert.Equal(3351, sut.CountLitPixels());
         }
 
+#if !CI_CONTEXT
         [Fact]
         public void SolveSecondPuzzle()
         {
@@ -95,5 +96,6 @@ namespace Day20.UnitTests
 
             Assert.Equal(18732, sut.CountLitPixels());
         }
+#endif
     }
 }
