@@ -46,6 +46,50 @@ namespace Day23.Logic
     //                  | 2 |           | 8 |           |14 |           |20 |
     //                  +---+           +---+           +---+           +---+
     //
+    // 00000000 00000000 00000000 00000000
+    //                e                    -> Entrance
+    //                 1                   -> First room of Home
+    //                   2                 -> Second room of Home
+    //                    3                -> Third room of Home
+    //                     4               -> Fourth room of Home
+    //                      a              -> A Home
+    //                       b             -> B Home
+    //                        c            -> C Home
+    //                         d           -> D Home
+    //                          x          -> Transition room
+    //                            n        -> Room with North Exit
+    //                             s       -> Room with South Exit
+    //                              e      -> Room with East Exit
+    //                               w     -> Room with West Exit
+    //
+    //  0: 000000000100100000 288
+    //  1: 000000000100000001 257
+    //  2: 000011000010000000 12416
+    //  3: 000101000011000000 20672
+    //  4: 001001000011000000 37056
+    //  5: 010001000011000000 69824
+    //  6: 100001000101110000 135536
+    //  7: 000000000100110010 306
+    //  8: 000010100010000000 10368
+    //  9: 000100100011000000 18624
+    // 10: 001000100011000000 35008
+    // 11: 010000100011000000 67776
+    // 12: 100000100101110000 133488
+    // 13: 000000000100110011 307
+    // 14: 000010010010000000 9344
+    // 15: 000100010011000000 17600
+    // 16: 001000010011000000 33984
+    // 17: 010000010011000000 66752
+    // 18: 100000010101110000 132464
+    // 19: 000000000100110100 308
+    // 20: 000010001010000000 8832
+    // 21: 000100001011000000 17088
+    // 22: 001000001011000000 33472
+    // 23: 010000001011000000 66240
+    // 24: 100000001101110000 131952
+    // 25: 000000000100110101 309
+    // 26: 000000000100010111 279
+
     public class LongMap : IMapInformation
     {
         private readonly char[] _rooms;
@@ -54,6 +98,22 @@ namespace Day23.Logic
         private readonly int[][] _paths;
         private readonly string _data;
         private string _map;
+        private readonly int[] _bitmap;
+
+        private const int HomeEntrance   = 0b100000000000000000;
+        private const int FirstRoom      = 0b010000000000000000;
+        private const int SecondRoom     = 0b001000000000000000;
+        private const int ThirdRoom      = 0b000100000000000000;
+        private const int FourthRoom     = 0b000010000000000000;
+        private const int HomeA          = 0b000001000000000000;
+        private const int HomeB          = 0b000000100000000000;
+        private const int HomeC          = 0b000000010000000000;
+        private const int HomeD          = 0b000000001000000000;
+        private const int TransitionRoom = 0b000000000100000000;
+        private const int NorthExit      = 0b000000000010000000;
+        private const int SouthExit      = 0b000000000001000000;
+        private const int EastExit       = 0b000000000000100000;
+        private const int WestExit       = 0b000000000000010000;
 
         public LongMap(string data)
         {
@@ -67,6 +127,7 @@ namespace Day23.Logic
             _rooms = new string('.', 27).ToCharArray();
             _amphipods = new int[] { 5, 11, 17, 23 };
             _mapRelocator = new int[] { 0, 1, 6, 7, 12, 13, 18, 19, 24, 25, 26, 5, 11, 17, 23, 4, 10, 16, 22, 3, 9, 15, 21, 2, 8, 14, 20 };
+            _bitmap = new int[] { 288, 257, 12416, 20672, 37056, 69824, 135536, 306, 10368, 18624, 35008, 67776, 133488, 307, 9344, 17600, 33984, 66752, 132464, 308, 8832, 17088, 33472, 66240, 131952, 309, 279 };
 
             _paths = new int[][]
             {
@@ -141,15 +202,50 @@ namespace Day23.Logic
 
         public bool CanAmphipodMoveTo(int amphipod, int option)
         {
-            if (amphipod is 0 or 1 or 7 or 13 or 19 or 25 or 26)
+            if ((_bitmap[amphipod] & TransitionRoom) != 0)
             {
-                if (option is 0 or 1 or 7 or 13 or 19 or 25 or 26)
+                if ((_bitmap[option] & TransitionRoom) != 0)
                 {
                     return false;
                 }
             }
 
-            return true;
+            if (InHomeArea(option))
+            {
+                if (GoingToOwnHome(amphipod, option))
+                {
+                    if (!StrangersAtHome(amphipod))
+                    {
+                        return _rooms[option] == '.';
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return _rooms[option] == '.';
+
+        }
+
+        public bool GoingToOwnHome(int amphipod, int target)
+        {
+            var bitmap = _bitmap[target];
+            if ((bitmap & (FirstRoom | SecondRoom | ThirdRoom | FourthRoom)) != 0)
+            {
+                var route = _rooms[amphipod];
+                return ((bitmap & HomeA) != 0) && route == 'A' ||
+                       ((bitmap & HomeB) != 0) && route == 'B' ||
+                       ((bitmap & HomeC) != 0) && route == 'C' ||
+                       ((bitmap & HomeD) != 0) && route == 'D';
+            }
+
+            return false;
         }
 
         public IEnumerable<int> AvailableMovementOptions(int amphipod)
@@ -174,11 +270,20 @@ namespace Day23.Logic
             if (amphipod != 26) yield return 26;
         }
 
-        public bool ForeignersInOwnHomeArea(int amphipod) =>
-            ((amphipod is >= 2 and <= 5) && ((_rooms[2] is not '.' and not 'A') || (_rooms[3] is not '.' and not 'A') || (_rooms[4] is not '.' and not 'A') || (_rooms[5] is not '.' and not 'A'))) ||
-            ((amphipod is >= 8 and <= 11) && ((_rooms[8] is not '.' and not 'B') || (_rooms[9] is not '.' and not 'B') || (_rooms[10] is not '.' and not 'B') || (_rooms[11] is not '.' and not 'B'))) ||
-            ((amphipod is >= 14 and <= 17) && ((_rooms[14] is not '.' and not 'C') || (_rooms[15] is not '.' and not 'C') || (_rooms[16] is not '.' and not 'C') || (_rooms[17] is not '.' and not 'C'))) ||
-            ((amphipod is >= 20 and <= 23) && ((_rooms[20] is not '.' and not 'D') || (_rooms[21] is not '.' and not 'D') || (_rooms[22] is not '.' and not 'D') || (_rooms[23] is not '.' and not 'D')));
+        public bool ForeignersInOwnHomeArea(int amphipod)
+        {
+            var bitmap = _bitmap[amphipod];
+
+            if ((bitmap & (FirstRoom | SecondRoom | ThirdRoom | FourthRoom)) != 0)
+            {
+                return ((bitmap & HomeA) != 0) && ((_rooms[2] is not '.' and not 'A') || (_rooms[3] is not '.' and not 'A') || (_rooms[4] is not '.' and not 'A') || (_rooms[5] is not '.' and not 'A')) ||
+                    ((bitmap & HomeB) != 0 && ((_rooms[8] is not '.' and not 'B') || (_rooms[9] is not '.' and not 'B') || (_rooms[10] is not '.' and not 'B') || (_rooms[11] is not '.' and not 'B'))) ||
+                    ((bitmap & HomeC) != 0 && ((_rooms[14] is not '.' and not 'C') || (_rooms[15] is not '.' and not 'C') || (_rooms[16] is not '.' and not 'C') || (_rooms[17] is not '.' and not 'C'))) ||
+                    ((bitmap & HomeD) != 0 && ((_rooms[20] is not '.' and not 'D') || (_rooms[21] is not '.' and not 'D') || (_rooms[22] is not '.' and not 'D') || (_rooms[23] is not '.' and not 'D')));
+            }
+
+            return false;
+        }
 
         public override string ToString() => string.Format(_map, _rooms.Select(p => p.ToString()).ToArray());
 
@@ -189,19 +294,22 @@ namespace Day23.Logic
             ((_rooms[amphipod] == 'D') && (_rooms[20] is '.' or 'D') && (_rooms[21] is '.' or 'D') && (_rooms[22] is '.' or 'D') && (_rooms[23] is '.' or 'D'));
 
         public bool HasFinalPositionBeenReached() =>
-            _rooms[2] == 'A' && _rooms[3] == 'A' && _rooms[4] == 'A' && _rooms[5] == 'A' &&
-            _rooms[8] == 'B' && _rooms[9] == 'B' && _rooms[10] == 'B' && _rooms[11] == 'B' &&
+            _rooms[20] == 'D' && _rooms[21] == 'D' && _rooms[22] == 'D' && _rooms[23] == 'D' &&
             _rooms[14] == 'C' && _rooms[15] == 'C' && _rooms[16] == 'C' && _rooms[17] == 'C' &&
-            _rooms[20] == 'D' && _rooms[21] == 'D' && _rooms[22] == 'D' && _rooms[23] == 'D';
+            _rooms[8] == 'B' && _rooms[9] == 'B' && _rooms[10] == 'B' && _rooms[11] == 'B' &&
+            _rooms[2] == 'A' && _rooms[3] == 'A' && _rooms[4] == 'A' && _rooms[5] == 'A';
 
         public bool InHomeArea(int location) =>
-            location is (>= 2 and <= 5) or (>= 8 and <= 11) or (>= 14 and <= 17) or (>= 20 and <= 23);
+            (_bitmap[location] & (FirstRoom | SecondRoom | ThirdRoom | FourthRoom)) != 0;
 
-        public bool InOwnHomeArea(int location) =>
-                (_rooms[location] == 'A' && location is >= 2 and <= 5) ||
-                (_rooms[location] == 'B' && location is >= 8 and <= 11) ||
-                (_rooms[location] == 'C' && location is >= 14 and <= 17) ||
-                (_rooms[location] == 'D' && location is >= 20 and <= 23);
+        public bool InOwnHomeArea(int location)
+        {
+            var bitmap = _bitmap[location];
+            return (_rooms[location] == 'A' && (bitmap & HomeA) != 0) ||
+                   (_rooms[location] == 'B' && (bitmap & HomeB) != 0) ||
+                   (_rooms[location] == 'C' && (bitmap & HomeC) != 0) ||
+                   (_rooms[location] == 'D' && (bitmap & HomeD) != 0);
+        }
 
         public bool StrangersAtHome(int amphipod) =>
             (_rooms[amphipod] == 'A' && ((_rooms[2] is 'B' or 'C' or 'D') || (_rooms[3] is 'B' or 'C' or 'D') || (_rooms[4] is 'B' or 'C' or 'D'))) ||
@@ -209,7 +317,7 @@ namespace Day23.Logic
             (_rooms[amphipod] == 'C' && ((_rooms[14] is 'A' or 'B' or 'D') || (_rooms[15] is 'A' or 'B' or 'D') || (_rooms[16] is 'A' or 'B' or 'D'))) ||
             (_rooms[amphipod] == 'D' && ((_rooms[20] is 'A' or 'B' or 'C') || (_rooms[21] is 'A' or 'B' or 'C') || (_rooms[22] is 'A' or 'B' or 'C')));
 
-        public bool IsThereAnAmphipodAt(int node) => _rooms[node] is >= 'A' and <= 'D';
+        public bool IsThereAnAmphipodAt(int node) => _rooms[node] != '.';
 
         public void MoveFrom(int from, int to)
         {
@@ -221,6 +329,7 @@ namespace Day23.Logic
 
         public int GetRoomLength() => _rooms.Length;
 
-        public bool AtHomeAreaEntrance(int currentLocation) => currentLocation is 6 or 12 or 18 or 24;
+        public bool AtHomeAreaEntrance(int currentLocation) =>
+            (_bitmap[currentLocation] & HomeEntrance) != 0;
     }
 }

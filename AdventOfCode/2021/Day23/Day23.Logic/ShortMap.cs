@@ -124,26 +124,9 @@ namespace Day23.Logic
                 }
             }
 
-            if (InHomeArea(option))
-            {
-                if (GoingToOwnHome(amphipod, option))
-                {
-                    if (!StrangersAtHome(amphipod))
-                    {
-                        return _rooms[option] == '.';
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            return _rooms[option] == '.';
+            return InHomeArea(option)
+                ? GoingToOwnHome(amphipod, option) && !StrangersAtHome(amphipod) && _rooms[option] == '.'
+                : _rooms[option] == '.';
         }
 
         public bool GoingToOwnHome(int amphipod, int target)

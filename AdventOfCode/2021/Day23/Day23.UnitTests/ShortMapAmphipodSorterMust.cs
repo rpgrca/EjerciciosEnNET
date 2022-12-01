@@ -328,7 +328,7 @@ namespace Day23.UnitTests
           Assert.Equal(4600, sut.LowestTotalCost);
         }
 
-        [Fact(Skip = "slow test, 14s on Github")]
+        [Fact]
         public void SolveFirstShortSample()
         {
           var sut = Walker.CreateWithShortMapSupport(SAMPLE_SHORT_MAP);
@@ -336,12 +336,14 @@ namespace Day23.UnitTests
           Assert.Equal(12521, sut.LowestTotalCost);
         }
 
-        [Fact(Skip = "slow test, 5m 14s on own machine")]
+#if !CI_CONTEXT
+        [Fact]
         public void SolveFirstPuzzle()
         {
           var sut = Walker.CreateWithShortMapSupport(REAL_SHORT_MAP);
           sut.Run();
           Assert.Equal(15322, sut.LowestTotalCost);
         }
+#endif
     }
 }
