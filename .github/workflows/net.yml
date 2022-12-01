@@ -25,7 +25,7 @@ jobs:
            for s in SistemaDeAparcamiento Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum Codewars SatelliteMessages MarsRover ArrayReordering; do
                dotnet restore $s/$s.sln
            done
-           for s in 2021 2020; do
+           for s in 2022 2021 2020; do
                dotnet restore AdventOfCode/$s/AdventOfCode$s.sln
            done
 
@@ -38,20 +38,22 @@ jobs:
            for s in SistemaDeAparcamiento Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum Codewars SatelliteMessages MarsRover ArrayReordering; do
                dotnet build --configuration Debug --no-restore $s/$s.sln /p:DefineConstants="CI_CONTEXT"
            done
-           for s in 2021 2020; do
+           for s in 2022 2021 2020; do
                dotnet build --configuration Debug --no-restore AdventOfCode/$s/AdventOfCode$s.sln /p:DefineConstants="CI_CONTEXT"
            done
 
-    - name: Testing AdventOfCode/2021
+    - name: Testing AdventOfCode/2022
       run: |
            for d in `seq 25`; do
-               coverlet AdventOfCode/2021/Day$d/Day$d.UnitTests/bin/Debug/net7/Day$d.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode/2021/Day$d/Day$d.UnitTests/Day$d.UnitTests.csproj --no-build" --format OpenCover --output adventofcode2021day$d.coverage.xml
+               coverlet AdventOfCode/2022/Day$d/Day$d.UnitTests/bin/Debug/net7/Day$d.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode/2022/Day$d/Day$d.UnitTests/Day$d.UnitTests.csproj --no-build" --format OpenCover --output adventofcode2022day$d.coverage.xml
            done
 
-    - name: Testing AdventOfCode/2020
+    - name: Testing old AdventOfCode
       run: |
-           for d in `seq 25`; do
-               coverlet AdventOfCode/2020/Day$d/Day$d.UnitTests/bin/Debug/net7/Day$d.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode/2020/Day$d/Day$d.UnitTests/Day$d.UnitTests.csproj --no-build" --format OpenCover --output adventofcode2020day$d.coverage.xml
+           for s in 2021 2020; do
+               for d in `seq 25`; do
+                   coverlet AdventOfCode/$s/Day$d/Day$d.UnitTests/bin/Debug/net7/Day$d.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode/$s/Day$d/Day$d.UnitTests/Day$d.UnitTests.csproj --no-build" --format OpenCover --output adventofcode$sday$d.coverage.xml
+               done
            done
 
     - name: Testing Standalone Programs
