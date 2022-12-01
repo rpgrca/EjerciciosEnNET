@@ -25,4 +25,12 @@ public class CalorieCounterMust
         var sut = new CalorieCounter(SAMPLE_INPUT);
         Assert.Equal(45000, sut.CaloriesCarriedByTopThreeElves);
     }
+
+    [Fact]
+    public void SolveSecondPuzzleCorrectly()
+    {
+        var sut = new CalorieCounter(PUZZLE_INPUT);
+        Assert.Equal(202346, sut.CaloriesCarriedByTopThreeElves);
+    }
+
 }
