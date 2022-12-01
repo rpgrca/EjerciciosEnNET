@@ -1,9 +1,13 @@
 ﻿namespace Day1.Logic;
+
+using System.Linq;
+
 public class CalorieCounter
 {
     private string _input;
 
     public int MostCaloriesCarriedBySingleElf { get; set; }
+    public int CaloriesCarriedByTopThreeElves { get; set; }
 
     public CalorieCounter(string input)
     {
@@ -16,17 +20,13 @@ public class CalorieCounter
     {
         var lines = _input.Split("\n");
         var total = 0;
-        var maximum = 0;
+        var elves = new List<int>();
 
         foreach (var line in lines)
         {
             if (string.IsNullOrEmpty(line))
             {
-                if (total > maximum)
-                {
-                    maximum = total;
-                }
-
+                elves.Add(total);
                 total = 0;
             }
             else
@@ -35,6 +35,8 @@ public class CalorieCounter
             }
         }
 
-        MostCaloriesCarriedBySingleElf = maximum;
+        elves.Sort();
+        MostCaloriesCarriedBySingleElf = elves[^1];
+        CaloriesCarriedByTopThreeElves = elves[^1] + elves[^2] + elves[^3];
     }
 }

@@ -15,7 +15,8 @@ public static class Constants
 8000
 9000
 
-10000";
+10000
+";
 
     public const string PUZZLE_INPUT = @"6110
 2550
@@ -2265,5 +2266,6 @@ public static class Constants
 6191
 6420
 3329
-5404";
+5404
+";
 }
