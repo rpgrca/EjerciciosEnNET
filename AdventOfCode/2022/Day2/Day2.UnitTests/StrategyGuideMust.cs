@@ -11,14 +11,31 @@ public class StrategyGuideMust
     [InlineData(SAMPLE_INPUT, 15)]
     public void SolveSampleCorrectly(string input, int expectedPoints)
     {
-        var sut = new StrategyGuide(input);
+        var sut = new StrategyGuide(input, true);
         Assert.Equal(expectedPoints, sut.TotalScore);
     }
 
     [Fact]
     public void SolveFirstPuzzle()
     {
-        var sut = new StrategyGuide(PUZZLE_INPUT);
+        var sut = new StrategyGuide(PUZZLE_INPUT, true);
         Assert.Equal(11150, sut.TotalScore);
+    }
+
+    [Theory]
+    [InlineData("A Y", 4)]
+    [InlineData("A Y\nB X", 5)]
+    [InlineData(SAMPLE_INPUT, 12)]
+    public void SolveSecondSampleCorrectly(string input, int expectedPoints)
+    {
+        var sut = new StrategyGuide(input, false);
+        Assert.Equal(expectedPoints, sut.TotalScore);
+    }
+
+    [Fact]
+    public void SolveSecondPuzzle()
+    {
+        var sut = new StrategyGuide(PUZZLE_INPUT, false);
+        Assert.Equal(8295, sut.TotalScore);
     }
 }
