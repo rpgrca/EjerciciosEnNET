@@ -2,6 +2,8 @@
 public class StrategyGuide
 {
     private string _input;
+    private int[][] _scores;
+    private char [][] _translation;
 
     public int TotalScore { get; private set; }
 
@@ -9,13 +11,30 @@ public class StrategyGuide
     {
         this._input = input;
 
+        _scores = new int[][]
+        {
+            new[] { 4, 1, 7 },
+            new[] { 8, 5, 2 },
+            new[] { 3, 9, 6 }
+        };
+
         if (firstPart)
         {
+            _translation = new char[][] {
+                new[] { 'X', 'Y', 'Z' },
+                new[] { 'X', 'Y', 'Z' },
+                new[] { 'X', 'Y', 'Z' }
+            };
             Parse();
         }
         else
         {
-            Parse2();
+            _translation = new char[][] {
+                new[] { 'Z', 'X', 'Y' },
+                new[] { 'X', 'Y', 'Z' },
+                new[] { 'Y', 'Z', 'X'}
+            };
+            Parse();
         }
     }
 
@@ -27,43 +46,14 @@ public class StrategyGuide
         {
             var opponent = line[0];
             var myself = line[2];
+
+            myself = _translation[opponent - 'A'][myself - 'X'];
             points += CalculatePoints(opponent, myself);
         }
 
         TotalScore = points;
     }
 
-    private static int CalculatePoints(char opponent, char myself)
-    {
-        int[][] scores = new int[][]
-        {
-            new[] { 4, 1, 7 },
-            new[] { 8, 5, 2 },
-            new[] { 3, 9, 6 }
-        };
-
-        return scores[myself - 'X'][opponent - 'A'];
-    }
-
-    private void Parse2()
-    {
-        var lines = _input.Split("\n");
-        var points = 0;
-        char [][] scores = new char[][] {
-            new[] { 'Z', 'X', 'Y' },
-            new[] { 'X', 'Y', 'Z' },
-            new[] { 'Y', 'Z', 'X'}
-        };
-
-        foreach (var line in lines)
-        {
-            var opponent = line[0];
-            var myself = line[2];
-
-            myself = scores[opponent - 'A'][myself - 'X'];
-            points += CalculatePoints(opponent, myself);
-        }
-
-        TotalScore = points;
-    }
+    private int CalculatePoints(char opponent, char myself) =>
+        _scores[myself - 'X'][opponent - 'A'];
 }
