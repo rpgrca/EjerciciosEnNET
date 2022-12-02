@@ -27,73 +27,41 @@ public class StrategyGuide
         {
             var opponent = line[0];
             var myself = line[2];
-
-            switch (myself)
-            {
-                case 'X':
-                    points += 1 + opponent switch {
-                        'A' => 3,
-                        'B' => 0,
-                        'C' => 6
-                    };
-                    break;
-
-                case 'Y':
-                    points += 2 + opponent switch {
-                        'A' => 6,
-                        'B' => 3,
-                        'C' => 0
-                    };
-                    break;
-
-                case 'Z':
-                    points += 3 + opponent switch {
-                        'A' => 0,
-                        'B' => 6,
-                        'C' => 3
-                    };
-                    break;
-            }
+            points += CalculatePoints(opponent, myself);
         }
 
         TotalScore = points;
+    }
+
+    private static int CalculatePoints(char opponent, char myself)
+    {
+        int[][] scores = new int[][]
+        {
+            new[] { 4, 1, 7 },
+            new[] { 8, 5, 2 },
+            new[] { 3, 9, 6 }
+        };
+
+        return scores[myself - 'X'][opponent - 'A'];
     }
 
     private void Parse2()
     {
         var lines = _input.Split("\n");
         var points = 0;
+        char [][] scores = new char[][] {
+            new[] { 'Z', 'X', 'Y' },
+            new[] { 'X', 'Y', 'Z' },
+            new[] { 'Y', 'Z', 'X'}
+        };
+
         foreach (var line in lines)
         {
             var opponent = line[0];
             var myself = line[2];
 
-            switch (myself)
-            {
-                case 'X':
-                    points += opponent switch {
-                        'A' => 3,
-                        'B' => 1,
-                        'C' => 2
-                    };
-                    break;
-
-                case 'Y':
-                    points += 3 + opponent switch {
-                        'A' => 1,
-                        'B' => 2,
-                        'C' => 3
-                    };
-                    break;
-
-                case 'Z':
-                    points += 6 + opponent switch {
-                        'A' => 2,
-                        'B' => 3,
-                        'C' => 1
-                    };
-                    break;
-            }
+            myself = scores[opponent - 'A'][myself - 'X'];
+            points += CalculatePoints(opponent, myself);
         }
 
         TotalScore = points;
