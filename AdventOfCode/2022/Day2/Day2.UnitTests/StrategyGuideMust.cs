@@ -5,17 +5,13 @@ using static Day2.UnitTests.Constants;
 
 public class StrategyGuideMust
 {
-    [Fact]
-    public void Test1()
+    [Theory]
+    [InlineData("A Y", 8)]
+    [InlineData("A Y\nB X", 9)]
+    [InlineData(SAMPLE_INPUT, 15)]
+    public void Test1(string input, int expectedPoints)
     {
-        var sut = new StrategyGuide("A Y");
-        Assert.Equal(8, sut.TotalScore);
-    }
-
-    [Fact]
-    public void Test2()
-    {
-        var sut = new StrategyGuide("A Y\nB X");
-        Assert.Equal(9, sut.TotalScore);
+        var sut = new StrategyGuide(input);
+        Assert.Equal(expectedPoints, sut.TotalScore);
     }
 }

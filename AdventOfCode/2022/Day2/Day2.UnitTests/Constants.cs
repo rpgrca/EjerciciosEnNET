@@ -4,8 +4,7 @@ public static class Constants
 {
     public const string SAMPLE_INPUT = @"A Y
 B X
-C Z
-";
+C Z";
 
     public const string PUZZLE_INPUT = @"A Z
 A Y
