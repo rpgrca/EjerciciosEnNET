@@ -7,9 +7,24 @@ public class StrategyGuide
 
     public int TotalScore { get; private set; }
 
-    public StrategyGuide(string input, bool firstPart)
+    public static StrategyGuide CreateForFirstPart(string input) =>
+        new(input, new char[][] {
+            new[] { 'X', 'Y', 'Z' },
+            new[] { 'X', 'Y', 'Z' },
+            new[] { 'X', 'Y', 'Z' }
+        });
+
+    public static StrategyGuide CreateForSecondPart(string input) =>
+        new(input, new char[][] {
+            new[] { 'Z', 'X', 'Y' },
+            new[] { 'X', 'Y', 'Z' },
+            new[] { 'Y', 'Z', 'X'}
+        });
+
+    private StrategyGuide(string input, char[][] translation)
     {
-        this._input = input;
+        _input = input;
+        _translation = translation;
 
         _scores = new int[][]
         {
@@ -18,24 +33,7 @@ public class StrategyGuide
             new[] { 3, 9, 6 }
         };
 
-        if (firstPart)
-        {
-            _translation = new char[][] {
-                new[] { 'X', 'Y', 'Z' },
-                new[] { 'X', 'Y', 'Z' },
-                new[] { 'X', 'Y', 'Z' }
-            };
-            Parse();
-        }
-        else
-        {
-            _translation = new char[][] {
-                new[] { 'Z', 'X', 'Y' },
-                new[] { 'X', 'Y', 'Z' },
-                new[] { 'Y', 'Z', 'X'}
-            };
-            Parse();
-        }
+        Parse();
     }
 
     private void Parse()
