@@ -2505,6 +2505,5 @@ B X
 B Y
 A X
 C Y
-B Z
-    ";
+B Z";
 }

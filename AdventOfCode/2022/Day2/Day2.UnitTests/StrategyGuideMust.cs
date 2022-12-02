@@ -9,9 +9,16 @@ public class StrategyGuideMust
     [InlineData("A Y", 8)]
     [InlineData("A Y\nB X", 9)]
     [InlineData(SAMPLE_INPUT, 15)]
-    public void Test1(string input, int expectedPoints)
+    public void SolveSampleCorrectly(string input, int expectedPoints)
     {
         var sut = new StrategyGuide(input);
         Assert.Equal(expectedPoints, sut.TotalScore);
+    }
+
+    [Fact]
+    public void SolveFirstPuzzle()
+    {
+        var sut = new StrategyGuide(PUZZLE_INPUT);
+        Assert.Equal(11150, sut.TotalScore);
     }
 }
