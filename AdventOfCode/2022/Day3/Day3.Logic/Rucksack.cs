@@ -2,10 +2,10 @@
 
 public class Rucksack
 {
-    private string _input;
+    private readonly string _input;
 
     public int SumOfPriorities { get; private set; }
-    public int SumOfBadgePriorities { get; private set; } = 18;
+    public int SumOfBadgePriorities { get; private set; }
 
     public Rucksack(string input)
     {
@@ -16,34 +16,44 @@ public class Rucksack
 
     private void Parse()
     {
-        var sum = 0;
-        var sumOfBadges = 0;
         var count = 0;
         string[] group = { "", "", "" };
 
         foreach (var line in _input.Split('\n'))
         {
-            var length = line.Length / 2;
-            var firstSection = line[0..length];
-            var secondSection = line[length..];
-
-            var repeatedItem = firstSection.Intersect(secondSection).Single();
-            sum += GetPriority(repeatedItem);
+            var sections = SplitInSections(line);
+            var repeatedItem = GetRepeatedItem(sections);
+            SumOfPriorities += GetPriority(repeatedItem);
 
             group[count++] = line;
             if (count > 2)
             {
                 count = 0;
-                var badge = group[0].Intersect(group[1]).Intersect(group[2]).Single();
-
-                sumOfBadges += GetPriority(badge);
+                repeatedItem = GetRepeatedItem(group);
+                SumOfBadgePriorities += GetPriority(repeatedItem);
             }
         }
-
-        SumOfPriorities = sum;
-        SumOfBadgePriorities = sumOfBadges;
     }
 
-    private int GetPriority(char item) =>
+    private static int GetPriority(char item) =>
         (item & 0b00011111) + ((item & 0b00100000) == 0 ? 26 : 0);
+
+    private static char GetRepeatedItem(params string[] items)
+    {
+        IEnumerable<char> repeatedItems = items[0];
+        foreach (var item in items[1..])
+        {
+            repeatedItems = repeatedItems.Intersect(item);
+        }
+
+        return repeatedItems.Single();
+    }
+
+    private static string[] SplitInSections(string line)
+    {
+        var length = line.Length / 2;
+        var firstSection = line[0..length];
+        var secondSection = line[length..];
+        return new string[] { firstSection, secondSection };
+    }
 }
