@@ -46,4 +46,11 @@ public class RucksackMust
         var sut = new Rucksack(SAMPLE_INPUT);
         Assert.Equal(70, sut.SumOfBadgePriorities);
     }
+
+    [Fact]
+    public void SolveSecondPuzzle()
+    {
+        var sut = new Rucksack(PUZZLE_INPUT);
+        Assert.Equal(2577, sut.SumOfBadgePriorities);
+    }
 }

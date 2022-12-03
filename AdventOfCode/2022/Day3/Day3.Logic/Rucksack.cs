@@ -28,14 +28,7 @@ public class Rucksack
             var secondSection = line[length..];
 
             var repeatedItem = firstSection.Intersect(secondSection).Single();
-            if (repeatedItem >= 'a' && repeatedItem <= 'z')
-            {
-                sum += repeatedItem - 'a' + 1;
-            }
-            else
-            {
-                sum += repeatedItem - 'A' + 27;
-            }
+            sum += GetPriority(repeatedItem);
 
             group[count++] = line;
             if (count > 2)
@@ -43,18 +36,14 @@ public class Rucksack
                 count = 0;
                 var badge = group[0].Intersect(group[1]).Intersect(group[2]).Single();
 
-                if (badge >= 'a' && badge <= 'z')
-                {
-                    sumOfBadges += badge - 'a' + 1;
-                }
-                else
-                {
-                    sumOfBadges += badge - 'A' + 27;
-                }
+                sumOfBadges += GetPriority(badge);
             }
         }
 
         SumOfPriorities = sum;
         SumOfBadgePriorities = sumOfBadges;
     }
+
+    private int GetPriority(char item) =>
+        (item & 0b00011111) + ((item & 0b00100000) == 0 ? 26 : 0);
 }
