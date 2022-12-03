@@ -16,18 +16,21 @@ public class Rucksack
     private void Parse()
     {
         var sum = 0;
-        var length = _input.Length / 2;
-        var firstSection = _input[0..length];
-        var secondSection = _input[length..];
+        foreach (var line in _input.Split('\n'))
+        {
+            var length = line.Length / 2;
+            var firstSection = line[0..length];
+            var secondSection = line[length..];
 
-        var repeatedItem = firstSection.Intersect(secondSection).Single();
-        if (repeatedItem >= 'a' && repeatedItem <= 'z')
-        {
-            sum = repeatedItem - 'a' + 1;
-        }
-        else
-        {
-            sum = repeatedItem - 'A' + 27;
+            var repeatedItem = firstSection.Intersect(secondSection).Single();
+            if (repeatedItem >= 'a' && repeatedItem <= 'z')
+            {
+                sum += repeatedItem - 'a' + 1;
+            }
+            else
+            {
+                sum += repeatedItem - 'A' + 27;
+            }
         }
 
         SumOfPriorities = sum;
