@@ -2,15 +2,21 @@
 
 public class CampCleanup
 {
-    private string _input;
+    private readonly string _input;
+    private readonly Func<int[], int[], bool> _condition;
 
-    public int FullyContainedSections { get; private set; }
-    public int OverlappedSections { get; private set; }
+    public int OverlapCount { get; private set; }
 
-    public CampCleanup(string input)
+    public static CampCleanup CreateForFirstPuzzle(string input) =>
+        new(input, (l, r) => (r[0] <= l[0] && l[1] <= r[1]) || (l[0] <= r[0] && r[1] <= l[1]));
+
+    public static CampCleanup CreateForSecondPuzzle(string input) =>
+        new(input, (l, r) => r[0] <= l[1] && l[0] <= r[1]);
+
+    private CampCleanup(string input, Func<int[], int[], bool> condition)
     {
-        this._input = input;
-
+        _input = input;
+        _condition = condition;
         Parse();
     }
 
@@ -22,21 +28,9 @@ public class CampCleanup
             var leftSections = pairs[0].Split('-').Select(p => int.Parse(p)).ToArray();
             var rightSections = pairs[1].Split('-').Select(p => int.Parse(p)).ToArray();
 
-            if (rightSections[0] <= leftSections[0] && leftSections[1] <= rightSections[1])
+            if (_condition(leftSections, rightSections))
             {
-                FullyContainedSections++;
-            }
-            else if (leftSections[0] <= rightSections[0] && rightSections[1] <= leftSections[1])
-            {
-                FullyContainedSections++;
-            }
-
-            if (rightSections[0] <= leftSections[1])
-            {
-                if (rightSections[1] >= leftSections[0]) 
-                {
-                    OverlappedSections++;
-                }
+                OverlapCount++;
             }
         }
     }

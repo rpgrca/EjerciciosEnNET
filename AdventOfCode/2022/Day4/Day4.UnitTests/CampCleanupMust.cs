@@ -14,22 +14,22 @@ public class CampCleanupMust
     [InlineData("2-8,3-7\n6-6,4-6", 2)]
     public void CalculateFullyContainedSectionsCorrectly(string input, int expectedSections)
     {
-        var sut = new CampCleanup(input);
-        Assert.Equal(expectedSections, sut.FullyContainedSections);
+        var sut = CampCleanup.CreateForFirstPuzzle(input);
+        Assert.Equal(expectedSections, sut.OverlapCount);
     }
 
     [Fact]
     public void SolveFirstSample()
     {
-        var sut = new CampCleanup(SAMPLE_INPUT);
-        Assert.Equal(2, sut.FullyContainedSections);
+        var sut = CampCleanup.CreateForFirstPuzzle(SAMPLE_INPUT);
+        Assert.Equal(2, sut.OverlapCount);
     }
 
     [Fact]
     public void SolveFirstPuzzle()
     {
-        var sut = new CampCleanup(PUZZLE_INPUT);
-        Assert.Equal(490, sut.FullyContainedSections);
+        var sut = CampCleanup.CreateForFirstPuzzle(PUZZLE_INPUT);
+        Assert.Equal(490, sut.OverlapCount);
     }
 
     [Theory]
@@ -37,21 +37,21 @@ public class CampCleanupMust
     [InlineData("6-8,2-4", 0)]
     public void CalculateOverlappedSectionsCorrectly(string input, int expectedOverlaps)
     {
-        var sut = new CampCleanup(input);
-        Assert.Equal(expectedOverlaps, sut.OverlappedSections);
+        var sut = CampCleanup.CreateForSecondPuzzle(input);
+        Assert.Equal(expectedOverlaps, sut.OverlapCount);
     }
 
     [Fact]
     public void SolveSecondSample()
     {
-        var sut = new CampCleanup(SAMPLE_INPUT);
-        Assert.Equal(4, sut.OverlappedSections);
+        var sut = CampCleanup.CreateForSecondPuzzle(SAMPLE_INPUT);
+        Assert.Equal(4, sut.OverlapCount);
     }
 
     [Fact]
     public void SolveSecondPuzzle()
     {
-        var sut = new CampCleanup(PUZZLE_INPUT);
-        Assert.Equal(921, sut.OverlappedSections);
+        var sut = CampCleanup.CreateForSecondPuzzle(PUZZLE_INPUT);
+        Assert.Equal(921, sut.OverlapCount);
     }
 }
