@@ -5,6 +5,7 @@ public class CampCleanup
     private string _input;
 
     public int FullyContainedSections { get; private set; }
+    public int OverlappedSections { get; private set; }
 
     public CampCleanup(string input)
     {
@@ -28,6 +29,15 @@ public class CampCleanup
             else if (leftSections[0] <= rightSections[0] && rightSections[1] <= leftSections[1])
             {
                 FullyContainedSections++;
+            }
+
+            if (rightSections[0] <= leftSections[1])
+            {
+                OverlappedSections++;
+            }
+            else if (leftSections[0] <= rightSections[1])
+            {
+                OverlappedSections++;
             }
         }
     }
