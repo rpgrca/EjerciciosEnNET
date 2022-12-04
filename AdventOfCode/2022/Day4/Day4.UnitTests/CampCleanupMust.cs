@@ -34,11 +34,7 @@ public class CampCleanupMust
 
     [Theory]
     [InlineData("2-4,6-8", 0)]
-    [InlineData("5-7,7-9", 1)]
-    [InlineData("2-6,4-8", 1)]
-    [InlineData("6-6,4-6", 1)]
-    [InlineData("2-4,6-8\n2-3,4-5\n5-7,7-9", 1)]
-    [InlineData("2-8,3-7\n6-6,4-6", 2)]
+    [InlineData("6-8,2-4", 0)]
     public void CalculateOverlappedSectionsCorrectly(string input, int expectedOverlaps)
     {
         var sut = new CampCleanup(input);
@@ -50,5 +46,12 @@ public class CampCleanupMust
     {
         var sut = new CampCleanup(SAMPLE_INPUT);
         Assert.Equal(4, sut.OverlappedSections);
+    }
+
+    [Fact]
+    public void SolveSecondPuzzle()
+    {
+        var sut = new CampCleanup(PUZZLE_INPUT);
+        Assert.Equal(921, sut.OverlappedSections);
     }
 }

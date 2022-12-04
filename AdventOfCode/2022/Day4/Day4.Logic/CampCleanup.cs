@@ -33,11 +33,10 @@ public class CampCleanup
 
             if (rightSections[0] <= leftSections[1])
             {
-                OverlappedSections++;
-            }
-            else if (leftSections[0] <= rightSections[1])
-            {
-                OverlappedSections++;
+                if (rightSections[1] >= leftSections[0]) 
+                {
+                    OverlappedSections++;
+                }
             }
         }
     }
