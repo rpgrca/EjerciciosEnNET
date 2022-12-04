@@ -9,9 +9,26 @@ public class CampCleanup
     public CampCleanup(string input)
     {
         this._input = input;
-        if (input[0] == '5')
+
+        Parse();
+    }
+
+    private void Parse()
+    {
+        foreach (var line in _input.Split('\n'))
         {
-            FullyContainedSections = 1;
+            var pairs = line.Split(',');
+            var leftSections = pairs[0].Split('-').Select(p => int.Parse(p)).ToArray();
+            var rightSections = pairs[1].Split('-').Select(p => int.Parse(p)).ToArray();
+
+            if (rightSections[0] <= leftSections[0] && leftSections[1] <= rightSections[1])
+            {
+                FullyContainedSections++;
+            }
+            else if (leftSections[0] <= rightSections[0] && rightSections[1] <= leftSections[1])
+            {
+                FullyContainedSections++;
+            }
         }
     }
 }
