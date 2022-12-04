@@ -45,14 +45,14 @@ jobs:
     - name: Testing AdventOfCode/2022
       run: |
            for d in `seq 4`; do
-               coverlet AdventOfCode/2022/Day$d/Day$d.UnitTests/bin/Debug/net7.0/Day$d.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode/2022/Day$d/Day$d.UnitTests/Day$d.UnitTests.csproj --no-build" --format OpenCover --output adventofcode2022day$d.coverage.xml
+               coverlet AdventOfCode/2022/Day$d/Day$d.UnitTests/bin/Debug/net7.0/Day$d.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode/2022/Day$d/Day$d.UnitTests/Day$d.UnitTests.csproj --no-build" --format OpenCover --output adventofcode-2022-day$d.coverage.xml
            done
 
     - name: Testing old AdventOfCode
       run: |
            for s in 2021 2020; do
                for d in `seq 25`; do
-                   coverlet AdventOfCode/$s/Day$d/Day$d.UnitTests/bin/Debug/net7/Day$d.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode/$s/Day$d/Day$d.UnitTests/Day$d.UnitTests.csproj --no-build" --format OpenCover --output adventofcode$sday$d.coverage.xml
+                   coverlet AdventOfCode/$s/Day$d/Day$d.UnitTests/bin/Debug/net7/Day$d.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode/$s/Day$d/Day$d.UnitTests/Day$d.UnitTests.csproj --no-build" --format OpenCover --output adventofcode-$s-day$d.coverage.xml
                done
            done
 
