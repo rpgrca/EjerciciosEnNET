@@ -3,7 +3,11 @@
 public class CampCleanup
 {
     private readonly string _input;
-    private readonly Func<int[], int[], bool> _condition;
+    private readonly Func<int[], int[], bool> _overlapCondition;
+    private string _line;
+    private string[] _pair;
+    private int[] _leftSections;
+    private int[] _rightSections;
 
     public int OverlapCount { get; private set; }
 
@@ -13,10 +17,10 @@ public class CampCleanup
     public static CampCleanup CreateForSecondPuzzle(string input) =>
         new(input, (l, r) => r[0] <= l[1] && l[0] <= r[1]);
 
-    private CampCleanup(string input, Func<int[], int[], bool> condition)
+    private CampCleanup(string input, Func<int[], int[], bool> overlapCondition)
     {
         _input = input;
-        _condition = condition;
+        _overlapCondition = overlapCondition;
         Parse();
     }
 
@@ -24,14 +28,24 @@ public class CampCleanup
     {
         foreach (var line in _input.Split('\n'))
         {
-            var pairs = line.Split(',');
-            var leftSections = pairs[0].Split('-').Select(p => int.Parse(p)).ToArray();
-            var rightSections = pairs[1].Split('-').Select(p => int.Parse(p)).ToArray();
+            _line = line;
 
-            if (_condition(leftSections, rightSections))
+            SplitLineInPair();
+            ObtainLeftSections();
+            ObtainRightSections();
+
+            if (_overlapCondition(_leftSections, _rightSections))
             {
                 OverlapCount++;
             }
         }
     }
+
+    private void SplitLineInPair() => _pair = _line.Split(',');
+
+    private void ObtainLeftSections() => _leftSections = GetSectionsByIndex(0);
+
+    private void ObtainRightSections() => _rightSections = GetSectionsByIndex(1);
+
+    private int[] GetSectionsByIndex(int index) => _pair[index].Split('-').Select(int.Parse).ToArray();
 }
