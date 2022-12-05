@@ -156,4 +156,59 @@ move 1 from 2 to 1";
         var sut = new SupplyStacks(PUZZLE_INPUT, 9);
         Assert.Equal("TLNGFGMFN", sut.TopCrates);
     }
+
+    [Fact]
+    public void ExecuteInstructionCorrectly_WhenUsingCrateMover9001()
+    {
+        const string input = @"    [D]    
+[N] [C]    
+[Z] [M] [P]
+move 1 from 2 to 1";
+
+        var sut = new SupplyStacks(input, 3, true);
+        Assert.Collection(sut.Stacks,
+            p1 => {
+                Assert.Equal('D', p1[0]);
+                Assert.Equal('N', p1[1]);
+                Assert.Equal('Z', p1[2]);
+            },
+            p2 => {
+                Assert.Equal('C', p2[0]);
+                Assert.Equal('M', p2[1]);
+            },
+            p3 => {
+                Assert.Equal('P', p3[0]);
+            });
+    }
+
+    [Fact]
+    public void ExecuteMultipleMoveCorrectly_WhenUsingCrateMover9001()
+    {
+        const string input = @"[D]        
+[N] [C]    
+[Z] [M] [P]
+ 1   2   3 
+move 3 from 1 to 3";
+
+        var sut = new SupplyStacks(input, 3, true);
+        Assert.Collection(sut.Stacks,
+            Assert.Empty,
+            p2 => {
+                Assert.Equal('C', p2[0]);
+                Assert.Equal('M', p2[1]);
+            },
+            p3 => {
+                Assert.Equal('D', p3[0]);
+                Assert.Equal('N', p3[1]);
+                Assert.Equal('Z', p3[2]);
+                Assert.Equal('P', p3[3]);
+            });
+    }
+
+    [Fact]
+    public void SolveSecondSampleCorrectly()
+    {
+        var sut = new SupplyStacks(SAMPLE_INPUT, 3, true);
+        Assert.Equal("MCD", sut.TopCrates);
+    }
 }
