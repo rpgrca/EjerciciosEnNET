@@ -211,4 +211,11 @@ move 3 from 1 to 3";
         var sut = new SupplyStacks(SAMPLE_INPUT, 3, true);
         Assert.Equal("MCD", sut.TopCrates);
     }
+
+    [Fact]
+    public void SolveSecondPuzzleCorrectly()
+    {
+        var sut = new SupplyStacks(PUZZLE_INPUT, 9, true);
+        Assert.Equal("FGLQJCMBD", sut.TopCrates);
+    }
 }
