@@ -120,7 +120,7 @@ public class SupplyStacksMust
     }
 
     [Fact]
-    public void Test()
+    public void ExecuteInstructionCorrectly()
     {
         const string input = @"    [D]    
 [N] [C]    
@@ -141,5 +141,19 @@ move 1 from 2 to 1";
             p3 => {
                 Assert.Equal('P', p3[0]);
             });
+    }
+
+    [Fact]
+    public void SolveFirstSampleCorrectly()
+    {
+        var sut = new SupplyStacks(SAMPLE_INPUT, 3);
+        Assert.Equal("CMZ", sut.TopCrates);
+    }
+
+    [Fact]
+    public void SolveFirstPuzzleCorrectly()
+    {
+        var sut = new SupplyStacks(PUZZLE_INPUT, 9);
+        Assert.Equal("TLNGFGMFN", sut.TopCrates);
     }
 }

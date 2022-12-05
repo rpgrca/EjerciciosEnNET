@@ -5,6 +5,7 @@ public class SupplyStacks
     private int _stackCount;
 
     public List<List<char>> Stacks { get; private set; }
+    public string TopCrates { get; private set; }
 
     public SupplyStacks(string input, int stackCount)
     {
@@ -50,6 +51,11 @@ public class SupplyStacks
                     }
                 }
             }
+        }
+
+        foreach (var stack in Stacks)
+        {
+            TopCrates += stack[0];
         }
     }
 }
