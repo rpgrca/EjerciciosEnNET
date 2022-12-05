@@ -24,24 +24,15 @@ public class SupplyStacks
     {
         foreach (var line in _input.Split("\n"))
         {
-            if (line[1] == '1')
-            {
-                break;
-            }
+            if (line[1] == '1') break;
 
-            if (line[1] != ' ')
+            for (var index = 0; index < _stackCount; index++)
             {
-                Stacks[0].Add(line[1]);
-            }
-
-            if (line[5] != ' ')
-            {
-                Stacks[1].Add(line[5]);
-            }
-
-            if (line[9] != ' ')
-            {
-                Stacks[2].Add(line[9]);
+                int offset = 1 + (index * 4);
+                if (line[offset] != ' ')
+                {
+                    Stacks[index].Add(line[offset]);
+                }
             }
         }
     }
