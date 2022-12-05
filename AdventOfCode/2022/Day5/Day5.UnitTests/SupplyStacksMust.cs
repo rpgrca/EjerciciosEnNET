@@ -8,7 +8,11 @@ public class SupplyStacksMust
     [Fact]
     public void LoadSampleInputCorrectly()
     {
-        var sut = new SupplyStacks(SAMPLE_INPUT, 3);
+        const string input = @"    [D]    
+[N] [C]    
+[Z] [M] [P]
+ 1   2   3 ";
+        var sut = new SupplyStacks(input, 3);
         Assert.Collection(sut.Stacks,
             p1 => {
                 Assert.Equal('N', p1[0]);
@@ -27,7 +31,17 @@ public class SupplyStacksMust
     [Fact]
     public void LoadPuzzleInputCorrectly()
     {
-        var sut = new SupplyStacks(PUZZLE_INPUT, 9);
+        const string input = @"            [M] [S] [S]            
+        [M] [N] [L] [T] [Q]        
+[G]     [P] [C] [F] [G] [T]        
+[B]     [J] [D] [P] [V] [F] [F]    
+[D]     [D] [G] [C] [Z] [H] [B] [G]
+[C] [G] [Q] [L] [N] [D] [M] [D] [Q]
+[P] [V] [S] [S] [B] [B] [Z] [M] [C]
+[R] [H] [N] [P] [J] [Q] [B] [C] [F]
+ 1   2   3   4   5   6   7   8   9 ";
+
+        var sut = new SupplyStacks(input, 9);
         Assert.Collection(sut.Stacks,
             p1 => {
                 Assert.Equal('G', p1[0]);
@@ -102,6 +116,30 @@ public class SupplyStacksMust
                 Assert.Equal('Q', p9[1]);
                 Assert.Equal('C', p9[2]);
                 Assert.Equal('F', p9[3]);
+            });
+    }
+
+    [Fact]
+    public void Test()
+    {
+        const string input = @"    [D]    
+[N] [C]    
+[Z] [M] [P]
+move 1 from 2 to 1";
+
+        var sut = new SupplyStacks(input, 3);
+        Assert.Collection(sut.Stacks,
+            p1 => {
+                Assert.Equal('D', p1[0]);
+                Assert.Equal('N', p1[1]);
+                Assert.Equal('Z', p1[2]);
+            },
+            p2 => {
+                Assert.Equal('C', p2[0]);
+                Assert.Equal('M', p2[1]);
+            },
+            p3 => {
+                Assert.Equal('P', p3[0]);
             });
     }
 }

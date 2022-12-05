@@ -24,14 +24,30 @@ public class SupplyStacks
     {
         foreach (var line in _input.Split("\n"))
         {
-            if (line[1] == '1') break;
+            if (string.IsNullOrWhiteSpace(line)) continue;
+            if (line[1] == '1') continue;
 
-            for (var index = 0; index < _stackCount; index++)
+            if (line.StartsWith("move"))
             {
-                int offset = 1 + (index * 4);
-                if (line[offset] != ' ')
+                var tokens = line.Split(" ");
+                for (var index = 0; index < int.Parse(tokens[1]); index++)
                 {
-                    Stacks[index].Add(line[offset]);
+                    var from = int.Parse(tokens[3]) - 1;
+                    var to = int.Parse(tokens[5]) - 1;
+                    var crate = Stacks[from][0];
+                    Stacks[from].RemoveAt(0);
+                    Stacks[to].Insert(0, crate);
+                }
+            }
+            else
+            {
+                for (var index = 0; index < _stackCount; index++)
+                {
+                    int offset = 1 + (index * 4);
+                    if (line[offset] != ' ')
+                    {
+                        Stacks[index].Add(line[offset]);
+                    }
                 }
             }
         }
