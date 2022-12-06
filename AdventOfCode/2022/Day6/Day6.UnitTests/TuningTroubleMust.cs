@@ -56,5 +56,10 @@ public class TuningTroubleMust
         Assert.Equal(19, sut.ProcessedForStartOfMessage);
     }
 
-
+    [Fact]
+    public void SolveSecondPuzzle()
+    {
+        var sut = new TuningTrouble(PUZZLE_INPUT);
+        Assert.Equal(2789, sut.ProcessedForStartOfMessage);
+    }
 }
