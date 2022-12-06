@@ -29,6 +29,11 @@ public class TuningTrouble
                     break;
                 }
             }
+            else
+            {
+                var repeatedCharacter = uniqueCharacters.IndexOf(character);
+                uniqueCharacters = uniqueCharacters[(repeatedCharacter + 1)..] + character;
+            }
         }
 
         if (ProcessedForStartOfPacket == -1)
