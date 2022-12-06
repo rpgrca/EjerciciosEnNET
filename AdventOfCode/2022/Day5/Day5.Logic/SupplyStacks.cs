@@ -1,12 +1,14 @@
 ﻿namespace Day5.Logic;
+
 public class SupplyStacks
 {
     private readonly string _input;
-    private int _stackCount;
+    private string[] _lines;
     private readonly Func<int, int, (int, int)> _setup;
 
     public List<List<char>> Stacks { get; private set; }
     public string TopCrates { get; private set; }
+    public int StackCount { get; private set; }
 
     public static SupplyStacks CreateForFirstPuzzle(string input) =>
         new(input, (c, a) => (c, a));
@@ -27,49 +29,46 @@ public class SupplyStacks
 
     private void Parse()
     {
-        var lines = _input.Split("\n");
+        SplitInputInLines();
+        CalculateAmountOfStacks();
+        CreateStacks();
 
-        _stackCount = (lines[0].Length / 4) + 1;
-        for (var index = 0; index < _stackCount; index++)
+        foreach (var line in _lines)
+        {
+            LineStateFactory.Create(this, line).Process();
+        }
+
+        CalculateTopCrates();
+    }
+
+    private void SplitInputInLines() => _lines = _input.Split("\n");
+    private void CalculateAmountOfStacks() => StackCount = (_lines[0].Length / 4) + 1;
+
+    private void CreateStacks()
+    {
+        for (var index = 0; index < StackCount; index++)
         {
             Stacks.Add(new List<char>());
         }
-
-        foreach (var line in lines)
-        {
-            if (string.IsNullOrWhiteSpace(line)) continue;
-            if (line[1] == '1') continue;
-
-            if (line.StartsWith("move"))
-            {
-                var tokens = line.Split(" ");
-                var from = int.Parse(tokens[3]) - 1;
-                var to = int.Parse(tokens[5]) - 1;
-                int cycles;
-                int amount;
-
-                (cycles, amount) = _setup(int.Parse(tokens[1]), 1);
-
-                for (var index = 0; index < cycles; index++)
-                {
-                    var crates = Stacks[from].Take(amount).ToList();
-                    Stacks[from].RemoveRange(0, amount);
-                    Stacks[to].InsertRange(0, crates);
-                }
-            }
-            else
-            {
-                for (var index = 0; index < _stackCount; index++)
-                {
-                    int offset = 1 + (index * 4);
-                    if (line[offset] != ' ')
-                    {
-                        Stacks[index].Add(line[offset]);
-                    }
-                }
-            }
-        }
-
-        TopCrates = Stacks.Where(s => s.Count > 0).Aggregate(string.Empty, (t, i) => t += i.First());
     }
+
+    private void CalculateTopCrates() => 
+        TopCrates = Stacks
+            .Where(s => s.Count > 0)
+            .Aggregate(string.Empty, (t, i) => t += i.First());
+
+    internal (int, int) SetupRepetitionAndAmountTimes(int cycles, int amount) =>
+        _setup(cycles, amount);
+
+    internal List<char> RetrieveCratesFrom(int amount, int from)
+    {
+        var crates = Stacks[from].Take(amount).ToList();
+        Stacks[from].RemoveRange(0, amount);
+        return crates;
+    }
+
+    internal void PutCratesOn(List<char> crates, int to) =>
+        Stacks[to].InsertRange(0, crates);
+
+    internal void AddCrateTo(char crate, int index) => Stacks[index].Add(crate);
 }
