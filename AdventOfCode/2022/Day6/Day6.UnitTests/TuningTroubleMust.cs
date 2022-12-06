@@ -30,4 +30,31 @@ public class TuningTroubleMust
         var sut = new TuningTrouble(SAMPLE_INPUT);
         Assert.Equal(7, sut.ProcessedForStartOfPacket);
     }
+
+    [Fact]
+    public void SolveFirstPuzzle()
+    {
+        var sut = new TuningTrouble(PUZZLE_INPUT);
+        Assert.Equal(1155, sut.ProcessedForStartOfPacket);
+    }
+
+    [Theory]
+    [InlineData("bvwbjplbgvbhsrlpgdmjqwftvncz", 23)]
+    [InlineData("nppdvjthqldpwncqszvftbrmjlhg", 23)]
+    [InlineData("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 29)]
+    [InlineData("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 26)]
+    public void DetectStartOfMessageCorrectly(string input, int expectedLength)
+    {
+        var sut = new TuningTrouble(input);
+        Assert.Equal(expectedLength, sut.ProcessedForStartOfMessage);
+    }
+
+    [Fact]
+    public void SolveSecondSample()
+    {
+        var sut = new TuningTrouble(SAMPLE_INPUT);
+        Assert.Equal(19, sut.ProcessedForStartOfMessage);
+    }
+
+
 }
