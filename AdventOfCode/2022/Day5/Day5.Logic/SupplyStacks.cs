@@ -2,13 +2,13 @@
 
 public class SupplyStacks
 {
+    private readonly List<List<char>> _stacks;
     private readonly string _input;
     private string[] _lines;
     private readonly Func<int, int, (int, int)> _setup;
 
-    public List<List<char>> Stacks { get; private set; }
+    internal int StackCount { get; private set; }
     public string TopCrates { get; private set; }
-    public int StackCount { get; private set; }
 
     public static SupplyStacks CreateForFirstPuzzle(string input) =>
         new(input, (c, a) => (c, a));
@@ -20,9 +20,10 @@ public class SupplyStacks
     {
         _input = input;
         _setup = setup;
+        _lines = Array.Empty<string>();
+        _stacks = new List<List<char>>();
 
         TopCrates = string.Empty;
-        Stacks = new List<List<char>>();
 
         Parse();
     }
@@ -42,33 +43,34 @@ public class SupplyStacks
     }
 
     private void SplitInputInLines() => _lines = _input.Split("\n");
+
     private void CalculateAmountOfStacks() => StackCount = (_lines[0].Length / 4) + 1;
 
     private void CreateStacks()
     {
         for (var index = 0; index < StackCount; index++)
         {
-            Stacks.Add(new List<char>());
+            _stacks.Add(new List<char>());
         }
     }
 
     private void CalculateTopCrates() => 
-        TopCrates = Stacks
+        TopCrates = _stacks
             .Where(s => s.Count > 0)
             .Aggregate(string.Empty, (t, i) => t += i.First());
 
-    internal (int, int) SetupRepetitionAndAmountTimes(int cycles, int amount) =>
+    internal (int, int) GetRepetitionAndAmount(int cycles, int amount) =>
         _setup(cycles, amount);
 
     internal List<char> RetrieveCratesFrom(int amount, int from)
     {
-        var crates = Stacks[from].Take(amount).ToList();
-        Stacks[from].RemoveRange(0, amount);
+        var crates = _stacks[from].Take(amount).ToList();
+        _stacks[from].RemoveRange(0, amount);
         return crates;
     }
 
     internal void PutCratesOn(List<char> crates, int to) =>
-        Stacks[to].InsertRange(0, crates);
+        _stacks[to].InsertRange(0, crates);
 
-    internal void AddCrateTo(char crate, int index) => Stacks[index].Add(crate);
+    internal void AddCrateTo(char crate, int index) => _stacks[index].Add(crate);
 }
