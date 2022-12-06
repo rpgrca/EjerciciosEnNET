@@ -8,7 +8,7 @@ public class TuningTroubleMust
     [Fact]
     public void ThrowException_WhenNoStartOfPacketIsDetected()
     {
-        var exception = Assert.Throws<Exception>(() => new TuningTrouble("mjqj"));
+        var exception = Assert.Throws<Exception>(() => new TuningTrouble("mjqj", 4));
         Assert.Equal("Could not find start of packet", exception.Message);
     }
 
@@ -20,22 +20,22 @@ public class TuningTroubleMust
     [InlineData("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 11)]
     public void DetectStartOfPacketCorrectly(string input, int expectedLength)
     {
-        var sut = new TuningTrouble(input);
-        Assert.Equal(expectedLength, sut.ProcessedForStartOfPacket);
+        var sut = new TuningTrouble(input, 4);
+        Assert.Equal(expectedLength, sut.ProcessedLength);
     }
 
     [Fact]
     public void SolveFirstSample()
     {
-        var sut = new TuningTrouble(SAMPLE_INPUT);
-        Assert.Equal(7, sut.ProcessedForStartOfPacket);
+        var sut = new TuningTrouble(SAMPLE_INPUT, 4);
+        Assert.Equal(7, sut.ProcessedLength);
     }
 
     [Fact]
     public void SolveFirstPuzzle()
     {
-        var sut = new TuningTrouble(PUZZLE_INPUT);
-        Assert.Equal(1155, sut.ProcessedForStartOfPacket);
+        var sut = new TuningTrouble(PUZZLE_INPUT, 4);
+        Assert.Equal(1155, sut.ProcessedLength);
     }
 
     [Theory]
@@ -45,21 +45,21 @@ public class TuningTroubleMust
     [InlineData("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 26)]
     public void DetectStartOfMessageCorrectly(string input, int expectedLength)
     {
-        var sut = new TuningTrouble(input);
-        Assert.Equal(expectedLength, sut.ProcessedForStartOfMessage);
+        var sut = new TuningTrouble(input, 14);
+        Assert.Equal(expectedLength, sut.ProcessedLength);
     }
 
     [Fact]
     public void SolveSecondSample()
     {
-        var sut = new TuningTrouble(SAMPLE_INPUT);
-        Assert.Equal(19, sut.ProcessedForStartOfMessage);
+        var sut = new TuningTrouble(SAMPLE_INPUT, 14);
+        Assert.Equal(19, sut.ProcessedLength);
     }
 
     [Fact]
     public void SolveSecondPuzzle()
     {
-        var sut = new TuningTrouble(PUZZLE_INPUT);
-        Assert.Equal(2789, sut.ProcessedForStartOfMessage);
+        var sut = new TuningTrouble(PUZZLE_INPUT, 14);
+        Assert.Equal(2789, sut.ProcessedLength);
     }
 }

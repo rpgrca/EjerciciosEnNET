@@ -3,63 +3,54 @@
 public class TuningTrouble
 {
     private readonly string _input;
+    private readonly int _length;
+    private int _index;
+    private bool _found;
+    private string _uniqueSequence;
 
-    public int ProcessedForStartOfPacket { get; set; }
-    public int ProcessedForStartOfMessage { get; set; }
+    public int ProcessedLength { get; set; }
 
-    public TuningTrouble(string input)
+    public TuningTrouble(string input, int length)
     {
-        var uniqueCharacters = "";
         _input = input;
-        ProcessedForStartOfPacket = -1;
+        _length = length;
+        _uniqueSequence = "";
 
-        if (input.Length < 4)
+        ProcessedLength = -1;
+
+        Parse();
+    }
+
+    private void Parse()
+    {
+        for (var index = 0; index < _input.Length && !_found; index++)
+        {
+            _index = index;
+            FindUniqueString();
+        }
+
+        if (ProcessedLength == -1)
         {
             throw new Exception("Could not find start of packet");
         }
+    }
 
-        for (var index = 0; index < _input.Length; index++)
+    private void FindUniqueString()
+    {
+        var character = _input[_index];
+        if (! _uniqueSequence.Contains(character))
         {
-            var character = _input[index];
-            if (! uniqueCharacters.Contains(character))
+            _uniqueSequence += character;
+            if (_uniqueSequence.Length >= _length)
             {
-                uniqueCharacters += character;
-                if (uniqueCharacters.Length >= 4)
-                {
-                    ProcessedForStartOfPacket = index + 1;
-                    break;
-                }
-            }
-            else
-            {
-                var repeatedCharacter = uniqueCharacters.IndexOf(character);
-                uniqueCharacters = uniqueCharacters[(repeatedCharacter + 1)..] + character;
+                ProcessedLength = _index + 1;
+                _found = true;
             }
         }
-
-        if (ProcessedForStartOfPacket == -1)
+        else
         {
-            throw new Exception("Could not find start of packet");
-        }
-
-        uniqueCharacters = "";
-        for (var index = 0; index < _input.Length; index++)
-        {
-            var character = _input[index];
-            if (! uniqueCharacters.Contains(character))
-            {
-                uniqueCharacters += character;
-                if (uniqueCharacters.Length >= 14)
-                {
-                    ProcessedForStartOfMessage = index + 1;
-                    break;
-                }
-            }
-            else
-            {
-                var repeatedCharacter = uniqueCharacters.IndexOf(character);
-                uniqueCharacters = uniqueCharacters[(repeatedCharacter + 1)..] + character;
-            }
+            var repeatedCharacter = _uniqueSequence.IndexOf(character);
+            _uniqueSequence = _uniqueSequence[(repeatedCharacter + 1)..] + character;
         }
     }
 }
