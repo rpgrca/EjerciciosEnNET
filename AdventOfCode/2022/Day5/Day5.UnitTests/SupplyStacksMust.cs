@@ -12,7 +12,7 @@ public class SupplyStacksMust
 [N] [C]    
 [Z] [M] [P]
  1   2   3 ";
-        var sut = new SupplyStacks(input, 3);
+        var sut = SupplyStacks.CreateForFirstPuzzle(input);
         Assert.Collection(sut.Stacks,
             p1 => {
                 Assert.Equal('N', p1[0]);
@@ -41,7 +41,7 @@ public class SupplyStacksMust
 [R] [H] [N] [P] [J] [Q] [B] [C] [F]
  1   2   3   4   5   6   7   8   9 ";
 
-        var sut = new SupplyStacks(input, 9);
+        var sut = SupplyStacks.CreateForFirstPuzzle(input);
         Assert.Collection(sut.Stacks,
             p1 => {
                 Assert.Equal('G', p1[0]);
@@ -127,7 +127,7 @@ public class SupplyStacksMust
 [Z] [M] [P]
 move 1 from 2 to 1";
 
-        var sut = new SupplyStacks(input, 3);
+        var sut = SupplyStacks.CreateForFirstPuzzle(input);
         Assert.Collection(sut.Stacks,
             p1 => {
                 Assert.Equal('D', p1[0]);
@@ -146,14 +146,14 @@ move 1 from 2 to 1";
     [Fact]
     public void SolveFirstSampleCorrectly()
     {
-        var sut = new SupplyStacks(SAMPLE_INPUT, 3);
+        var sut = SupplyStacks.CreateForFirstPuzzle(SAMPLE_INPUT);
         Assert.Equal("CMZ", sut.TopCrates);
     }
 
     [Fact]
     public void SolveFirstPuzzleCorrectly()
     {
-        var sut = new SupplyStacks(PUZZLE_INPUT, 9);
+        var sut = SupplyStacks.CreateForFirstPuzzle(PUZZLE_INPUT);
         Assert.Equal("TLNGFGMFN", sut.TopCrates);
     }
 
@@ -165,7 +165,7 @@ move 1 from 2 to 1";
 [Z] [M] [P]
 move 1 from 2 to 1";
 
-        var sut = new SupplyStacks(input, 3, true);
+        var sut = SupplyStacks.CreateForSecondPuzzle(input);
         Assert.Collection(sut.Stacks,
             p1 => {
                 Assert.Equal('D', p1[0]);
@@ -190,7 +190,7 @@ move 1 from 2 to 1";
  1   2   3 
 move 3 from 1 to 3";
 
-        var sut = new SupplyStacks(input, 3, true);
+        var sut = SupplyStacks.CreateForSecondPuzzle(input);
         Assert.Collection(sut.Stacks,
             Assert.Empty,
             p2 => {
@@ -208,14 +208,14 @@ move 3 from 1 to 3";
     [Fact]
     public void SolveSecondSampleCorrectly()
     {
-        var sut = new SupplyStacks(SAMPLE_INPUT, 3, true);
+        var sut = SupplyStacks.CreateForSecondPuzzle(SAMPLE_INPUT);
         Assert.Equal("MCD", sut.TopCrates);
     }
 
     [Fact]
     public void SolveSecondPuzzleCorrectly()
     {
-        var sut = new SupplyStacks(PUZZLE_INPUT, 9, true);
+        var sut = SupplyStacks.CreateForSecondPuzzle(PUZZLE_INPUT);
         Assert.Equal("FGLQJCMBD", sut.TopCrates);
     }
 }

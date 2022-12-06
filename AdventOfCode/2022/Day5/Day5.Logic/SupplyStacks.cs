@@ -2,30 +2,40 @@
 public class SupplyStacks
 {
     private readonly string _input;
-    private readonly int _stackCount;
-    private readonly bool newVersion;
+    private int _stackCount;
+    private readonly Func<int, int, (int, int)> _setup;
 
     public List<List<char>> Stacks { get; private set; }
     public string TopCrates { get; private set; }
 
-    public SupplyStacks(string input, int stackCount, bool newVersion = false)
+    public static SupplyStacks CreateForFirstPuzzle(string input) =>
+        new(input, (c, a) => (c, a));
+
+    public static SupplyStacks CreateForSecondPuzzle(string input) =>
+        new(input, (c, a) => (a, c));
+
+    private SupplyStacks(string input, Func<int, int, (int, int)> setup)
     {
         _input = input;
-        _stackCount = stackCount;
-        this.newVersion = newVersion;
-        Stacks = new List<List<char>>();
+        _setup = setup;
 
-        for (var index = 0; index < _stackCount; index++)
-        {
-            Stacks.Add(new List<char>());
-        }
+        TopCrates = string.Empty;
+        Stacks = new List<List<char>>();
 
         Parse();
     }
 
     private void Parse()
     {
-        foreach (var line in _input.Split("\n"))
+        var lines = _input.Split("\n");
+
+        _stackCount = (lines[0].Length / 4) + 1;
+        for (var index = 0; index < _stackCount; index++)
+        {
+            Stacks.Add(new List<char>());
+        }
+
+        foreach (var line in lines)
         {
             if (string.IsNullOrWhiteSpace(line)) continue;
             if (line[1] == '1') continue;
@@ -33,30 +43,18 @@ public class SupplyStacks
             if (line.StartsWith("move"))
             {
                 var tokens = line.Split(" ");
+                var from = int.Parse(tokens[3]) - 1;
+                var to = int.Parse(tokens[5]) - 1;
+                int cycles;
+                int amount;
 
-                if (newVersion)
+                (cycles, amount) = _setup(int.Parse(tokens[1]), 1);
+
+                for (var index = 0; index < cycles; index++)
                 {
-                    var from = int.Parse(tokens[3]) - 1;
-                    var to = int.Parse(tokens[5]) - 1;
-                    var amount = int.Parse(tokens[1]);
-
                     var crates = Stacks[from].Take(amount).ToList();
                     Stacks[from].RemoveRange(0, amount);
-
-                    var list = new List<char>(crates);
-                    list.AddRange(Stacks[to]);
-                    Stacks[to] = list;
-                }
-                else
-                {
-                    for (var index = 0; index < int.Parse(tokens[1]); index++)
-                    {
-                        var from = int.Parse(tokens[3]) - 1;
-                        var to = int.Parse(tokens[5]) - 1;
-                        var crate = Stacks[from][0];
-                        Stacks[from].RemoveAt(0);
-                        Stacks[to].Insert(0, crate);
-                    }
+                    Stacks[to].InsertRange(0, crates);
                 }
             }
             else
@@ -72,12 +70,6 @@ public class SupplyStacks
             }
         }
 
-        foreach (var stack in Stacks)
-        {
-            if (stack.Count > 0)
-            {
-                TopCrates += stack[0];
-            }
-        }
+        TopCrates = Stacks.Where(s => s.Count > 0).Aggregate(string.Empty, (t, i) => t += i.First());
     }
 }
