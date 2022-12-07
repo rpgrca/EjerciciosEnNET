@@ -178,4 +178,35 @@ public class Finder
         return total;
     }
 
+    public int GetSmallestDirectoryToDeleteToFreeEnoughSpace()
+    {
+        var largeDirectorySizes = new List<int>();
+        var requiredSpace = 30_000_000 - (70_000_000 - GetDirectorySize());
+        var total = 0;
+
+        foreach (var directory in _fileSystem)
+        {
+            total += GetSumOfTotalDirectoriesOfAtLeast(directory, largeDirectorySizes, requiredSpace);
+        }
+
+        return largeDirectorySizes.OrderBy(p => p).First();
+    }
+
+    public int GetSumOfTotalDirectoriesOfAtLeast(Directory directory, List<int> largeDirectorySizes, int requiredSpace)
+    {
+        var total = 0;
+
+        foreach (var current in directory.Directories)
+        {
+            total += GetSumOfTotalDirectoriesOfAtLeast(current, largeDirectorySizes, requiredSpace);
+        }
+
+        total += directory.Files.Sum(p => p.Item2);
+        if (total >= requiredSpace)
+        {
+            largeDirectorySizes.Add(total);
+        }
+
+        return total;
+    }
 }

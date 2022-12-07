@@ -55,4 +55,18 @@ public class FinderMust
         var sut = new Finder(SAMPLE_INPUT);
         Assert.Equal(95437, sut.GetSumOfTotalDirectoriesOfAtMost100000());
     }
+
+    [Fact]
+    public void SolveFirstPuzzle()
+    {
+        var sut = new Finder(PUZZLE_INPUT);
+        Assert.Equal(1778099, sut.GetSumOfTotalDirectoriesOfAtMost100000());
+    }
+
+    [Fact]
+    public void Test1()
+    {
+        var sut = new Finder(SAMPLE_INPUT);
+        Assert.Equal(24933642, sut.GetSmallestDirectoryToDeleteToFreeEnoughSpace());
+    }
 }
