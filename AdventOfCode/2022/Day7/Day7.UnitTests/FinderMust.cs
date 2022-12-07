@@ -41,4 +41,11 @@ public class FinderMust
         Assert.Equal(4, sut.GetDirectoryCount());
         Assert.Equal(10, sut.GetFileCount());
     }
+
+    [Fact]
+    public void CalculateDirectorySizeCorrectly()
+    {
+        var sut = new Finder(SAMPLE_INPUT);
+        Assert.Equal(48381165, sut.GetDirectorySize());
+    }
 }

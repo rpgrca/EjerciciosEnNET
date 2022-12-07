@@ -122,4 +122,28 @@ public class Finder
 
         return total;
     }
+
+    public int GetDirectorySize()
+    {
+        var total = 0;
+
+        foreach (var directory in _fileSystem)
+        {
+            total += GetDirectorySize(directory);
+        }
+
+        return total;
+    }
+
+    private int GetDirectorySize(Directory directory)
+    {
+        var total = directory.Files.Sum(p => p.Item2);
+
+        foreach (var current in directory.Directories)
+        {
+            total += GetDirectorySize(current);
+        }
+
+        return total;
+    }
 }
