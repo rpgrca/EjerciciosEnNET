@@ -68,10 +68,15 @@ public class Finder
                 var directory = new Directory(directoryName);
                 _currentDirectory.Directories.Add(directory);
             }
+            else
+            {
+                var fields = line.Split(" ");
+                _currentDirectory.Files.Add((fields[1], int.Parse(fields[0])));
+            }
         }
     }
 
-    public int GetDirectoryCount(string target)
+    public int GetDirectoryCount()
     {
         var total = 0;
 
@@ -95,4 +100,26 @@ public class Finder
         return total;
     }
 
+    public int GetFileCount()
+    {
+        var total = 0;
+        foreach (var directory in _fileSystem)
+        {
+            total += GetFileCount(directory);
+        }
+
+        return total;
+    }
+
+    private int GetFileCount(Directory directory)
+    {
+        var total = directory.Files.Count;
+
+        foreach (var current in directory.Directories)
+        {
+            total += GetFileCount(current);
+        }
+
+        return total;
+    }
 }
