@@ -64,9 +64,16 @@ public class FinderMust
     }
 
     [Fact]
-    public void Test1()
+    public void SolveSecondSampleCorrectly()
     {
         var sut = new Finder(SAMPLE_INPUT);
         Assert.Equal(24933642, sut.GetSmallestDirectoryToDeleteToFreeEnoughSpace());
+    }
+
+    [Fact]
+    public void SolveSecondPuzzle()
+    {
+        var sut = new Finder(PUZZLE_INPUT);
+        Assert.Equal(1623571, sut.GetSmallestDirectoryToDeleteToFreeEnoughSpace());
     }
 }

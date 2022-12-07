@@ -160,7 +160,7 @@ public class Finder
         return smallDirectorySizes.Sum();
     }
 
-    public int GetSumOfTotalDirectoriesOfAtMost100000(Directory directory, List<int> smallDirectorySizes)
+    private int GetSumOfTotalDirectoriesOfAtMost100000(Directory directory, List<int> smallDirectorySizes)
     {
         var total = 0;
 
@@ -192,7 +192,7 @@ public class Finder
         return largeDirectorySizes.OrderBy(p => p).First();
     }
 
-    public int GetSumOfTotalDirectoriesOfAtLeast(Directory directory, List<int> largeDirectorySizes, int requiredSpace)
+    private int GetSumOfTotalDirectoriesOfAtLeast(Directory directory, List<int> largeDirectorySizes, int requiredSpace)
     {
         var total = 0;
 
