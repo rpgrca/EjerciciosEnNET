@@ -14,7 +14,7 @@ public class TuningTrouble
     {
         _input = input;
         _length = length;
-        _uniqueSequence = "";
+        _uniqueSequence = string.Empty;
 
         ProcessedLength = -1;
 
