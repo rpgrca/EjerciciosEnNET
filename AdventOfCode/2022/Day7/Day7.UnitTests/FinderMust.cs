@@ -1,10 +1,13 @@
+using Day7.Logic;
+
 namespace Day7.UnitTests;
 
-public class UnitTest1
+public class FinderMust
 {
     [Fact]
-    public void Test1()
+    public void ReturnZero_WhenFindingAmountOfDirectoriesOfEmptyFileSystem()
     {
-
+        var sut = new Finder("$ cd /\n$ ls");
+        Assert.Equal(1, sut.GetDirectoryCount());
     }
 }
