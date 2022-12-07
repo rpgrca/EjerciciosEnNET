@@ -54,7 +54,7 @@ public class Finder
                         var targetDirectory = _currentDirectory.Directories.SingleOrDefault(d => d.Name == directoryName);
                         if (targetDirectory is null)
                         {
-                            targetDirectory = new Directory(directoryName);
+                            targetDirectory = new Directory(directoryName, _currentDirectory);
                             _currentDirectory.Directories.Add(targetDirectory);
                         }
 
@@ -65,7 +65,7 @@ public class Finder
             else if (line.StartsWith("dir "))
             {
                 var directoryName = line[4..];
-                var directory = new Directory(directoryName);
+                var directory = new Directory(directoryName, _currentDirectory);
                 _currentDirectory.Directories.Add(directory);
             }
             else

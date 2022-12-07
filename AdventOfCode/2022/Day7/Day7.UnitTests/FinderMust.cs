@@ -1,4 +1,5 @@
 using Day7.Logic;
+using static Day7.UnitTests.Constants;
 
 namespace Day7.UnitTests;
 
@@ -31,5 +32,13 @@ public class FinderMust
         var sut = new Finder("$ cd /\n$ ls\ndir a\n14848514 b.txt\n8504156 c.dat\n$ cd a\n$ ls\n$ cd ..");
         Assert.Equal(2, sut.GetDirectoryCount());
         Assert.Equal(2, sut.GetFileCount());
+    }
+
+    [Fact]
+    public void ParseSampleDataCorrectly()
+    {
+        var sut = new Finder(SAMPLE_INPUT);
+        Assert.Equal(4, sut.GetDirectoryCount());
+        Assert.Equal(10, sut.GetFileCount());
     }
 }
