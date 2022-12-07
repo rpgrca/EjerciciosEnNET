@@ -146,4 +146,36 @@ public class Finder
 
         return total;
     }
+
+    public int GetSumOfTotalDirectoriesOfAtMost100000()
+    {
+        var smallDirectorySizes = new List<int>();
+        var total = 0;
+
+        foreach (var directory in _fileSystem)
+        {
+            total += GetSumOfTotalDirectoriesOfAtMost100000(directory, smallDirectorySizes);
+        }
+
+        return smallDirectorySizes.Sum();
+    }
+
+    public int GetSumOfTotalDirectoriesOfAtMost100000(Directory directory, List<int> smallDirectorySizes)
+    {
+        var total = 0;
+
+        foreach (var current in directory.Directories)
+        {
+            total += GetSumOfTotalDirectoriesOfAtMost100000(current, smallDirectorySizes);
+        }
+
+        total += directory.Files.Sum(p => p.Item2);
+        if (total <= 100000)
+        {
+            smallDirectorySizes.Add(total);
+        }
+
+        return total;
+    }
+
 }

@@ -48,4 +48,11 @@ public class FinderMust
         var sut = new Finder(SAMPLE_INPUT);
         Assert.Equal(48381165, sut.GetDirectorySize());
     }
+
+    [Fact]
+    public void SolveFirstSampleCorrectly()
+    {
+        var sut = new Finder(SAMPLE_INPUT);
+        Assert.Equal(95437, sut.GetSumOfTotalDirectoriesOfAtMost100000());
+    }
 }
