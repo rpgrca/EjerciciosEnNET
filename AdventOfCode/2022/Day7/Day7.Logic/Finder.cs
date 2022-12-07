@@ -3,12 +3,22 @@
 public class Directory
 {
     public string Name { get; }
+    public Directory Parent { get; }
     public List<Directory> Directories { get; }
     public List<(string, int)> Files { get; }
+
+    public Directory(string name, Directory parent)
+    {
+        Name = name;
+        Parent = parent;
+        Directories = new List<Directory>();
+        Files = new List<(string, int)>();
+    }
 
     public Directory(string name)
     {
         Name = name;
+        Parent = this;
         Directories = new List<Directory>();
         Files = new List<(string, int)>();
     }
@@ -35,7 +45,11 @@ public class Finder
                 {
                     var directoryName = line[5..];
 
-                    if (_currentDirectory.Name != directoryName)
+                    if (directoryName == "..")
+                    {
+                        _currentDirectory = _currentDirectory.Parent;
+                    }
+                    else if (_currentDirectory.Name != directoryName)
                     {
                         var targetDirectory = _currentDirectory.Directories.SingleOrDefault(d => d.Name == directoryName);
                         if (targetDirectory is null)
