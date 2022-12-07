@@ -48,6 +48,12 @@ public class Finder
                     }
                 }
             }
+            else if (line.StartsWith("dir "))
+            {
+                var directoryName = line[4..];
+                var directory = new Directory(directoryName);
+                _currentDirectory.Directories.Add(directory);
+            }
         }
     }
 
