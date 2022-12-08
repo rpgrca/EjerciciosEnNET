@@ -83,17 +83,30 @@ public class TreetopTreeHouseMust
     }
 
     [Fact]
-    public void Test2()
+    public void ReturnScenicViewCorrectly_WhenVisionIsProlongedToTop()
+    {
+        var sut = new TreetopTreeHouse("199\n529\n939\n299");
+        Assert.Equal(2, sut.BestScenicScore);
+    }
+
+    [Fact]
+    public void ReturnScenicViewCorrectly_WhenVisionIsProlongedToRight()
     {
         var sut = new TreetopTreeHouse("2951\n9329\n9999");
         Assert.Equal(2, sut.BestScenicScore);
     }
 
     [Fact]
-    public void Test3()
+    public void ReturnScenicViewCorrectly_WhenVisionIsProlongedToLeft()
     {
         var sut = new TreetopTreeHouse("2951\n9239\n9999");
         Assert.Equal(2, sut.BestScenicScore);
     }
 
+    [Fact]
+    public void ReturnScenicViewCorrectly_WhenVisionIsProlongedToBottom()
+    {
+        var sut = new TreetopTreeHouse("199\n939\n529\n299");
+        Assert.Equal(2, sut.BestScenicScore);
+    }
 }
