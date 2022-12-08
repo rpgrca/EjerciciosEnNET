@@ -6,17 +6,58 @@ namespace Day8.UnitTests;
 public class TreetopTreeHouseMust
 {
     [Fact]
-    public void Test1()
+    public void Return9_WhenTreeIsVisibleFromTop()
     {
-        var sut = new TreetopTreeHouse("303\n255\n653");
+        var sut = new TreetopTreeHouse("303\n555\n653");
         Assert.Equal(9, sut.VisibleTreesFromOutside);
     }
 
     [Fact]
-    public void Test2()
+    public void Return9_WhenTreeIsVisibleFromLeft()
     {
-        var sut = new TreetopTreeHouse("373\n655\n653");
+        var sut = new TreetopTreeHouse("373\n355\n653");
+        Assert.Equal(9, sut.VisibleTreesFromOutside);
+    }
+
+    [Fact]
+    public void Return9_WhenTreeIsVisibleFromRight()
+    {
+        var sut = new TreetopTreeHouse("353\n653\n653");
+        Assert.Equal(9, sut.VisibleTreesFromOutside);
+    }
+
+    [Fact]
+    public void Return9_WhenTreeIsVisibleFromBottom()
+    {
+        var sut = new TreetopTreeHouse("353\n657\n623");
+        Assert.Equal(9, sut.VisibleTreesFromOutside);
+    }
+
+    [Fact]
+    public void Return8_WhenTreeIsNotVisible()
+    {
+        var sut = new TreetopTreeHouse("353\n657\n683");
         Assert.Equal(8, sut.VisibleTreesFromOutside);
     }
 
+    [Fact]
+    public void Return11_WhenTreeHasInternalTreeCoveringItToTheLeft()
+    {
+        var sut = new TreetopTreeHouse("2951\n2339\n9999");
+        Assert.Equal(11, sut.VisibleTreesFromOutside);
+    }
+
+    [Fact]
+    public void Return11_WhenTreeHasInternalTreeCoveringItToTheRight()
+    {
+        var sut = new TreetopTreeHouse("2951\n9332\n9999");
+        Assert.Equal(11, sut.VisibleTreesFromOutside);
+    }
+
+    /*[Fact]
+    public void SolveFirstSample()
+    {
+        var sut = new TreetopTreeHouse(SAMPLE_INPUT);
+        Assert.Equal(21, sut.VisibleTreesFromOutside);
+    }*/
 }

@@ -33,28 +33,41 @@ public class TreetopTreeHouse
             y++;
         }
 
-        var visible = false;
-        for (var currentY = 1; currentY < _rows; currentY++)
+        bool visible;
+        for (var currentY = 1; currentY < _rows - 1; currentY++)
         {
-            for (var currentX = 1; currentX < _columns; currentX++)
+            for (var currentX = 1; currentX < _columns - 1; currentX++)
             {
+                visible = false;
+                var maximum = 0;
                 var tree = _patch[currentY, currentX];
-                for (var edgeX = currentX - 1; !visible && edgeX >= 0; edgeX--)
+                for (var edgeX = 0; edgeX < currentX; edgeX++)
                 {
-                    if (tree > _patch[currentY,edgeX])
+                    if (_patch[currentY, edgeX] > 0)
                     {
-                        visible = true;
+                        maximum = _patch[currentX, edgeX];
                     }
+                }
+
+                if (tree > maximum)
+                {
+                    visible = true;
                 }
 
                 if (! visible)
                 {
-                    for (var edgeX = currentX + 1; !visible && edgeX < _columns; edgeX++)
+                    maximum = 0;
+                    for (var edgeX = _columns - 1; edgeX > currentX; edgeX--)
                     {
-                        if (tree > _patch[currentY,edgeX])
+                        if (_patch[currentY,edgeX] > maximum)
                         {
-                            visible = true;
+                            maximum = _patch[currentY, edgeX];
                         }
+                    }
+
+                    if (tree > maximum)
+                    {
+                        visible = true;
                     }
                 }
 
@@ -69,6 +82,16 @@ public class TreetopTreeHouse
                     }
                 }
 
+                if (! visible)
+                {
+                    for (var edgeY = currentY - 1; !visible && edgeY >= 0; edgeY--)
+                    {
+                        if (tree > _patch[edgeY,currentX])
+                        {
+                            visible = true;
+                        }
+                    }
+                }
 
                 if (! visible)
                 {
