@@ -88,4 +88,12 @@ public class TreetopTreeHouseMust
         var sut = new TreetopTreeHouse("2951\n9329\n9999");
         Assert.Equal(2, sut.BestScenicScore);
     }
+
+    [Fact]
+    public void Test3()
+    {
+        var sut = new TreetopTreeHouse("2951\n9239\n9999");
+        Assert.Equal(2, sut.BestScenicScore);
+    }
+
 }

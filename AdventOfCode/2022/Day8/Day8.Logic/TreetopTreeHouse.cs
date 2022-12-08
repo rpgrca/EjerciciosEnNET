@@ -127,6 +127,7 @@ public class TreetopTreeHouse
                 var tree = _patch[currentY, currentX];
                 var topVision = 0;
                 var rightVision = 0;
+                var leftVision = 0;
 
                 // to top
                 for (var edgeY = currentY - 1; edgeY >= 0; edgeY--)
@@ -150,7 +151,19 @@ public class TreetopTreeHouse
                     }
                 }
 
-                var scenicScore = topVision * rightVision;
+                // to left
+                for (var edgeX = currentX - 1; edgeX >= 0; edgeX--)
+                {
+                    leftVision++;
+
+                    if (tree <= _patch[currentY, edgeX])
+                    {
+                        break;
+                    }
+                }
+
+
+                var scenicScore = topVision * rightVision * leftVision;
 
                 if (scenicScore > BestScenicScore)
                 {
