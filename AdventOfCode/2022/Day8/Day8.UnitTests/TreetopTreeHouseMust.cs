@@ -62,10 +62,10 @@ public class TreetopTreeHouseMust
     }
 
 
-    /*[Fact]
+    [Fact]
     public void SolveFirstSample()
     {
         var sut = new TreetopTreeHouse(SAMPLE_INPUT);
         Assert.Equal(21, sut.VisibleTreesFromOutside);
-    }*/
+    }
 }

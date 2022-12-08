@@ -46,9 +46,9 @@ public class TreetopTreeHouse
                 {
                     for (var edgeX = 0; edgeX < currentX; edgeX++)
                     {
-                        if (_patch[currentY, edgeX] > 0)
+                        if (_patch[currentY, edgeX] > maximum)
                         {
-                            maximum = _patch[currentX, edgeX];
+                            maximum = _patch[currentY, edgeX];
                         }
                     }
 
