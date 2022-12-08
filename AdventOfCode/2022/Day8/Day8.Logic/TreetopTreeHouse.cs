@@ -7,6 +7,7 @@ public class TreetopTreeHouse
     private int[,] _patch;
 
     public int VisibleTreesFromOutside { get; set; }
+    public int BestScenicScore { get; set; }
 
     public TreetopTreeHouse(string input)
     {
@@ -115,6 +116,45 @@ public class TreetopTreeHouse
                 if (! visible)
                 {
                     VisibleTreesFromOutside--;
+                }
+            }
+        }
+
+        for (var currentY = 1; currentY < _rows - 1; currentY++)
+        {
+            for (var currentX = 1; currentX < _columns - 1; currentX++)
+            {
+                var tree = _patch[currentY, currentX];
+                var topVision = 0;
+                var rightVision = 0;
+
+                // to top
+                for (var edgeY = currentY - 1; edgeY >= 0; edgeY--)
+                {
+                    topVision++;
+
+                    if (tree <= _patch[edgeY, currentX])
+                    {
+                        break;
+                    }
+                }
+
+                // to right
+                for (var edgeX = currentX + 1; edgeX < _columns; edgeX++)
+                {
+                    rightVision++;
+
+                    if (tree <= _patch[currentY, edgeX])
+                    {
+                        break;
+                    }
+                }
+
+                var scenicScore = topVision * rightVision;
+
+                if (scenicScore > BestScenicScore)
+                {
+                    BestScenicScore = scenicScore;
                 }
             }
         }

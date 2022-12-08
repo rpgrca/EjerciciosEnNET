@@ -61,11 +61,31 @@ public class TreetopTreeHouseMust
         Assert.Equal(11, sut.VisibleTreesFromOutside);
     }
 
-
     [Fact]
     public void SolveFirstSample()
     {
         var sut = new TreetopTreeHouse(SAMPLE_INPUT);
         Assert.Equal(21, sut.VisibleTreesFromOutside);
+    }
+
+    [Fact]
+    public void SolveFirstPuzzle()
+    {
+        var sut = new TreetopTreeHouse(PUZZLE_INPUT);
+        Assert.Equal(1854, sut.VisibleTreesFromOutside);
+    }
+
+    [Fact]
+    public void Test1()
+    {
+        var sut = new TreetopTreeHouse("303\n555\n653");
+        Assert.Equal(1, sut.BestScenicScore);
+    }
+
+    [Fact]
+    public void Test2()
+    {
+        var sut = new TreetopTreeHouse("2951\n9329\n9999");
+        Assert.Equal(2, sut.BestScenicScore);
     }
 }
