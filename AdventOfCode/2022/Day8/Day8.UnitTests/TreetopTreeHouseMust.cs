@@ -54,6 +54,14 @@ public class TreetopTreeHouseMust
         Assert.Equal(11, sut.VisibleTreesFromOutside);
     }
 
+    [Fact]
+    public void Return11_WhenTreeHasInternalTreeCoveringItToTheTop()
+    {
+        var sut = new TreetopTreeHouse("129\n539\n939\n299");
+        Assert.Equal(11, sut.VisibleTreesFromOutside);
+    }
+
+
     /*[Fact]
     public void SolveFirstSample()
     {

@@ -41,19 +41,24 @@ public class TreetopTreeHouse
                 visible = false;
                 var maximum = 0;
                 var tree = _patch[currentY, currentX];
-                for (var edgeX = 0; edgeX < currentX; edgeX++)
+
+                if (! visible)
                 {
-                    if (_patch[currentY, edgeX] > 0)
+                    for (var edgeX = 0; edgeX < currentX; edgeX++)
                     {
-                        maximum = _patch[currentX, edgeX];
+                        if (_patch[currentY, edgeX] > 0)
+                        {
+                            maximum = _patch[currentX, edgeX];
+                        }
+                    }
+
+                    if (tree > maximum)
+                    {
+                        visible = true;
                     }
                 }
 
-                if (tree > maximum)
-                {
-                    visible = true;
-                }
-
+                // check from right to left
                 if (! visible)
                 {
                     maximum = 0;
@@ -71,25 +76,39 @@ public class TreetopTreeHouse
                     }
                 }
 
+                // check from bottom to top
                 if (! visible)
                 {
-                    for (var edgeY = currentY + 1; !visible && edgeY < _rows; edgeY++)
+                    maximum = 0;
+                    for (var edgeY = _rows - 1; edgeY > currentY; edgeY--)
                     {
-                        if (tree > _patch[edgeY,currentX])
+                        if (_patch[edgeY, currentX] > maximum)
                         {
-                            visible = true;
+                            maximum = _patch[edgeY, currentX];
                         }
+                    }
+
+                    if (tree > maximum)
+                    {
+                        visible = true;
                     }
                 }
 
+                // check from top to bottom
                 if (! visible)
                 {
-                    for (var edgeY = currentY - 1; !visible && edgeY >= 0; edgeY--)
+                    maximum = 0;
+                    for (var edgeY = 0; edgeY < currentY; edgeY++)
                     {
-                        if (tree > _patch[edgeY,currentX])
+                        if (_patch[edgeY, currentX] > maximum)
                         {
-                            visible = true;
+                            maximum = _patch[edgeY, currentX];
                         }
+                    }
+
+                    if (tree > maximum)
+                    {
+                        visible = true;
                     }
                 }
 
