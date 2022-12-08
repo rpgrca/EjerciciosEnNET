@@ -109,4 +109,18 @@ public class TreetopTreeHouseMust
         var sut = new TreetopTreeHouse("199\n939\n529\n299");
         Assert.Equal(2, sut.BestScenicScore);
     }
+
+    [Fact]
+    public void SolveSecondSample()
+    {
+        var sut = new TreetopTreeHouse(SAMPLE_INPUT);
+        Assert.Equal(8, sut.BestScenicScore);
+    }
+
+    [Fact]
+    public void SolveSecondPuzzle()
+    {
+        var sut = new TreetopTreeHouse(PUZZLE_INPUT);
+        Assert.Equal(527340, sut.BestScenicScore);
+    }
 }
