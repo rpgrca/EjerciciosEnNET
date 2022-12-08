@@ -11,4 +11,12 @@ public class TreetopTreeHouseMust
         var sut = new TreetopTreeHouse("303\n255\n653");
         Assert.Equal(9, sut.VisibleTreesFromOutside);
     }
+
+    [Fact]
+    public void Test2()
+    {
+        var sut = new TreetopTreeHouse("373\n655\n653");
+        Assert.Equal(8, sut.VisibleTreesFromOutside);
+    }
+
 }
