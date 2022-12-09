@@ -29,109 +29,112 @@ public class RopeBridge
                 case "R":
                     for (var step = 0; step < steps; step++)
                     {
-                        MoveRight();
-                        AdjustMovementForTail();
+                        MoveHeadRight();
+                        AdjustMovementForOtherKnots();
                     }
                     break;
 
                 case "L":
                     for (var step = 0; step < steps; step++)
                     {
-                        MoveLeft();
-                        AdjustMovementForTail();
+                        MoveHeadLeft();
+                        AdjustMovementForOtherKnots();
                     }
                     break;
 
                 case "U":
                     for (var step = 0; step < steps; step++)
                     {
-                        MoveUp();
-                        AdjustMovementForTail();
+                        MoveHeadUp();
+                        AdjustMovementForOtherKnots();
                     }
                     break;
 
                 case "D":
                     for (var step = 0; step < steps; step++)
                     {
-                        MoveDown();
-                        AdjustMovementForTail();
+                        MoveHeadDown();
+                        AdjustMovementForOtherKnots();
                     }
                     break;
             }
         }
     }
 
-    private void MoveRight() => _knots[0].MoveRight();
+    private void MoveHeadRight() => _knots[0].MoveRight();
 
-    private void MoveLeft() => _knots[0].MoveLeft();
+    private void MoveHeadLeft() => _knots[0].MoveLeft();
 
-    private void MoveUp() => _knots[0].MoveUp();
+    private void MoveHeadUp() => _knots[0].MoveUp();
 
-    private void MoveDown() => _knots[0].MoveDown();
+    private void MoveHeadDown() => _knots[0].MoveDown();
 
-    private void AdjustMovementForTail()
+    private void AdjustMovementForOtherKnots()
     {
-        if (_knots[1].TooFarHorizontallyFrom(_knots[0]))
+        for (var index = 1; index < _knots.Count; index++)
         {
-            if (_knots[1].IsAtMyRight(_knots[0]))
+            if (_knots[index].TooFarHorizontallyFrom(_knots[index - 1]))
             {
-                _knots[1].MoveRight();
-
-                if (_knots[1].IsAboveMe(_knots[0]))
+                if (_knots[index].IsAtMyRight(_knots[index - 1]))
                 {
-                    _knots[1].MoveUp();
+                    _knots[index].MoveRight();
+     
+                    if (_knots[index].IsAboveMe(_knots[index - 1]))
+                    {
+                        _knots[index].MoveUp();
+                    }
+                    else if (_knots[index].IsBelowMe(_knots[index - 1]))
+                    {
+                        _knots[index].MoveDown();
+                    }
                 }
-                else if (_knots[1].IsBelowMe(_knots[0]))
+                else if (_knots[index].IsAtMyLeft(_knots[index - 1]))
                 {
-                    _knots[1].MoveDown();
+                    _knots[index].MoveLeft();
+     
+                    if (_knots[index].IsAboveMe(_knots[index - 1]))
+                    {
+                        _knots[index].MoveUp();
+                    }
+                    else if (_knots[index].IsBelowMe(_knots[index - 1]))
+                    {
+                        _knots[index].MoveDown();
+                    }
                 }
             }
-            else if (_knots[1].IsAtMyLeft(_knots[0]))
+            else
             {
-                _knots[1].MoveLeft();
-
-                if (_knots[1].IsAboveMe(_knots[0]))
+                if (_knots[index].TooFarVerticallyFrom(_knots[index - 1]))
                 {
-                    _knots[1].MoveUp();
-                }
-                else if (_knots[1].IsBelowMe(_knots[0]))
-                {
-                    _knots[1].MoveDown();
+                    if (_knots[index].IsAboveMe(_knots[index - 1]))
+                    {
+                        _knots[index].MoveUp();
+                        if (_knots[index].IsAtMyLeft(_knots[index - 1]))
+                        {
+                            _knots[index].MoveLeft();
+                        }
+                        else if (_knots[index].IsAtMyRight(_knots[index - 1]))
+                        {
+                            _knots[index].MoveRight();
+                        }
+                    }
+                    else if (_knots[index].IsBelowMe(_knots[index - 1]))
+                    {
+                        _knots[index].MoveDown();
+                        if (_knots[index].IsAtMyLeft(_knots[index - 1]))
+                        {
+                            _knots[index].MoveLeft();
+                        }
+                        else if (_knots[index].IsAtMyRight(_knots[index - 1]))
+                        {
+                            _knots[index].MoveRight();
+                        }
+                    }
                 }
             }
         }
-        else
-        {
-            if (_knots[1].TooFarVerticallyFrom(_knots[0]))
-            {
-                if (_knots[1].IsAboveMe(_knots[0]))
-                {
-                    _knots[1].MoveUp();
-                    if (_knots[1].IsAtMyLeft(_knots[0]))
-                    {
-                        _knots[1].MoveLeft();
-                    }
-                    else if (_knots[1].IsAtMyRight(_knots[0]))
-                    {
-                        _knots[1].MoveRight();
-                    }
-                }
-                else if (_knots[1].IsBelowMe(_knots[0]))
-                {
-                    _knots[1].MoveDown();
-                    if (_knots[1].IsAtMyLeft(_knots[0]))
-                    {
-                        _knots[1].MoveLeft();
-                    }
-                    else if (_knots[1].IsAtMyRight(_knots[0]))
-                    {
-                        _knots[1].MoveRight();
-                    }
-                }
-            }
-        }
 
-        _uniquePositions.TryAdd(_knots[1].Position, 0);
-        _uniquePositions[_knots[1].Position]++;
+        _uniquePositions.TryAdd(_knots.Last().Position, 0);
+        _uniquePositions[_knots.Last().Position]++;
     }
 }

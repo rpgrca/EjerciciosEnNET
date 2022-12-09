@@ -94,11 +94,29 @@ public class RopeBridgeMust
         Assert.Equal(6087, sut.VisitedPositions);
     }
 
-    /*[Theory]
-    [InlineData("R 1")]
-    public void CalculateTailPositionsCorrectly_WhenMultipleKnotsExist(string input)
+    [Theory]
+    [InlineData("R 1", 1)]
+    [InlineData("R 2", 1)]
+    [InlineData("R 9", 1)]
+    [InlineData("R 10", 2)]
+    [InlineData("R 11", 3)]
+    public void CalculateTailPositionsCorrectly_WhenMultipleKnotsExist(string input, int expectedVisitedPositions)
     {
-        var sut = new RopeBridge(input);
+        var sut = new RopeBridge(input, 10);
+        Assert.Equal(expectedVisitedPositions, sut.VisitedPositions);
+    }
+
+    [Fact]
+    public void SolveSecondSampleCorrectly()
+    {
+        var sut = new RopeBridge(SAMPLE_INPUT, 10);
         Assert.Equal(1, sut.VisitedPositions);
-    }*/
+    }
+
+    [Fact]
+    public void SolveLongSampleCorrectly()
+    {
+        var sut = new RopeBridge(LONG_SAMPLE_INPUT, 10);
+        Assert.Equal(36, sut.VisitedPositions);
+    }
 }
