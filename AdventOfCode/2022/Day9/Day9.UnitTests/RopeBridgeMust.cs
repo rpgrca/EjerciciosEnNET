@@ -119,4 +119,11 @@ public class RopeBridgeMust
         var sut = new RopeBridge(LONG_SAMPLE_INPUT, 10);
         Assert.Equal(36, sut.VisitedPositions);
     }
+
+    [Fact]
+    public void SolveSecondPuzzle()
+    {
+        var sut = new RopeBridge(PUZZLE_INPUT, 10);
+        Assert.Equal(2493, sut.VisitedPositions);
+    }
 }
