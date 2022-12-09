@@ -3,9 +3,7 @@
 public class RopeBridge
 {
     private readonly string _input;
-    private readonly int _knots;
-    private (int X, int Y) _head;
-    private (int X, int Y) _tail;
+    private readonly List<Knot> _knots;
     private readonly Dictionary<(int X, int Y), int> _uniquePositions;
 
     public int VisitedPositions => _uniquePositions.Count;
@@ -13,7 +11,12 @@ public class RopeBridge
     public RopeBridge(string input, int knots = 2)
     {
         _input = input;
-        _knots = knots;
+        _knots = new List<Knot>();
+        for (var index = 0; index < knots; index++)
+        {
+            _knots.Add(new Knot());
+        }
+
         _uniquePositions = new Dictionary<(int X, int Y), int> { { (0, 0), 1 } };
 
         var lines = _input.Split("\n");
@@ -55,96 +58,80 @@ public class RopeBridge
                     }
                     break;
             }
-
         }
     }
 
-    private void MoveRight() => _head.X++;
+    private void MoveRight() => _knots[0].MoveRight();
 
-    private void MoveLeft() => _head.X--;
+    private void MoveLeft() => _knots[0].MoveLeft();
+
+    private void MoveUp() => _knots[0].MoveUp();
+
+    private void MoveDown() => _knots[0].MoveDown();
 
     private void AdjustMovementForTail()
     {
-        if (Math.Abs(_head.X - _tail.X) > 1)
+        if (_knots[1].TooFarHorizontallyFrom(_knots[0]))
         {
-            if (_head.X > _tail.X)
+            if (_knots[1].IsAtMyRight(_knots[0]))
             {
-                _tail.X++;
+                _knots[1].MoveRight();
 
-                if (_head.Y < _tail.Y)
+                if (_knots[1].IsAboveMe(_knots[0]))
                 {
-                    _tail.Y--;
+                    _knots[1].MoveUp();
                 }
-                else if (_head.Y > _tail.Y)
+                else if (_knots[1].IsBelowMe(_knots[0]))
                 {
-                    _tail.Y++;
+                    _knots[1].MoveDown();
                 }
-
-                _uniquePositions.TryAdd(_tail, 0);
-                _uniquePositions[_tail]++;
             }
-            else if (_head.X < _tail.X)
+            else if (_knots[1].IsAtMyLeft(_knots[0]))
             {
-                _tail.X--;
+                _knots[1].MoveLeft();
 
-                if (_head.Y < _tail.Y)
+                if (_knots[1].IsAboveMe(_knots[0]))
                 {
-                    _tail.Y--;
+                    _knots[1].MoveUp();
                 }
-                else if (_head.Y > _tail.Y)
+                else if (_knots[1].IsBelowMe(_knots[0]))
                 {
-                    _tail.Y++;
+                    _knots[1].MoveDown();
                 }
-
-                _uniquePositions.TryAdd(_tail, 0);
-                _uniquePositions[_tail]++;
             }
-       }
-       else
-       {
-           if (Math.Abs(_head.Y - _tail.Y) > 1)
-           {
-                if (_head.Y < _tail.Y)
+        }
+        else
+        {
+            if (_knots[1].TooFarVerticallyFrom(_knots[0]))
+            {
+                if (_knots[1].IsAboveMe(_knots[0]))
                 {
-                    _tail.Y--;
-                    if (_head.X < _tail.X)
+                    _knots[1].MoveUp();
+                    if (_knots[1].IsAtMyLeft(_knots[0]))
                     {
-                        _tail.X--;
+                        _knots[1].MoveLeft();
                     }
-                    else if (_head.X > _tail.X)
+                    else if (_knots[1].IsAtMyRight(_knots[0]))
                     {
-                        _tail.X++;
+                        _knots[1].MoveRight();
                     }
-  
-                    _uniquePositions.TryAdd(_tail, 0);
-                    _uniquePositions[_tail]++;
                 }
-                else if (_head.Y > _tail.Y)
+                else if (_knots[1].IsBelowMe(_knots[0]))
                 {
-                    _tail.Y++;
-                    if (_head.X < _tail.X)
+                    _knots[1].MoveDown();
+                    if (_knots[1].IsAtMyLeft(_knots[0]))
                     {
-                        _tail.X--;
+                        _knots[1].MoveLeft();
                     }
-                    else if (_head.X > _tail.X)
+                    else if (_knots[1].IsAtMyRight(_knots[0]))
                     {
-                        _tail.X++;
+                        _knots[1].MoveRight();
                     }
-        
-                    _uniquePositions.TryAdd(_tail, 0);
-                    _uniquePositions[_tail]++;
                 }
-           }
-       }
-    }
+            }
+        }
 
-    private void MoveUp()
-    {
-        _head.Y--;
-    }
-
-    private void MoveDown()
-    {
-        _head.Y++;
+        _uniquePositions.TryAdd(_knots[1].Position, 0);
+        _uniquePositions[_knots[1].Position]++;
     }
 }
