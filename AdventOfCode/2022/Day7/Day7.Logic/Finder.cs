@@ -1,41 +1,16 @@
 ﻿namespace Day7.Logic;
 
-public class Directory
-{
-    public string Name { get; }
-    public Directory Parent { get; }
-    public List<Directory> Directories { get; }
-    public List<(string, int)> Files { get; }
-
-    public Directory(string name, Directory parent)
-    {
-        Name = name;
-        Parent = parent;
-        Directories = new List<Directory>();
-        Files = new List<(string, int)>();
-    }
-
-    public Directory(string name)
-    {
-        Name = name;
-        Parent = this;
-        Directories = new List<Directory>();
-        Files = new List<(string, int)>();
-    }
-}
-
-
 public class Finder
 {
     private readonly string _input;
-    private readonly List<Directory> _fileSystem;
+    private readonly List<Directory> _root;
     private Directory _currentDirectory;
 
     public Finder(string input)
     {
         _input = input;
         _currentDirectory = new Directory("/");
-        _fileSystem = new List<Directory> { _currentDirectory };
+        _root = new List<Directory> { _currentDirectory };
 
         foreach (var line in input.Split("\n"))
         {
@@ -45,21 +20,12 @@ public class Finder
                 {
                     var directoryName = line[5..];
 
-                    if (directoryName == "..")
+                    _currentDirectory = directoryName switch
                     {
-                        _currentDirectory = _currentDirectory.Parent;
-                    }
-                    else if (_currentDirectory.Name != directoryName)
-                    {
-                        var targetDirectory = _currentDirectory.Directories.SingleOrDefault(d => d.Name == directoryName);
-                        if (targetDirectory is null)
-                        {
-                            targetDirectory = new Directory(directoryName, _currentDirectory);
-                            _currentDirectory.Directories.Add(targetDirectory);
-                        }
-
-                        _currentDirectory = targetDirectory;
-                    }
+                        ".." => _currentDirectory.Parent,
+                        "/" => _root.Single(),
+                        _ => _currentDirectory.Directories.Single(d => d.Name == directoryName)
+                    };
                 }
             }
             else if (line.StartsWith("dir "))
@@ -71,7 +37,7 @@ public class Finder
             else
             {
                 var fields = line.Split(" ");
-                _currentDirectory.Files.Add((fields[1], int.Parse(fields[0])));
+                _currentDirectory.AddFileSize(int.Parse(fields[0]));
             }
         }
     }
@@ -80,7 +46,7 @@ public class Finder
     {
         var total = 0;
 
-        foreach (var directory in _fileSystem)
+        foreach (var directory in _root)
         {
             total += GetDirectoryCount(directory);
         }
@@ -103,7 +69,7 @@ public class Finder
     public int GetFileCount()
     {
         var total = 0;
-        foreach (var directory in _fileSystem)
+        foreach (var directory in _root)
         {
             total += GetFileCount(directory);
         }
@@ -127,7 +93,7 @@ public class Finder
     {
         var total = 0;
 
-        foreach (var directory in _fileSystem)
+        foreach (var directory in _root)
         {
             total += GetDirectorySize(directory);
         }
@@ -137,7 +103,7 @@ public class Finder
 
     private int GetDirectorySize(Directory directory)
     {
-        var total = directory.Files.Sum(p => p.Item2);
+        var total = directory.GetSizeOfFiles();
 
         foreach (var current in directory.Directories)
         {
@@ -152,25 +118,25 @@ public class Finder
         var smallDirectorySizes = new List<int>();
         var total = 0;
 
-        foreach (var directory in _fileSystem)
+        foreach (var directory in _root)
         {
-            total += GetSumOfTotalDirectoriesOfAtMost100000(directory, smallDirectorySizes);
+            total += GetSumOfTotalDirectoriesOfAtMost(directory, smallDirectorySizes, t => t <= 100000);
         }
 
         return smallDirectorySizes.Sum();
     }
 
-    private int GetSumOfTotalDirectoriesOfAtMost100000(Directory directory, List<int> smallDirectorySizes)
+    private int GetSumOfTotalDirectoriesOfAtMost(Directory directory, List<int> smallDirectorySizes, Func<int, bool> condition)
     {
         var total = 0;
 
         foreach (var current in directory.Directories)
         {
-            total += GetSumOfTotalDirectoriesOfAtMost100000(current, smallDirectorySizes);
+            total += GetSumOfTotalDirectoriesOfAtMost(current, smallDirectorySizes, condition);
         }
 
-        total += directory.Files.Sum(p => p.Item2);
-        if (total <= 100000)
+        total += directory.GetSizeOfFiles();
+        if (condition(total))
         {
             smallDirectorySizes.Add(total);
         }
@@ -184,7 +150,7 @@ public class Finder
         var requiredSpace = 30_000_000 - (70_000_000 - GetDirectorySize());
         var total = 0;
 
-        foreach (var directory in _fileSystem)
+        foreach (var directory in _root)
         {
             total += GetSumOfTotalDirectoriesOfAtLeast(directory, largeDirectorySizes, requiredSpace);
         }
@@ -201,7 +167,7 @@ public class Finder
             total += GetSumOfTotalDirectoriesOfAtLeast(current, largeDirectorySizes, requiredSpace);
         }
 
-        total += directory.Files.Sum(p => p.Item2);
+        total += directory.GetSizeOfFiles();
         if (total >= requiredSpace)
         {
             largeDirectorySizes.Add(total);
