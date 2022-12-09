@@ -33,6 +33,13 @@ public class RopeBridge
                         MoveLeft();
                     }
                     break;
+
+                case "U":
+                    for (var step = 0; step < steps; step++)
+                    {
+                        MoveUp();
+                    }
+                    break;
             }
         }
     }
@@ -53,6 +60,25 @@ public class RopeBridge
         if (Math.Abs(_head.X - _tail.X) > 1)
         {
             _tail.X--;
+            VisitedPositions++;
+        }
+    }
+
+    private void MoveUp()
+    {
+        _head.Y--;
+        if (Math.Abs(_head.Y - _tail.Y) > 1)
+        {
+            _tail.Y--;
+            if (_head.X < _tail.X)
+            {
+                _tail.X--;
+            }
+            else if (_head.X > _tail.X)
+            {
+                _tail.X++;
+            }
+
             VisitedPositions++;
         }
     }
