@@ -40,8 +40,10 @@ public class RopeBridgeMust
     [InlineData("L 1\nR 2", 1)]
     [InlineData("L 1\nR 3", 2)]
     [InlineData("L 1\nU 1", 1)]
-    [InlineData("L 1\nU 2\nL 1", 2)]
-    [InlineData("R 1\nU 2\nR 1", 2)]
+    [InlineData("L 1\nU 2\nL 1", 2)] // diagonal up-left when moving up
+    [InlineData("L 1\nU 1\nL 1\nU 1", 2)] // diagonal up-left when moving left
+    [InlineData("R 1\nU 2\nR 1", 2)] // diagonal up-right when moving up
+    [InlineData("R 1\nU 1\nR 1\nU 1", 2)] // diagonal up-right when moving up
     public void CalculateTailPositionsCorrectly_WhenMixingDirections(string input, int expectedVisitedPositions)
     {
         var sut = new RopeBridge(input);

@@ -50,6 +50,12 @@ public class RopeBridge
         if (Math.Abs(_head.X - _tail.X) > 1)
         {
             _tail.X++;
+
+            if (_head.Y < _tail.Y)
+            {
+                _tail.Y--;
+            }
+
             VisitedPositions++;
         }
     }
@@ -60,6 +66,12 @@ public class RopeBridge
         if (Math.Abs(_head.X - _tail.X) > 1)
         {
             _tail.X--;
+
+            if (_head.Y < _tail.Y)
+            {
+                _tail.Y--;
+            }
+
             VisitedPositions++;
         }
     }
