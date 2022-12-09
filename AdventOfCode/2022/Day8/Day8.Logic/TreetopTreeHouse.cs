@@ -2,178 +2,21 @@
 
 public class TreetopTreeHouse
 {
-    private readonly int _rows;
-    private readonly int _columns;
-    private readonly int[,] _patch;
+    public int Result { get; private set; }
 
-    public int VisibleTreesFromOutside { get; set; }
-    public int BestScenicScore { get; set; }
+    public static TreetopTreeHouse CreateForFirstPuzzle(string input) =>
+        new(input, (r, c, p) => new Visibility(r, c, p));
 
-    public TreetopTreeHouse(string input)
+    public static TreetopTreeHouse CreateForSecondPuzzle(string input) =>
+        new(input, (r, c, p) => new ScenicView(r, c, p));
+
+    private TreetopTreeHouse(string input, Func<int, int, int[,], IAlgorithm> algorithmCreator)
     {
         var matrixLoader = new MatrixLoader(input);
-        _patch = matrixLoader.Matrix;
-        _rows = matrixLoader.RowsCount;
-        _columns = matrixLoader.ColumnsCount;
+        var patch = matrixLoader.Matrix;
+        var rows = matrixLoader.RowsCount;
+        var columns = matrixLoader.ColumnsCount;
 
-        VisibleTreesFromOutside = _rows * _columns;
-
-        CalculateVisibleTreesFromOutside();
-        CalculateBestScenicView();
-    }
-
-    private void CalculateBestScenicView()
-    {
-        for (var currentY = 1; currentY < _rows - 1; currentY++)
-        {
-            for (var currentX = 1; currentX < _columns - 1; currentX++)
-            {
-                var tree = _patch[currentY, currentX];
-                var topVision = 0;
-                var rightVision = 0;
-                var leftVision = 0;
-                var bottomVision = 0;
-
-                // to top
-                for (var edgeY = currentY - 1; edgeY >= 0; edgeY--)
-                {
-                    topVision++;
-
-                    if (tree <= _patch[edgeY, currentX])
-                    {
-                        break;
-                    }
-                }
-
-                for (var edgeY = currentY + 1; edgeY < _rows; edgeY++)
-                {
-                    bottomVision++;
-
-                    if (tree <= _patch[edgeY, currentX])
-                    {
-                        break;
-                    }
-                }
-
-                // to right
-                for (var edgeX = currentX + 1; edgeX < _columns; edgeX++)
-                {
-                    rightVision++;
-
-                    if (tree <= _patch[currentY, edgeX])
-                    {
-                        break;
-                    }
-                }
-
-                // to left
-                for (var edgeX = currentX - 1; edgeX >= 0; edgeX--)
-                {
-                    leftVision++;
-
-                    if (tree <= _patch[currentY, edgeX])
-                    {
-                        break;
-                    }
-                }
-
-
-                var scenicScore = topVision * rightVision * leftVision * bottomVision;
-
-                if (scenicScore > BestScenicScore)
-                {
-                    BestScenicScore = scenicScore;
-                }
-            }
-        }
-    }
-
-    private void CalculateVisibleTreesFromOutside()
-    {
-        bool visible;
-        for (var currentY = 1; currentY < _rows - 1; currentY++)
-        {
-            for (var currentX = 1; currentX < _columns - 1; currentX++)
-            {
-                visible = false;
-                var maximum = 0;
-                var tree = _patch[currentY, currentX];
-
-                if (!visible)
-                {
-                    for (var edgeX = 0; edgeX < currentX; edgeX++)
-                    {
-                        if (_patch[currentY, edgeX] > maximum)
-                        {
-                            maximum = _patch[currentY, edgeX];
-                        }
-                    }
-
-                    if (tree > maximum)
-                    {
-                        visible = true;
-                    }
-                }
-
-                // check from right to left
-                if (!visible)
-                {
-                    maximum = 0;
-                    for (var edgeX = _columns - 1; edgeX > currentX; edgeX--)
-                    {
-                        if (_patch[currentY, edgeX] > maximum)
-                        {
-                            maximum = _patch[currentY, edgeX];
-                        }
-                    }
-
-                    if (tree > maximum)
-                    {
-                        visible = true;
-                    }
-                }
-
-                // check from bottom to top
-                if (!visible)
-                {
-                    maximum = 0;
-                    for (var edgeY = _rows - 1; edgeY > currentY; edgeY--)
-                    {
-                        if (_patch[edgeY, currentX] > maximum)
-                        {
-                            maximum = _patch[edgeY, currentX];
-                        }
-                    }
-
-                    if (tree > maximum)
-                    {
-                        visible = true;
-                    }
-                }
-
-                // check from top to bottom
-                if (!visible)
-                {
-                    maximum = 0;
-                    for (var edgeY = 0; edgeY < currentY; edgeY++)
-                    {
-                        if (_patch[edgeY, currentX] > maximum)
-                        {
-                            maximum = _patch[edgeY, currentX];
-                        }
-                    }
-
-                    if (tree > maximum)
-                    {
-                        visible = true;
-                    }
-                }
-
-                if (!visible)
-                {
-                    VisibleTreesFromOutside--;
-                }
-            }
-        }
+        Result = algorithmCreator(rows, columns, patch).Result;
     }
 }
