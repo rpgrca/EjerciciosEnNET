@@ -26,6 +26,13 @@ public class RopeBridge
                         MoveRight();
                     }
                     break;
+
+                case "L":
+                    for (var step = 0; step < steps; step++)
+                    {
+                        MoveLeft();
+                    }
+                    break;
             }
         }
     }
@@ -36,6 +43,16 @@ public class RopeBridge
         if (Math.Abs(_head.X - _tail.X) > 1)
         {
             _tail.X++;
+            VisitedPositions++;
+        }
+    }
+
+    private void MoveLeft()
+    {
+        _head.X--;
+        if (Math.Abs(_head.X - _tail.X) > 1)
+        {
+            _tail.X--;
             VisitedPositions++;
         }
     }
