@@ -68,4 +68,22 @@ public class RopeBridgeMust
         var sut = new RopeBridge(input);
         Assert.Equal(expectedVisitedPositions, sut.VisitedPositions);
     }
+
+    [Theory]
+    [InlineData("L 3\nR 3", 3)]
+    [InlineData("R 3\nL 3", 3)]
+    [InlineData("U 3\nD 3", 3)]
+    [InlineData("D 3\nU 3", 3)]
+    public void CalculateTailPositionsCorrectly_WhenSteppingOnPreviousVisitedPosition(string input, int expectedVisitedPositions)
+    {
+        var sut = new RopeBridge(input);
+        Assert.Equal(expectedVisitedPositions, sut.VisitedPositions);
+    }
+
+    /*[Fact]
+    public void SolveFirstSampleCorrectly()
+    {
+        var sut = new RopeBridge(SAMPLE_INPUT);
+        Assert.Equal(13, sut.VisitedPositions);
+    }*/
 }

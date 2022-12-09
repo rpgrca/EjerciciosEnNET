@@ -5,13 +5,14 @@ public class RopeBridge
     private readonly string _input;
     private (int X, int Y) _head;
     private (int X, int Y) _tail;
+    private readonly Dictionary<(int X, int Y), int> _uniquePositions;
 
-    public int VisitedPositions { get; private set; }
+    public int VisitedPositions => _uniquePositions.Count;
 
     public RopeBridge(string input)
     {
         _input = input;
-        VisitedPositions = 1;
+        _uniquePositions = new Dictionary<(int X, int Y), int> { { (0, 0), 1 } };
 
         var lines = _input.Split("\n");
         foreach (var line in lines)
@@ -48,6 +49,7 @@ public class RopeBridge
                     }
                     break;
             }
+
         }
     }
 
@@ -67,7 +69,8 @@ public class RopeBridge
                 _tail.Y++;
             }
 
-            VisitedPositions++;
+            _uniquePositions.TryAdd(_tail, 0);
+            _uniquePositions[_tail]++;
         }
     }
 
@@ -87,7 +90,8 @@ public class RopeBridge
                 _tail.Y++;
             }
 
-            VisitedPositions++;
+            _uniquePositions.TryAdd(_tail, 0);
+            _uniquePositions[_tail]++;
         }
     }
 
@@ -106,7 +110,8 @@ public class RopeBridge
                 _tail.X++;
             }
 
-            VisitedPositions++;
+            _uniquePositions.TryAdd(_tail, 0);
+            _uniquePositions[_tail]++;
         }
     }
 
@@ -124,7 +129,9 @@ public class RopeBridge
             {
                 _tail.X++;
             }
-            VisitedPositions++;
+
+            _uniquePositions.TryAdd(_tail, 0);
+            _uniquePositions[_tail]++;
         }
     }
 }
