@@ -3,15 +3,17 @@
 public class RopeBridge
 {
     private readonly string _input;
+    private readonly int _knots;
     private (int X, int Y) _head;
     private (int X, int Y) _tail;
     private readonly Dictionary<(int X, int Y), int> _uniquePositions;
 
     public int VisitedPositions => _uniquePositions.Count;
 
-    public RopeBridge(string input)
+    public RopeBridge(string input, int knots = 2)
     {
         _input = input;
+        _knots = knots;
         _uniquePositions = new Dictionary<(int X, int Y), int> { { (0, 0), 1 } };
 
         var lines = _input.Split("\n");
@@ -25,6 +27,7 @@ public class RopeBridge
                     for (var step = 0; step < steps; step++)
                     {
                         MoveRight();
+                        AdjustMovementForTail();
                     }
                     break;
 
@@ -32,6 +35,7 @@ public class RopeBridge
                     for (var step = 0; step < steps; step++)
                     {
                         MoveLeft();
+                        AdjustMovementForTail();
                     }
                     break;
 
@@ -39,6 +43,7 @@ public class RopeBridge
                     for (var step = 0; step < steps; step++)
                     {
                         MoveUp();
+                        AdjustMovementForTail();
                     }
                     break;
 
@@ -46,6 +51,7 @@ public class RopeBridge
                     for (var step = 0; step < steps; step++)
                     {
                         MoveDown();
+                        AdjustMovementForTail();
                     }
                     break;
             }
@@ -53,85 +59,92 @@ public class RopeBridge
         }
     }
 
-    private void MoveRight()
+    private void MoveRight() => _head.X++;
+
+    private void MoveLeft() => _head.X--;
+
+    private void AdjustMovementForTail()
     {
-        _head.X++;
         if (Math.Abs(_head.X - _tail.X) > 1)
         {
-            _tail.X++;
-
-            if (_head.Y < _tail.Y)
+            if (_head.X > _tail.X)
             {
-                _tail.Y--;
+                _tail.X++;
+
+                if (_head.Y < _tail.Y)
+                {
+                    _tail.Y--;
+                }
+                else if (_head.Y > _tail.Y)
+                {
+                    _tail.Y++;
+                }
+
+                _uniquePositions.TryAdd(_tail, 0);
+                _uniquePositions[_tail]++;
             }
-            else if (_head.Y > _tail.Y)
+            else if (_head.X < _tail.X)
             {
-                _tail.Y++;
+                _tail.X--;
+
+                if (_head.Y < _tail.Y)
+                {
+                    _tail.Y--;
+                }
+                else if (_head.Y > _tail.Y)
+                {
+                    _tail.Y++;
+                }
+
+                _uniquePositions.TryAdd(_tail, 0);
+                _uniquePositions[_tail]++;
             }
-
-            _uniquePositions.TryAdd(_tail, 0);
-            _uniquePositions[_tail]++;
-        }
-    }
-
-    private void MoveLeft()
-    {
-        _head.X--;
-        if (Math.Abs(_head.X - _tail.X) > 1)
-        {
-            _tail.X--;
-
-            if (_head.Y < _tail.Y)
-            {
-                _tail.Y--;
-            }
-            else if (_head.Y > _tail.Y)
-            {
-                _tail.Y++;
-            }
-
-            _uniquePositions.TryAdd(_tail, 0);
-            _uniquePositions[_tail]++;
-        }
+       }
+       else
+       {
+           if (Math.Abs(_head.Y - _tail.Y) > 1)
+           {
+                if (_head.Y < _tail.Y)
+                {
+                    _tail.Y--;
+                    if (_head.X < _tail.X)
+                    {
+                        _tail.X--;
+                    }
+                    else if (_head.X > _tail.X)
+                    {
+                        _tail.X++;
+                    }
+  
+                    _uniquePositions.TryAdd(_tail, 0);
+                    _uniquePositions[_tail]++;
+                }
+                else if (_head.Y > _tail.Y)
+                {
+                    _tail.Y++;
+                    if (_head.X < _tail.X)
+                    {
+                        _tail.X--;
+                    }
+                    else if (_head.X > _tail.X)
+                    {
+                        _tail.X++;
+                    }
+        
+                    _uniquePositions.TryAdd(_tail, 0);
+                    _uniquePositions[_tail]++;
+                }
+           }
+       }
     }
 
     private void MoveUp()
     {
         _head.Y--;
-        if (Math.Abs(_head.Y - _tail.Y) > 1)
-        {
-            _tail.Y--;
-            if (_head.X < _tail.X)
-            {
-                _tail.X--;
-            }
-            else if (_head.X > _tail.X)
-            {
-                _tail.X++;
-            }
-
-            _uniquePositions.TryAdd(_tail, 0);
-            _uniquePositions[_tail]++;
-        }
     }
 
     private void MoveDown()
     {
         _head.Y++;
-        if (Math.Abs(_head.Y - _tail.Y) > 1)
-        {
-            _tail.Y++;
-            if (_head.X < _tail.X)
-            {
-                _tail.X--;
-            }
-            else if (_head.X > _tail.X)
-            {
-                _tail.X++;
-            }
-
-            _uniquePositions.TryAdd(_tail, 0);
-            _uniquePositions[_tail]++;
-        }
     }
 }

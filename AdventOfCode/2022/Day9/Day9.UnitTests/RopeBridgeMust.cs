@@ -86,4 +86,19 @@ public class RopeBridgeMust
         var sut = new RopeBridge(SAMPLE_INPUT);
         Assert.Equal(13, sut.VisitedPositions);
     }
+
+    [Fact]
+    public void SolveFirstPuzzleCorrectly()
+    {
+        var sut = new RopeBridge(PUZZLE_INPUT);
+        Assert.Equal(6087, sut.VisitedPositions);
+    }
+
+    /*[Theory]
+    [InlineData("R 1")]
+    public void CalculateTailPositionsCorrectly_WhenMultipleKnotsExist(string input)
+    {
+        var sut = new RopeBridge(input);
+        Assert.Equal(1, sut.VisitedPositions);
+    }*/
 }
