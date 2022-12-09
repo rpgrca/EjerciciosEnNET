@@ -80,10 +80,10 @@ public class RopeBridgeMust
         Assert.Equal(expectedVisitedPositions, sut.VisitedPositions);
     }
 
-    /*[Fact]
+    [Fact]
     public void SolveFirstSampleCorrectly()
     {
         var sut = new RopeBridge(SAMPLE_INPUT);
         Assert.Equal(13, sut.VisitedPositions);
-    }*/
+    }
 }
