@@ -1,4 +1,5 @@
 using Day7.Logic;
+using Day7.Logic.Visitors;
 using static Day7.UnitTests.Constants;
 
 namespace Day7.UnitTests;
@@ -8,45 +9,56 @@ public class FinderMust
     [Fact]
     public void ReturnOne_WhenFindingAmountOfDirectoriesOfEmptyFileSystem()
     {
-        var sut = new Finder("$ cd /\n$ ls");
-        Assert.Equal(1, sut.GetDirectoryCount());
+        var finder = new Finder("$ cd /\n$ ls");
+        var sut = new DirectoryCountVisitor();
+        finder.Accept(sut);
+        Assert.Equal(1, sut.Count);
     }
 
     [Fact]
     public void ReturnTwo_WhenBrowsingAmountOfDirectoriesOfFileSystemWithOneDirectory()
     {
-        var sut = new Finder("$ cd /\n$ ls\ndir a\n$ cd a\n$ ls");
-        Assert.Equal(2, sut.GetDirectoryCount());
+        var finder = new Finder("$ cd /\n$ ls\ndir a\n$ cd a\n$ ls");
+        var sut = new DirectoryCountVisitor();
+        finder.Accept(sut);
+        Assert.Equal(2, sut.Count);
     }
 
     [Fact]
     public void ReturnTwo_WhenListingDirectoryInsideDirectoryButNeverBrowsingIt()
     {
-        var sut = new Finder("$ cd /\n$ ls\ndir a");
-        Assert.Equal(2, sut.GetDirectoryCount());
+        var finder = new Finder("$ cd /\n$ ls\ndir a");
+        var sut = new DirectoryCountVisitor();
+        finder.Accept(sut);
+        Assert.Equal(2, sut.Count);
     }
 
     [Fact]
     public void ReturnCorrectAmountOfFiles()
     {
-        var sut = new Finder("$ cd /\n$ ls\ndir a\n14848514 b.txt\n8504156 c.dat\n$ cd a\n$ ls\n$ cd ..");
-        Assert.Equal(2, sut.GetDirectoryCount());
-        Assert.Equal(2, sut.GetFileCount());
+        var finder = new Finder("$ cd /\n$ ls\ndir a\n14848514 b.txt\n8504156 c.dat\n$ cd a\n$ ls\n$ cd ..");
+        var sut = new FileCountVisitor();
+        finder.Accept(sut);
+        Assert.Equal(2, sut.Count);
     }
 
     [Fact]
     public void ParseSampleDataCorrectly()
     {
-        var sut = new Finder(SAMPLE_INPUT);
-        Assert.Equal(4, sut.GetDirectoryCount());
-        Assert.Equal(10, sut.GetFileCount());
+        var finder = new Finder(SAMPLE_INPUT);
+        var sut = new DirectoryCountVisitor();
+        finder.Accept(sut);
+        Assert.Equal(4, sut.Count);
+        //Assert.Equal(10, sut.GetFileCount());
     }
 
     [Fact]
     public void CalculateDirectorySizeCorrectly()
     {
-        var sut = new Finder(SAMPLE_INPUT);
-        Assert.Equal(48381165, sut.GetDirectorySize());
+        var finder = new Finder(SAMPLE_INPUT);
+        var sut = new DirectorySizeVisitor();
+        finder.Accept(sut);
+        Assert.Equal(48381165, sut.Size);
     }
 
     [Fact]

@@ -1,6 +1,8 @@
-﻿namespace Day7.Logic;
+﻿using Day7.Logic.Visitors;
 
-public class Finder
+namespace Day7.Logic;
+
+public class Finder : IVisitable
 {
     private readonly string _input;
     private readonly List<Directory> _root;
@@ -37,80 +39,9 @@ public class Finder
             else
             {
                 var fields = line.Split(" ");
-                _currentDirectory.AddFileSize(int.Parse(fields[0]));
+                _currentDirectory.AddFile(new File(int.Parse(fields[0])));
             }
         }
-    }
-
-    public int GetDirectoryCount()
-    {
-        var total = 0;
-
-        foreach (var directory in _root)
-        {
-            total += GetDirectoryCount(directory);
-        }
-
-        return total;
-    }
-
-    private int GetDirectoryCount(Directory directory)
-    {
-        var total = 1;
-
-        foreach (var current in directory.Directories)
-        {
-            total += GetDirectoryCount(current);
-        }
-
-        return total;
-    }
-
-    public int GetFileCount()
-    {
-        var total = 0;
-        foreach (var directory in _root)
-        {
-            total += GetFileCount(directory);
-        }
-
-        return total;
-    }
-
-    private int GetFileCount(Directory directory)
-    {
-        var total = directory.Files.Count;
-
-        foreach (var current in directory.Directories)
-        {
-            total += GetFileCount(current);
-        }
-
-        return total;
-    }
-
-    public int GetDirectorySize()
-    {
-        var total = 0;
-
-        foreach (var directory in _root)
-        {
-            total += GetDirectorySize(directory);
-        }
-
-        return total;
-    }
-
-    private int GetDirectorySize(Directory directory)
-    {
-        var total = directory.GetSizeOfFiles();
-
-        foreach (var current in directory.Directories)
-        {
-            total += GetDirectorySize(current);
-        }
-
-        return total;
     }
 
     public int GetSumOfTotalDirectoriesOfAtMost100000()
@@ -146,8 +77,11 @@ public class Finder
 
     public int GetSmallestDirectoryToDeleteToFreeEnoughSpace()
     {
+        var directorySizeVisitor = new DirectorySizeVisitor();
+        Accept(directorySizeVisitor);
+
         var largeDirectorySizes = new List<int>();
-        var requiredSpace = 30_000_000 - (70_000_000 - GetDirectorySize());
+        var requiredSpace = 30_000_000 - (70_000_000 - directorySizeVisitor.Size);
         var total = 0;
 
         foreach (var directory in _root)
@@ -174,5 +108,13 @@ public class Finder
         }
 
         return total;
+    }
+
+    public void Accept(IVisitor visitor)
+    {
+        foreach (var directory in _root)
+        {
+            directory.Accept(visitor);
+        }
     }
 }
