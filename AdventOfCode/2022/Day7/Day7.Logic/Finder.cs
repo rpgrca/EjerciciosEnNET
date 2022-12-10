@@ -6,7 +6,7 @@ public class Finder : IVisitable
 {
     private readonly string _input;
     private readonly List<Directory> _root;
-    private Directory _currentDirectory;
+    private readonly Directory _currentDirectory;
 
     public Finder(string input)
     {

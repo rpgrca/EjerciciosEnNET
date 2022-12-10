@@ -43,13 +43,21 @@ public class FinderMust
     }
 
     [Fact]
-    public void ParseSampleDataCorrectly()
+    public void LoadDirectoriesCorrectly()
     {
         var finder = new Finder(SAMPLE_INPUT);
         var sut = new DirectoryCountVisitor();
         finder.Accept(sut);
         Assert.Equal(4, sut.Count);
-        //Assert.Equal(10, sut.GetFileCount());
+    }
+
+    [Fact]
+    public void LoadFilesCorrectly()
+    {
+        var finder = new Finder(SAMPLE_INPUT);
+        var sut = new FileCountVisitor();
+        finder.Accept(sut);
+        Assert.Equal(10, sut.Count);
     }
 
     [Fact]
@@ -64,15 +72,15 @@ public class FinderMust
     [Fact]
     public void SolveFirstSampleCorrectly()
     {
-        var sut = new Finder(SAMPLE_INPUT);
-        Assert.Equal(95437, sut.GetSumOfTotalDirectoriesOfAtMost100000());
+        var finder = new Finder(SAMPLE_INPUT);
+        Assert.Equal(95437, finder.GetSumOfTotalDirectoriesOfAtMost100000());
     }
 
     [Fact]
     public void SolveFirstPuzzle()
     {
-        var sut = new Finder(PUZZLE_INPUT);
-        Assert.Equal(1778099, sut.GetSumOfTotalDirectoriesOfAtMost100000());
+        var finder = new Finder(PUZZLE_INPUT);
+        Assert.Equal(1778099, finder.GetSumOfTotalDirectoriesOfAtMost100000());
     }
 
     [Fact]
