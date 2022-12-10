@@ -44,7 +44,7 @@ jobs:
 
     - name: Testing AdventOfCode/2022
       run: |
-           for d in `seq 9`; do
+           for d in `seq 10`; do
                coverlet AdventOfCode/2022/Day$d/Day$d.UnitTests/bin/Debug/net7.0/Day$d.UnitTests.dll --target "dotnet" --targetargs "test AdventOfCode/2022/Day$d/Day$d.UnitTests/Day$d.UnitTests.csproj --no-build" --format OpenCover --output adventofcode-2022-day$d.coverage.xml
            done
 
