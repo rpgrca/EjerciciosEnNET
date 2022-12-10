@@ -70,4 +70,15 @@ public class CathodeRayTubeMust
 ", sut.Output);
     }
 
+    [Fact]
+    public void SolveSecondPuzzle()
+    {
+        var sut = new CathodeRayTube(PUZZLE_INPUT, Array.Empty<int>());
+        Assert.Equal("###...##..###..#..#.####.#..#.####...##.\n" +
+                     "#..#.#..#.#..#.#.#..#....#.#..#.......#.\n" +
+                     "#..#.#..#.#..#.##...###..##...###.....#.\n" +
+                     "###..####.###..#.#..#....#.#..#.......#.\n" +
+                     "#....#..#.#....#.#..#....#.#..#....#..#.\n" +
+                     "#....#..#.#....#..#.#....#..#.####..##..\n", sut.Output);
+    }
 }
