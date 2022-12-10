@@ -51,7 +51,7 @@ public class CathodeRayTubeMust
     }
 
     [Fact]
-    public void Test1()
+    public void DecodeFirstSampleLineCorrectly()
     {
         var sut = new CathodeRayTube(SAMPLE_INPUT, Array.Empty<int>());
         Assert.StartsWith("##..##..##..##..##..##..##..##..##..##..\n", sut.Output);
