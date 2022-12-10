@@ -49,4 +49,25 @@ public class CathodeRayTubeMust
         var sut = new CathodeRayTube(PUZZLE_INPUT, new[] { 20, 60, 100, 140, 180, 220 });
         Assert.Equal(14060, sut.SignalStrength);
     }
+
+    [Fact]
+    public void Test1()
+    {
+        var sut = new CathodeRayTube(SAMPLE_INPUT, Array.Empty<int>());
+        Assert.StartsWith("##..##..##..##..##..##..##..##..##..##..\n", sut.Output);
+    }
+
+    [Fact]
+    public void SolveSecondSample()
+    {
+        var sut = new CathodeRayTube(SAMPLE_INPUT, Array.Empty<int>());
+        Assert.Equal(@"##..##..##..##..##..##..##..##..##..##..
+###...###...###...###...###...###...###.
+####....####....####....####....####....
+#####.....#####.....#####.....#####.....
+######......######......######......####
+#######.......#######.......#######.....
+", sut.Output);
+    }
+
 }
