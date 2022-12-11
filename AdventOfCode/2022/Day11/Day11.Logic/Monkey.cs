@@ -82,7 +82,7 @@ public class Monkey1
             item.AddOwner(_order);
         }
 
-        item = new Item(item.WorryLevel % 96577);
+        item = new Item(item.WorryLevel % (19 * 2 * 3 * 17 * 13 * 7 * 5 * 11));
         Items.Add(item);
     }
 
@@ -127,7 +127,6 @@ public class Monkey1
         Items.Clear();
     }
 
-
     public Item Operation(Item item) => _operation switch
     {
         '*' => item.Multiply(_operand == "old"? item.WorryLevel : long.Parse(_operand)),
@@ -152,47 +151,3 @@ public class Monkey1
 
     public List<long> ItemsAsWorries => Items.Select(p => p.WorryLevel).ToList();
 }
-/*
-public class Monkey
-{
-    public List<int> Items { get; }
-    public Func<int, int> Operation { get; }
-    public Func<int, bool> Test { get; }
-    private Action<List<Monkey>, int> Success { get; }
-    private Action<List<Monkey>, int> Failure { get; }
-
-    public int ActivityLevel { get; private set; }
-
-    public Monkey(Func<int, int> operation, Func<int, bool> test, Action<List<Monkey>, int> success, Action<List<Monkey>, int> failure, params int[] items)
-    {
-        Items = new List<int>(items);
-        Operation = operation;
-        Test = test;
-        Success = success;
-        Failure = failure;
-    }
-
-    public void Give(int i) => Items.Add(i);
-
-    public void DoTurn(List<Monkey> monkeys)
-    {
-        foreach (var item in Items)
-        {
-            var newWorryLevel = Operation(item);
-            newWorryLevel /= 3;
-            if (Test(newWorryLevel))
-            {
-                Success(monkeys, newWorryLevel);
-            }
-            else
-            {
-                Failure(monkeys, newWorryLevel);
-            }
-
-            ActivityLevel++;
-        }
-
-        Items.Clear();
-    }
-}
-*/

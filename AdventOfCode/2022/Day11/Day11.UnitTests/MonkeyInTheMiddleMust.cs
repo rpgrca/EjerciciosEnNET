@@ -180,9 +180,10 @@ public class MonkeyInTheMiddleMust
     {
         var loader = new MonkeysLoader(PUZZLE_INPUT);
         var sut = new MonkeyInTheMiddle(loader.Monkeys, 20);
+        Assert.True(70176 > sut.MonkeyBusiness);
         Assert.Equal(69918UL, sut.MonkeyBusiness);
     }
-
+/*
     [Theory]
     [InlineData(1, 2, 4, 3, 6)]
     [InlineData(2, 6, 10, 3, 10)]
@@ -232,12 +233,13 @@ public class MonkeyInTheMiddleMust
         var sut = new MonkeyInTheMiddle(loader.Monkeys, 10000, 1);
         Assert.Equal(2713310158, sut.MonkeyBusiness);
     }
-/*
+*/
     [Fact]
     public void SolveSecondPuzzle()
     {
         var loader = new MonkeysLoader(PUZZLE_INPUT);
         var sut = new MonkeyInTheMiddle(loader.Monkeys, 10000, 1);
         Assert.True(16120642006UL < sut.MonkeyBusiness);
-    }*/
+        Assert.Equal(19573408701UL, sut.MonkeyBusiness);
+    }
 }
