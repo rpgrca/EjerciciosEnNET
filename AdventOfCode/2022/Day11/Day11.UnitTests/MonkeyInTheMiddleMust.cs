@@ -41,7 +41,7 @@ public class MonkeyInTheMiddleMust
 
     [Theory]
     [MemberData(nameof(SampleRoundsFeeder))]
-    public void ExecuteRoundsCorrectly(int rounds, int[] items0, int[] items1)
+    public void ExecuteRoundsCorrectly(int rounds, long[] items0, long[] items1)
     {
         var loader = new MonkeysLoader(SAMPLE_INPUT);
         var sut = new MonkeyInTheMiddle(loader.Monkeys, rounds);
@@ -54,18 +54,18 @@ public class MonkeyInTheMiddleMust
 
     public static IEnumerable<object[]> SampleRoundsFeeder()
     {
-        yield return new object[] { 1, new[] { 20, 23, 27, 26 }, new[] { 2080, 25, 167, 207, 401, 1046 } };
-        yield return new object[] { 2, new[] { 695, 10, 71, 135, 350 }, new[] { 43, 49, 58, 55, 362 } };
-        yield return new object[] { 3, new[] { 16, 18, 21, 20, 122 }, new[] { 1468, 22, 150, 286, 739 } };
-        yield return new object[] { 4, new[] { 491, 9, 52, 97, 248, 34 }, new[] { 39, 45, 43, 258 } };
-        yield return new object[] { 5, new[] { 15, 17, 16, 88, 1037 }, new[] { 20, 110, 205, 524, 72 } };
-        yield return new object[] { 6, new[] { 8, 70, 176, 26, 34 }, new[] { 481, 32, 36, 186, 2190 } };
-        yield return new object[] { 7, new[] { 162, 12, 14, 64, 732, 17 }, new[] { 148, 372, 55, 72 } };
-        yield return new object[] { 8, new[] { 51, 126, 20, 26, 136 }, new[] { 343, 26, 30, 1546, 36 } };
-        yield return new object[] { 9, new[] { 116, 10, 12, 517, 14 }, new[] { 108, 267, 43, 55, 288 } };
-        yield return new object[] { 10, new[] { 91, 16, 20, 98 }, new[] { 481, 245, 22, 26, 1092, 30 } };
-        yield return new object[] { 15, new[] { 83, 44, 8, 184, 9, 20, 26, 102 }, new[] { 110, 36 } };
-        yield return new object[] { 20, new[] { 10, 12, 14, 26, 34 }, new[] { 245, 93, 53, 199, 115 } };
+        yield return new object[] { 1, new long[] { 20, 23, 27, 26 }, new long[] { 2080, 25, 167, 207, 401, 1046 } };
+        yield return new object[] { 2, new long[] { 695, 10, 71, 135, 350 }, new long[] { 43, 49, 58, 55, 362 } };
+        yield return new object[] { 3, new long[] { 16, 18, 21, 20, 122 }, new long[] { 1468, 22, 150, 286, 739 } };
+        yield return new object[] { 4, new long[] { 491, 9, 52, 97, 248, 34 }, new long[] { 39, 45, 43, 258 } };
+        yield return new object[] { 5, new long[] { 15, 17, 16, 88, 1037 }, new long[] { 20, 110, 205, 524, 72 } };
+        yield return new object[] { 6, new long[] { 8, 70, 176, 26, 34 }, new long[] { 481, 32, 36, 186, 2190 } };
+        yield return new object[] { 7, new long[] { 162, 12, 14, 64, 732, 17 }, new long[] { 148, 372, 55, 72 } };
+        yield return new object[] { 8, new long[] { 51, 126, 20, 26, 136 }, new long[] { 343, 26, 30, 1546, 36 } };
+        yield return new object[] { 9, new long[] { 116, 10, 12, 517, 14 }, new long[] { 108, 267, 43, 55, 288 } };
+        yield return new object[] { 10, new long[] { 91, 16, 20, 98 }, new long[] { 481, 245, 22, 26, 1092, 30 } };
+        yield return new object[] { 15, new long[] { 83, 44, 8, 184, 9, 20, 26, 102 }, new long[] { 110, 36 } };
+        yield return new object[] { 20, new long[] { 10, 12, 14, 26, 34 }, new long[] { 245, 93, 53, 199, 115 } };
     }
 
     [Fact]
@@ -180,6 +180,6 @@ public class MonkeyInTheMiddleMust
     {
         var loader = new MonkeysLoader(PUZZLE_INPUT);
         var sut = new MonkeyInTheMiddle(loader.Monkeys, 20);
-        Assert.True(70176 > sut.MonkeyBusiness);
+        Assert.Equal(69918, sut.MonkeyBusiness);
     }
 }
