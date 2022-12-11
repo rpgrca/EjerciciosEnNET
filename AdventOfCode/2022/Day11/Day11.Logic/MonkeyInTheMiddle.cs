@@ -3,6 +3,7 @@
 public class MonkeyInTheMiddle
 {
     private readonly int _rounds;
+    private readonly int _divisor;
 
     //public List<Monkey> Monkeys { get; private set; }
     public List<Monkey1> Monkeys { get; private set; }
@@ -38,10 +39,11 @@ public class MonkeyInTheMiddle
         return new MonkeyInTheMiddle(input, monkeys, rounds);
     }*/
 
-    public MonkeyInTheMiddle(List<Monkey1> monkeys, int rounds)
+    public MonkeyInTheMiddle(List<Monkey1> monkeys, int rounds, int divisor = 3)
     {
         Monkeys = monkeys;
         _rounds = rounds;
+        _divisor = divisor;
 
         Run();
     }
@@ -52,7 +54,14 @@ public class MonkeyInTheMiddle
         {
             foreach (var monkey in Monkeys)
             {
-                monkey.DoTurn(Monkeys);
+                if (_divisor == 3)
+                {
+                    monkey.DoTurn(Monkeys);
+                }
+                else
+                {
+                    monkey.DoTurn2(Monkeys);
+                }
             }
         }
     

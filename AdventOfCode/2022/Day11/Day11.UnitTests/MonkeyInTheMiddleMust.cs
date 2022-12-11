@@ -14,28 +14,28 @@ public class MonkeyInTheMiddleMust
             m0 =>
             {
                 Assert.Collection(m0.Items,
-                    i1 => Assert.Equal(79, i1),
-                    i2 => Assert.Equal(98, i2));
+                    i1 => Assert.Equal(79, i1.WorryLevel),
+                    i2 => Assert.Equal(98, i2.WorryLevel));
             },
             m1 =>
             {
                 Assert.Collection(m1.Items,
-                    i1 => Assert.Equal(54, i1),
-                    i2 => Assert.Equal(65, i2),
-                    i3 => Assert.Equal(75, i3),
-                    i4 => Assert.Equal(74, i4));
+                    i1 => Assert.Equal(54, i1.WorryLevel),
+                    i2 => Assert.Equal(65, i2.WorryLevel),
+                    i3 => Assert.Equal(75, i3.WorryLevel),
+                    i4 => Assert.Equal(74, i4.WorryLevel));
             },
             m2 =>
             {
                 Assert.Collection(m2.Items,
-                    i1 => Assert.Equal(79, i1),
-                    i2 => Assert.Equal(60, i2),
-                    i3 => Assert.Equal(97, i3));
+                    i1 => Assert.Equal(79, i1.WorryLevel),
+                    i2 => Assert.Equal(60, i2.WorryLevel),
+                    i3 => Assert.Equal(97, i3.WorryLevel));
             },
             m3 =>
             {
                 Assert.Collection(m3.Items,
-                    i1 => Assert.Equal(74, i1));
+                    i1 => Assert.Equal(74, i1.WorryLevel));
             });
     }
 
@@ -46,8 +46,8 @@ public class MonkeyInTheMiddleMust
         var loader = new MonkeysLoader(SAMPLE_INPUT);
         var sut = new MonkeyInTheMiddle(loader.Monkeys, rounds);
         Assert.Collection(sut.Monkeys,
-            m0 => Assert.Equal(items0, m0.Items),
-            m1 => Assert.Equal(items1, m1.Items),
+            m0 => Assert.Equal(items0, m0.ItemsAsWorries),
+            m1 => Assert.Equal(items1, m1.ItemsAsWorries),
             m2 => Assert.Empty(m2.Items),
             m3 => Assert.Empty(m3.Items));
     }
@@ -75,7 +75,7 @@ public class MonkeyInTheMiddleMust
         var sut = new MonkeyInTheMiddle(loader.Monkeys, 20);
         Assert.Equal(10605, sut.MonkeyBusiness);
     }
-
+/*
     [Fact]
     public void LoadPuzzleMonkeyItemsCorrectly()
     {
@@ -85,14 +85,14 @@ public class MonkeyInTheMiddleMust
             m0 =>
             {
                 Assert.Collection(m0.Items,
-                    i1 => Assert.Equal(74, i1),
-                    i2 => Assert.Equal(73, i2),
-                    i3 => Assert.Equal(57, i3),
-                    i4 => Assert.Equal(77, i4),
-                    i5 => Assert.Equal(74, i5));
-                Assert.True(m0.Test(19));
-                Assert.False(m0.Test(20));
-                Assert.Equal(143, m0.Operation(13));
+                    i1 => Assert.Equal(74, i1.WorryLevel),
+                    i2 => Assert.Equal(73, i2.WorryLevel),
+                    i3 => Assert.Equal(57, i3.WorryLevel),
+                    i4 => Assert.Equal(77, i4.WorryLevel),
+                    i5 => Assert.Equal(74, i5.WorryLevel));
+                Assert.True(m0.Test(new Item(19)));
+                Assert.False(m0.Test(new Item(20)));
+                Assert.Equal(143, m0.Operation(new Item(13)).WorryLevel);
             },
             m1 =>
             {
@@ -173,7 +173,7 @@ public class MonkeyInTheMiddleMust
                 Assert.False(m7.Test(86));
                 Assert.Equal(19, m7.Operation(13));
             });
-    }
+    }*/
 
     [Fact]
     public void SolveFirstPuzzleCorrectly()
@@ -181,5 +181,38 @@ public class MonkeyInTheMiddleMust
         var loader = new MonkeysLoader(PUZZLE_INPUT);
         var sut = new MonkeyInTheMiddle(loader.Monkeys, 20);
         Assert.Equal(69918, sut.MonkeyBusiness);
+    }
+
+    [Theory]
+    [InlineData(1, 2, 4, 3, 6)]
+    [InlineData(2, 6, 10, 3, 10)]
+    [InlineData(3, 12, 14, 3, 16)]
+    [InlineData(4, 16, 20, 3, 20)]
+    [InlineData(5, 22, 24, 4, 26)]
+    [InlineData(6, 26, 30, 4, 30)]
+    [InlineData(7, 33, 33, 4, 37)]
+    [InlineData(8, 36, 40, 4, 40)]
+    [InlineData(9, 43, 43, 4, 47)]
+    [InlineData(10, 46, 50, 4, 50)]
+    [InlineData(11, 54, 52, 5, 58)]
+    [InlineData(12, 56, 60, 5, 60)]
+    [InlineData(13, 64, 62, 5, 68)]
+    [InlineData(14, 67, 69, 5, 71)]
+    [InlineData(15, 74, 72, 6, 78)]
+    [InlineData(16, 78, 78, 6, 82)]
+    [InlineData(17, 84, 82, 7, 88)]
+    [InlineData(18, 89, 87, 7, 93)]
+    [InlineData(19, 94, 92, 8, 98)]
+    [InlineData(20, 99, 97, 8, 103)]
+    //[InlineData(1000, 5204, 4792, 199, 5192)]
+    public void CalculateMonkeyActivityCorrectly(int rounds, int items0, int items1, int items2, int items3)
+    {
+        var loader = new MonkeysLoader(SAMPLE_INPUT);
+        var sut = new MonkeyInTheMiddle(loader.Monkeys, rounds, 1);
+        Assert.Collection(sut.Monkeys,
+            m0 => Assert.Equal(items0, m0.ActivityLevel),
+            m1 => Assert.Equal(items1, m1.ActivityLevel),
+            m2 => Assert.Equal(items2, m2.ActivityLevel),
+            m3 => Assert.Equal(items3, m3.ActivityLevel));
     }
 }

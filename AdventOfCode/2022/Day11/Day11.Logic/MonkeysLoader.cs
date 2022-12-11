@@ -19,7 +19,8 @@ public class MonkeysLoader
     private void Parse()
     {
         string[] tokens = Array.Empty<string>();
-        List<long> items = new();
+        int order = -1;
+        List<Item> items = new();
         char operation = ' ';
         string operand = string.Empty;
         int divisor = -1;
@@ -31,11 +32,11 @@ public class MonkeysLoader
         {
             if (line.StartsWith("Monkey "))
             {
-                continue;
+                order = int.Parse($"{line[7]}");
             }
             else if (line.StartsWith("  Starting items: "))
             {
-                items = line.Split(":")[1].Split(",").ToList().Select(p => long.Parse(p)).ToList();
+                items = line.Split(":")[1].Split(",").ToList().Select(p => new Item(long.Parse(p))).ToList();
             }
             else if (line.StartsWith("  Operation: "))
             {
@@ -64,9 +65,10 @@ public class MonkeysLoader
             }
             else if (string.IsNullOrWhiteSpace(line))
             {
-                monkey = new Monkey1(items, operation, operand, divisor, targetOnSuccess, targetOnFailure);
+                monkey = new Monkey1(order, items, operation, operand, divisor, targetOnSuccess, targetOnFailure);
                 Monkeys.Add(monkey);
 
+                order = -1;
                 tokens = Array.Empty<string>();
                 items = new();
                 operation = ' ';
