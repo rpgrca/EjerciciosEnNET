@@ -2,80 +2,42 @@
 
 public class CathodeRayTube
 {
-    private readonly string _input;
-    private readonly int[] _samples;
     private readonly string[] _lines;
-    private readonly int _cycle;
-    private char[] _sprite;
+    private int _cycle;
+    private int _x;
 
-    public int X { get; private set; }
-    public int SignalStrength { get; private set; }
-    public string Output { get; private set; }
-
-    public CathodeRayTube(string input, int[] samples)
+    public CathodeRayTube(string input)
     {
-        _input = input;
-        _samples = samples;
         _lines = input.Split("\n");
         _cycle = 1;
-        _sprite = new char[40];
-        Output = string.Empty;
-        X = 1;
+        _x = 1;
+    }
 
-        RelocateSprite();
+    public void Execute(ICpu interrupt)
+    {
         foreach (var line in _lines)
         {
             var instruction = line.Split(" ");
+
             switch (instruction[0])
             {
                 case "noop":
-                    if (_samples.Contains(_cycle))
-                    {
-                        SignalStrength += _cycle * X;
-                    }
-
-                    DrawPixel();
-                    _cycle += 1;
+                    Trigger(interrupt);
                     break;
 
                 case "addx":
-                    if (_samples.Contains(_cycle))
-                    {
-                        SignalStrength += _cycle * X;
-                    }
+                    Trigger(interrupt);
+                    Trigger(interrupt);
 
-                    DrawPixel();
-                    _cycle += 1;
-
-                    if (_samples.Contains(_cycle))
-                    {
-                        SignalStrength += _cycle * X;
-                    }
-
-                    DrawPixel();
-                    _cycle += 1;
-
-                    X += int.Parse(instruction[1]);
-                    RelocateSprite();
+                    _x += int.Parse(instruction[1]);
                     break;
             }
         }
     }
 
-    private void RelocateSprite()
+    private void Trigger(ICpu interrupt)
     {
-        for (var index = 0; index < _sprite.Length; index++)
-        {
-            _sprite[index] = index >= X - 1 && index <= X + 1 ? '#' : '.';
-        }
-    }
-
-    private void DrawPixel()
-    {
-        Output += _sprite[(_cycle - 1) % 40];
-        if (_cycle % 40 == 0)
-        {
-            Output += "\n";
-        }
+        interrupt.Trigger(_cycle, _x);
+        _cycle += 1;
     }
 }

@@ -6,21 +6,12 @@ namespace Day10.UnitTests;
 public class CathodeRayTubeMust
 {
     [Theory]
-    [InlineData("", 1)]
-    [InlineData("noop", 1)]
-    [InlineData("addx 1\nnoop", 2)]
-    [InlineData("noop\naddx 3\naddx -5", -1)]
-    public void ExecuteInstructionsCorrectly(string input, int expectedValue)
-    {
-        var sut = new CathodeRayTube(input, Array.Empty<int>());
-        Assert.Equal(expectedValue, sut.X);
-    }
-
-    [Theory]
     [MemberData(nameof(SignalStrengthSamples))]
-    public void CalculateSignalStrengthCorrectly1(string input, int[] samples, int expectedValue)
+    public void CalculateSignalStrengthCorrectly(string input, int[] samples, int expectedValue)
     {
-        var sut = new CathodeRayTube(input, samples);
+        var sut = new SignalStrengthInterrupt(samples);
+        var device = new CathodeRayTube(input);
+        device.Execute(sut);
         Assert.Equal(expectedValue, sut.SignalStrength);
     }
 
@@ -39,28 +30,36 @@ public class CathodeRayTubeMust
     [Fact]
     public void SolveFirstSample()
     {
-        var sut = new CathodeRayTube(SAMPLE_INPUT, new[] { 20, 60, 100, 140, 180, 220 });
+        var sut = new SignalStrengthInterrupt(new[] { 20, 60, 100, 140, 180, 220 });
+        var device = new CathodeRayTube(SAMPLE_INPUT);
+        device.Execute(sut);
         Assert.Equal(13140, sut.SignalStrength);
     }
 
     [Fact]
     public void SolveFirstPuzzle()
     {
-        var sut = new CathodeRayTube(PUZZLE_INPUT, new[] { 20, 60, 100, 140, 180, 220 });
+        var sut = new SignalStrengthInterrupt(new[] { 20, 60, 100, 140, 180, 220 });
+        var device = new CathodeRayTube(PUZZLE_INPUT);
+        device.Execute(sut);
         Assert.Equal(14060, sut.SignalStrength);
     }
 
     [Fact]
     public void DecodeFirstSampleLineCorrectly()
     {
-        var sut = new CathodeRayTube(SAMPLE_INPUT, Array.Empty<int>());
+        var sut = new DrawingInterrupt();
+        var device = new CathodeRayTube(SAMPLE_INPUT);
+        device.Execute(sut);
         Assert.StartsWith("##..##..##..##..##..##..##..##..##..##..\n", sut.Output);
     }
 
     [Fact]
     public void SolveSecondSample()
     {
-        var sut = new CathodeRayTube(SAMPLE_INPUT, Array.Empty<int>());
+        var sut = new DrawingInterrupt();
+        var device = new CathodeRayTube(SAMPLE_INPUT);
+        device.Execute(sut);
         Assert.Equal(@"##..##..##..##..##..##..##..##..##..##..
 ###...###...###...###...###...###...###.
 ####....####....####....####....####....
@@ -73,7 +72,9 @@ public class CathodeRayTubeMust
     [Fact]
     public void SolveSecondPuzzle()
     {
-        var sut = new CathodeRayTube(PUZZLE_INPUT, Array.Empty<int>());
+        var sut = new DrawingInterrupt();
+        var device = new CathodeRayTube(PUZZLE_INPUT);
+        device.Execute(sut);
         Assert.Equal("###...##..###..#..#.####.#..#.####...##.\n" +
                      "#..#.#..#.#..#.#.#..#....#.#..#.......#.\n" +
                      "#..#.#..#.#..#.##...###..##...###.....#.\n" +
