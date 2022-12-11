@@ -8,7 +8,7 @@ public class MonkeyInTheMiddleMust
     [Fact]
     public void LoadSampleMonkeyItemsCorrectly()
     {
-        var sut = MonkeyInTheMiddle.CreateForFirstPuzzle(SAMPLE_INPUT);
+        var sut = MonkeyInTheMiddle.CreateForFirstPuzzle(SAMPLE_INPUT, 0);
         Assert.Collection(sut.Monkeys,
             m0 =>
             {
@@ -36,5 +36,16 @@ public class MonkeyInTheMiddleMust
                 Assert.Collection(m3.Items,
                     i1 => Assert.Equal(74, i1));
             });
+    }
+
+    [Fact]
+    public void ExecuteRoundCorrectly()
+    {
+        var sut = MonkeyInTheMiddle.CreateForFirstPuzzle(SAMPLE_INPUT, 1);
+        Assert.Collection(sut.Monkeys,
+            m0 => Assert.Equal(new[] { 20, 23, 27, 26 }, m0.Items),
+            m1 => Assert.Equal(new[] { 2080, 25, 167, 207, 401, 1046 }, m1.Items),
+            m2 => Assert.Empty(m2.Items),
+            m3 => Assert.Empty(m3.Items));
     }
 }
