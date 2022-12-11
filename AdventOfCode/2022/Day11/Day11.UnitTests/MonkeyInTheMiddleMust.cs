@@ -8,7 +8,8 @@ public class MonkeyInTheMiddleMust
     [Fact]
     public void LoadSampleMonkeyItemsCorrectly()
     {
-        var sut = MonkeyInTheMiddle.CreateForSample(SAMPLE_INPUT, 0);
+        var loader = new MonkeysLoader(SAMPLE_INPUT);
+        var sut = new MonkeyInTheMiddle(loader.Monkeys, 0);
         Assert.Collection(sut.Monkeys,
             m0 =>
             {
@@ -42,7 +43,8 @@ public class MonkeyInTheMiddleMust
     [MemberData(nameof(SampleRoundsFeeder))]
     public void ExecuteRoundsCorrectly(int rounds, int[] items0, int[] items1)
     {
-        var sut = MonkeyInTheMiddle.CreateForSample(SAMPLE_INPUT, rounds);
+        var loader = new MonkeysLoader(SAMPLE_INPUT);
+        var sut = new MonkeyInTheMiddle(loader.Monkeys, rounds);
         Assert.Collection(sut.Monkeys,
             m0 => Assert.Equal(items0, m0.Items),
             m1 => Assert.Equal(items1, m1.Items),
@@ -69,14 +71,16 @@ public class MonkeyInTheMiddleMust
     [Fact]
     public void SolveFirstSampleCorrectly()
     {
-        var sut = MonkeyInTheMiddle.CreateForSample(SAMPLE_INPUT, 20);
+        var loader = new MonkeysLoader(SAMPLE_INPUT);
+        var sut = new MonkeyInTheMiddle(loader.Monkeys, 20);
         Assert.Equal(10605, sut.MonkeyBusiness);
     }
 
     [Fact]
     public void LoadPuzzleMonkeyItemsCorrectly()
     {
-        var sut = MonkeyInTheMiddle.CreateForPuzzle(PUZZLE_INPUT, 0);
+        var loader = new MonkeysLoader(PUZZLE_INPUT);
+        var sut = new MonkeyInTheMiddle(loader.Monkeys, 0);
         Assert.Collection(sut.Monkeys,
             m0 =>
             {
@@ -170,11 +174,12 @@ public class MonkeyInTheMiddleMust
                 Assert.Equal(19, m7.Operation(13));
             });
     }
-/*
+
     [Fact]
     public void SolveFirstPuzzleCorrectly()
     {
-        var sut = MonkeyInTheMiddle.CreateForPuzzle(PUZZLE_INPUT, 20);
+        var loader = new MonkeysLoader(PUZZLE_INPUT);
+        var sut = new MonkeyInTheMiddle(loader.Monkeys, 20);
         Assert.True(70176 > sut.MonkeyBusiness);
-    }*/
+    }
 }

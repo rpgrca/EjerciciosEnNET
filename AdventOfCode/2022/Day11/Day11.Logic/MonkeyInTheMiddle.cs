@@ -4,10 +4,11 @@ public class MonkeyInTheMiddle
 {
     private readonly int _rounds;
 
-    public List<Monkey> Monkeys { get; private set; }
+    //public List<Monkey> Monkeys { get; private set; }
+    public List<Monkey1> Monkeys { get; private set; }
     public int MonkeyBusiness { get; private set; }
 
-    public static MonkeyInTheMiddle CreateForSample(string input, int rounds)
+    /*public static MonkeyInTheMiddle CreateForSample(string input, int rounds)
     {
         var monkeys = new List<Monkey>
         {
@@ -35,10 +36,9 @@ public class MonkeyInTheMiddle
         };
 
         return new MonkeyInTheMiddle(input, monkeys, rounds);
-    }
+    }*/
 
-
-    private MonkeyInTheMiddle(string input, List<Monkey> monkeys, int rounds)
+    public MonkeyInTheMiddle(List<Monkey1> monkeys, int rounds)
     {
         Monkeys = monkeys;
         _rounds = rounds;
