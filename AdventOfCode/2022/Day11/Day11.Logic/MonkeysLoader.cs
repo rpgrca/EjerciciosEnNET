@@ -5,13 +5,13 @@ public class MonkeysLoader
     private readonly string _input;
     private readonly string[] _lines;
 
-    public List<Monkey1> Monkeys { get; }
+    public List<Monkey> Monkeys { get; }
 
     public MonkeysLoader(string input)
     {
         _input = input + "\n";
         _lines = _input.Split("\n");
-        Monkeys = new List<Monkey1>();
+        Monkeys = new List<Monkey>();
 
         Parse();
     }
@@ -19,24 +19,23 @@ public class MonkeysLoader
     private void Parse()
     {
         string[] tokens = Array.Empty<string>();
-        int order = -1;
-        List<Item> items = new();
+        List<long> items = new();
         char operation = ' ';
         string operand = string.Empty;
         int divisor = -1;
         int targetOnSuccess = -1;
         int targetOnFailure = -1;
-        Monkey1 monkey;
+        int cap = 1;
+        List<(List<long> Items, char Operation, string Operand, int Divisor, int TargetOnSuccess, int TargetOnFailure)> parsedValues = new();
 
         foreach (var line in _lines)
         {
             if (line.StartsWith("Monkey "))
             {
-                order = int.Parse($"{line[7]}");
             }
             else if (line.StartsWith("  Starting items: "))
             {
-                items = line.Split(":")[1].Split(",").ToList().Select(p => new Item(long.Parse(p))).ToList();
+                items = line.Split(":")[1].Split(",").ToList().Select(p => long.Parse(p)).ToList();
             }
             else if (line.StartsWith("  Operation: "))
             {
@@ -50,6 +49,7 @@ public class MonkeysLoader
                 tokens = line.Split(":")[1].Trim().Split(" ");
                 if (tokens[0] != "divisible" || tokens[1] != "by") throw new ArgumentException();
                 divisor = int.Parse(tokens[2]);
+                cap *= divisor;
             }
             else if (line.StartsWith("    If true:"))
             {
@@ -65,10 +65,7 @@ public class MonkeysLoader
             }
             else if (string.IsNullOrWhiteSpace(line))
             {
-                monkey = new Monkey1(order, items, operation, operand, divisor, targetOnSuccess, targetOnFailure);
-                Monkeys.Add(monkey);
-
-                order = -1;
+                parsedValues.Add((items, operation, operand, divisor, targetOnSuccess, targetOnFailure));
                 tokens = Array.Empty<string>();
                 items = new();
                 operation = ' ';
@@ -81,6 +78,12 @@ public class MonkeysLoader
             {
                 throw new ArgumentException();
             }
+        }
+
+        foreach (var (Items, Operation, Operand, Divisor, TargetOnSuccess, TargetOnFailure) in parsedValues)
+        {
+            var monkey = new Monkey(Items, Operation, Operand, Divisor, TargetOnSuccess, TargetOnFailure, cap);
+            Monkeys.Add(monkey);
         }
     }
 }

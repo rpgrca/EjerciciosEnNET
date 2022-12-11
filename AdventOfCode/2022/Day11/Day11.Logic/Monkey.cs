@@ -1,98 +1,44 @@
 namespace Day11.Logic;
 
-public class Item
+public class Monkey
 {
-    private readonly List<int> _owners;
-
-    public long WorryLevel { get; private set; }
-
-    public Item(long worryLevel)
-    {
-        WorryLevel = worryLevel;
-        _owners = new List<int>();
-    }
-
-    public Item Multiply(long factor)
-    {
-        WorryLevel *= factor;
-        return this;
-    }
-
-    public Item Add(long value)
-    {
-        WorryLevel += value;
-        return this;
-    }
-
-    public void AddOwner(int owner)
-    {
-        _owners.Add(owner);
-    }
-
-    public bool DivisibleBy(int divisor)
-    {
-        return WorryLevel % divisor == 0;
-    }
-
-    public Item DivideBy(int v)
-    {
-        WorryLevel = WorryLevel / v;
-        return this;
-    }
-}
-
-public class Monkey1
-{
-    private readonly int _order;
     private readonly char _operation;
     private readonly string _operand;
-    private readonly int _divisor;
     private readonly int _targetOnSuccess;
     private readonly int _targetOnFailure;
+    private readonly int _cap;
 
-    public List<Item> Items { get; }
+    public List<long> Items { get; }
+    public int Divisor { get; }
     public ulong ActivityLevel { get; private set; }
 
-    public Monkey1(int order, List<Item> items, char operation, string operand, int divisor, int targetOnSuccess, int targetOnFailure)
+    public Monkey(List<long> items, char operation, string operand, int divisor, int targetOnSuccess, int targetOnFailure, int cap)
     {
         ActivityLevel = 0;
 
-        _order = order;
         _operation = operation;
         _operand = operand;
-        _divisor = divisor;
+        Divisor = divisor;
         _targetOnSuccess = targetOnSuccess;
         _targetOnFailure = targetOnFailure;
+        _cap = cap;
 
-        Items = new List<Item>();
+        Items = new List<long>();
         foreach (var item in items)
         {
             Give(item);
         }
     }
 
-    public void Give(Item item)
-    {
-        if (_order == 2)
-        {
-            item.AddOwner(_order);
-        }
-        else
-        {
-            item.AddOwner(_order);
-        }
+    public void Give(long item) => Items.Add(item % _cap);
 
-        item = new Item(item.WorryLevel % (19 * 2 * 3 * 17 * 13 * 7 * 5 * 11));
-        Items.Add(item);
-    }
-
-    public void DoTurn(List<Monkey1> monkeys)
+    public void DoTurn(List<Monkey> monkeys, int divisor)
     {
         ActivityLevel += (ulong)Items.Count;
 
         foreach (var item in Items)
         {
-            var newItem = Operation(item).DivideBy(3);
+            var newItem = Operation(item) / divisor;
             if (Test(newItem))
             {
                 Success(monkeys, newItem);
@@ -106,48 +52,18 @@ public class Monkey1
         Items.Clear();
     }
 
-    public void DoTurn2(List<Monkey1> monkeys)
+    public long Operation(long item) => _operation switch
     {
-        ActivityLevel += (ulong)Items.Count;
-
-        foreach (var item in Items)
-        {
-            var newItem = Operation2(item);
-            if (Test(newItem))
-            {
-                Success(monkeys, newItem);
-            }
-            else
-            {
-                //newItem = new Item(_divisor + (newItem.WorryLevel % _divisor));
-                Failure(monkeys, newItem);
-            }
-        }
-
-        Items.Clear();
-    }
-
-    public Item Operation(Item item) => _operation switch
-    {
-        '*' => item.Multiply(_operand == "old"? item.WorryLevel : long.Parse(_operand)),
-        '+' => item.Add(long.Parse(_operand)),
+        '*' => item * (_operand == "old"? item : long.Parse(_operand)),
+        '+' => item + long.Parse(_operand),
         _ => throw new ArgumentException("Invalid operation"),
     };
 
-    public Item Operation2(Item item) => _operation switch
-    {
-        '*' => item.Multiply(_operand == "old"? item.WorryLevel : long.Parse(_operand)),
-        '+' => item.Add(long.Parse(_operand)),
-        _ => throw new ArgumentException("Invalid operation"),
-    };
+    public bool Test(long item) => item % Divisor == 0;
 
-    public bool Test(Item item) => item.DivisibleBy(_divisor);
-
-    private void Success(List<Monkey1> monkeys, Item item) =>
+    private void Success(List<Monkey> monkeys, long item) =>
         monkeys[_targetOnSuccess].Give(item);
 
-    private void Failure(List<Monkey1> monkeys, Item item) =>
+    private void Failure(List<Monkey> monkeys, long item) =>
         monkeys[_targetOnFailure].Give(item);
-
-    public List<long> ItemsAsWorries => Items.Select(p => p.WorryLevel).ToList();
 }
