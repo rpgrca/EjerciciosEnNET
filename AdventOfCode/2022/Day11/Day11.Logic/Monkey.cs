@@ -4,13 +4,13 @@ public class Monkey
 {
     private readonly char _operation;
     private readonly string _operand;
+    private readonly int _divisor;
     private readonly int _targetOnSuccess;
     private readonly int _targetOnFailure;
     private readonly long _cap;
 
     public List<long> Items { get; }
-    public int Divisor { get; }
-    public ulong ActivityLevel { get; private set; }
+    public int ActivityLevel { get; private set; }
 
     public Monkey(List<long> items, char operation, string operand, int divisor, int targetOnSuccess, int targetOnFailure, long cap)
     {
@@ -18,7 +18,7 @@ public class Monkey
 
         _operation = operation;
         _operand = operand;
-        Divisor = divisor;
+        _divisor = divisor;
         _targetOnSuccess = targetOnSuccess;
         _targetOnFailure = targetOnFailure;
         _cap = cap;
@@ -34,7 +34,7 @@ public class Monkey
 
     public void DoTurn(List<Monkey> monkeys, int divisor)
     {
-        ActivityLevel += (ulong)Items.Count;
+        ActivityLevel += Items.Count;
 
         foreach (var item in Items)
         {
@@ -55,11 +55,10 @@ public class Monkey
     public long Operation(long item) => _operation switch
     {
         '*' => item * (_operand == "old"? item : long.Parse(_operand)),
-        '+' => item + long.Parse(_operand),
-        _ => throw new ArgumentException("Invalid operation"),
+        _ => item + long.Parse(_operand),
     };
 
-    public bool Test(long item) => item % Divisor == 0;
+    public bool Test(long item) => item % _divisor == 0;
 
     private void Success(List<Monkey> monkeys, long item) =>
         monkeys[_targetOnSuccess].Give(item);

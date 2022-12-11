@@ -215,7 +215,7 @@ public class MonkeyInTheMiddleMust
     [InlineData(8000, 41728, 38268, 1553, 41606)]
     [InlineData(9000, 46945, 43051, 1746, 46807)]
     [InlineData(10000, 52166, 47830, 1938, 52013)]
-    public void CalculateMonkeyActivityCorrectly(int rounds, ulong items0, ulong items1, ulong items2, ulong items3)
+    public void CalculateMonkeyActivityCorrectly(int rounds, int items0, int items1, int items2, int items3)
     {
         var loader = MonkeysLoader.LoadWithCap(SAMPLE_INPUT);
         var sut = new MonkeyInTheMiddle(loader.Monkeys, rounds, 1);

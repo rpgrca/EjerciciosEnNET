@@ -8,14 +8,17 @@ public class MonkeysLoader
 
     public List<Monkey> Monkeys { get; }
 
-    public static MonkeysLoader LoadWithoutCap(string input) => new(input, c => long.MaxValue);
+    public static MonkeysLoader LoadWithoutCap(string input) =>
+        new(input, c => long.MaxValue);
 
-    public static MonkeysLoader LoadWithCap(string input) => new(input, c => c);
+    public static MonkeysLoader LoadWithCap(string input) =>
+        new(input, c => c);
 
     private MonkeysLoader(string input, Func<long, long> capCalculator)
     {
         _input = input + "\n";
         _lines = _input.Split("\n");
+
         Monkeys = new List<Monkey>();
         CapCalculator = capCalculator;
 
@@ -46,43 +49,28 @@ public class MonkeysLoader
             else if (line.StartsWith("  Operation: "))
             {
                 tokens = line.Split(":")[1].Trim().Split(" ");
-                if (tokens[0] != "new" || tokens[1] != "=" || tokens[2] != "old") throw new ArgumentException();
                 operation = tokens[3][0];
                 operand = tokens[4];
             }
             else if (line.StartsWith("  Test: "))
             {
                 tokens = line.Split(":")[1].Trim().Split(" ");
-                if (tokens[0] != "divisible" || tokens[1] != "by") throw new ArgumentException();
                 divisor = int.Parse(tokens[2]);
                 cap *= divisor;
             }
             else if (line.StartsWith("    If true:"))
             {
                 tokens = line.Split(":")[1].Trim().Split(" ");
-                if (tokens[0] != "throw" || tokens[1] != "to" || tokens[2] != "monkey") throw new ArgumentException();
                 targetOnSuccess = int.Parse(tokens[3]);
             }
             else if (line.StartsWith("    If false:"))
             {
                 tokens = line.Split(":")[1].Trim().Split(" ");
-                if (tokens[0] != "throw" || tokens[1] != "to" || tokens[2] != "monkey") throw new ArgumentException();
                 targetOnFailure = int.Parse(tokens[3]);
-            }
-            else if (string.IsNullOrWhiteSpace(line))
-            {
-                parsedValues.Add((items, operation, operand, divisor, targetOnSuccess, targetOnFailure));
-                tokens = Array.Empty<string>();
-                items = new();
-                operation = ' ';
-                operand = string.Empty;
-                divisor = -1;
-                targetOnSuccess = -1;
-                targetOnFailure = -1;
             }
             else
             {
-                throw new ArgumentException();
+                parsedValues.Add((items, operation, operand, divisor, targetOnSuccess, targetOnFailure));
             }
         }
 

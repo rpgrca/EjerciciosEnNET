@@ -29,6 +29,6 @@ public class MonkeyInTheMiddle
             .Select(m => m.ActivityLevel)
             .OrderByDescending(p => p)
             .Take(2)
-            .Aggregate(1UL, (t, i) => t *= i);
+            .Aggregate(1UL, (t, i) => t *= (ulong)i);
     }
 }
