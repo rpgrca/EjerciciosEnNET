@@ -6,13 +6,13 @@ public class Monkey
     private readonly string _operand;
     private readonly int _targetOnSuccess;
     private readonly int _targetOnFailure;
-    private readonly int _cap;
+    private readonly long _cap;
 
     public List<long> Items { get; }
     public int Divisor { get; }
     public ulong ActivityLevel { get; private set; }
 
-    public Monkey(List<long> items, char operation, string operand, int divisor, int targetOnSuccess, int targetOnFailure, int cap)
+    public Monkey(List<long> items, char operation, string operand, int divisor, int targetOnSuccess, int targetOnFailure, long cap)
     {
         ActivityLevel = 0;
 

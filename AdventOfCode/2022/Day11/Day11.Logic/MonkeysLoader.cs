@@ -4,14 +4,20 @@ public class MonkeysLoader
 {
     private readonly string _input;
     private readonly string[] _lines;
+    private Func<long, long> CapCalculator { get; }
 
     public List<Monkey> Monkeys { get; }
 
-    public MonkeysLoader(string input)
+    public static MonkeysLoader LoadWithoutCap(string input) => new(input, c => long.MaxValue);
+
+    public static MonkeysLoader LoadWithCap(string input) => new(input, c => c);
+
+    private MonkeysLoader(string input, Func<long, long> capCalculator)
     {
         _input = input + "\n";
         _lines = _input.Split("\n");
         Monkeys = new List<Monkey>();
+        CapCalculator = capCalculator;
 
         Parse();
     }
@@ -82,7 +88,7 @@ public class MonkeysLoader
 
         foreach (var (Items, Operation, Operand, Divisor, TargetOnSuccess, TargetOnFailure) in parsedValues)
         {
-            var monkey = new Monkey(Items, Operation, Operand, Divisor, TargetOnSuccess, TargetOnFailure, cap);
+            var monkey = new Monkey(Items, Operation, Operand, Divisor, TargetOnSuccess, TargetOnFailure, CapCalculator(cap));
             Monkeys.Add(monkey);
         }
     }

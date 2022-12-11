@@ -25,6 +25,10 @@ public class MonkeyInTheMiddle
             }
         }
     
-        MonkeyBusiness = Monkeys.Select(m => m.ActivityLevel).OrderByDescending(p => p).Take(2).Aggregate(1UL, (t, i) => t *= i);
+        MonkeyBusiness = Monkeys
+            .Select(m => m.ActivityLevel)
+            .OrderByDescending(p => p)
+            .Take(2)
+            .Aggregate(1UL, (t, i) => t *= i);
     }
 }

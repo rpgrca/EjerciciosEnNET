@@ -8,7 +8,7 @@ public class MonkeyInTheMiddleMust
     [Fact]
     public void LoadSampleMonkeyItemsCorrectly()
     {
-        var loader = new MonkeysLoader(SAMPLE_INPUT);
+        var loader = MonkeysLoader.LoadWithoutCap(SAMPLE_INPUT);
         var sut = new MonkeyInTheMiddle(loader.Monkeys, 0);
         Assert.Collection(sut.Monkeys,
             m0 =>
@@ -43,7 +43,7 @@ public class MonkeyInTheMiddleMust
     [MemberData(nameof(SampleRoundsFeeder))]
     public void ExecuteRoundsCorrectly(int rounds, long[] items0, long[] items1)
     {
-        var loader = new MonkeysLoader(SAMPLE_INPUT);
+        var loader = MonkeysLoader.LoadWithoutCap(SAMPLE_INPUT);
         var sut = new MonkeyInTheMiddle(loader.Monkeys, rounds);
         Assert.Collection(sut.Monkeys,
             m0 => Assert.Equal(items0, m0.Items),
@@ -71,28 +71,28 @@ public class MonkeyInTheMiddleMust
     [Fact]
     public void SolveFirstSampleCorrectly()
     {
-        var loader = new MonkeysLoader(SAMPLE_INPUT);
+        var loader = MonkeysLoader.LoadWithoutCap(SAMPLE_INPUT);
         var sut = new MonkeyInTheMiddle(loader.Monkeys, 20);
         Assert.Equal(10605UL, sut.MonkeyBusiness);
     }
-/*
+
     [Fact]
     public void LoadPuzzleMonkeyItemsCorrectly()
     {
-        var loader = new MonkeysLoader(PUZZLE_INPUT);
+        var loader = MonkeysLoader.LoadWithoutCap(PUZZLE_INPUT);
         var sut = new MonkeyInTheMiddle(loader.Monkeys, 0);
         Assert.Collection(sut.Monkeys,
             m0 =>
             {
                 Assert.Collection(m0.Items,
-                    i1 => Assert.Equal(74, i1.WorryLevel),
-                    i2 => Assert.Equal(73, i2.WorryLevel),
-                    i3 => Assert.Equal(57, i3.WorryLevel),
-                    i4 => Assert.Equal(77, i4.WorryLevel),
-                    i5 => Assert.Equal(74, i5.WorryLevel));
-                Assert.True(m0.Test(new Item(19)));
-                Assert.False(m0.Test(new Item(20)));
-                Assert.Equal(143, m0.Operation(new Item(13)).WorryLevel);
+                    i1 => Assert.Equal(74, i1),
+                    i2 => Assert.Equal(73, i2),
+                    i3 => Assert.Equal(57, i3),
+                    i4 => Assert.Equal(77, i4),
+                    i5 => Assert.Equal(74, i5));
+                Assert.True(m0.Test(19));
+                Assert.False(m0.Test(20));
+                Assert.Equal(143, m0.Operation(13));
             },
             m1 =>
             {
@@ -173,17 +173,17 @@ public class MonkeyInTheMiddleMust
                 Assert.False(m7.Test(86));
                 Assert.Equal(19, m7.Operation(13));
             });
-    }*/
+    }
 
     [Fact]
     public void SolveFirstPuzzleCorrectly()
     {
-        var loader = new MonkeysLoader(PUZZLE_INPUT);
+        var loader = MonkeysLoader.LoadWithoutCap(PUZZLE_INPUT);
         var sut = new MonkeyInTheMiddle(loader.Monkeys, 20);
         Assert.True(70176UL > sut.MonkeyBusiness);
         Assert.Equal(69918UL, sut.MonkeyBusiness);
     }
-/*
+
     [Theory]
     [InlineData(1, 2, 4, 3, 6)]
     [InlineData(2, 6, 10, 3, 10)]
@@ -217,7 +217,7 @@ public class MonkeyInTheMiddleMust
     [InlineData(10000, 52166, 47830, 1938, 52013)]
     public void CalculateMonkeyActivityCorrectly(int rounds, ulong items0, ulong items1, ulong items2, ulong items3)
     {
-        var loader = new MonkeysLoader(SAMPLE_INPUT);
+        var loader = MonkeysLoader.LoadWithCap(SAMPLE_INPUT);
         var sut = new MonkeyInTheMiddle(loader.Monkeys, rounds, 1);
         Assert.Collection(sut.Monkeys,
             m0 => Assert.Equal(items0, m0.ActivityLevel),
@@ -229,15 +229,15 @@ public class MonkeyInTheMiddleMust
     [Fact]
     public void SolveSecondSample()
     {
-        var loader = new MonkeysLoader(SAMPLE_INPUT);
+        var loader = MonkeysLoader.LoadWithCap(SAMPLE_INPUT);
         var sut = new MonkeyInTheMiddle(loader.Monkeys, 10000, 1);
         Assert.Equal(2713310158, sut.MonkeyBusiness);
     }
-*/
+
     [Fact]
     public void SolveSecondPuzzle()
     {
-        var loader = new MonkeysLoader(PUZZLE_INPUT);
+        var loader = MonkeysLoader.LoadWithCap(PUZZLE_INPUT);
         var sut = new MonkeyInTheMiddle(loader.Monkeys, 10000, 1);
         Assert.True(16120642006UL < sut.MonkeyBusiness);
         Assert.Equal(19573408701UL, sut.MonkeyBusiness);
