@@ -7,7 +7,7 @@ public class MonkeyInTheMiddle
 
     //public List<Monkey> Monkeys { get; private set; }
     public List<Monkey1> Monkeys { get; private set; }
-    public int MonkeyBusiness { get; private set; }
+    public ulong MonkeyBusiness { get; private set; }
 
     /*public static MonkeyInTheMiddle CreateForSample(string input, int rounds)
     {
@@ -65,6 +65,6 @@ public class MonkeyInTheMiddle
             }
         }
     
-        MonkeyBusiness = Monkeys.Select(m => m.ActivityLevel).OrderByDescending(p => p).Take(2).Aggregate(1, (t, i) => t *= i);
+        MonkeyBusiness = Monkeys.Select(m => m.ActivityLevel).OrderByDescending(p => p).Take(2).Aggregate(1UL, (t, i) => t *= i);
     }
 }

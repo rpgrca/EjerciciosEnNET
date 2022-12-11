@@ -51,7 +51,7 @@ public class Monkey1
     private readonly int _targetOnFailure;
 
     public List<Item> Items { get; }
-    public int ActivityLevel { get; private set; }
+    public ulong ActivityLevel { get; private set; }
 
     public Monkey1(int order, List<Item> items, char operation, string operand, int divisor, int targetOnSuccess, int targetOnFailure)
     {
@@ -82,12 +82,13 @@ public class Monkey1
             item.AddOwner(_order);
         }
 
+        item = new Item(item.WorryLevel % 96577);
         Items.Add(item);
     }
 
     public void DoTurn(List<Monkey1> monkeys)
     {
-        ActivityLevel += Items.Count;
+        ActivityLevel += (ulong)Items.Count;
 
         foreach (var item in Items)
         {
@@ -107,7 +108,7 @@ public class Monkey1
 
     public void DoTurn2(List<Monkey1> monkeys)
     {
-        ActivityLevel += Items.Count;
+        ActivityLevel += (ulong)Items.Count;
 
         foreach (var item in Items)
         {

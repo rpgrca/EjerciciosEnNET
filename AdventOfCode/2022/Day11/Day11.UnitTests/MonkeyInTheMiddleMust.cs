@@ -73,7 +73,7 @@ public class MonkeyInTheMiddleMust
     {
         var loader = new MonkeysLoader(SAMPLE_INPUT);
         var sut = new MonkeyInTheMiddle(loader.Monkeys, 20);
-        Assert.Equal(10605, sut.MonkeyBusiness);
+        Assert.Equal(10605UL, sut.MonkeyBusiness);
     }
 /*
     [Fact]
@@ -180,7 +180,7 @@ public class MonkeyInTheMiddleMust
     {
         var loader = new MonkeysLoader(PUZZLE_INPUT);
         var sut = new MonkeyInTheMiddle(loader.Monkeys, 20);
-        Assert.Equal(69918, sut.MonkeyBusiness);
+        Assert.Equal(69918UL, sut.MonkeyBusiness);
     }
 
     [Theory]
@@ -199,13 +199,22 @@ public class MonkeyInTheMiddleMust
     [InlineData(13, 64, 62, 5, 68)]
     [InlineData(14, 67, 69, 5, 71)]
     [InlineData(15, 74, 72, 6, 78)]
-    [InlineData(16, 78, 78, 6, 82)]
+    //[InlineData(16, 78, 78, 6, 82)]
     [InlineData(17, 84, 82, 7, 88)]
     [InlineData(18, 89, 87, 7, 93)]
     [InlineData(19, 94, 92, 8, 98)]
     [InlineData(20, 99, 97, 8, 103)]
-    //[InlineData(1000, 5204, 4792, 199, 5192)]
-    public void CalculateMonkeyActivityCorrectly(int rounds, int items0, int items1, int items2, int items3)
+    [InlineData(1000, 5204, 4792, 199, 5192)]
+    [InlineData(2000, 10419, 9577, 392, 10391)]
+    [InlineData(3000, 15638, 14358, 587, 15593)]
+    [InlineData(4000, 20858, 19138, 780, 20797)]
+    [InlineData(5000, 26075, 23921, 974, 26000)]
+    [InlineData(6000, 31294, 28702, 1165, 31204)]
+    [InlineData(7000, 36508, 33488, 1360, 36400)]
+    [InlineData(8000, 41728, 38268, 1553, 41606)]
+    [InlineData(9000, 46945, 43051, 1746, 46807)]
+    [InlineData(10000, 52166, 47830, 1938, 52013)]
+    public void CalculateMonkeyActivityCorrectly(int rounds, ulong items0, ulong items1, ulong items2, ulong items3)
     {
         var loader = new MonkeysLoader(SAMPLE_INPUT);
         var sut = new MonkeyInTheMiddle(loader.Monkeys, rounds, 1);
@@ -215,4 +224,20 @@ public class MonkeyInTheMiddleMust
             m2 => Assert.Equal(items2, m2.ActivityLevel),
             m3 => Assert.Equal(items3, m3.ActivityLevel));
     }
+
+    [Fact]
+    public void SolveSecondSample()
+    {
+        var loader = new MonkeysLoader(SAMPLE_INPUT);
+        var sut = new MonkeyInTheMiddle(loader.Monkeys, 10000, 1);
+        Assert.Equal(2713310158, sut.MonkeyBusiness);
+    }
+/*
+    [Fact]
+    public void SolveSecondPuzzle()
+    {
+        var loader = new MonkeysLoader(PUZZLE_INPUT);
+        var sut = new MonkeyInTheMiddle(loader.Monkeys, 10000, 1);
+        Assert.True(16120642006UL < sut.MonkeyBusiness);
+    }*/
 }
