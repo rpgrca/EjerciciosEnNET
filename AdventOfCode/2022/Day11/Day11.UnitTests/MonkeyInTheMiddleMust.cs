@@ -8,7 +8,7 @@ public class MonkeyInTheMiddleMust
     [Fact]
     public void LoadSampleMonkeyItemsCorrectly()
     {
-        var sut = MonkeyInTheMiddle.CreateForFirstPuzzle(SAMPLE_INPUT, 0);
+        var sut = MonkeyInTheMiddle.CreateForSample(SAMPLE_INPUT, 0);
         Assert.Collection(sut.Monkeys,
             m0 =>
             {
@@ -40,9 +40,9 @@ public class MonkeyInTheMiddleMust
 
     [Theory]
     [MemberData(nameof(SampleRoundsFeeder))]
-    public void ExecuteOneRoundCorrectly(int rounds, int[] items0, int[] items1)
+    public void ExecuteRoundsCorrectly(int rounds, int[] items0, int[] items1)
     {
-        var sut = MonkeyInTheMiddle.CreateForFirstPuzzle(SAMPLE_INPUT, rounds);
+        var sut = MonkeyInTheMiddle.CreateForSample(SAMPLE_INPUT, rounds);
         Assert.Collection(sut.Monkeys,
             m0 => Assert.Equal(items0, m0.Items),
             m1 => Assert.Equal(items1, m1.Items),
@@ -67,9 +67,114 @@ public class MonkeyInTheMiddleMust
     }
 
     [Fact]
-    public void ObtainMonkeyBusinessCorrectly()
+    public void SolveFirstSampleCorrectly()
     {
-        var sut = MonkeyInTheMiddle.CreateForFirstPuzzle(SAMPLE_INPUT, 20);
+        var sut = MonkeyInTheMiddle.CreateForSample(SAMPLE_INPUT, 20);
         Assert.Equal(10605, sut.MonkeyBusiness);
     }
+
+    [Fact]
+    public void LoadPuzzleMonkeyItemsCorrectly()
+    {
+        var sut = MonkeyInTheMiddle.CreateForPuzzle(PUZZLE_INPUT, 0);
+        Assert.Collection(sut.Monkeys,
+            m0 =>
+            {
+                Assert.Collection(m0.Items,
+                    i1 => Assert.Equal(74, i1),
+                    i2 => Assert.Equal(73, i2),
+                    i3 => Assert.Equal(57, i3),
+                    i4 => Assert.Equal(77, i4),
+                    i5 => Assert.Equal(74, i5));
+                Assert.True(m0.Test(19));
+                Assert.False(m0.Test(20));
+                Assert.Equal(143, m0.Operation(13));
+            },
+            m1 =>
+            {
+                Assert.Collection(m1.Items,
+                    i1 => Assert.Equal(99, i1),
+                    i2 => Assert.Equal(77, i2),
+                    i3 => Assert.Equal(79, i3));
+                Assert.True(m1.Test(202));
+                Assert.False(m1.Test(201));
+                Assert.Equal(21, m1.Operation(13));
+            },
+            m2 =>
+            {
+                Assert.Collection(m2.Items,
+                    i1 => Assert.Equal(64, i1),
+                    i2 => Assert.Equal(67, i2),
+                    i3 => Assert.Equal(50, i3),
+                    i4 => Assert.Equal(96, i4),
+                    i5 => Assert.Equal(89, i5),
+                    i6 => Assert.Equal(82, i6),
+                    i7 => Assert.Equal(82, i7));
+                Assert.True(m2.Test(33));
+                Assert.False(m2.Test(10));
+                Assert.Equal(14, m2.Operation(13));
+            },
+            m3 =>
+            {
+                Assert.Collection(m3.Items, i1 => Assert.Equal(88, i1));
+                Assert.True(m3.Test(34));
+                Assert.False(m3.Test(12));
+                Assert.Equal(91, m3.Operation(13));
+            },
+            m4 =>
+            {
+                Assert.Collection(m4.Items,
+                    i1 => Assert.Equal(80, i1),
+                    i2 => Assert.Equal(66, i2),
+                    i3 => Assert.Equal(98, i3),
+                    i4 => Assert.Equal(83, i4),
+                    i5 => Assert.Equal(70, i5),
+                    i6 => Assert.Equal(63, i6),
+                    i7 => Assert.Equal(57, i7),
+                    i8 => Assert.Equal(66, i8));
+                Assert.True(m4.Test(52));
+                Assert.False(m4.Test(12));
+                Assert.Equal(17, m4.Operation(13));
+            },
+            m5 =>
+            {
+                Assert.Collection(m5.Items,
+                    i1 => Assert.Equal(81, i1),
+                    i2 => Assert.Equal(93, i2),
+                    i3 => Assert.Equal(90, i3),
+                    i4 => Assert.Equal(61, i4),
+                    i5 => Assert.Equal(62, i5),
+                    i6 => Assert.Equal(64, i6));
+                Assert.True(m5.Test(49));
+                Assert.False(m5.Test(50));
+                Assert.Equal(20, m5.Operation(13));
+            },
+            m6 =>
+            {
+                Assert.Collection(m6.Items,
+                    i1 => Assert.Equal(69, i1),
+                    i2 => Assert.Equal(97, i2),
+                    i3 => Assert.Equal(88, i3),
+                    i4 => Assert.Equal(93, i4));
+                Assert.True(m6.Test(25));
+                Assert.False(m6.Test(169));
+                Assert.Equal(169, m6.Operation(13));
+            },
+            m7 =>
+            {
+                Assert.Collection(m7.Items,
+                    i1 => Assert.Equal(59, i1),
+                    i2 => Assert.Equal(80, i2));
+                Assert.True(m7.Test(88));
+                Assert.False(m7.Test(86));
+                Assert.Equal(19, m7.Operation(13));
+            });
+    }
+/*
+    [Fact]
+    public void SolveFirstPuzzleCorrectly()
+    {
+        var sut = MonkeyInTheMiddle.CreateForPuzzle(PUZZLE_INPUT, 20);
+        Assert.True(70176 > sut.MonkeyBusiness);
+    }*/
 }

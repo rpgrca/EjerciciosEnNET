@@ -3,8 +3,8 @@ namespace Day11.Logic;
 public class Monkey
 {
     public List<int> Items { get; }
-    private Func<int, int> Operation { get; }
-    private Func<int, bool> Test { get; }
+    public Func<int, int> Operation { get; }
+    public Func<int, bool> Test { get; }
     private Action<List<Monkey>, int> Success { get; }
     private Action<List<Monkey>, int> Failure { get; }
 
@@ -26,7 +26,7 @@ public class Monkey
         foreach (var item in Items)
         {
             var newWorryLevel = Operation(item);
-            newWorryLevel = (int)(newWorryLevel / 3);
+            newWorryLevel /= 3;
             if (Test(newWorryLevel))
             {
                 Success(monkeys, newWorryLevel);
