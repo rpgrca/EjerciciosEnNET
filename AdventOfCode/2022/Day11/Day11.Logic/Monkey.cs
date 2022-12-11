@@ -8,6 +8,8 @@ public class Monkey
     private Action<List<Monkey>, int> Success { get; }
     private Action<List<Monkey>, int> Failure { get; }
 
+    public int ActivityLevel { get; private set; }
+
     public Monkey(Func<int, int> operation, Func<int, bool> test, Action<List<Monkey>, int> success, Action<List<Monkey>, int> failure, params int[] items)
     {
         Items = new List<int>(items);
@@ -33,6 +35,8 @@ public class Monkey
             {
                 Failure(monkeys, newWorryLevel);
             }
+
+            ActivityLevel++;
         }
 
         Items.Clear();

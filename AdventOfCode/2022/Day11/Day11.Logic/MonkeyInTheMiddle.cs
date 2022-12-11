@@ -5,6 +5,7 @@ public class MonkeyInTheMiddle
     private readonly int _rounds;
 
     public List<Monkey> Monkeys { get; set; }
+    public int MonkeyBusiness { get; }
 
     public static MonkeyInTheMiddle CreateForFirstPuzzle(string input, int rounds)
     {
@@ -31,5 +32,7 @@ public class MonkeyInTheMiddle
                 monkey.DoTurn(Monkeys);
             }
         }
+
+        MonkeyBusiness = Monkeys.OrderByDescending(m => m.ActivityLevel).Take(2).Aggregate(1, (t, m) => t *= m.ActivityLevel);
     }
 }

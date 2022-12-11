@@ -65,4 +65,11 @@ public class MonkeyInTheMiddleMust
         yield return new object[] { 15, new[] { 83, 44, 8, 184, 9, 20, 26, 102 }, new[] { 110, 36 } };
         yield return new object[] { 20, new[] { 10, 12, 14, 26, 34 }, new[] { 245, 93, 53, 199, 115 } };
     }
+
+    [Fact]
+    public void ObtainMonkeyBusinessCorrectly()
+    {
+        var sut = MonkeyInTheMiddle.CreateForFirstPuzzle(SAMPLE_INPUT, 20);
+        Assert.Equal(10605, sut.MonkeyBusiness);
+    }
 }
