@@ -7,6 +7,7 @@ public class PriorityQueue : List<(int X, int Y, char Weight)>
 public class HillClimbingAlgorithm
 {
     private string _input;
+    private readonly bool _fromAnyLocation;
     private string[] _lines;
     private readonly int _columns;
     private readonly int _rows;
@@ -16,17 +17,19 @@ public class HillClimbingAlgorithm
     private (int X, int Y) _startingPoint;
     private (int X, int Y) _endingPoint;
 
-    public int FewestStepsToTarget => _paths[_endingPoint.Y][_endingPoint.X];
+    public int FewestStepsToTarget { get; private set; }
 
-    public HillClimbingAlgorithm(string input)
+    public HillClimbingAlgorithm(string input, bool fromAnyLocation = false)
     {
         _input = input;
+        _fromAnyLocation = fromAnyLocation;
         _lines = _input.Split("\n");
         _columns = _lines[0].Length;
         _rows = _lines.Length;
         _map = new char[_rows][];
         _paths = new int[_rows][];
         _queue = new PriorityQueue();
+        FewestStepsToTarget = int.MaxValue;
 
         var index = 0;
 
@@ -68,7 +71,47 @@ public class HillClimbingAlgorithm
 
     private void StartAlgorithm()
     {
-        MoveFrom(_startingPoint.X, _startingPoint.Y, 'a', 0);
+        if (_fromAnyLocation)
+        {
+            var minimum = int.MaxValue;
+
+            for (var y = 0; y < _rows; y++)
+            {
+                for (var x = 0; x < _columns; x++)
+                {
+                    if (_map[y][x] == 'a')
+                    {
+                        FewestStepsToTarget = int.MaxValue;
+                        ClearPaths();
+                        MoveFrom(x, y, 'a', 0);
+
+                        var value = _paths[_endingPoint.Y][_endingPoint.X];
+                        if (value < minimum)
+                        {
+                            minimum = value;
+                        }
+                    }
+                }
+            }
+
+            FewestStepsToTarget = minimum;
+        }
+        else
+        {
+            MoveFrom(_startingPoint.X, _startingPoint.Y, 'a', 0);
+            FewestStepsToTarget = _paths[_endingPoint.Y][_endingPoint.X];
+        }
+    }
+
+    private void ClearPaths()
+    {
+        for (var y = 0; y < _rows; y++)
+        {
+            for (var x = 0; x < _columns; x++)
+            {
+                _paths[y][x] = int.MaxValue;
+            }
+        }
     }
 
     private void MoveFrom(int x, int y, char fromSquare, int steps)
