@@ -6,14 +6,14 @@ public class PriorityQueue : List<(int X, int Y, char Weight)>
 
 public class HillClimbingAlgorithm
 {
-    private string _input;
+    private readonly string _input;
     private readonly bool _fromAnyLocation;
-    private string[] _lines;
+    private readonly string[] _lines;
     private readonly int _columns;
     private readonly int _rows;
     private readonly char[][] _map;
     private readonly int[][] _paths;
-    private PriorityQueue _queue;
+    private readonly PriorityQueue _queue;
     private (int X, int Y) _startingPoint;
     private (int X, int Y) _endingPoint;
 
@@ -82,7 +82,6 @@ public class HillClimbingAlgorithm
                     if (_map[y][x] == 'a')
                     {
                         FewestStepsToTarget = int.MaxValue;
-                        ClearPaths();
                         MoveFrom(x, y, 'a', 0);
 
                         var value = _paths[_endingPoint.Y][_endingPoint.X];
@@ -100,17 +99,6 @@ public class HillClimbingAlgorithm
         {
             MoveFrom(_startingPoint.X, _startingPoint.Y, 'a', 0);
             FewestStepsToTarget = _paths[_endingPoint.Y][_endingPoint.X];
-        }
-    }
-
-    private void ClearPaths()
-    {
-        for (var y = 0; y < _rows; y++)
-        {
-            for (var x = 0; x < _columns; x++)
-            {
-                _paths[y][x] = int.MaxValue;
-            }
         }
     }
 
