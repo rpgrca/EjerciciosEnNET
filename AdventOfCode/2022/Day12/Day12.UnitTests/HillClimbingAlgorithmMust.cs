@@ -34,4 +34,11 @@ public class HillClimbingAlgorithmMust
         var sut = new HillClimbingAlgorithm(SAMPLE_INPUT, true);
         Assert.Equal(29, sut.FewestStepsToTarget);
     }
+
+    [Fact]
+    public void SolveSecondPuzzle()
+    {
+        var sut = new HillClimbingAlgorithm(PUZZLE_INPUT, true);
+        Assert.Equal(508, sut.FewestStepsToTarget);
+    }
 }
