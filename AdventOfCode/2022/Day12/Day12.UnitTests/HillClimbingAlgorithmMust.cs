@@ -6,30 +6,25 @@ namespace Day12.UnitTests;
 public class HillClimbingAlgorithmMust
 {
     [Theory]
-    [InlineData("SE", 1)]
-    [InlineData("SaE", 2)]
-    [InlineData("SabE", 3)]
-    public void FindSteps_WhenMapIsHorizontal(string input, int expectedValue)
+    [InlineData("SabcdefghijklmnopqrstuvwxyzE", 27)]
+    [InlineData("S\na\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk\nl\nm\nn\no\np\nq\nr\ns\nt\nu\nv\nw\nx\ny\nz\nE", 27)]
+    public void FindStepsCorrectly_WhenMapIsLineal(string input, int expectedValue)
     {
         var sut = new HillClimbingAlgorithm(input);
         Assert.Equal(expectedValue, sut.FewestStepsToTarget);
     }
 
-    [Theory]
-    [InlineData("S\nE", 1)]
-    [InlineData("S\na\nE", 2)]
-    public void FindSteps_WhenMapIsVertical(string input, int expectedValue)
+    [Fact]
+    public void SolveFirstSample()
     {
-        var sut = new HillClimbingAlgorithm(input);
-        Assert.Equal(expectedValue, sut.FewestStepsToTarget);
+        var sut = new HillClimbingAlgorithm(SAMPLE_INPUT);
+        Assert.Equal(31, sut.FewestStepsToTarget);
     }
 
-    [Theory]
-    [InlineData("Sabc\nazzd\nzzzE", 5)]
-    [InlineData("abcd\nSzze\nabzE", 6)]
-    public void Test1(string input, int expectedValue)
+    [Fact]
+    public void SolveFirstPuzzle()
     {
-        var sut = new HillClimbingAlgorithm(input);
-        Assert.Equal(expectedValue, sut.FewestStepsToTarget);
+        var sut = new HillClimbingAlgorithm(PUZZLE_INPUT);
+        Assert.Equal(520, sut.FewestStepsToTarget);
     }
 }

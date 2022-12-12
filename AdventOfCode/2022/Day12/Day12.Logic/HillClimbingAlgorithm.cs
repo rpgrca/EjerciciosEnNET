@@ -14,8 +14,9 @@ public class HillClimbingAlgorithm
     private readonly int[][] _paths;
     private PriorityQueue _queue;
     private (int X, int Y) _startingPoint;
+    private (int X, int Y) _endingPoint;
 
-    public int FewestStepsToTarget { get; private set; }
+    public int FewestStepsToTarget => _paths[_endingPoint.Y][_endingPoint.X];
 
     public HillClimbingAlgorithm(string input)
     {
@@ -43,6 +44,12 @@ public class HillClimbingAlgorithm
                     _startingPoint.Y = index;
                     _map[index][subIndex] = 'a';
                 }
+                else if (character == 'E')
+                {
+                    _endingPoint.X = subIndex;
+                    _endingPoint.Y = index;
+                    _map[index][subIndex] = 'z';
+                }
                 else
                 {
                     _map[index][subIndex] = character;
@@ -56,14 +63,11 @@ public class HillClimbingAlgorithm
             index++;
         }
 
-        FewestStepsToTarget = int.MaxValue;
-
         StartAlgorithm();
     }
 
     private void StartAlgorithm()
     {
-        _paths[_startingPoint.Y][_startingPoint.X] = 0;
         MoveFrom(_startingPoint.X, _startingPoint.Y, 'a', 0);
     }
 
@@ -74,15 +78,6 @@ public class HillClimbingAlgorithm
             return;
         }
 
-        if (_map[y][x] == 'E')
-        {
-            if (steps < FewestStepsToTarget)
-            {
-                FewestStepsToTarget = steps;
-            }
-            return;
-        }
-
         var current = _map[y][x];
         var diff = current - fromSquare;
         if (diff > 1)
@@ -90,12 +85,17 @@ public class HillClimbingAlgorithm
             return;
         }
 
-        if (_paths[y][x] < steps)
+        if (steps >= _paths[y][x])
+        {
+            return;
+        }
+        _paths[y][x] = steps;
+
+        if (x == _endingPoint.X && y == _endingPoint.Y)
         {
             return;
         }
 
-        _paths[y][x] = steps;
         MoveFrom(x - 1, y, current, steps + 1);
         MoveFrom(x + 1, y, current, steps + 1);
         MoveFrom(x, y - 1, current, steps + 1);
