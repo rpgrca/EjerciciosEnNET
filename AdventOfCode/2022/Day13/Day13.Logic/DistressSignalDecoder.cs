@@ -1,4 +1,124 @@
 ﻿namespace Day13.Logic;
+
+public interface INumber
+{
+    int Compare(INumber other);
+}
+
+public class Number : INumber
+{
+    private readonly int _value;
+
+    public Number(string value) => _value = int.Parse(value);
+
+    public int Compare(INumber other)
+    {
+        if (other is Number number)
+        {
+            return _value - number._value;
+        }
+        else
+        {
+            var numbers = new Numbers(this);
+            return numbers.Compare(other);
+        }
+    }
+}
+
+public class Numbers : INumber
+{
+    private readonly List<INumber> _members;
+
+    public Numbers() =>
+        _members = new List<INumber>();
+
+    public Numbers(INumber number) =>
+        _members = new List<INumber> { number };
+
+    public INumber Item(int index) => _members[index];
+
+    public void Add(INumber number) => _members.Add(number);
+
+    public int Compare(INumber other)
+    {
+        if (other is Number number)
+        {
+            var numbers = new Numbers(number);
+            return Compare(numbers);
+        }
+        else
+        {
+            var numbers = (Numbers)other;
+            var minimum = _members.Count < numbers._members.Count ? _members.Count : numbers._members.Count;
+            for (var index = 0; index < minimum; index++)
+            {
+                var result = Item(index).Compare(numbers.Item(index));
+                if (result != 0)
+                {
+                    return result;
+                }
+            }
+
+            return _members.Count - numbers._members.Count;
+        }
+    }
+}
+
+public class NumbersParser
+{
+    public INumber Values { get; }
+
+    public NumbersParser(string value)
+    {
+        var (parsedCharacters, values) = Parse(value);
+        Values = values;
+    }
+
+    private (int, INumber) Parse(string value)
+    {
+        var result = new Numbers();
+        var index = 0;
+        var number = string.Empty;
+
+        for (; index < value.Length; index++)
+        {
+            if (value[index] == '[')
+            {
+                var (parsedCharacters, parsedNumbers) = Parse(value[(index + 1)..]);
+                index += parsedCharacters;
+                result.Add(parsedNumbers);
+            }
+            else if (value[index] == ']')
+            {
+                if (! string.IsNullOrEmpty(number))
+                {
+                    result.Add(new Number(number));
+                    number = string.Empty;
+                }
+
+                return (index, result);
+            }
+            else
+            {
+                if (value[index] >= '0' && value[index] <= '9')
+                {
+                    number += value[index];
+                }
+                else
+                {
+                    if (! string.IsNullOrEmpty(number))
+                    {
+                        result.Add(new Number(number));
+                        number = string.Empty;
+                    }
+                }
+            }
+        }
+
+        return (index, result);
+    }
+}
+
 public class DistressSignalDecoder
 {
     public int SumOfCorrectIndexes { get; set; }
@@ -8,93 +128,12 @@ public class DistressSignalDecoder
         SumOfCorrectIndexes = 0;
 
         var lines = input.Split("\n");
-        List<int> sectionsAbove;
-        var tokensAbove = lines[0][1..^1].Split(",").ToList();
-        if (tokensAbove.Count == 1)
-        {
-            if (string.IsNullOrWhiteSpace(tokensAbove[0]))
-            {
-                sectionsAbove = new List<int>();
-            }
-            else
-            {
-                sectionsAbove = tokensAbove.Select(int.Parse).ToList();
-            }
-        }
-        else
-        {
-            sectionsAbove = tokensAbove.Select(p => int.Parse(p)).ToList();
-        }
-        
-        List<int> sectionsBelow;
-        var tokensBelow = lines[1][1..^1].Split(",").ToList();
-        if (tokensBelow.Count == 1)
-        {
-            if (string.IsNullOrWhiteSpace(tokensBelow[0]))
-            {
-                sectionsBelow = new List<int>();
-            }
-            else
-            {
-                sectionsBelow = tokensBelow.Select(int.Parse).ToList();
-            }
-        }
-        else
-        {
-            sectionsBelow = tokensBelow.Select(int.Parse).ToList();
-        }
+        var numbersAbove = new NumbersParser(lines[0]).Values;
+        var numbersBelow = new NumbersParser(lines[1]).Values;
 
-        if (sectionsAbove.Count == sectionsBelow.Count)
+        if (numbersAbove.Compare(numbersBelow) < 0)
         {
-            for (var index = 0; index < sectionsAbove.Count; index++)
-            {
-                if (sectionsAbove[index] < sectionsBelow[index])
-                {
-                    SumOfCorrectIndexes += 1;
-                    return;
-                }
-                else if (sectionsAbove[index] > sectionsBelow[index])
-                {
-                    return;
-                }
-            }
-
-            // equals?
-        }
-        else if (sectionsAbove.Count < sectionsBelow.Count)
-        {
-            for (var index = 0; index < sectionsAbove.Count; index++)
-            {
-                if (sectionsAbove[index] < sectionsBelow[index])
-                {
-                    SumOfCorrectIndexes += 1;
-                    return;
-                }
-                else if (sectionsAbove[index] > sectionsBelow[index])
-                {
-                    return;
-                }
-            }
-
             SumOfCorrectIndexes += 1;
-            return;
-        }
-        else
-        {
-            for (var index = 0; index < sectionsBelow.Count; index++)
-            {
-                if (sectionsAbove[index] < sectionsBelow[index])
-                {
-                    SumOfCorrectIndexes += 1;
-                    return;
-                }
-                else if (sectionsAbove[index] > sectionsBelow[index])
-                {
-                    return;
-                }
-            }
-
-            return;
         }
     }
 }
