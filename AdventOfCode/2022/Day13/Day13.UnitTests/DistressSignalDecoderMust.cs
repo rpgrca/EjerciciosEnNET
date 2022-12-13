@@ -17,12 +17,23 @@ public class DistressSignalDecoderMust
         Assert.Equal(expectedSum, sut.SumOfCorrectIndexes);
     }
 
-/*
+
     [Theory]
     [InlineData("[9]\n[[8,7,6]]", 0)]
+    [InlineData("[[[]]]\n[[]]", 0)]
+    [InlineData("[1,[2,[3,[4,[5,6,7]]]],8,9]\n[1,[2,[3,[4,[5,6,0]]]],8,9]", 0)]
+    [InlineData("[[4,4],4,4]\n[[4,4],4,4,4]", 1)]
+    [InlineData("[[1],[2,3,4]]\n[[1],4]", 1)]
     public void HandleListsCorrectly(string input, int expectedSum)
     {
         var sut = new DistressSignalDecoder(input);
         Assert.Equal(expectedSum, sut.SumOfCorrectIndexes);
-    }*/
+    }
+
+    [Fact]
+    public void SolveFirstSample()
+    {
+        var sut = new DistressSignalDecoder(SAMPLE_INPUT);
+        Assert.Equal(13, sut.SumOfCorrectIndexes);
+    }
 }

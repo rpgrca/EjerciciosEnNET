@@ -1,4 +1,7 @@
-﻿namespace Day13.Logic;
+﻿using System.Collections;
+using System.Diagnostics;
+
+namespace Day13.Logic;
 
 public interface INumber
 {
@@ -25,8 +28,37 @@ public class Number : INumber
     }
 }
 
-public class Numbers : INumber
+public class Numbers : INumber, IEnumerable<INumber>
 {
+    private class NumbersEnumerator : IEnumerator<INumber>
+    {
+        private readonly Numbers _numbers;
+        private int _index = -1;
+
+        public NumbersEnumerator(Numbers numbers) => this._numbers = numbers;
+
+        public INumber Current => _numbers.Item(_index);
+
+        object IEnumerator.Current => Current;
+
+        public void Dispose()
+        {
+        }
+
+        public bool MoveNext()
+        {
+            if (_index < _numbers.Count - 1)
+            {
+                _index++;
+                return true;
+            }
+
+            return false;
+        }
+
+        public void Reset() => _index = 0;
+    }
+
     private readonly List<INumber> _members;
 
     public Numbers() =>
@@ -38,6 +70,10 @@ public class Numbers : INumber
     public INumber Item(int index) => _members[index];
 
     public void Add(INumber number) => _members.Add(number);
+
+    public void AddRange(Numbers numbers) => _members.AddRange(numbers._members);
+
+    public int Count => _members.Count;
 
     public int Compare(INumber other)
     {
@@ -62,6 +98,13 @@ public class Numbers : INumber
             return _members.Count - numbers._members.Count;
         }
     }
+
+    public IEnumerator<INumber> GetEnumerator()
+    {
+        return new NumbersEnumerator(this);
+    }
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
 
 public class NumbersParser
@@ -85,7 +128,7 @@ public class NumbersParser
             if (value[index] == '[')
             {
                 var (parsedCharacters, parsedNumbers) = Parse(value[(index + 1)..]);
-                index += parsedCharacters;
+                index += parsedCharacters + 1;
                 result.Add(parsedNumbers);
             }
             else if (value[index] == ']')
@@ -127,13 +170,19 @@ public class DistressSignalDecoder
     {
         SumOfCorrectIndexes = 0;
 
+        var index = 0;
         var lines = input.Split("\n");
-        var numbersAbove = new NumbersParser(lines[0]).Values;
-        var numbersBelow = new NumbersParser(lines[1]).Values;
-
-        if (numbersAbove.Compare(numbersBelow) < 0)
+        for (var counter = 0; counter < lines.Length; counter += 3)
         {
-            SumOfCorrectIndexes += 1;
+            index++;
+
+            var numbersAbove = new NumbersParser(lines[counter]).Values;
+            var numbersBelow = new NumbersParser(lines[counter + 1]).Values;
+
+            if (numbersAbove.Compare(numbersBelow) < 0)
+            {
+                SumOfCorrectIndexes += index;
+            }
         }
     }
 }
