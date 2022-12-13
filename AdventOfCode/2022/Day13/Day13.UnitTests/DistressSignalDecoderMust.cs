@@ -36,4 +36,11 @@ public class DistressSignalDecoderMust
         var sut = new DistressSignalDecoder(SAMPLE_INPUT);
         Assert.Equal(13, sut.SumOfCorrectIndexes);
     }
+
+    [Fact]
+    public void SolveFirstPuzzle()
+    {
+        var sut = new DistressSignalDecoder(PUZZLE_INPUT);
+        Assert.Equal(5330, sut.SumOfCorrectIndexes);
+    }
 }
