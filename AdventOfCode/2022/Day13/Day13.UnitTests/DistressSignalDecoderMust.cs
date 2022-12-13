@@ -17,7 +17,6 @@ public class DistressSignalDecoderMust
         Assert.Equal(expectedSum, sut.SumOfCorrectIndexes);
     }
 
-
     [Theory]
     [InlineData("[9]\n[[8,7,6]]", 0)]
     [InlineData("[[[]]]\n[[]]", 0)]
@@ -42,5 +41,19 @@ public class DistressSignalDecoderMust
     {
         var sut = new DistressSignalDecoder(PUZZLE_INPUT);
         Assert.Equal(5330, sut.SumOfCorrectIndexes);
+    }
+
+    [Fact]
+    public void SolveSecondSample()
+    {
+        var sut = new DistressSignalDecoder(SAMPLE_INPUT);
+        Assert.Equal(140, sut.DecoderKey);
+    }
+
+    [Fact]
+    public void SolveSecondPuzzle()
+    {
+        var sut = new DistressSignalDecoder(PUZZLE_INPUT);
+        Assert.Equal(27648, sut.DecoderKey);
     }
 }
