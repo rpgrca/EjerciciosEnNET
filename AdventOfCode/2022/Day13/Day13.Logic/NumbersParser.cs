@@ -2,51 +2,51 @@ namespace Day13.Logic;
 
 public class NumbersParser
 {
+    private readonly string _value;
+
     public INumber Values { get; }
 
     public NumbersParser(string value)
     {
-        var (_, values) = Parse(value);
+        _value = value;
+        var (_, values) = Parse(0);
         Values = values;
     }
 
-    private (int, INumber) Parse(string value)
+    private (int, INumber) Parse(int start)
     {
         var result = new Numbers();
-        var index = 0;
         var number = string.Empty;
+        var index = start;
 
-        for (; index < value.Length; index++)
+        for (; index < _value.Length; index++)
         {
-            if (value[index] == '[')
+            switch (_value[index])
             {
-                var (parsedCharacters, parsedNumbers) = Parse(value[(index + 1)..]);
-                index += parsedCharacters + 1;
-                result.Add(parsedNumbers);
-            }
-            else if (value[index] == ']')
-            {
-                if (! string.IsNullOrEmpty(number))
-                {
-                    result.Add(new Number(number));
-                }
+                case '[':
+                    var (parsedCharacters, parsedNumbers) = Parse(index + 1);
+                    index += parsedCharacters;
+                    result.Add(parsedNumbers);
+                    break;
 
-                return (index, result);
-            }
-            else
-            {
-                if (value[index] >= '0' && value[index] <= '9')
-                {
-                    number += value[index];
-                }
-                else
-                {
+                case ']':
+                    if (! string.IsNullOrEmpty(number))
+                    {
+                        result.Add(new Number(number));
+                    }
+                    return (index, result);
+
+                case >= '0' and <= '9':
+                    number += _value[index];
+                    break;
+
+                default:
                     if (! string.IsNullOrEmpty(number))
                     {
                         result.Add(new Number(number));
                         number = string.Empty;
                     }
-                }
+                    break;
             }
         }
 
