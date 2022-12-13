@@ -1,121 +1,94 @@
 ﻿namespace Day12.Logic;
 
-public class PriorityQueue : List<(int X, int Y, char Weight)>
-{
-}
-
 public class HillClimbingAlgorithm
 {
-    private readonly string _input;
-    private readonly bool _fromAnyLocation;
     private readonly string[] _lines;
     private readonly int _columns;
     private readonly int _rows;
-    private readonly char[][] _map;
+    private readonly int[][] _map;
     private readonly int[][] _paths;
-    private readonly PriorityQueue _queue;
     private (int X, int Y) _startingPoint;
     private (int X, int Y) _endingPoint;
 
     public int FewestStepsToTarget { get; private set; }
 
-    public HillClimbingAlgorithm(string input, bool fromAnyLocation = false)
+    public static HillClimbingAlgorithm CreateMultipleStartingPoints(string input) =>
+        new(input, (m, s) => new StartingPoints(m, s));
+
+    public static HillClimbingAlgorithm CreateSingleStartingPoint(string input) =>
+        new(input, (m, s) => new StartingPoint(m, s));
+
+    private HillClimbingAlgorithm(string input, Func<int[][], (int, int), System.Collections.IEnumerable> startingPointCreator)
     {
-        _input = input;
-        _fromAnyLocation = fromAnyLocation;
-        _lines = _input.Split("\n");
+        _lines = input.Split("\n");
         _columns = _lines[0].Length;
         _rows = _lines.Length;
-        _map = new char[_rows][];
+        _map = new int[_rows][];
         _paths = new int[_rows][];
-        _queue = new PriorityQueue();
         FewestStepsToTarget = int.MaxValue;
 
-        var index = 0;
+        LoadMap();
+        Run(startingPointCreator(_map, _startingPoint));
+    }
 
+    private void LoadMap()
+    {
+        var index = 0;
         foreach (var line in _lines)
         {
             var subIndex = 0;
 
-            _map[index] = new char[_columns];
+            _map[index] = new int[_columns];
             _paths[index] = new int[_columns];
             foreach (var character in line)
             {
-                if (character == 'S')
+                switch (character)
                 {
-                    _startingPoint.X = subIndex;
-                    _startingPoint.Y = index;
-                    _map[index][subIndex] = 'a';
-                }
-                else if (character == 'E')
-                {
-                    _endingPoint.X = subIndex;
-                    _endingPoint.Y = index;
-                    _map[index][subIndex] = 'z';
-                }
-                else
-                {
-                    _map[index][subIndex] = character;
+                    case 'S':
+                        _startingPoint.X = subIndex;
+                        _startingPoint.Y = index;
+                        _map[index][subIndex] = 'a';
+                        break;
+                
+                    case 'E':
+                        _endingPoint.X = subIndex;
+                        _endingPoint.Y = index;
+                        _map[index][subIndex] = 'z';
+                        break;
+
+                    default:
+                        _map[index][subIndex] = character;
+                        break;
                 }
 
                 _paths[index][subIndex] = int.MaxValue;
-                _queue.Add((subIndex, index, character));
                 subIndex++;
             }
 
             index++;
         }
-
-        StartAlgorithm();
     }
 
-    private void StartAlgorithm()
+    private void Run(System.Collections.IEnumerable startingPoints)
     {
-        if (_fromAnyLocation)
-        {
-            var minimum = int.MaxValue;
+        var minimum = int.MaxValue;
 
-            for (var y = 0; y < _rows; y++)
+        foreach (int point in startingPoints)
+        {
+            MoveFrom(point & 0xff, point >> 8, 0);
+
+            var value = _paths[_endingPoint.Y][_endingPoint.X];
+            if (value < minimum)
             {
-                for (var x = 0; x < _columns; x++)
-                {
-                    if (_map[y][x] == 'a')
-                    {
-                        FewestStepsToTarget = int.MaxValue;
-                        MoveFrom(x, y, 'a', 0);
-
-                        var value = _paths[_endingPoint.Y][_endingPoint.X];
-                        if (value < minimum)
-                        {
-                            minimum = value;
-                        }
-                    }
-                }
+                minimum = value;
             }
+        }
 
-            FewestStepsToTarget = minimum;
-        }
-        else
-        {
-            MoveFrom(_startingPoint.X, _startingPoint.Y, 'a', 0);
-            FewestStepsToTarget = _paths[_endingPoint.Y][_endingPoint.X];
-        }
+        FewestStepsToTarget = minimum;
     }
 
-    private void MoveFrom(int x, int y, char fromSquare, int steps)
+    private void MoveFrom(int x, int y, int steps)
     {
-        if (x < 0 || y < 0 || x >= _columns || y >= _rows)
-        {
-            return;
-        }
-
-        var current = _map[y][x];
-        var diff = current - fromSquare;
-        if (diff > 1)
-        {
-            return;
-        }
-
         if (steps >= _paths[y][x])
         {
             return;
@@ -127,9 +100,25 @@ public class HillClimbingAlgorithm
             return;
         }
 
-        MoveFrom(x - 1, y, current, steps + 1);
-        MoveFrom(x + 1, y, current, steps + 1);
-        MoveFrom(x, y - 1, current, steps + 1);
-        MoveFrom(x, y + 1, current, steps + 1);
+        var current = _map[y][x];
+        if (x > 0 && _map[y][x - 1] - current < 2)
+        {
+            MoveFrom(x - 1, y, steps + 1);
+        }
+
+        if (x < _columns - 1 && _map[y][x + 1] - current < 2)
+        {
+            MoveFrom(x + 1, y, steps + 1);
+        }
+
+        if (y > 0 && _map[y - 1][x] - current < 2)
+        {
+            MoveFrom(x, y - 1, steps + 1);
+        }
+
+        if (y < _rows - 1 && _map[y + 1][x] - current < 2)
+        {
+            MoveFrom(x, y + 1, steps + 1);
+        }
     }
 }

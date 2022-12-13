@@ -10,35 +10,35 @@ public class HillClimbingAlgorithmMust
     [InlineData("S\na\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk\nl\nm\nn\no\np\nq\nr\ns\nt\nu\nv\nw\nx\ny\nz\nE", 27)]
     public void FindStepsCorrectly_WhenMapIsLineal(string input, int expectedValue)
     {
-        var sut = new HillClimbingAlgorithm(input);
+        var sut = HillClimbingAlgorithm.CreateSingleStartingPoint(input);
         Assert.Equal(expectedValue, sut.FewestStepsToTarget);
     }
 
     [Fact]
     public void SolveFirstSample()
     {
-        var sut = new HillClimbingAlgorithm(SAMPLE_INPUT);
+        var sut = HillClimbingAlgorithm.CreateSingleStartingPoint(SAMPLE_INPUT);
         Assert.Equal(31, sut.FewestStepsToTarget);
     }
 
     [Fact]
     public void SolveFirstPuzzle()
     {
-        var sut = new HillClimbingAlgorithm(PUZZLE_INPUT);
+        var sut = HillClimbingAlgorithm.CreateSingleStartingPoint(PUZZLE_INPUT);
         Assert.Equal(520, sut.FewestStepsToTarget);
     }
 
     [Fact]
     public void SolveSecondSample()
     {
-        var sut = new HillClimbingAlgorithm(SAMPLE_INPUT, true);
+        var sut = HillClimbingAlgorithm.CreateMultipleStartingPoints(SAMPLE_INPUT);
         Assert.Equal(29, sut.FewestStepsToTarget);
     }
 
     [Fact]
     public void SolveSecondPuzzle()
     {
-        var sut = new HillClimbingAlgorithm(PUZZLE_INPUT, true);
+        var sut = HillClimbingAlgorithm.CreateMultipleStartingPoints(PUZZLE_INPUT);
         Assert.Equal(508, sut.FewestStepsToTarget);
     }
 }
