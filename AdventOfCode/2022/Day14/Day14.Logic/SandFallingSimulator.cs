@@ -101,4 +101,34 @@ public class SandFallingSimulator
 
         return map.Trim();
     }
+
+    public void DropUnitOfSands(int unitsOfSand)
+    {
+        while (unitsOfSand > 0)
+        {
+            DropUnitOfSand();
+            unitsOfSand--;
+        }
+    }
+
+    private void DropUnitOfSand()
+    {
+        int positionX = 500 - _minimumX;
+        int positionY = 0 - _minimumY;
+        bool moved;
+
+        do
+        {
+            if (_map[positionY + 1][positionX] == '.')
+            {
+                positionY += 1;
+                moved = true;
+            }
+            else
+            {
+                _map[positionY][positionX] = 'o';
+                moved = false;
+            }
+        } while (moved);
+    }
 }
