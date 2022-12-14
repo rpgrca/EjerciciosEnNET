@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day14.Logic", "Day14.Logic\Day14.Logic.csproj", "{772BFA48-CC3F-4E1F-BEF2-57F0744486F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day14.UnitTests", "Day14.UnitTests\Day14.UnitTests.csproj", "{BFAE9BBA-9C55-4117-804D-1E5E5B3CDBA8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{772BFA48-CC3F-4E1F-BEF2-57F0744486F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{772BFA48-CC3F-4E1F-BEF2-57F0744486F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{772BFA48-CC3F-4E1F-BEF2-57F0744486F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{772BFA48-CC3F-4E1F-BEF2-57F0744486F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFAE9BBA-9C55-4117-804D-1E5E5B3CDBA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFAE9BBA-9C55-4117-804D-1E5E5B3CDBA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFAE9BBA-9C55-4117-804D-1E5E5B3CDBA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFAE9BBA-9C55-4117-804D-1E5E5B3CDBA8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
