@@ -9,6 +9,8 @@ public class SandFallingSimulator
     private readonly int _minimumY;
     private readonly int _maximumY;
 
+    public bool MapFilled { get; private set; }
+
     public SandFallingSimulator(string input)
     {
         _input = input;
@@ -120,19 +122,57 @@ public class SandFallingSimulator
         do
         {
             moved = false;
-
-            if (_map[positionY + 1][positionX] == '.')
+            if (positionY + 1 <= _maximumY)
             {
-                positionY += 1;
-                moved = true;
-            }
-            else if (_map[positionY + 1][positionX - 1] == '.')
-            {
-                positionY += 1;
-                positionX += -1;
-                moved = true;
+                if (_map[positionY + 1][positionX] == '.')
+                {
+                    positionY += 1;
+                    moved = true;
+                }
             }
             else
+            {
+                MapFilled = true;
+                break;
+            }
+
+            if (!moved)
+            {
+                if (positionX - 1 >= 0)
+                {
+                    if (_map[positionY + 1][positionX - 1] == '.')
+                    {
+                        positionY += 1;
+                        positionX -= 1;
+                        moved = true;
+                    }
+                }
+                else
+                {
+                    MapFilled = true;
+                    break;
+                }
+            }
+
+            if (!moved)
+            {
+                if (positionX + 1 <= _maximumX - _minimumX)
+                {
+                    if (_map[positionY + 1][positionX + 1] == '.')
+                    {
+                        positionY += 1;
+                        positionX += 1;
+                        moved = true;
+                    }
+                }
+                else
+                {
+                    MapFilled = true;
+                    break;
+                }
+            }
+
+            if (! moved)
             {
                 _map[positionY][positionX] = 'o';
             }

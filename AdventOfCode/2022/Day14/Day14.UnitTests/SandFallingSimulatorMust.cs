@@ -199,7 +199,7 @@ public class SandFallingSimulatorMust
     }
 
     [Fact]
-    public void DropSandDownLeftCorrectly()
+    public void RollSandLeftCorrectly()
     {
         var sut = new SandFallingSimulator(SAMPLE_INPUT);
         sut.DropUnitOfSands(2);
@@ -212,6 +212,68 @@ public class SandFallingSimulatorMust
 ..###...#.
 ........#.
 .....oo.#.
+#########.", sut.GetVisualMap());
+    }
+
+    [Fact]
+    public void RollSandRightCorrectly()
+    {
+        var sut = new SandFallingSimulator(SAMPLE_INPUT);
+        sut.DropUnitOfSands(5);
+        Assert.Equal(@"..........
+..........
+..........
+..........
+....#...##
+....#...#.
+..###...#.
+......o.#.
+....oooo#.
+#########.", sut.GetVisualMap());
+    }
+
+    [Theory]
+    [InlineData(22, @"..........
+..........
+......o...
+.....ooo..
+....#ooo##
+....#ooo#.
+..###ooo#.
+....oooo#.
+...ooooo#.
+#########.")]
+    [InlineData(24, @"..........
+..........
+......o...
+.....ooo..
+....#ooo##
+...o#ooo#.
+..###ooo#.
+....oooo#.
+.o.ooooo#.
+#########.")]
+    public void SimulateSandFallingCorrectly(int units, string expectedMap)
+    {
+        var sut = new SandFallingSimulator(SAMPLE_INPUT);
+        sut.DropUnitOfSands(units);
+        Assert.Equal(expectedMap, sut.GetVisualMap());
+    }
+
+    [Fact]
+    public void SimulateSandFallingToTheAbyssCorrectly()
+    {
+        var sut = new SandFallingSimulator(SAMPLE_INPUT);
+        sut.DropUnitOfSands(25);
+        Assert.Equal(@"..........
+..........
+......o...
+.....ooo..
+....#ooo##
+...o#ooo#.
+..###ooo#.
+....oooo#.
+.o.ooooo#.
 #########.", sut.GetVisualMap());
     }
 }
