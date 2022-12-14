@@ -18,52 +18,8 @@ public class SandFallingSimulator
     {
         _input = input;
 
-        var lines = input.Split("\n");
-        var points = new List<(int X, int Y)>();
-
-        foreach (var line in lines)
-        {
-            var segments = line.Split(" -> ");
-
-            for (var index = 0; index < segments.Length - 1; index++)
-            {
-                var coordinates = segments[index].Split(",");
-                var startingPoint = (int.Parse(coordinates[0]), int.Parse(coordinates[1]));
-
-                coordinates = segments[index + 1].Split(",");
-                var endingPoint = (int.Parse(coordinates[0]), int.Parse(coordinates[1]));
-
-                if (startingPoint.Item1 < endingPoint.Item1) // left to right
-                {
-                    for (var subIndex = startingPoint.Item1; subIndex <= endingPoint.Item1; subIndex++)
-                    {
-                        points.Add((subIndex, startingPoint.Item2));
-                    }
-                }
-                else if (startingPoint.Item1 > endingPoint.Item1) // right to let
-                {
-                    for (var subIndex = endingPoint.Item1; subIndex <= startingPoint.Item1; subIndex++)
-                    {
-                        points.Add((subIndex, startingPoint.Item2));
-                    }
-                }
-
-                if (startingPoint.Item2 < endingPoint.Item2) // top to bottom
-                {
-                    for (var subIndex = startingPoint.Item2; subIndex <= endingPoint.Item2; subIndex++)
-                    {
-                        points.Add((startingPoint.Item1, subIndex));
-                    }
-                }
-                else if (startingPoint.Item2 > endingPoint.Item2) // bottom to top
-                {
-                    for (var subIndex = endingPoint.Item2; subIndex <= startingPoint.Item2; subIndex++)
-                    {
-                        points.Add((startingPoint.Item1, subIndex));
-                    }
-                }
-            }
-        }
+        var rockLoader = new RockLoader(input);
+        var points = rockLoader.Points;
 
         _minimumX = points.Min(p => p.X);
         _maximumX = points.Max(p => p.X);
@@ -192,7 +148,7 @@ public class SandFallingSimulator
         } while (moved);
     }
 
-    public void DropUnitOfSandsUntilFilled()
+    public void DropSandUntilFilled()
     {
         while (! MapFilled)
         {
@@ -200,7 +156,7 @@ public class SandFallingSimulator
         }
     }
 
-    public void DropUnitOfSandsUntilEntranceIsBlocked()
+    public void DropSandUntilEntranceIsBlocked()
     {
         while (! IsEntranceBlocked())
         {
@@ -208,5 +164,6 @@ public class SandFallingSimulator
         }
     }
 
-    private bool IsEntranceBlocked() => _map[0][500 - _minimumX] == 'o';
+    private bool IsEntranceBlocked() =>
+        _map[0][500 - _minimumX] == 'o';
 }

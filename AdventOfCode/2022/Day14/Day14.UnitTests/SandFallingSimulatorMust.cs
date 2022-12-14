@@ -295,7 +295,7 @@ public class SandFallingSimulatorMust
     public void SolveFirstSampleCorrectly()
     {
         var sut = new SandFallingSimulator(SAMPLE_INPUT);
-        sut.DropUnitOfSandsUntilFilled();
+        sut.DropSandUntilFilled();
         Assert.Equal(24, sut.UnitsOfSand);
     }
 
@@ -303,7 +303,7 @@ public class SandFallingSimulatorMust
     public void SolveFirstPuzzleCorrectly()
     {
         var sut = new SandFallingSimulator(PUZZLE_INPUT);
-        sut.DropUnitOfSandsUntilFilled();
+        sut.DropSandUntilFilled();
         Assert.Equal(774, sut.UnitsOfSand);
     }
 
@@ -331,7 +331,7 @@ public class SandFallingSimulatorMust
     public void SolveSecondSample()
     {
         var sut = new SandFallingSimulator(SAMPLE_INPUT, true);
-        sut.DropUnitOfSandsUntilEntranceIsBlocked();
+        sut.DropSandUntilEntranceIsBlocked();
         Assert.Equal(@"................o.............
 ...............ooo............
 ..............ooooo...........
@@ -351,7 +351,7 @@ public class SandFallingSimulatorMust
     public void SolveSecondPuzzle()
     {
         var sut = new SandFallingSimulator(PUZZLE_INPUT, true);
-        sut.DropUnitOfSandsUntilEntranceIsBlocked();
+        sut.DropSandUntilEntranceIsBlocked();
         Assert.Equal(@"............................................................................................................................................................................................................o....................................................................................................................................................................
 ...........................................................................................................................................................................................................ooo...................................................................................................................................................................
 ..........................................................................................................................................................................................................ooooo..................................................................................................................................................................
