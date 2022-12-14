@@ -119,15 +119,22 @@ public class SandFallingSimulator
 
         do
         {
+            moved = false;
+
             if (_map[positionY + 1][positionX] == '.')
             {
                 positionY += 1;
                 moved = true;
             }
+            else if (_map[positionY + 1][positionX - 1] == '.')
+            {
+                positionY += 1;
+                positionX += -1;
+                moved = true;
+            }
             else
             {
                 _map[positionY][positionX] = 'o';
-                moved = false;
             }
         } while (moved);
     }

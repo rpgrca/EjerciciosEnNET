@@ -182,7 +182,7 @@ public class SandFallingSimulatorMust
     }
 
     [Fact]
-    public void Test1()
+    public void DropSandDownCorrectly()
     {
         var sut = new SandFallingSimulator(SAMPLE_INPUT);
         sut.DropUnitOfSands(1);
@@ -195,6 +195,23 @@ public class SandFallingSimulatorMust
 ..###...#.
 ........#.
 ......o.#.
+#########.", sut.GetVisualMap());
+    }
+
+    [Fact]
+    public void DropSandDownLeftCorrectly()
+    {
+        var sut = new SandFallingSimulator(SAMPLE_INPUT);
+        sut.DropUnitOfSands(2);
+        Assert.Equal(@"..........
+..........
+..........
+..........
+....#...##
+....#...#.
+..###...#.
+........#.
+.....oo.#.
 #########.", sut.GetVisualMap());
     }
 }
