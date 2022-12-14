@@ -10,8 +10,9 @@ public class SandFallingSimulator
     private readonly int _maximumY;
 
     public bool MapFilled { get; private set; }
+    public int UnitsOfSand { get; private set; }
 
-    public SandFallingSimulator(string input)
+    public SandFallingSimulator(string input, bool infiniteFloor = false)
     {
         _input = input;
 
@@ -66,6 +67,19 @@ public class SandFallingSimulator
         _maximumX = points.Max(p => p.X);
         _minimumY = 0;
         _maximumY = points.Max(p => p.Y);
+
+        if (infiniteFloor)
+        {
+            var diff = _maximumX - _minimumX + 1;
+            _minimumX -= diff;
+            _maximumX += diff;
+            _maximumY += 2;
+
+            for (var index = _minimumX; index <= _maximumX; index++)
+            {
+                points.Add((index, _maximumY));
+            }
+        }
 
         _map = new char[_maximumY + 1][];
         for (var index = 0; index <= _maximumY - _minimumY; index++)
@@ -175,7 +189,16 @@ public class SandFallingSimulator
             if (! moved)
             {
                 _map[positionY][positionX] = 'o';
+                UnitsOfSand++;
             }
         } while (moved);
+    }
+
+    public void DropUnitOfSandsUntilFilled()
+    {
+        while (! MapFilled)
+        {
+            DropUnitOfSand();
+        }
     }
 }

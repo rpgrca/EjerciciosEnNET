@@ -19,6 +19,8 @@ public class SandFallingSimulatorMust
 ........#.
 ........#.
 #########.", sut.GetVisualMap());
+        Assert.False(sut.MapFilled);
+        Assert.Equal(0, sut.UnitsOfSand);
     }
 
     [Fact]
@@ -179,6 +181,8 @@ public class SandFallingSimulatorMust
 ...................................#...#.#...................
 ...................................#.#.#.#...................
 ...................................#######...................", sut.GetVisualMap());
+        Assert.False(sut.MapFilled);
+        Assert.Equal(0, sut.UnitsOfSand);
     }
 
     [Fact]
@@ -196,6 +200,8 @@ public class SandFallingSimulatorMust
 ........#.
 ......o.#.
 #########.", sut.GetVisualMap());
+        Assert.False(sut.MapFilled);
+        Assert.Equal(1, sut.UnitsOfSand);
     }
 
     [Fact]
@@ -213,6 +219,8 @@ public class SandFallingSimulatorMust
 ........#.
 .....oo.#.
 #########.", sut.GetVisualMap());
+        Assert.False(sut.MapFilled);
+        Assert.Equal(2, sut.UnitsOfSand);
     }
 
     [Fact]
@@ -230,6 +238,8 @@ public class SandFallingSimulatorMust
 ......o.#.
 ....oooo#.
 #########.", sut.GetVisualMap());
+        Assert.False(sut.MapFilled);
+        Assert.Equal(5, sut.UnitsOfSand);
     }
 
     [Theory]
@@ -258,6 +268,8 @@ public class SandFallingSimulatorMust
         var sut = new SandFallingSimulator(SAMPLE_INPUT);
         sut.DropUnitOfSands(units);
         Assert.Equal(expectedMap, sut.GetVisualMap());
+        Assert.False(sut.MapFilled);
+        Assert.Equal(units, sut.UnitsOfSand);
     }
 
     [Fact]
@@ -275,5 +287,44 @@ public class SandFallingSimulatorMust
 ....oooo#.
 .o.ooooo#.
 #########.", sut.GetVisualMap());
+        Assert.True(sut.MapFilled);
+        Assert.Equal(24, sut.UnitsOfSand);
+    }
+
+    [Fact]
+    public void SolveFirstSampleCorrectly()
+    {
+        var sut = new SandFallingSimulator(SAMPLE_INPUT);
+        sut.DropUnitOfSandsUntilFilled();
+        Assert.Equal(24, sut.UnitsOfSand);
+    }
+
+    [Fact]
+    public void SolveFirstPuzzleCorrectly()
+    {
+        var sut = new SandFallingSimulator(PUZZLE_INPUT);
+        sut.DropUnitOfSandsUntilFilled();
+        Assert.Equal(774, sut.UnitsOfSand);
+    }
+
+    [Fact]
+    public void Test1()
+    {
+        var sut = new SandFallingSimulator(SAMPLE_INPUT, true);
+        Assert.Equal(@"..............................
+..............................
+..............................
+..............................
+..............#...##..........
+..............#...#...........
+............###...#...........
+..................#...........
+..................#...........
+..........#########...........
+..............................
+##############################", sut.GetVisualMap());
+        Assert.False(sut.MapFilled);
+        Assert.Equal(0, sut.UnitsOfSand);
+
     }
 }
