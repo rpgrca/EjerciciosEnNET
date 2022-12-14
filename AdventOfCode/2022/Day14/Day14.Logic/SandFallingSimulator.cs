@@ -4,8 +4,7 @@ namespace Day14.Logic;
 
 public class SandFallingSimulator
 {
-    private string _input;
-    private char[][] _map;
+    private readonly char[][] _map;
     private readonly int _minimumX;
     private readonly int _maximumX;
     private readonly int _minimumY;
@@ -16,8 +15,6 @@ public class SandFallingSimulator
 
     public SandFallingSimulator(string input, bool infiniteFloor = false)
     {
-        _input = input;
-
         var rockLoader = new RockLoader(input);
         var points = rockLoader.Points;
 
@@ -63,9 +60,9 @@ public class SandFallingSimulator
     {
         var stringBuilder = new StringBuilder();
 
-        for (var y = _minimumY; y <= _maximumY; y++)
+        foreach (var line in _map)
         {
-            stringBuilder.Append(_map[y]);
+            stringBuilder.Append(line);
             stringBuilder.Append('\n');
         }
 
