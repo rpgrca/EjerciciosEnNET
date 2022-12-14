@@ -1,4 +1,6 @@
-﻿namespace Day14.Logic;
+﻿using System.Text;
+
+namespace Day14.Logic;
 
 public class SandFallingSimulator
 {
@@ -70,7 +72,7 @@ public class SandFallingSimulator
 
         if (infiniteFloor)
         {
-            var diff = _maximumX - _minimumX + 1;
+            var diff = _maximumY - _minimumY + 1;
             _minimumX -= diff;
             _maximumX += diff;
             _maximumY += 2;
@@ -103,19 +105,15 @@ public class SandFallingSimulator
 
     public string GetVisualMap()
     {
-        var map = string.Empty;
+        var stringBuilder = new StringBuilder();
 
         for (var y = _minimumY; y <= _maximumY; y++)
         {
-            for (var x = 0; x <= _maximumX - _minimumX; x++)
-            {
-                map += _map[y][x];
-            }
-
-            map += "\n";
+            stringBuilder.Append(_map[y]);
+            stringBuilder.Append('\n');
         }
 
-        return map.Trim();
+        return stringBuilder.ToString().Trim();
     }
 
     public void DropUnitOfSands(int unitsOfSand)
@@ -201,4 +199,14 @@ public class SandFallingSimulator
             DropUnitOfSand();
         }
     }
+
+    public void DropUnitOfSandsUntilEntranceIsBlocked()
+    {
+        while (! IsEntranceBlocked())
+        {
+            DropUnitOfSand();
+        }
+    }
+
+    private bool IsEntranceBlocked() => _map[0][500 - _minimumX] == 'o';
 }
