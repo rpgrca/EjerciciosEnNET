@@ -8,6 +8,16 @@ public class SandFallingSimulatorMust
     [Fact]
     public void Test1()
     {
-
+        var sut = new SandFallingSimulator(SAMPLE_INPUT);
+        Assert.Equal(@"..........
+..........
+..........
+..........
+....#...##
+....#...#.
+..###...#.
+........#.
+........#.
+#########.", sut.GetVisualMap());
     }
 }
