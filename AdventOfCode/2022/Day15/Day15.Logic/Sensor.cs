@@ -9,7 +9,7 @@ public record Sensor
     public int Y { get; }
     public int Range { get; }
 
-    private readonly Dictionary<int, (int Start, int End)> _coverage;
+    private readonly (int Start, int End)[] _coverage;
 
     internal Sensor(int x, int y, Beacon beacon)
     {
@@ -18,7 +18,7 @@ public record Sensor
         Range = Math.Abs(X - beacon.X) + Math.Abs(Y - beacon.Y);
         _minimum = Y - Range;
         _maximum = Y + Range;
-        _coverage = new Dictionary<int, (int Start, int End)>();
+        _coverage = new (int Start, int End)[Range * 2 + 1];
 
         CalculateCoverage();
     }
@@ -28,9 +28,9 @@ public record Sensor
         var currentRange = 0;
         var ascending = true;
 
-        for (var y = Y - Range; y <= Y + Range; y++)
+        for (var y = 0; y < Range * 2 + 1; y++)
         {
-            _coverage.Add(y, (X - currentRange, X + currentRange));
+            _coverage[y] = (X - currentRange, X + currentRange);
             if (currentRange == Range)
             {
                 ascending = false;
@@ -46,7 +46,7 @@ public record Sensor
     {
         if (y >= _minimum && y <= _maximum)
         {
-            coveredPositions = _coverage[y];
+            coveredPositions = _coverage[y - _minimum];
             return true;
         }
 

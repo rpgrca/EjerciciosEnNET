@@ -96,7 +96,6 @@ public class BeaconExclusionZone
             }
         }
 
-        var tuningFrequencyCounter = 0;
         var tuningFrequency = 0UL;
         for (var y = 0; y < maximum; y++)
         {
@@ -112,12 +111,9 @@ public class BeaconExclusionZone
                     enumerable = enumerable.Except(linear);
                 }
 
-                if (enumerable.Any())
-                {
-                    tuningFrequencyCounter += 1;
-                    var missing = (ulong)enumerable.First();
-                    tuningFrequency = missing * 4000000UL + (ulong)y;
-                }
+                var missing = (ulong)enumerable.Single();
+                tuningFrequency = missing * 4000000UL + (ulong)y;
+                break;
             }
         }
 
@@ -126,7 +122,6 @@ public class BeaconExclusionZone
 
     private static bool Consolidate(List<Range> map, int newMinimum, int newMaximum)
     {
-        bool add = true;
         foreach (var range in map)
         {
             if (newMinimum < range.Minimum)
@@ -143,8 +138,7 @@ public class BeaconExclusionZone
                         range.UpdateMaximumTo(newMaximum);
                     }
 
-                    add = false;
-                    break;
+                    return false;
                 }
             }
             else
@@ -156,26 +150,20 @@ public class BeaconExclusionZone
                         range.UpdateMaximumTo(newMaximum);
                     }
 
-                    add = false;
-                    break;
+                    return false;
                 }
                 else // (6)
                 {
                     if (range.Maximum == newMinimum || range.Maximum == newMinimum - 1) // (7)
                     {
                         range.UpdateMaximumTo(newMaximum);
-                        add = false;
-                        break;
-                    }
-                    else // (6)
-                    {
-                        continue;
+                        return false;
                     }
                 }
             }
         }
 
-        return add;
+        return true;
     }
 
     private static bool Consolidate(List<Range> map)
@@ -183,38 +171,31 @@ public class BeaconExclusionZone
         var counter = 0;
         while (map.Count > 1)
         {
-            if (counter++ > 10)
+            if (counter++ > 5)
             {
                 return false;
             }
 
-bubble:
             for (var index = 0; index < map.Count - 1; index++)
             {
                 for (var subIndex = index + 1; subIndex < map.Count; subIndex++)
                 {
-                   var range = map[index];
+                    var range = map[index];
                     var newMinimum = map[subIndex].Minimum;
                     var newMaximum = map[subIndex].Maximum;
 
                     if (newMinimum < range.Minimum)
                     {
-                        if (newMaximum < range.Minimum) // (1)
-                        {
-                            continue;
-                        }
-                        else
+                        if (newMaximum >= range.Minimum) // (1)
                         {
                             if (newMaximum <= range.Maximum) // (2)
                             {
                                 range.UpdateMinimumTo(newMinimum);
                                 map.RemoveAt(subIndex);
-                                goto bubble;
                             }
                             else // (3)
                             {
                                 map.RemoveAt(index);
-                                goto bubble;
                             }
                         }
                     }
@@ -222,29 +203,20 @@ bubble:
                     {
                         if (newMinimum <= range.Maximum)
                         {
-                            if (newMaximum <= range.Maximum) // (4)
-                            {
-                                map.RemoveAt(subIndex);
-                                goto bubble;
-                            }
-                            else // (5)
+                            if (newMaximum > range.Maximum)
                             {
                                 range.UpdateMaximumTo(newMaximum);
-                                map.RemoveAt(subIndex);
-                                goto bubble;
                             }
+
+                            map.RemoveAt(subIndex);
                         }
                         else
                         {
-                            if (range.Maximum == newMinimum || range.Maximum == newMinimum - 1) // (7)
+                            if (range.Maximum == newMinimum || range.Maximum == newMinimum - 1)
                             {
                                 range.UpdateMaximumTo(newMaximum);
                                 map.RemoveAt(subIndex);
-                                goto bubble;
                             }
-                            else // (6)
-                            {
-                            }   
                         }
                     }
                 }
