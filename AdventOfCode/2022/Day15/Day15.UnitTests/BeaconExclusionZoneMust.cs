@@ -39,4 +39,21 @@ public class BeaconExclusionZoneMust
         Assert.Equal(14, sut.Sensors.Count);
         Assert.Equal(6, sut.Beacons.Count);
     }
+
+    [Fact]
+    public void CalculateRangeCorrectly()
+    {
+        var sut = new BeaconExclusionZone(SAMPLE_INPUT);
+        Assert.Equal((-2, 0), sut.TopLeft);
+        Assert.Equal((25, 22), sut.BottomRight);
+    }
+
+    /*[Theory]
+    [InlineData(1, 0)]
+    [InlineData(16, 3)]
+    public void CalculateCoveredPositionsCorrectly(int position, int expectedCoverage)
+    {
+        var sut = new BeaconExclusionZone("Sensor at x=9, y=16: closest beacon is at x=10, y=16");
+        Assert.Equal(expectedCoverage, sut.CalculateCoveredPositionsFor(position));
+    }*/
 }
