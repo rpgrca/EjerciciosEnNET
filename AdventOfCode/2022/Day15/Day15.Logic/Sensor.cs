@@ -42,18 +42,6 @@ public record Sensor
         }
     }
 
-    public int CalculateCoveredPositionsFor(int y)
-    {
-        if (_coverage.TryGetValue(y, out var value))
-        {
-            return value.End - value.Start;
-        }
-        
-        return 0;
-    }
-
-    public bool GetCoveredPositionsFor(int y, out (int Start, int End) coveredPositions)
-    {
-        return _coverage.TryGetValue(y, out coveredPositions);
-    }
+    public bool GetCoveredPositionsFor(int y, out (int Start, int End) coveredPositions) =>
+        _coverage.TryGetValue(y, out coveredPositions);
 }

@@ -11,9 +11,6 @@ public record Range
         Maximum = maximum;
     }
 
-    public bool Incluyes(Range other) =>
-        Minimum <= other.Minimum && Maximum >= other.Maximum;
-
     public void UpdateMaximumTo(int end) => Maximum = end;
 
     public void UpdateMinimumTo(int start) => Minimum = start;
