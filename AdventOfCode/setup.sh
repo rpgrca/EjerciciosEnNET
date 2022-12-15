@@ -26,7 +26,7 @@ cd $DAY
 
 # Create Constants.cs
 cat <<EOT > $DAY.UnitTests/Constants.cs
-namespace Day$DAY.UnitTests;
+namespace $DAY.UnitTests;
 
 public static class Constants
 {
