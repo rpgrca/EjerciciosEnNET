@@ -6,14 +6,14 @@ public record Sensor
     public int Y { get; }
     public int Range { get; }
 
-    private readonly Dictionary<int, List<int>> _coverage;
+    private readonly Dictionary<int, (int Start, int End)> _coverage;
 
     public Sensor(int x, int y, (int X, int Y) beacon)
     {
         X = x;
         Y = y;
         Range = Math.Abs(X - beacon.X) + Math.Abs(Y - beacon.Y);
-        _coverage = new Dictionary<int, List<int>>();
+        _coverage = new Dictionary<int, (int Start, int End)>();
 
         CalculateCoverage();
     }
@@ -25,16 +25,7 @@ public record Sensor
 
         for (var y = Y - Range; y <= Y + Range; y++)
         {
-            _coverage.Add(y, new List<int> { X });
-
-            var index = 0;
-            while (index < currentRange)
-            {
-                _coverage[y].Add(X - (index + 1));
-                _coverage[y].Add(X + (index + 1));
-                index++;
-            }
-
+            _coverage.Add(y, (X - currentRange, X + currentRange));
             if (currentRange == Range)
             {
                 ascending = false;
@@ -53,22 +44,17 @@ public record Sensor
 
     public int CalculateCoveredPositionsFor(int y)
     {
-        if (_coverage.TryGetValue(y, out var values))
+        if (_coverage.TryGetValue(y, out var value))
         {
-            return values.Count;
+            return value.End - value.Start;
         }
         
         return 0;
     }
 
-    public List<int> GetCoveredPositionsFor(int y)
+    public bool GetCoveredPositionsFor(int y, out (int Start, int End) coveredPositions)
     {
-        if (_coverage.TryGetValue(y, out var values))
-        {
-            return values;
-        }
-
-        return new List<int>();
+        return _coverage.TryGetValue(y, out coveredPositions);
     }
 }
 
@@ -144,9 +130,12 @@ public class BeaconExclusionZone
         var hashSet = new HashSet<int>();
         foreach (var sensor in Sensors)
         {
-            foreach (var item in sensor.GetCoveredPositionsFor(y))
+            if (sensor.GetCoveredPositionsFor(y, out var coveredPositions))
             {
-                hashSet.Add(item);
+                for (var index = coveredPositions.Start; index <= coveredPositions.End; index++)
+                {
+                    hashSet.Add(index);
+                }
             }
         }
 
