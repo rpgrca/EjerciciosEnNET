@@ -67,10 +67,17 @@ public class BeaconExclusionZoneMust
 
     [Theory]
     [InlineData(1, 0)]
-    [InlineData(16, 3)]
+    [InlineData(16, 2)]
     public void CalculateCoveredPositionsCorrectly(int position, int expectedCoverage)
     {
         var sut = new BeaconExclusionZone("Sensor at x=9, y=16: closest beacon is at x=10, y=16");
         Assert.Equal(expectedCoverage, sut.CalculateCoveredPositionsFor(position));
+    }
+
+    [Fact]
+    public void SolveFirstSample()
+    {
+        var sut = new BeaconExclusionZone(SAMPLE_INPUT);
+        Assert.Equal(26, sut.CalculateCoveredPositionsFor(10));
     }
 }

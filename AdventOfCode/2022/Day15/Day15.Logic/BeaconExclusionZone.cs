@@ -30,8 +30,8 @@ public record Sensor
             var index = 0;
             while (index < currentRange)
             {
-                _coverage[y].Add(X - index);
-                _coverage[y].Add(X + index);
+                _coverage[y].Add(X - (index + 1));
+                _coverage[y].Add(X + (index + 1));
                 index++;
             }
 
@@ -61,6 +61,15 @@ public record Sensor
         return 0;
     }
 
+    public List<int> GetCoveredPositionsFor(int y)
+    {
+        if (_coverage.TryGetValue(y, out var values))
+        {
+            return values;
+        }
+
+        return new List<int>();
+    }
 }
 
 public class BeaconExclusionZone
@@ -132,13 +141,20 @@ public class BeaconExclusionZone
 
     public int CalculateCoveredPositionsFor(int y)
     {
-        var total = 0;
-
+        var hashSet = new HashSet<int>();
         foreach (var sensor in Sensors)
         {
-            total += sensor.CalculateCoveredPositionsFor(y);
+            foreach (var item in sensor.GetCoveredPositionsFor(y))
+            {
+                hashSet.Add(item);
+            }
         }
 
-        return total;
+        foreach (var beacon in Beacons.Where(b => b.Y == y))
+        {
+            hashSet.Remove(beacon.X);
+        }
+
+        return hashSet.Count;
     }
 }
