@@ -17,6 +17,7 @@ public class BeaconExclusionZoneMust
     public static IEnumerable<object[]> SingleLineFeeder()
     {
         yield return new object[] { "Sensor at x=2, y=18: closest beacon is at x=-2, y=15", (2, 18), (-2, 15) };
+        yield return new object[] { "Sensor at x=9, y=16: closest beacon is at x=10, y=16", (9, 16), (10, 16) };
     }
 
 }
