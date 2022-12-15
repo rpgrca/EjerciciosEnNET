@@ -118,6 +118,26 @@ public class BeaconExclusionZone
         var tuningFrequency = 0;
         for (var y = 0; y < maximum; y++)
         {
+            var result = Consolidate(map[y]);
+            if (! result)
+            {
+                var enumerable = Enumerable.Range(0, maximum + 1);
+                foreach (var range in map[y])
+                {
+                    var start = range.Minimum < 0? 0 : range.Minimum;
+                    var end = range.Maximum > maximum? maximum : range.Maximum;
+                    var linear = Enumerable.Range(start, end - start + 1);
+                    enumerable = enumerable.Except(linear);
+                }
+
+                if (enumerable.Any())
+                {
+                    tuningFrequencyCounter += 1;
+                    var missing = enumerable.First();
+                    tuningFrequency = missing * 4000000 + y;
+                }
+            }
+            /*
             var enumerable = Enumerable.Range(0, maximum + 1);
             foreach (var range in map[y])
             {
@@ -133,12 +153,12 @@ public class BeaconExclusionZone
                 }
             }
 
-            if (enumerable.Count() > 0)
+            if (enumerable.Any())
             {
                 tuningFrequencyCounter += 1;
                 var missing = enumerable.First();
                 tuningFrequency = missing * 4000000 + y;
-            }
+            }*/
         }
 
         return tuningFrequency;
@@ -191,11 +211,91 @@ public class BeaconExclusionZone
                 }
                 else // (6)
                 {
-                    continue;
+                    if (range.Maximum == newMinimum || range.Maximum == newMinimum - 1) // (7)
+                    {
+                        range.UpdateMaximumTo(newMaximum);
+                        add = false;
+                        break;
+                    }
+                    else // (6)
+                    {
+                        continue;
+                    }
                 }
             }
         }
 
         return add;
+    }
+
+    private static bool Consolidate(List<Range> map)
+    {
+        var counter = 0;
+        while (map.Count > 1)
+        {
+            if (counter++ > 10)
+            {
+                return false;
+            }
+            for (var index = 0; index < map.Count - 1; index++)
+            {
+                var range = map[index];
+                var newMinimum = map[index + 1].Minimum;
+                var newMaximum = map[index + 1].Maximum;
+
+                if (newMinimum < range.Minimum)
+                {
+                    if (newMaximum < range.Minimum) // (1)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        if (newMaximum <= range.Maximum) // (2)
+                        {
+                            range.UpdateMinimumTo(newMinimum);
+                            map.RemoveAt(index + 1);
+                            break;
+                        }
+                        else // (3)
+                        {
+                            map.RemoveAt(index);
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    if (newMinimum <= range.Maximum)
+                    {
+                        if (newMaximum <= range.Maximum) // (4)
+                        {
+                            map.RemoveAt(index + 1);
+                            break;
+                        }
+                        else // (5)
+                        {
+                            map.RemoveAt(index);
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (range.Maximum == newMinimum || range.Maximum == newMinimum - 1) // (7)
+                        {
+                            range.UpdateMaximumTo(newMaximum);
+                            map.RemoveAt(index + 1);
+                            break;
+                        }
+                        else // (6)
+                        {
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 }

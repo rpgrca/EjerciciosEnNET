@@ -94,4 +94,11 @@ public class BeaconExclusionZoneMust
         var sut = new BeaconExclusionZone(SAMPLE_INPUT);
         Assert.Equal(56000011, sut.GetDistressBeaconTuningFrequency(20));
     }
+/*
+    [Fact]
+    public void SolveSecondPuzzle()
+    {
+        var sut = new BeaconExclusionZone(PUZZLE_INPUT);
+        Assert.Equal(-1, sut.GetDistressBeaconTuningFrequency(4000000));
+    }*/
 }
