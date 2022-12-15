@@ -6,12 +6,61 @@ public record Sensor
     public int Y { get; }
     public int Range { get; }
 
+    private readonly Dictionary<int, List<int>> _coverage;
+
     public Sensor(int x, int y, (int X, int Y) beacon)
     {
         X = x;
         Y = y;
         Range = Math.Abs(X - beacon.X) + Math.Abs(Y - beacon.Y);
+        _coverage = new Dictionary<int, List<int>>();
+
+        CalculateCoverage();
     }
+
+    private void CalculateCoverage()
+    {
+        var currentRange = 0;
+        var ascending = true;
+
+        for (var y = Y - Range; y <= Y + Range; y++)
+        {
+            _coverage.Add(y, new List<int> { X });
+
+            var index = 0;
+            while (index < currentRange)
+            {
+                _coverage[y].Add(X - index);
+                _coverage[y].Add(X + index);
+                index++;
+            }
+
+            if (currentRange == Range)
+            {
+                ascending = false;
+            }
+
+            if (ascending)
+            {
+                currentRange++;
+            }
+            else
+            {
+                currentRange--;
+            }
+        }
+    }
+
+    public int CalculateCoveredPositionsFor(int y)
+    {
+        if (_coverage.TryGetValue(y, out var values))
+        {
+            return values.Count;
+        }
+        
+        return 0;
+    }
+
 }
 
 public class BeaconExclusionZone
@@ -83,6 +132,13 @@ public class BeaconExclusionZone
 
     public int CalculateCoveredPositionsFor(int y)
     {
-        return 0;
+        var total = 0;
+
+        foreach (var sensor in Sensors)
+        {
+            total += sensor.CalculateCoveredPositionsFor(y);
+        }
+
+        return total;
     }
 }
