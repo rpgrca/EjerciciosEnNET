@@ -81,12 +81,14 @@ public class BeaconExclusionZoneMust
         Assert.Equal(26, sut.CalculateCoveredPositionsFor(10));
     }
 
+#if !CI_CONTEXT
     [Fact]
     public void SolveFirstPuzzle()
     {
         var sut = new BeaconExclusionZone(PUZZLE_INPUT);
         Assert.Equal(4737567, sut.CalculateCoveredPositionsFor(2000000));
     }
+#endif
 
     [Fact]
     public void SolveSecondSample()
@@ -95,6 +97,7 @@ public class BeaconExclusionZoneMust
         Assert.Equal(56000011UL, sut.GetDistressBeaconTuningFrequency(20));
     }
 
+#if !CI_CONTEXT
     [Fact]
     public void SolveSecondPuzzle()
     {
@@ -103,4 +106,5 @@ public class BeaconExclusionZoneMust
         Assert.True(value > 320708895UL);
         Assert.Equal(13267474686239UL, value);
     }
+#endif
 }
