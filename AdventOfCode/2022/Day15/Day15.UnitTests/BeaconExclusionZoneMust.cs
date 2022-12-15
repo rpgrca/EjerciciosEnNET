@@ -7,7 +7,7 @@ public class BeaconExclusionZoneMust
 {
     [Theory]
     [MemberData(nameof(SingleLineFeeder))]
-    public void ParseSingleLineInputCorrectly(string input, (int X, int Y) expectedSensor, (int X, int Y) expectedBeacon, int expectedRange)
+    public void ParseSingleLineInputCorrectly(string input, (int X, int Y) expectedSensor, Beacon expectedBeacon, int expectedRange)
     {
         var sut = new BeaconExclusionZone(input);
         Assert.Collection(sut.Sensors,
@@ -22,8 +22,8 @@ public class BeaconExclusionZoneMust
 
     public static IEnumerable<object[]> SingleLineFeeder()
     {
-        yield return new object[] { "Sensor at x=2, y=18: closest beacon is at x=-2, y=15", (2, 18), (-2, 15), 7 };
-        yield return new object[] { "Sensor at x=9, y=16: closest beacon is at x=10, y=16", (9, 16), (10, 16), 1 };
+        yield return new object[] { "Sensor at x=2, y=18: closest beacon is at x=-2, y=15", (2, 18), new Beacon(-2, 15), 7 };
+        yield return new object[] { "Sensor at x=9, y=16: closest beacon is at x=10, y=16", (9, 16), new Beacon(10, 16), 1 };
     }
 
     [Fact]
@@ -45,8 +45,8 @@ public class BeaconExclusionZoneMust
                 Assert.Equal(1, s2.Range);
             });
         Assert.Equal(2, sut.Beacons.Count);
-        Assert.Single(sut.Beacons, (10, 16));
-        Assert.Single(sut.Beacons, (15, 3));
+        Assert.Single(sut.Beacons, new Beacon(10, 16));
+        Assert.Single(sut.Beacons, new Beacon(15, 3));
     }
 
     [Fact]
@@ -55,14 +55,6 @@ public class BeaconExclusionZoneMust
         var sut = new BeaconExclusionZone(SAMPLE_INPUT);
         Assert.Equal(14, sut.Sensors.Count);
         Assert.Equal(6, sut.Beacons.Count);
-    }
-
-    [Fact]
-    public void CalculateRangeCorrectly()
-    {
-        var sut = new BeaconExclusionZone(SAMPLE_INPUT);
-        Assert.Equal((-2, 0), sut.TopLeft);
-        Assert.Equal((25, 22), sut.BottomRight);
     }
 
     [Theory]

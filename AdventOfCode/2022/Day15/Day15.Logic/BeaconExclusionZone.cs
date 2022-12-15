@@ -5,63 +5,49 @@ public class BeaconExclusionZone
     private readonly string _input;
     private readonly string[] _lines;
 
-    public (int X, int Y) TopLeft { get; private set; }
-    public (int X, int Y) BottomRight { get; private set; }
     public List<Sensor> Sensors { get; private set; }
-    public List<(int X, int Y)> Beacons { get; private set; }
+    public List<Beacon> Beacons { get; private set; }
 
     public BeaconExclusionZone(string input)
     {
         _input = input;
+        _lines = _input.Split("\n");
 
         Sensors = new List<Sensor>();
-        Beacons = new List<(int X, int Y)>();
+        Beacons = new List<Beacon>();
 
-        _lines = _input.Split("\n");
+        Parse();
+    }
+
+    private void Parse()
+    {
         foreach (var line in _lines)
         {
             var sections = line.Split(":");
             var coordinates = sections[0][10..];
+
             var splitCoordinates = coordinates.Split(",");
-            var sensorX = int.Parse(splitCoordinates[0].Split("=")[1]);
-            var sensorY = int.Parse(splitCoordinates[1].Split("=")[1]);
-
-            AdjustRange(sensorX, sensorY);
-
             coordinates = sections[1][23..];
-            splitCoordinates = coordinates.Split(",");
-            var beaconX = int.Parse(splitCoordinates[0].Split("=")[1]);
-            var beaconY = int.Parse(splitCoordinates[1].Split("=")[1]);
 
-            if (! Beacons.Contains((beaconX, beaconY)))
-            {
-                Beacons.Add((beaconX, beaconY));
-                AdjustRange(beaconX, beaconY);
-            }
-
-            Sensors.Add(new(sensorX, sensorY, (beaconX, beaconY)));
+            var beacon = new Beacon(coordinates);
+            AddBeaconIfUnique(beacon);
+            AddSensor(splitCoordinates, beacon);
         }
     }
 
-    private void AdjustRange(int x, int y)
+    private void AddBeaconIfUnique(Beacon beacon)
     {
-        if (TopLeft.X > x)
+        if (! Beacons.Contains(beacon))
         {
-            TopLeft = (x, TopLeft.Y);
+            Beacons.Add(beacon);
         }
-        if (TopLeft.Y > y)
-        {
-            TopLeft = (TopLeft.X, y);
-        }
+    }
 
-        if (BottomRight.X < x)
-        {
-            BottomRight = (x, BottomRight.Y);
-        }
-        if (BottomRight.Y < y)
-        {
-            BottomRight = (BottomRight.X, y);
-        }
+    private void AddSensor(string[] splitCoordinates, Beacon beacon)
+    {
+        var sensorX = int.Parse(splitCoordinates[0].Split("=")[1]);
+        var sensorY = int.Parse(splitCoordinates[1].Split("=")[1]);
+        Sensors.Add(new(sensorX, sensorY, beacon));
     }
 
     public int CalculateCoveredPositionsFor(int y)
@@ -88,22 +74,18 @@ public class BeaconExclusionZone
 
     public ulong GetDistressBeaconTuningFrequency(int maximum)
     {
-        var map = new Dictionary<int, List<Range>>();
-        var newMinimum = 0;
-        var newMaximum = 0;
-
+        var map = new List<Range>[maximum];
         for (var y = 0; y < maximum; y++)
         {
             map[y] = new List<Range>();
-
             for (var index = 0; index < Sensors.Count; index++)
             {
                 var sensor = Sensors[index];
 
                 if (sensor.GetCoveredPositionsFor(y, out var coveredPositions))
                 {
-                    newMinimum = coveredPositions.Start;
-                    newMaximum = coveredPositions.End;
+                    var newMinimum = coveredPositions.Start;
+                    var newMaximum = coveredPositions.End;
 
                     var add = Consolidate(map[y], newMinimum, newMaximum);
                     if (add)
@@ -137,28 +119,6 @@ public class BeaconExclusionZone
                     tuningFrequency = missing * 4000000UL + (ulong)y;
                 }
             }
-            /*
-            var enumerable = Enumerable.Range(0, maximum + 1);
-            foreach (var range in map[y])
-            {
-                try
-                {
-                    var start = range.Minimum < 0? 0 : range.Minimum;
-                    var end = range.Maximum > maximum? maximum : range.Maximum;
-                    var linear = Enumerable.Range(start, end - start + 1);
-                    enumerable = enumerable.Except(linear);
-                }
-                catch
-                {
-                }
-            }
-
-            if (enumerable.Any())
-            {
-                tuningFrequencyCounter += 1;
-                var missing = enumerable.First();
-                tuningFrequency = missing * 4000000 + y;
-            }*/
         }
 
         return tuningFrequency;
@@ -177,37 +137,27 @@ public class BeaconExclusionZone
                 }
                 else
                 {
-                    if (newMaximum <= range.Maximum) // (2)
+                    range.UpdateMinimumTo(newMinimum);
+                    if (newMaximum > range.Maximum)
                     {
-                        range.UpdateMinimumTo(newMinimum);
-                        add = false;
-                        break;
-                    }
-                    else // (3)
-                    {
-                        range.UpdateMinimumTo(newMinimum);
                         range.UpdateMaximumTo(newMaximum);
-                        add = false;
-                        break;
                     }
+
+                    add = false;
+                    break;
                 }
             }
             else
             {
                 if (newMinimum <= range.Maximum)
                 {
-                    if (newMaximum <= range.Maximum) // (4)
-                    {
-                        // already included
-                        add = false;
-                        break;
-                    }
-                    else // (5)
+                    if (newMaximum > range.Maximum)
                     {
                         range.UpdateMaximumTo(newMaximum);
-                        add = false;
-                        break;
                     }
+
+                    add = false;
+                    break;
                 }
                 else // (6)
                 {

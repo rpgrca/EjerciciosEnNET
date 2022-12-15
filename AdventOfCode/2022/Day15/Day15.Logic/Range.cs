@@ -11,7 +11,9 @@ public record Range
         Maximum = maximum;
     }
 
-    public void UpdateMaximumTo(int end) => Maximum = end;
+    public void UpdateMaximumTo(int end) =>
+        Maximum = end;
 
-    public void UpdateMinimumTo(int start) => Minimum = start;
+    public void UpdateMinimumTo(int start) =>
+        Minimum = start;
 }

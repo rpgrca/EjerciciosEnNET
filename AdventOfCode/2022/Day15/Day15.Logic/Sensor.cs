@@ -2,17 +2,22 @@ namespace Day15.Logic;
 
 public record Sensor
 {
+    private readonly int _minimum;
+    private readonly int _maximum;
+
     public int X { get; }
     public int Y { get; }
     public int Range { get; }
 
     private readonly Dictionary<int, (int Start, int End)> _coverage;
 
-    public Sensor(int x, int y, (int X, int Y) beacon)
+    internal Sensor(int x, int y, Beacon beacon)
     {
         X = x;
         Y = y;
         Range = Math.Abs(X - beacon.X) + Math.Abs(Y - beacon.Y);
+        _minimum = Y - Range;
+        _maximum = Y + Range;
         _coverage = new Dictionary<int, (int Start, int End)>();
 
         CalculateCoverage();
@@ -31,17 +36,21 @@ public record Sensor
                 ascending = false;
             }
 
-            if (ascending)
-            {
-                currentRange++;
-            }
-            else
-            {
-                currentRange--;
-            }
+            currentRange = ascending
+                ? currentRange + 1
+                : currentRange - 1;
         }
     }
 
-    public bool GetCoveredPositionsFor(int y, out (int Start, int End) coveredPositions) =>
-        _coverage.TryGetValue(y, out coveredPositions);
+    public bool GetCoveredPositionsFor(int y, out (int Start, int End) coveredPositions)
+    {
+        if (y >= _minimum && y <= _maximum)
+        {
+            coveredPositions = _coverage[y];
+            return true;
+        }
+
+        coveredPositions = default;
+        return false;
+    }
 }
