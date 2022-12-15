@@ -86,7 +86,7 @@ public class BeaconExclusionZone
         return hashSet.Count;
     }
 
-    public long GetDistressBeaconTuningFrequency(int maximum)
+    public ulong GetDistressBeaconTuningFrequency(int maximum)
     {
         var map = new Dictionary<int, List<Range>>();
         var newMinimum = 0;
@@ -115,7 +115,7 @@ public class BeaconExclusionZone
         }
 
         var tuningFrequencyCounter = 0;
-        var tuningFrequency = 0;
+        var tuningFrequency = 0UL;
         for (var y = 0; y < maximum; y++)
         {
             var result = Consolidate(map[y]);
@@ -133,8 +133,8 @@ public class BeaconExclusionZone
                 if (enumerable.Any())
                 {
                     tuningFrequencyCounter += 1;
-                    var missing = enumerable.First();
-                    tuningFrequency = missing * 4000000 + y;
+                    var missing = (ulong)enumerable.First();
+                    tuningFrequency = missing * 4000000UL + (ulong)y;
                 }
             }
             /*
@@ -237,59 +237,64 @@ public class BeaconExclusionZone
             {
                 return false;
             }
+
+bubble:
             for (var index = 0; index < map.Count - 1; index++)
             {
-                var range = map[index];
-                var newMinimum = map[index + 1].Minimum;
-                var newMaximum = map[index + 1].Maximum;
+                for (var subIndex = index + 1; subIndex < map.Count; subIndex++)
+                {
+                   var range = map[index];
+                    var newMinimum = map[subIndex].Minimum;
+                    var newMaximum = map[subIndex].Maximum;
 
-                if (newMinimum < range.Minimum)
-                {
-                    if (newMaximum < range.Minimum) // (1)
+                    if (newMinimum < range.Minimum)
                     {
-                        continue;
-                    }
-                    else
-                    {
-                        if (newMaximum <= range.Maximum) // (2)
-                        {
-                            range.UpdateMinimumTo(newMinimum);
-                            map.RemoveAt(index + 1);
-                            break;
-                        }
-                        else // (3)
-                        {
-                            map.RemoveAt(index);
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    if (newMinimum <= range.Maximum)
-                    {
-                        if (newMaximum <= range.Maximum) // (4)
-                        {
-                            map.RemoveAt(index + 1);
-                            break;
-                        }
-                        else // (5)
-                        {
-                            map.RemoveAt(index);
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        if (range.Maximum == newMinimum || range.Maximum == newMinimum - 1) // (7)
-                        {
-                            range.UpdateMaximumTo(newMaximum);
-                            map.RemoveAt(index + 1);
-                            break;
-                        }
-                        else // (6)
+                        if (newMaximum < range.Minimum) // (1)
                         {
                             continue;
+                        }
+                        else
+                        {
+                            if (newMaximum <= range.Maximum) // (2)
+                            {
+                                range.UpdateMinimumTo(newMinimum);
+                                map.RemoveAt(subIndex);
+                                goto bubble;
+                            }
+                            else // (3)
+                            {
+                                map.RemoveAt(index);
+                                goto bubble;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (newMinimum <= range.Maximum)
+                        {
+                            if (newMaximum <= range.Maximum) // (4)
+                            {
+                                map.RemoveAt(subIndex);
+                                goto bubble;
+                            }
+                            else // (5)
+                            {
+                                range.UpdateMaximumTo(newMaximum);
+                                map.RemoveAt(subIndex);
+                                goto bubble;
+                            }
+                        }
+                        else
+                        {
+                            if (range.Maximum == newMinimum || range.Maximum == newMinimum - 1) // (7)
+                            {
+                                range.UpdateMaximumTo(newMaximum);
+                                map.RemoveAt(subIndex);
+                                goto bubble;
+                            }
+                            else // (6)
+                            {
+                            }   
                         }
                     }
                 }

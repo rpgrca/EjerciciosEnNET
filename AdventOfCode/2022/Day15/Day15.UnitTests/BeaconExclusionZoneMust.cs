@@ -92,13 +92,15 @@ public class BeaconExclusionZoneMust
     public void SolveSecondSample()
     {
         var sut = new BeaconExclusionZone(SAMPLE_INPUT);
-        Assert.Equal(56000011, sut.GetDistressBeaconTuningFrequency(20));
+        Assert.Equal(56000011UL, sut.GetDistressBeaconTuningFrequency(20));
     }
-/*
+
     [Fact]
     public void SolveSecondPuzzle()
     {
         var sut = new BeaconExclusionZone(PUZZLE_INPUT);
-        Assert.Equal(-1, sut.GetDistressBeaconTuningFrequency(4000000));
-    }*/
+        var value = sut.GetDistressBeaconTuningFrequency(4000000);
+        Assert.True(value > 320708895UL);
+        Assert.Equal(13267474686239UL, value);
+    }
 }
