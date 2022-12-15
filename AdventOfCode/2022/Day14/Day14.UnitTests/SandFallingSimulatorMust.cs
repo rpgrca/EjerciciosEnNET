@@ -273,7 +273,7 @@ public class SandFallingSimulatorMust
     }
 
     [Fact]
-    public void SimulateSandFallingToTheAbyssCorrectly()
+    public void SimulateSandFallingToAbyss_WhenApertureIsLeft()
     {
         var sut = new SandFallingSimulator(SAMPLE_INPUT);
         sut.DropUnitOfSands(25);
@@ -289,6 +289,26 @@ public class SandFallingSimulatorMust
 #########.", sut.GetVisualMap());
         Assert.True(sut.MapFilled);
         Assert.Equal(24, sut.UnitsOfSand);
+    }
+
+    [Fact]
+    public void SimulateSandFallingToAbyss_WhenApertureIsRight()
+    {
+        var sut = new SandFallingSimulator("502,4 -> 502,6 -> 504,6\n497,4 -> 498,4 -> 498,9 -> 506,9");
+        sut.DropUnitOfSands(28);
+        Console.WriteLine(sut.GetVisualMap());
+        Assert.Equal(@"..........
+..........
+..oo......
+.oooo.....
+##ooo#....
+.#ooo#o...
+.#ooo###..
+.#oooo....
+.#ooooooo.
+.#########", sut.GetVisualMap());
+        Assert.True(sut.MapFilled);
+        Assert.Equal(27, sut.UnitsOfSand);
     }
 
     [Fact]
