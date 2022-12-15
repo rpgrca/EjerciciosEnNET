@@ -20,4 +20,23 @@ public class BeaconExclusionZoneMust
         yield return new object[] { "Sensor at x=9, y=16: closest beacon is at x=10, y=16", (9, 16), (10, 16) };
     }
 
+    [Fact]
+    public void ParseMultipleLineInputCorrectly()
+    {
+        var sut = new BeaconExclusionZone("Sensor at x=14, y=3: closest beacon is at x=15, y=3\nSensor at x=9, y=16: closest beacon is at x=10, y=16");
+        Assert.Equal(2, sut.Sensors.Count);
+        Assert.Single(sut.Sensors, (14, 3));
+        Assert.Single(sut.Sensors, (9, 16));
+        Assert.Equal(2, sut.Beacons.Count);
+        Assert.Single(sut.Beacons, (10, 16));
+        Assert.Single(sut.Beacons, (15, 3));
+    }
+
+    [Fact]
+    public void LoadSampleCorrectly()
+    {
+        var sut = new BeaconExclusionZone(SAMPLE_INPUT);
+        Assert.Equal(14, sut.Sensors.Count);
+        Assert.Equal(6, sut.Beacons.Count);
+    }
 }

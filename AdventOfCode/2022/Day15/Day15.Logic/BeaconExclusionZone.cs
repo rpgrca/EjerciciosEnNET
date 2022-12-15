@@ -19,7 +19,6 @@ public class BeaconExclusionZone
         _lines = _input.Split("\n");
         foreach (var line in _lines)
         {
-            // Sensor at x=2, y=18: closest beacon is at x=-2, y=15
             var sections = line.Split(":");
             var coordinates = sections[0][10..];
             var splitCoordinates = coordinates.Split(",");
@@ -31,7 +30,11 @@ public class BeaconExclusionZone
             splitCoordinates = coordinates.Split(",");
             var beaconX = int.Parse(splitCoordinates[0].Split("=")[1]);
             var beaconY = int.Parse(splitCoordinates[1].Split("=")[1]);
-            Beacons.Add((beaconX, beaconY));
+
+            if (! Beacons.Contains((beaconX, beaconY)))
+            {
+                Beacons.Add((beaconX, beaconY));
+            }
         }
     }
 }
