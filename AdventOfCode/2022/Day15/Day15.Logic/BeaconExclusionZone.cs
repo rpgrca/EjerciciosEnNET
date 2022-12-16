@@ -148,7 +148,7 @@ public class BeaconExclusionZone
 
                     return false;
                 }
-                else // (6)
+                else
                 {
                     if (range.Maximum == newMinimum || range.Maximum == newMinimum - 1) // (7)
                     {
