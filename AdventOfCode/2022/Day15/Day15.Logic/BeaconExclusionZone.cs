@@ -126,11 +126,7 @@ public class BeaconExclusionZone
         {
             if (newMinimum < range.Minimum)
             {
-                if (newMaximum < range.Minimum) // (1)
-                {
-                    continue;
-                }
-                else
+                if (newMaximum >= range.Minimum)
                 {
                     range.UpdateMinimumTo(newMinimum);
                     if (newMaximum > range.Maximum)
@@ -171,7 +167,7 @@ public class BeaconExclusionZone
         var counter = 0;
         while (map.Count > 1)
         {
-            if (counter++ > 5)
+            if (counter++ > 1)
             {
                 return false;
             }
@@ -193,7 +189,7 @@ public class BeaconExclusionZone
                                 range.UpdateMinimumTo(newMinimum);
                                 map.RemoveAt(subIndex);
                             }
-                            else // (3)
+                            else
                             {
                                 map.RemoveAt(index);
                             }
