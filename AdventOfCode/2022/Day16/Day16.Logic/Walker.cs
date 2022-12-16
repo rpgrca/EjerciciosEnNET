@@ -33,10 +33,14 @@ public class Walker
             _elapsedTime++;
             pipeSystem[_name].Open(_elapsedTime);
 
-            BestPathFrom(_name);
+            var pressure = BestPathFrom(_name);
+            if (pressure > _maximumReleasedPressure)
+            {
+                _maximumReleasedPressure = pressure;
+            }
         }
 
-        _maximumReleasedPressure = _pipeSystem.Sum(p => p.Value.GetReleasedPressure());
+        //_maximumReleasedPressure = _pipeSystem.Sum(p => p.Value.GetReleasedPressure());
     }
 
     private int ConvertNameToIndex(string name) =>
@@ -44,8 +48,8 @@ public class Walker
 
     private int BestPathFrom(string name)
     {
+        var maximumPressure = 0;
         var currentNode = ConvertNameToIndex(name);
-        var maximumPressure = int.MinValue;
 
         for (var index = 0; index < _graph.Length; index++)
         {
@@ -53,11 +57,10 @@ public class Walker
             if (distance > 0)
             {
                 var targetName = _indexToNames[index];
-                if (!_pipeSystem[targetName].IsOpen)
+                if (!_pipeSystem[targetName].IsOpen && _pipeSystem[targetName].FlowRate > 0)
                 {
+                    var oldElapsedTime = _elapsedTime;
                     _elapsedTime += distance;
-                    _elapsedTime += 1;
-                    _pipeSystem[targetName].Open(_elapsedTime);
 
                     var walker = new Walker(targetName, _elapsedTime, _pipeSystem, _graph, _namesToIndex, _indexToNames, _orderedFlow);
                     var pressure = walker.ReleasedPressure;
@@ -66,13 +69,13 @@ public class Walker
                         maximumPressure = pressure;
                     }
 
-                    _elapsedTime -= distance;
-                    _elapsedTime -= 1;
+                    _elapsedTime = oldElapsedTime;
                     _pipeSystem[targetName].Close();
                 }
             }
         }
 
-        return maximumPressure;
+        var currentPressure = _pipeSystem.Sum(p => p.Value.GetReleasedPressure());
+        return currentPressure > maximumPressure ? currentPressure : maximumPressure;
     }
 }

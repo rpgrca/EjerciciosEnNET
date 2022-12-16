@@ -61,19 +61,21 @@ public class PressureReleaseValve
         if (true)
         {*/
             var name = "AA";
-            _elapsedTime = 1;
+            _elapsedTime = 0;
 
-            var mainValve = _pipeSystem[name];
             for (var index = 0; index < _graph.Length; index++)
             {
-                if (_graph[index][_namesToIndex[name]] > 0)
+                var distance = _graph[index][_namesToIndex[name]];
+                if (distance > 0)
                 {
-                    var walker = new Walker(_indexToNames[index], _elapsedTime, _pipeSystem, _graph, _namesToIndex, _indexToNames, _orderedFlow);
+                    var walker = new Walker(_indexToNames[index], _elapsedTime + distance, _pipeSystem, _graph, _namesToIndex, _indexToNames, _orderedFlow);
                     var pressure = walker.ReleasedPressure;
                     if (pressure > _maximumReleasedPressure)
                     {
                         _maximumReleasedPressure = pressure;
                     }
+
+                    _pipeSystem[_indexToNames[index]].Close();
                 }
             }
 /*
