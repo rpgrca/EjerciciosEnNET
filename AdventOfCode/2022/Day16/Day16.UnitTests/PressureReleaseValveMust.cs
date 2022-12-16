@@ -198,16 +198,22 @@ Valve DD has flow rate=20; tunnels lead to valves CC, AA";
         new[] { 0, 13, 2, 20, 3, 0, 0, 22, 0, 21 });
         Assert.Equal(1651, sut.ReleasedPressure);
     }
-/*
+
+    [Fact]
+    public void SolveFirstSample_WhenUsingGraphParser()
+    {
+        var graphParser = new GraphParser(SAMPLE_INPUT);
+        var sut = new PressureReleaseValve(SAMPLE_INPUT, graphParser.Graph, graphParser.Names, graphParser.Flows);
+        Assert.Equal(1651, sut.ReleasedPressure);
+    }
+
     [Fact]
     public void SolveFirstPuzzle()
     {
-        var sut = new PressureReleaseValve(PUZZLE_INPUT, new int[][]
-        {
-
-        },
-        new[] { "AA", "BF", "BL", "BN", "BT", "BU", "CA", "CP", "CX", "EH", "ES", "EU", "EZ", "FC", "FS", "FU", "GS", "HV", "HX", "IF", "IL", "IR", "JG", "JJ", "JL", "JT", "JU", "KE", "KS", "MA", "MO", "NH", "NL", "NN", "NT", "OJ", "OY", "PA", "PH", "PJ", "PT", "QD", "QG", "RL", "RM", "RN", "SQ", "SV", "TG", "TO", "TX", "UV", "VJ", "XQ", "YB", "YI", "YQ", "YW", "ZH" },
-        new[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 22, 0, 14, 0, 0, 0, 25, 0, 13, 0, 0, 0, 9, 0, 21, 0, 0, 0, 0, 0, 23, 0, 0, 11, 0, 20, 0, 18, 0, 5, 0, 0, 0, 0, 16, 0, 3, 0, 19, 0, 0, 0, 0, 0, 0, 0 });
-        Assert.Equal(-1, sut.ReleasedPressure);
-    }*/
+        var graphParser = new GraphParser(PUZZLE_INPUT);
+        var sut = new PressureReleaseValve(PUZZLE_INPUT, graphParser.Graph, graphParser.Names, graphParser.Flows);
+        //new[] { "AA", "BF", "BL", "BN", "BT", "BU", "CA", "CP", "CX", "EH", "ES", "EU", "EZ", "FC", "FS", "FU", "GS", "HV", "HX", "IF", "IL", "IR", "JG", "JJ", "JL", "JT", "JU", "KE", "KS", "MA", "MO", "NH", "NL", "NN", "NT", "OJ", "OY", "PA", "PH", "PJ", "PT", "QD", "QG", "RL", "RM", "RN", "SQ", "SV", "TG", "TO", "TX", "UV", "VJ", "XQ", "YB", "YI", "YQ", "YW", "ZH" },
+        //new[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 22, 0, 14, 0, 0, 0, 25, 0, 13, 0, 0, 0, 9, 0, 21, 0, 0, 0, 0, 0, 23, 0, 0, 11, 0, 20, 0, 18, 0, 5, 0, 0, 0, 0, 16, 0, 3, 0, 19, 0, 0, 0, 0, 0, 0, 0 });
+        Assert.Equal(1716, sut.ReleasedPressure);
+    }
 }

@@ -9,6 +9,7 @@ public class GraphParser
     public int[][] Graph { get; private set; }
     private readonly Valve[] _valvesByIndex;
     public string[] Names { get; private set; }
+    public int[] Flows { get; private set; }
 
     public GraphParser(string input)
     {
@@ -40,6 +41,7 @@ public class GraphParser
         _valvesByIndex = _pipeSystem.Values.OrderBy(v => v.Order).ToArray();
 
         Names = _pipeSystem.Values.Select(v => v.Name).Order().ToArray();
+        Flows = _pipeSystem.Values.Select(v => v.FlowRate).ToArray();
         Graph = new int[_pipeSystem.Count][];
         for (var index = 0; index < _pipeSystem.Count; index++)
         {
