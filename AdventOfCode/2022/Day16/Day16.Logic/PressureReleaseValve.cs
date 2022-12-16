@@ -30,12 +30,13 @@ public class PressureReleaseValve
         _indexToNames = orderedNodes;
         _orderedFlow = orderedFlow;
 
+        var order = 0;
         foreach (var line in _lines)
         {
             var sections = line.Split(";");
             var valve = new string(line.AsSpan()[6..8]);
             var flowRate = int.Parse(sections[0].Split("=")[1]);
-            _pipeSystem.Add(valve, new Valve(valve, flowRate));
+            _pipeSystem.Add(valve, new Valve(order++, valve, flowRate));
         }
 
         foreach (var line in _lines)
@@ -50,57 +51,24 @@ public class PressureReleaseValve
             }
         }
 
-/*
-        _graph = new int[_pipeSystem.Count][];
+        var name = "AA";
+        _elapsedTime = 0;
+
         for (var index = 0; index < _graph.Length; index++)
         {
-            _graph[index] = new int[_pipeSystem.Count];
-        }*/
-
-/*
-        if (true)
-        {*/
-            var name = "AA";
-            _elapsedTime = 0;
-
-            for (var index = 0; index < _graph.Length; index++)
+            var distance = _graph[index][_namesToIndex[name]];
+            if (distance > 0)
             {
-                var distance = _graph[index][_namesToIndex[name]];
-                if (distance > 0)
+                var walker = new Walker(_indexToNames[index], _elapsedTime + distance, _pipeSystem, _graph, _namesToIndex, _indexToNames, _orderedFlow);
+                var pressure = walker.ReleasedPressure;
+                if (pressure > _maximumReleasedPressure)
                 {
-                    var walker = new Walker(_indexToNames[index], _elapsedTime + distance, _pipeSystem, _graph, _namesToIndex, _indexToNames, _orderedFlow);
-                    var pressure = walker.ReleasedPressure;
-                    if (pressure > _maximumReleasedPressure)
-                    {
-                        _maximumReleasedPressure = pressure;
-                    }
+                    _maximumReleasedPressure = pressure;
+                }
 
-                    _pipeSystem[_indexToNames[index]].Close();
-                }
-            }
-/*
-            while (_elapsedTime <= 30)
-            {
-                var valve = GetClosestValve(name);
-                if (valve.Name != name)
-                {
-                    _elapsedTime++;
-                    valve.Open(_elapsedTime);
-                    name = valve.Name;
-                }
-                else
-                {
-                    _elapsedTime++;
-                }
+                _pipeSystem[_indexToNames[index]].Close();
             }
         }
-        else
-        {
-            FindBestCombination();
-        }
-
-        _maximumReleasedPressure = _pipeSystem.Sum(p => p.Value.GetReleasedPressure());
-*/
     }
 
     private int ConvertNameToIndex(string name) =>

@@ -8,11 +8,13 @@ public record Valve
     public int FlowRate { get; private set; }
     public bool IsOpen { get; private set; }
     public bool HasBeenVisited { get; private set; }
+    public int Order { get; }
     public string Name { get; private set; }
     public IEnumerable<Valve> ConnectedValves => _connectedValves;
 
-    public Valve(string name, int flowRate)
+    public Valve(int order, string name, int flowRate)
     {
+        Order = order;
         Name = name;
         FlowRate = flowRate;
         IsOpen = false;
