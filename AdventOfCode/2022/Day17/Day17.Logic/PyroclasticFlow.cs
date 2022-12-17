@@ -138,13 +138,10 @@ public class PyroclasticFlow
 
             do
             {
-                DrawSituation();
                 ExecuteJetGas();
-                DrawSituation();
             } while (MoveDown());
 
             RestRockOnChamber();
-            DrawSituation();
 
             _currentRock += 1;
             rockNumber += 1;
