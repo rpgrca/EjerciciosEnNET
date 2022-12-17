@@ -153,7 +153,7 @@ public class PyroclasticFlow
 
     private void SetupCurrentRock()
     {
-        var rock = _setupRock[_currentRock % _setupRock.Length];
+        var rock = Clone(_setupRock[_currentRock % _setupRock.Length]);
         var fallenRockHeight = GetHeight();
         var newChamberHeight = fallenRockHeight + 3 + rock.Length;
         var newChamber = new char[newChamberHeight][];
@@ -175,6 +175,8 @@ public class PyroclasticFlow
         _currentRockPosition.Clear();
         _currentRockPosition.AddRange(_rockCoordinates[_currentRock % _rockCoordinates.Length]);
     }
+
+    private static char[][] Clone(char[][] rock) => rock.Select(p => p.ToArray()).ToArray();
 
     private int FindTopMostRock()
     {
