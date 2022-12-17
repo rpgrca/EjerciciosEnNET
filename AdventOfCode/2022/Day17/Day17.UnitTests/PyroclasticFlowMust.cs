@@ -156,4 +156,18 @@ public class PyroclasticFlowMust
         var sut = new PyroclasticFlow(PUZZLE_INPUT, 2022);
         Assert.Equal(3224, sut.GetHeight());
     }
+
+    [Fact]
+    public void SolveFirstPuzzle_WhenUsingInfiniteFlow()
+    {
+        var sut = new InfinitePyroclasticFlow(PUZZLE_INPUT, 2022);
+        Assert.Equal(3224UL, sut.ExpectedLength);
+    }
+/*
+    [Fact]
+    public void SolveSecondSample()
+    {
+        var sut = new InfinitePyroclasticFlow(SAMPLE_INPUT, 1000000000000UL);
+        Assert.Equal(1514285714288UL, sut.ExpectedLength);
+    }*/
 }
