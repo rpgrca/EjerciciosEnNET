@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace Day17.Logic;
 
 public class PyroclasticFlow
@@ -235,15 +237,19 @@ public class PyroclasticFlow
 
     public string GetImage()
     {
-        if (_amountOfRocks == 1)
+        var stringBuilder = new StringBuilder();
+
+        foreach (var line in _chamber)
         {
-            return "|####...|\n+-------+";
+            if (line.Contains('#'))
+            {
+                stringBuilder.Append('|');
+                stringBuilder.Append(line);
+                stringBuilder.Append("|\n");
+            }
         }
 
-        return @"|.#.....|
-|###....|
-|.#.....|
-|####...|
-+-------+";
+        stringBuilder.Append("+-------+");
+        return stringBuilder.ToString();
     }
 }
