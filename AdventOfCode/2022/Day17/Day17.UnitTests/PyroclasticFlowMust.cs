@@ -149,4 +149,11 @@ public class PyroclasticFlowMust
         var sut = new PyroclasticFlow(SAMPLE_INPUT, 2022);
         Assert.Equal(3068, sut.GetHeight());
     }
+
+    [Fact]
+    public void SolveFirstPuzzle()
+    {
+        var sut = new PyroclasticFlow(PUZZLE_INPUT, 2022);
+        Assert.Equal(3224, sut.GetHeight());
+    }
 }
