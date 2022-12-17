@@ -19,7 +19,7 @@ public class PressureReleaseValve
 
     public int ReleasedPressure => _maximumReleasedPressure;
 
-    public PressureReleaseValve(string input, int[][] graph, string[] orderedNodes, int[] orderedFlow)
+    public PressureReleaseValve(string input, int[][] graph, string[] orderedNodes, int[] orderedFlow, bool multiple = false)
     {
         _input = input;
         _lines = input.Split("\n");
@@ -59,7 +59,7 @@ public class PressureReleaseValve
             var distance = _graph[index][_namesToIndex[name]];
             if (distance > 0)
             {
-                var walker = new Walker(_indexToNames[index], _elapsedTime + distance, _pipeSystem, _graph, _namesToIndex, _indexToNames, _orderedFlow);
+                var walker = new Walker(_indexToNames[index], _elapsedTime + distance, _pipeSystem, _graph, _namesToIndex, _indexToNames, _orderedFlow, multiple? 26 : 30);
                 var pressure = walker.ReleasedPressure;
                 if (pressure > _maximumReleasedPressure)
                 {
@@ -67,96 +67,6 @@ public class PressureReleaseValve
                 }
 
                 _pipeSystem[_indexToNames[index]].Close();
-            }
-        }
-    }
-
-    private int ConvertNameToIndex(string name) =>
-        _namesToIndex[name];
-
-    private Valve GetClosestValve(string name)
-    {
-        var closestWeight = 10000;
-        var closestIndex = 10000;
-        var currentNode = ConvertNameToIndex(name);
-
-        for (var index = 0; index < _graph.Length; index++)
-        {
-            if (_graph[currentNode][index] > 0)
-            {
-                if (! _pipeSystem[_indexToNames[index]].IsOpen)
-                {
-                    if (_graph[currentNode][index] <= closestWeight + 1)
-                    {
-                        if (closestWeight != 10000)
-                        {
-                            if (_orderedFlow[closestIndex] < _orderedFlow[index])
-                            {
-                                closestIndex = index;
-                                closestWeight = _graph[currentNode][index];
-                            }
-                        }
-                        else
-                        {
-                            if (_orderedFlow[index] > 0)
-                            {
-                                closestIndex = index;
-                                closestWeight = _graph[currentNode][index];
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (closestIndex != 10000)
-        {
-            _elapsedTime += closestWeight;
-            return _pipeSystem[_indexToNames[closestIndex]];
-        }
-        
-        return _pipeSystem[name];
-    }
-
-    private void FindBestCombination()
-    {
-        _elapsedTime = 31;
-        NavigateTo(_pipeSystem["AA"]);
-    }
-
-    private void NavigateTo(Valve valve)
-    {
-        _elapsedTime--;
-        valve.Visit();
-
-        if (_elapsedTime > 0)
-        {
-            if (!valve.IsOpen)
-            {
-                if (valve.FlowRate > 0)
-                {
-                    _elapsedTime--;
-                    valve.Open(_elapsedTime);
-                }
-            }
-
-            foreach (var otherValve in valve.ConnectedValves)
-            {
-                NavigateTo(otherValve);
-
-                var totalReleasedPressure = _pipeSystem.Sum(p => p.Value.GetReleasedPressure());
-                if (totalReleasedPressure > _maximumReleasedPressure)
-                {
-                    _maximumReleasedPressure = totalReleasedPressure;
-                }
-            }
-        }
-        else
-        {
-            var totalReleasedPressure = _pipeSystem.Sum(p => p.Value.GetReleasedPressure());
-            if (totalReleasedPressure > _maximumReleasedPressure)
-            {
-                _maximumReleasedPressure = totalReleasedPressure;
             }
         }
     }
