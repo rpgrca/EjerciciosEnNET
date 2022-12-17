@@ -160,8 +160,7 @@ public class PyroclasticFlow
     private void ExecuteJetGas()
     {
         List<(int X, int Y)> newCoordinates;
-
-        switch (_hotGasStream[_hotGasStreamIndex % _hotGasStream.Length])
+        switch (_hotGasStream[_hotGasStreamIndex++ % _hotGasStream.Length])
         {
             case '<':
                 newCoordinates = _currentRockPosition.Select(p => (X: p.X - 1, p.Y)).ToList();
@@ -186,7 +185,6 @@ public class PyroclasticFlow
                 break;
         }
 
-        _hotGasStreamIndex++;
         _currentRockPosition = newCoordinates;
     }
 

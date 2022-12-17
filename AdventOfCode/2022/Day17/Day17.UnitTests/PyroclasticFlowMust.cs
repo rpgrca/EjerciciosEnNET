@@ -27,4 +27,12 @@ public class PyroclasticFlowMust
         var sut = new PyroclasticFlow("<", fallingRocks);
         Assert.Equal(expectedImage, sut.GetImage());
     }
+
+    [Theory]
+    [InlineData(1, "|..####.|\n+-------+")]
+    public void MoveRocksCorrectly(int fallingRocks, string expectedImage)
+    {
+        var sut = new PyroclasticFlow(SAMPLE_INPUT, fallingRocks);
+        Assert.Equal(expectedImage, sut.GetImage());
+    }
 }
