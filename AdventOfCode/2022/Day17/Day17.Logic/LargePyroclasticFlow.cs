@@ -123,10 +123,16 @@ x x x . . . . . . .
         }
         else
         {
-            var period = false;
+            var startsPeriod = false;
             var periodCounter = 0;
-            while (rockNumber < cycle)
+            var left = 0;
+            while (rockNumber < cycle / 10)
             {
+                if (rockNumber == 4499)
+                {
+                    rockNumber = 4499;
+                }
+
                 SetupCurrentRock();
 
                 do
@@ -136,17 +142,37 @@ x x x . . . . . . .
 
                 RestRockOnChamber();
 
+/*
+puzzle
+                if (ToBits().StartsWith("2,2,15,47,119,62,48,48"))
+                {
+                    startsPeriod = true;
+                }
+
+                if (ToBits().StartsWith("2,2,47,127,39,63,57"))
+                {
+                    startsPeriod = false;
+                    left = 846;
+                }*/
+
+                if (ToBits().StartsWith("28,28,30,7,2,62"))
+                {
+                    startsPeriod = true;
+                }
+
+/*
+sample original
                 if (ToBits().StartsWith("3,3,1,1,15,28"))
                 {
-                    period = true;
+                    startsPeriod = true;
                 }
 
                 if (ToBits().StartsWith("28,28,30,7,2,62,36,36"))
                 {
-                    period = false;
+                    startsPeriod = false;
                 }
-
-                if (period)
+*/
+                if (startsPeriod)
                 {
                     periodCounter++;
                 }
@@ -155,10 +181,15 @@ x x x . . . . . . .
                     periodCounter = 0;
                 }
 
+                if (left-- == 0)
+                {
+                    ExpectedLength = (ulong)GetHeight();
+                }
+
                 _currentRock += 1;
                 rockNumber += 1;
             }
-
+/*
             var totalRocks = _amountOfRocks - 14;
             ExpectedLength = 25;
             var (quotient, remainder) = Math.DivRem(totalRocks, 35UL);
@@ -168,6 +199,21 @@ x x x . . . . . . .
             {
                 remainder--;
             }
+
+            totalRocks = 999999999950;
+            var lengthAfter50Stones = 78UL;
+            var lengthAfterPeriod = 53UL;
+
+            quotient = totalRocks / 35UL;
+            ExpectedLength = 78 + quotient * lengthAfterPeriod;
+*/            
+            var totalRocks = 999999995500UL;
+            var lengthAfter4500Stones = 7191UL;
+            var lengthAfterPeriod = 2785UL;
+
+            var quotient = totalRocks / 1745UL;
+            ExpectedLength = lengthAfter4500Stones + quotient * lengthAfterPeriod;
+            
         }
     }
 

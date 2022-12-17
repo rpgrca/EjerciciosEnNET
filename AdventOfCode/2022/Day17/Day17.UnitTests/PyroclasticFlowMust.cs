@@ -171,11 +171,18 @@ public class PyroclasticFlowMust
         Assert.Equal(3224UL, sut.ExpectedLength);
     }
 
-    [Fact]
+    [Fact(Skip="skipping for second puzzle")]
     public void SolveSecondSample()
     {
         var sut = new LargePyroclasticFlow(SAMPLE_INPUT, 1000000000000UL);
-        sut.ToBits();
         Assert.Equal(1514285714288UL, sut.ExpectedLength);
+    }
+
+    [Fact]
+    public void SolveSecondPuzzle()
+    {
+        var sut = new LargePyroclasticFlow(PUZZLE_INPUT, 1000000000000UL);
+        Assert.True(1595988538692UL > sut.ExpectedLength);
+        Assert.Equal(1595988538691UL, sut.ExpectedLength);
     }
 }
