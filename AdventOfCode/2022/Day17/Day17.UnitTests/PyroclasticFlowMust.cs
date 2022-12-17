@@ -25,12 +25,19 @@ public class PyroclasticFlowMust
     public void RepresentChamberCorrectly(int fallingRocks, string expectedImage)
     {
         var sut = new PyroclasticFlow("<", fallingRocks);
-        Assert.Equal(expectedImage, sut.GetImage());
+        Assert.Equal(expectedImage, sut.GetChamber());
     }
 
     [Theory]
-    [InlineData(1, "|..####.|\n+-------+")]
+    /*[InlineData(1, "|..####.|\n+-------+")]
     [InlineData(2, @"|...#...|
+|..###..|
+|...#...|
+|..####.|
++-------+")]*/
+    [InlineData(3, @"|..#....|
+|..#....|
+|####...|
 |..###..|
 |...#...|
 |..####.|
@@ -38,6 +45,6 @@ public class PyroclasticFlowMust
     public void MoveRocksCorrectly(int fallingRocks, string expectedImage)
     {
         var sut = new PyroclasticFlow(SAMPLE_INPUT, fallingRocks);
-        Assert.Equal(expectedImage, sut.GetImage());
+        Assert.Equal(expectedImage, sut.GetChamber());
     }
 }

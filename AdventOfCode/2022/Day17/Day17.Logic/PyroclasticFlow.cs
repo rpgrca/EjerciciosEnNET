@@ -13,7 +13,7 @@ public class PyroclasticFlow
     {
         new[] { (2, 0), (3, 0), (4, 0), (5, 0) },
         new[] { (3, 0), (2, 1), (3, 1), (4, 1), (3, 2) },
-        new[] { (4, 0), (4, 0), (2, 2), (3, 2), (4, 2) },
+        new[] { (4, 0), (4, 1), (2, 2), (3, 2), (4, 2) },
         new[] { (2, 0), (2, 1), (2, 2), (2, 3) },
         new[] { (2, 0), (3, 0), (2, 1), (3, 1) }
     };
@@ -138,7 +138,9 @@ public class PyroclasticFlow
 
             do
             {
+                //DrawSituation();
                 ExecuteJetGas();
+                //DrawSituation();
             } while (MoveDown());
 
             RestRockOnChamber();
@@ -261,7 +263,7 @@ public class PyroclasticFlow
         _currentRockPosition.Clear();
     }
 
-    public string GetImage()
+    public string GetChamber()
     {
         var stringBuilder = new StringBuilder();
 
@@ -277,5 +279,32 @@ public class PyroclasticFlow
 
         stringBuilder.Append("+-------+");
         return stringBuilder.ToString();
+    }
+
+    public void DrawSituation()
+    {
+        var stringBuilder = new StringBuilder();
+        char[][] chamber = new char[_chamber.Length][];
+
+        Array.Copy(_chamber, chamber, _chamber.Length);
+        foreach (var (x, y) in _currentRockPosition)
+        {
+            chamber[y][x] = '@';
+        }
+
+        foreach (var line in chamber)
+        {
+            stringBuilder.Append('|');
+            stringBuilder.Append(line);
+            stringBuilder.Append("|\n");
+        }
+
+        stringBuilder.Append("+-------+\n\n");
+        Console.WriteLine(stringBuilder.ToString());
+
+        foreach (var (x, y) in _currentRockPosition)
+        {
+            chamber[y][x] = '.';
+        }
     }
 }
