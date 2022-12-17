@@ -30,6 +30,11 @@ public class PyroclasticFlowMust
 
     [Theory]
     [InlineData(1, "|..####.|\n+-------+")]
+    [InlineData(2, @"|...#...|
+|..###..|
+|...#...|
+|..####.|
++-------+")]
     public void MoveRocksCorrectly(int fallingRocks, string expectedImage)
     {
         var sut = new PyroclasticFlow(SAMPLE_INPUT, fallingRocks);

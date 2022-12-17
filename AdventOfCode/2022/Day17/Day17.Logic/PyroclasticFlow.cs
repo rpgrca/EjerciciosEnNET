@@ -22,7 +22,16 @@ public class PyroclasticFlow
     {
         new char[][]
         {
+            new char[] { '.', '.', '.', '.', '.', '.', '.' }
+        },
+        new char[][]
+        {
             new char[] { '.', '.', '.', '.', '.', '.', '.' },
+            new char[] { '.', '.', '.', '.', '.', '.', '.' },
+            new char[] { '.', '.', '.', '.', '.', '.', '.' },
+        },
+        new char[][]
+        {
             new char[] { '.', '.', '.', '.', '.', '.', '.' },
             new char[] { '.', '.', '.', '.', '.', '.', '.' },
             new char[] { '.', '.', '.', '.', '.', '.', '.' }
@@ -32,39 +41,33 @@ public class PyroclasticFlow
             new char[] { '.', '.', '.', '.', '.', '.', '.' },
             new char[] { '.', '.', '.', '.', '.', '.', '.' },
             new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
             new char[] { '.', '.', '.', '.', '.', '.', '.' }
         },
         new char[][]
         {
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' }
-        },
-        new char[][]
-        {
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' }
-        },
-        new char[][]
-        {
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
             new char[] { '.', '.', '.', '.', '.', '.', '.' },
             new char[] { '.', '.', '.', '.', '.', '.', '.' }
         }
     };
 
+    private readonly char[][][] _neededEmptySpace = new char[][][]
+    {
+        new char[][]
+        {
+            new char[] { '.', '.', '.', '.', '.', '.', '.' }
+        },
+        new char[][]
+        {
+            new char[] { '.', '.', '.', '.', '.', '.', '.' },
+            new char[] { '.', '.', '.', '.', '.', '.', '.' }
+        },
+        new char[][]
+        {
+            new char[] { '.', '.', '.', '.', '.', '.', '.' },
+            new char[] { '.', '.', '.', '.', '.', '.', '.' },
+            new char[] { '.', '.', '.', '.', '.', '.', '.' }
+        }
+    };
 
 /*
     private readonly char[][][] _setupRock = new char[][][]
@@ -148,13 +151,36 @@ public class PyroclasticFlow
     private void SetupCurrentRock()
     {
         var rock = _setupRock[_currentRock % _setupRock.Length];
-        var newChamber = new char[_chamber.Length + rock.Length][];
+        var currentEmptySpace = _chamber.Length - GetHeight();
+        var newChamber = new char[_chamber.Length + (3 - currentEmptySpace) + rock.Length][];
         Array.Copy(rock, newChamber, rock.Length);
-        Array.Copy(_chamber, 0, newChamber, rock.Length, _chamber.Length);
+        if (currentEmptySpace == 3)
+        {
+            Array.Copy(_chamber, 0, newChamber, rock.Length, _chamber.Length);
+        }
+        else
+        {
+            Array.Copy(_neededEmptySpace[3 - currentEmptySpace - 1], 0, newChamber, rock.Length, 3 - currentEmptySpace);
+            Array.Copy(_chamber, 0, newChamber, rock.Length + 3, _chamber.Length);
+        }
         _chamber = newChamber;
 
         _currentRockPosition.Clear();
         _currentRockPosition.AddRange(_rockCoordinates[_currentRock % _rockCoordinates.Length]);
+    }
+
+    private int FindTopMostRock()
+    {
+        var index = 0;
+        for (; index < _chamber.Length; index++)
+        {
+            if (_chamber[index].Contains('#'))
+            {
+                break;
+            }
+        }
+
+        return index;
     }
 
     private void ExecuteJetGas()
@@ -231,6 +257,8 @@ public class PyroclasticFlow
         {
             _chamber[y][x] = '#';
         }
+
+        _currentRockPosition.Clear();
     }
 
     public string GetImage()
