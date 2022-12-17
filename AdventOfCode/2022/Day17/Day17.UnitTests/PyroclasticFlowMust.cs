@@ -5,10 +5,19 @@ namespace Day17.UnitTests;
 
 public class PyroclasticFlowMust
 {
-    [Fact]
-    public void Test1()
+    [Theory]
+    [InlineData(1, 1)]
+    public void CalculateHeightCorrectly_WhenDeterminedAmountOfRocksFallToTheLeft(int fallingRocks, int expectedHeight)
     {
-        var sut = new PyroclasticFlow("<", 1);
-        Assert.Equal(1, sut.Height);
+        var sut = new PyroclasticFlow("<", fallingRocks);
+        Assert.Equal(expectedHeight, sut.Height);
+    }
+
+    [Theory]
+    [InlineData(1, "|####...|\n+-------+")]
+    public void RepresentChamberCorrectly(int fallingRocks, string expectedImage)
+    {
+        var sut = new PyroclasticFlow("<", fallingRocks);
+        Assert.Equal(expectedImage, sut.Image);
     }
 }

@@ -5,6 +5,8 @@ public class PyroclasticFlow
     private string _input;
     private int _height;
 
+    public string Image { get; private set; } = "|####...|\n+-------+";
+
     public PyroclasticFlow(string input, int height)
     {
         _input = input;
@@ -12,4 +14,5 @@ public class PyroclasticFlow
     }
 
     public int Height => 1;
+
 }
