@@ -138,12 +138,13 @@ public class PyroclasticFlow
 
             do
             {
-                //DrawSituation();
+                DrawSituation();
                 ExecuteJetGas();
-                //DrawSituation();
+                DrawSituation();
             } while (MoveDown());
 
             RestRockOnChamber();
+            DrawSituation();
 
             _currentRock += 1;
             rockNumber += 1;
@@ -153,20 +154,24 @@ public class PyroclasticFlow
     private void SetupCurrentRock()
     {
         var rock = _setupRock[_currentRock % _setupRock.Length];
-        var currentEmptySpace = _chamber.Length - GetHeight();
-        var newChamber = new char[_chamber.Length + (3 - currentEmptySpace) + rock.Length][];
+        var fallenRockHeight = GetHeight();
+        var newChamberHeight = fallenRockHeight + 3 + rock.Length;
+        var newChamber = new char[newChamberHeight][];
+
         Array.Copy(rock, newChamber, rock.Length);
-        if (currentEmptySpace == 3)
+
+        var emptySpaceToAdd = newChamberHeight - _chamber.Length - rock.Length;
+        if (emptySpaceToAdd > 0)
         {
-            Array.Copy(_chamber, 0, newChamber, rock.Length, _chamber.Length);
+            Array.Copy(_neededEmptySpace[emptySpaceToAdd - 1], 0, newChamber, rock.Length, emptySpaceToAdd);
+            Array.Copy(_chamber, 0, newChamber, rock.Length + 3, _chamber.Length);
         }
         else
         {
-            Array.Copy(_neededEmptySpace[3 - currentEmptySpace - 1], 0, newChamber, rock.Length, 3 - currentEmptySpace);
-            Array.Copy(_chamber, 0, newChamber, rock.Length + 3, _chamber.Length);
+            Array.Copy(_chamber, -emptySpaceToAdd, newChamber, rock.Length, _chamber.Length + emptySpaceToAdd);
         }
-        _chamber = newChamber;
 
+        _chamber = newChamber;
         _currentRockPosition.Clear();
         _currentRockPosition.AddRange(_rockCoordinates[_currentRock % _rockCoordinates.Length]);
     }
