@@ -2,20 +2,31 @@ using System.Text;
 
 namespace Day17.Logic;
 
-public class InfinitePyroclasticFlow
+public class LargePyroclasticFlow
 {
+    private const int INITIAL_LENGTH = 150000;
     private string _hotGasStream;
     private int _hotGasStreamIndex;
     private ulong _amountOfRocks;
+    private int _rightmostPoint;
 
     private readonly (int X, int Y)[][] _rockCoordinates = new (int X, int Y)[][]
     {
-        new[] { (2, 0), (3, 0), (4, 0), (5, 0) },
-        new[] { (3, 0), (2, 1), (3, 1), (4, 1), (3, 2) },
-        new[] { (4, 0), (4, 1), (2, 2), (3, 2), (4, 2) },
-        new[] { (2, 0), (2, 1), (2, 2), (2, 3) },
-        new[] { (2, 0), (3, 0), (2, 1), (3, 1) }
+        new[] { (0, 2), (0, 3), (0, 4), (0, 5) },
+        new[] { (0, 3), (1, 2), (1, 3), (1, 4), (2, 3) },
+        new[] { (0, 2), (0, 3), (0, 4), (1, 4), (2, 4) },
+        new[] { (0, 2), (1, 2), (2, 2), (3, 2) },
+        new[] { (0, 2), (0, 3), (1, 2), (1, 3) }
     };
+/*
+. . . . . . . . . .
+. . . . . . . . . .
+x . . . . . . . . .
+x . . . . . . . . .
+x x x . . . . . . .
+. . . . . . . . . .
+. . . . . . . . . . 
+*/
 
     private readonly char[][][] _setupRock = new char[][][]
     {
@@ -49,39 +60,40 @@ public class InfinitePyroclasticFlow
         }
     };
 
-    private readonly char[][][] _neededEmptySpace = new char[][][]
-    {
-        new char[][]
-        {
-            new char[] { '.', '.', '.', '.', '.', '.', '.' }
-        },
-        new char[][]
-        {
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' }
-        },
-        new char[][]
-        {
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' }
-        }
-    };
-
     private char[][] _chamber;
     private int _currentRock;
     private List<(int X, int Y)> _currentRockPosition;
 
     public ulong ExpectedLength { get; private set; }
 
-    public InfinitePyroclasticFlow(string input, ulong amountOfRocks)
+    public LargePyroclasticFlow(string input, ulong amountOfRocks)
     {
         _hotGasStream = input;
         _hotGasStreamIndex = 0;
-        _chamber = Array.Empty<char[]>();
+        _rightmostPoint = -1;
+        _chamber = new char[][]
+        {
+            new char[INITIAL_LENGTH],
+            new char[INITIAL_LENGTH],
+            new char[INITIAL_LENGTH],
+            new char[INITIAL_LENGTH],
+            new char[INITIAL_LENGTH],
+            new char[INITIAL_LENGTH],
+            new char[INITIAL_LENGTH]
+        };
+        Array.Fill(_chamber[0], '.');
+        Array.Fill(_chamber[1], '.');
+        Array.Fill(_chamber[2], '.');
+        Array.Fill(_chamber[3], '.');
+        Array.Fill(_chamber[4], '.');
+        Array.Fill(_chamber[5], '.');
+        Array.Fill(_chamber[6], '.');
+
         _amountOfRocks = amountOfRocks;
         _currentRock = 0;
         _currentRockPosition = new List<(int X, int Y)>();
+
+        var cycle = _hotGasStream.Length * _setupRock.Length;
 
         var rockNumber = 0UL;
         while (rockNumber < _amountOfRocks)
@@ -93,21 +105,7 @@ public class InfinitePyroclasticFlow
                 ExecuteJetGas();
             } while (MoveDown());
 
-            var blocked = RestRockOnChamber();
-
-            if (blocked)
-            {
-                var height = GetHeight();
-                var newChamber = new char[10][];
-                Array.Copy(_chamber, 0, newChamber, 0, 10);
-                _chamber = newChamber;
-                ExpectedLength += (ulong)(height - GetHeight());
-            }
-
-            if (rockNumber % 1_000_000 == 0)
-            {
-                Console.WriteLine(rockNumber);
-            }
+            RestRockOnChamber();
 
             _currentRock += 1;
             rockNumber += 1;
@@ -119,26 +117,8 @@ public class InfinitePyroclasticFlow
     private void SetupCurrentRock()
     {
         var rock = Clone(_setupRock[_currentRock % _setupRock.Length]);
-        var fallenRockHeight = GetHeight();
-        var newChamberHeight = fallenRockHeight + 3 + rock.Length;
-        var newChamber = new char[newChamberHeight][];
-
-        Array.Copy(rock, newChamber, rock.Length);
-
-        var emptySpaceToAdd = newChamberHeight - _chamber.Length - rock.Length;
-        if (emptySpaceToAdd > 0)
-        {
-            Array.Copy(_neededEmptySpace[emptySpaceToAdd - 1], 0, newChamber, rock.Length, emptySpaceToAdd);
-            Array.Copy(_chamber, 0, newChamber, rock.Length + 3, _chamber.Length);
-        }
-        else
-        {
-            Array.Copy(_chamber, -emptySpaceToAdd, newChamber, rock.Length, _chamber.Length + emptySpaceToAdd);
-        }
-
-        _chamber = newChamber;
         _currentRockPosition.Clear();
-        _currentRockPosition.AddRange(_rockCoordinates[_currentRock % _rockCoordinates.Length]);
+        _currentRockPosition.AddRange(_rockCoordinates[_currentRock % _rockCoordinates.Length].Select(p => (X: p.X + _rightmostPoint + 4, p.Y)));
     }
 
     private static char[][] Clone(char[][] rock) => rock.Select(p => p.ToArray()).ToArray();
@@ -163,10 +143,10 @@ public class InfinitePyroclasticFlow
         switch (_hotGasStream[_hotGasStreamIndex++ % _hotGasStream.Length])
         {
             case '<':
-                newCoordinates = _currentRockPosition.Select(p => (X: p.X - 1, p.Y)).ToList();
+                newCoordinates = _currentRockPosition.Select(p => (p.X, Y: p.Y - 1)).ToList();
                 foreach (var (x, y) in newCoordinates)
                 {
-                    if (x < 0 || _chamber[y][x] == '#')
+                    if (y < 0 || _chamber[y][x] == '#')
                     {
                         return;
                     }
@@ -174,10 +154,10 @@ public class InfinitePyroclasticFlow
                 break;
 
             default:
-                newCoordinates = _currentRockPosition.Select(p => (X: p.X + 1, p.Y)).ToList();
+                newCoordinates = _currentRockPosition.Select(p => (p.X, Y: p.Y + 1)).ToList();
                 foreach (var (x, y) in newCoordinates)
                 {
-                    if (x >= _chamber[0].Length || _chamber[y][x] == '#')
+                    if (y >= _chamber.Length || _chamber[y][x] == '#')
                     {
                         return;
                     }
@@ -192,10 +172,10 @@ public class InfinitePyroclasticFlow
     {
         var canMoveDown = true;
 
-        var newCoordinates = _currentRockPosition.Select(p => (p.X, Y: p.Y + 1)).ToList();
+        var newCoordinates = _currentRockPosition.Select(p => (X: p.X - 1, p.Y)).ToList();
         foreach (var (x, y) in newCoordinates)
         {
-            if (y >= _chamber.Length || _chamber[y][x] == '#')
+            if (x < 0 || _chamber[y][x] == '#')
             {
                 canMoveDown = false;
                 break;
@@ -210,54 +190,21 @@ public class InfinitePyroclasticFlow
         return canMoveDown;
     }
 
-    public int GetHeight()
-    {
-        var height = 0;
+    public int GetHeight() => _rightmostPoint + 1;
 
-        foreach (var line in _chamber)
-        {
-            if (line.Contains('#'))
-            {
-                height++;
-            }
-        }
-
-        return height;
-    }
-
-    private bool RestRockOnChamber()
+    private void RestRockOnChamber()
     {
         foreach (var (x, y) in _currentRockPosition)
         {
             _chamber[y][x] = '#';
-        }
-
-        var blocked = PathBlocked();
-        _currentRockPosition.Clear();
-
-        return blocked;
-    }
-
-    private bool PathBlocked()
-    {
-        return false;
-        var blocked = false;
-        foreach (var y in _currentRockPosition.Select(p => p.Y).Distinct())
-        {
-            blocked = _chamber[y][0] == '#' && _chamber[y][1] == '#' &&
-                _chamber[y][2] == '#' && _chamber[y][3] == '#' &&
-                _chamber[y][4] == '#' && _chamber[y][5] == '#' &&
-                _chamber[y][6] == '#';
-
-            if (blocked)
+            if (_rightmostPoint < x)
             {
-                break;
+                _rightmostPoint = x;
             }
         }
 
-        return blocked;
+        _currentRockPosition.Clear();
     }
-
 
     public string GetChamber()
     {
@@ -288,8 +235,14 @@ public class InfinitePyroclasticFlow
             chamber[y][x] = '@';
         }
 
-        foreach (var line in chamber)
+        var line = ".......".ToArray();
+        for (var x = _rightmostPoint + 7; x >= 0; x--)
         {
+            for (var y = 0; y < chamber.Length; y++)
+            {
+                line[y] = chamber[y][x];
+            }
+
             stringBuilder.Append('|');
             stringBuilder.Append(line);
             stringBuilder.Append("|\n");
