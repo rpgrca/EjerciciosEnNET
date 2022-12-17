@@ -10,6 +10,8 @@ public class LargePyroclasticFlow
     private ulong _amountOfRocks;
     private int _rightmostPoint;
 
+    private int[] _bitfield;
+
     private readonly (int X, int Y)[][] _rockCoordinates = new (int X, int Y)[][]
     {
         new[] { (0, 2), (0, 3), (0, 4), (0, 5) },
@@ -71,6 +73,8 @@ x x x . . . . . . .
         _hotGasStream = input;
         _hotGasStreamIndex = 0;
         _rightmostPoint = -1;
+        _bitfield = new int[INITIAL_LENGTH];
+
         _chamber = new char[][]
         {
             new char[INITIAL_LENGTH],
@@ -93,25 +97,78 @@ x x x . . . . . . .
         _currentRock = 0;
         _currentRockPosition = new List<(int X, int Y)>();
 
-        var cycle = _hotGasStream.Length * _setupRock.Length;
+        var cycle = (ulong)(_hotGasStream.Length * _setupRock.Length);
 
         var rockNumber = 0UL;
-        while (rockNumber < _amountOfRocks)
+        if (_amountOfRocks < cycle)
         {
-            SetupCurrentRock();
-
-            do
+            while (rockNumber < _amountOfRocks)
             {
-                ExecuteJetGas();
-            } while (MoveDown());
+                SetupCurrentRock();
 
-            RestRockOnChamber();
+                do
+                {
+                    ExecuteJetGas();
+                } while (MoveDown());
 
-            _currentRock += 1;
-            rockNumber += 1;
+                RestRockOnChamber();
+
+                
+
+                _currentRock += 1;
+                rockNumber += 1;
+            }
+
+            ExpectedLength += (ulong)GetHeight();
         }
+        else
+        {
+            var period = false;
+            var periodCounter = 0;
+            while (rockNumber < cycle)
+            {
+                SetupCurrentRock();
 
-        ExpectedLength += (ulong)GetHeight();
+                do
+                {
+                    ExecuteJetGas();
+                } while (MoveDown());
+
+                RestRockOnChamber();
+
+                if (ToBits().StartsWith("3,3,1,1,15,28"))
+                {
+                    period = true;
+                }
+
+                if (ToBits().StartsWith("28,28,30,7,2,62,36,36"))
+                {
+                    period = false;
+                }
+
+                if (period)
+                {
+                    periodCounter++;
+                }
+                else
+                {
+                    periodCounter = 0;
+                }
+
+                _currentRock += 1;
+                rockNumber += 1;
+            }
+
+            var totalRocks = _amountOfRocks - 14;
+            ExpectedLength = 25;
+            var (quotient, remainder) = Math.DivRem(totalRocks, 35UL);
+
+            ExpectedLength += quotient * 53;
+            if (remainder != 0)
+            {
+                remainder--;
+            }
+        }
     }
 
     private void SetupCurrentRock()
@@ -221,6 +278,34 @@ x x x . . . . . . .
         }
 
         stringBuilder.Append("+-------+");
+        return stringBuilder.ToString();
+    }
+
+    public string ToBits()
+    {
+        var stringBuilder = new StringBuilder();
+
+        for (var x = _rightmostPoint + 7; x >= 0; x--)
+        {
+            var value = 0;
+            for (var y = 0; y < _chamber.Length; y++)
+            {
+                if (_chamber[y][x] == '#')
+                {
+                    value = value << 1 | 1;
+                }
+                else
+                {
+                    value = value << 1;
+                }
+            }
+
+            if (value != 0)
+            {
+                stringBuilder.Append($"{value},");
+            }
+        }
+
         return stringBuilder.ToString();
     }
 
