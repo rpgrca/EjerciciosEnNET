@@ -19,7 +19,7 @@ public class PressureReleaseValve
 
     public int ReleasedPressure => _maximumReleasedPressure;
 
-    public PressureReleaseValve(string input, int[][] graph, string[] orderedNodes, int[] orderedFlow, bool multiple = false)
+    public PressureReleaseValve(string input, int[][] graph, string[] orderedNodes, int[] orderedFlow)
     {
         _input = input;
         _lines = input.Split("\n");
@@ -59,7 +59,7 @@ public class PressureReleaseValve
             var distance = _graph[index][_namesToIndex[name]];
             if (distance > 0)
             {
-                var walker = new Walker(_indexToNames[index], _elapsedTime + distance, _pipeSystem, _graph, _namesToIndex, _indexToNames, _orderedFlow, multiple? 26 : 30);
+                var walker = new Walker(_indexToNames[index], _elapsedTime + distance, _pipeSystem, _graph, _namesToIndex, _indexToNames, _orderedFlow, 30);
                 var pressure = walker.ReleasedPressure;
                 if (pressure > _maximumReleasedPressure)
                 {
@@ -71,3 +71,104 @@ public class PressureReleaseValve
         }
     }
 }
+
+/*
+public class PressureReleaseValve2
+{
+    private readonly string[] _lines;
+    private int _elapsedTime;
+    private int _maximumReleasedPressure;
+    private readonly Dictionary<string, Valve> _pipeSystem;
+    private readonly Dictionary<string, Valve> _pipeSystem2;
+
+    public int FlowRate =>
+        _pipeSystem.Where(p => p.Value.IsOpen).Sum(p => p.Value.FlowRate);
+
+    public int ReleasedPressure => _maximumReleasedPressure;
+
+    public PressureReleaseValve2(string input)
+    {
+        _lines = input.Split("\n");
+        _elapsedTime = 0;
+        _pipeSystem = new Dictionary<string, Valve>();
+        _pipeSystem2 = new Dictionary<string, Valve>();
+
+        var order = 0;
+        foreach (var line in _lines)
+        {
+            var sections = line.Split(";");
+            var valve = new string(line.AsSpan()[6..8]);
+            var flowRate = int.Parse(sections[0].Split("=")[1]);
+            _pipeSystem.Add(valve, new Valve(order, valve, flowRate));
+            _pipeSystem2.Add(valve, new Valve(order++, valve, flowRate));
+        }
+
+        foreach (var line in _lines)
+        {
+            var sections = line.Split(";");
+            var valve = new string(line.AsSpan()[6..8]);
+            var others = new string(sections[1].AsSpan()[23..]);
+
+            foreach (var other in others.Split(",").Select(o => o.Trim()))
+            {
+                _pipeSystem[valve].AddConnectedValve(_pipeSystem[other]);
+                _pipeSystem[valve].AddConnectedValve(_pipeSystem2[other]);
+            }
+        }
+
+        var name = "AA";
+        _elapsedTime = 0;
+        for (var index = 0; index < _pipeSystem[name].ConnectedValves.Count - 1; index++)
+        {
+            var humanValve = _pipeSystem[name].ConnectedValves[index];
+            for (var subIndex = index + 1; subIndex < _pipeSystem2[name].ConnectedValves.Count; subIndex++)
+            {
+                var elephantValve = _pipeSystem2[name].ConnectedValves[subIndex];
+
+                var oldElapsedTime = _elapsedTime;
+                _elapsedTime++;
+                var walker = new Walker(humanValve, elephantValve, _elapsedTime, _pipeSystem, 30);
+
+                var pressure = walker.ReleasedPressure;
+                if (pressure > _maximumReleasedPressure)
+                {
+                    _maximumReleasedPressure = pressure;
+                }
+
+                elephantValve.Close();
+                humanValve.Close();
+
+                _elapsedTime = oldElapsedTime;
+
+            }
+        }
+
+
+//        var name = "AA";
+//        _elapsedTime = 0;
+//
+//        for (var index = 0; index < _pipeSystem[name].ConnectedValves.Count - 1; index++)
+//        {
+//            var humanValve = _pipeSystem[name].ConnectedValves[index];
+//            for (var subIndex = index + 1; subIndex < _pipeSystem[name].ConnectedValves.Count; subIndex++)
+//            {
+//                var elephantValve = _pipeSystem[name].ConnectedValves[subIndex];
+//
+//                var oldElapsedTime = _elapsedTime;
+//                _elapsedTime++;
+//                var walker = new Walker2(humanValve, elephantValve, _elapsedTime, _pipeSystem, 30);
+//
+//                var pressure = walker.ReleasedPressure;
+//                if (pressure > _maximumReleasedPressure)
+//                {
+//                    _maximumReleasedPressure = pressure;
+//                }
+//
+//                elephantValve.Close();
+//                humanValve.Close();
+//
+//                _elapsedTime = oldElapsedTime;
+//            }
+//        }
+    }
+}*/

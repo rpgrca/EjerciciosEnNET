@@ -232,15 +232,40 @@ Valve DD has flow rate=20; tunnels lead to valves CC, AA";
         Assert.Equal(1716, sut.ReleasedPressure);
     }
 
-    [Fact]
-    public void Test1()
-    {
-        const string input = @"Valve AA has flow rate=0; tunnels lead to valves DD, BB
-Valve BB has flow rate=13; tunnels lead to valves CC, AA
-Valve CC has flow rate=22; tunnels lead to valves DD, BB
-Valve DD has flow rate=20; tunnels lead to valves CC, AA";
-
-        var graphParser = new GraphParser(input);
-        var sut = new PressureReleaseValve(input, graphParser.Graph, graphParser.Names, graphParser.Flows, true);
-    }
+//    [Fact]
+//    public void Test1()
+//    {
+//        const string input = @"Valve AA has flow rate=0; tunnels lead to valves DD, BB
+//Valve BB has flow rate=13; tunnels lead to valves CC, AA
+//Valve CC has flow rate=22; tunnels lead to valves DD, BB
+//Valve DD has flow rate=20; tunnels lead to valves CC, AA";
+//
+//        /*
+//         * == Minute 1 ==
+//         * No valves are open.
+//         * You move to valve DD.
+//         * The elephant moves to valve BB.
+//         *
+//         * == Minute 2 ==
+//         * No valves are open.
+//         * You open valve DD.
+//         * The elephant opens valve BB.
+//         *
+//         * == Minute 3 ==
+//         * Valve DD and BB are open, releasing 33 pressure
+//         * You move to valve CC
+//         *
+//         * == Minute 4 ==
+//         * Valve DD and BB are open, releasing 33 pressure
+//         * You open valve CC
+//         *
+//         * == Minute 5..26 ==
+//         * Valves BB, CC and DD are open, releasing 52 pressure
+//         *
+//         * Total: 33 * 2 + 52 * 22 = 66 + 1144 = 1210
+//         */
+//
+//        var sut = new PressureReleaseValve(input);
+//
+//    }
 }

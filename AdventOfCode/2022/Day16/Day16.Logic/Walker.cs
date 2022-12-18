@@ -3,15 +3,16 @@ namespace Day16.Logic;
 public class Walker
 {
     private int _elapsedTime;
-    private readonly int _maximumReleasedPressure;
+    private int _maximumReleasedPressure;
     private readonly Dictionary<string, Valve> _pipeSystem;
     private readonly Dictionary<string, int> _namesToIndex;
 
     private readonly int[][] _graph;
     private readonly int _maximumTime;
     private readonly int[] _orderedFlow;
-    private readonly string _name;
     private readonly string[] _indexToNames;
+
+    public string CurrentValve { get; private set; }
 
     public int FlowRate =>
         _pipeSystem.Where(p => p.Value.IsOpen).Sum(p => p.Value.FlowRate);
@@ -27,19 +28,29 @@ public class Walker
         _indexToNames = indexToNames;
         _orderedFlow = orderedFlow;
         _maximumTime = maximumTime;
-        _name = fromNode;
+        CurrentValve = fromNode;
 
-        if (_elapsedTime < maximumTime)
+        Step();
+    }
+
+    public void Step()
+    {
+        if (_elapsedTime < _maximumTime)
         {
-            _elapsedTime++;
-            pipeSystem[_name].Open(_elapsedTime);
+            OpenCurrentValve();
 
-            var pressure = BestPathFrom(_name);
+            var pressure = BestPathFrom(CurrentValve);
             if (pressure > _maximumReleasedPressure)
             {
                 _maximumReleasedPressure = pressure;
             }
         }
+    }
+
+    public void OpenCurrentValve()
+    {
+        _elapsedTime++;
+        _pipeSystem[CurrentValve].Open(_elapsedTime);
     }
 
     private int ConvertNameToIndex(string name) =>
