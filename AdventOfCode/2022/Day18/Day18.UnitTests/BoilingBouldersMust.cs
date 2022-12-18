@@ -22,10 +22,11 @@ public class BoilingBouldersMust
         Assert.Equal(64, sut.SurfaceArea);
     }
 
-    [Fact(Skip = "still undue")]
+    [Fact]
     public void SolveFirstPuzzle()
     {
         var sut = new BoilingBoulders(PUZZLE_INPUT);
-        Assert.Equal(-1, sut.SurfaceArea);
+        Assert.True(2125 < sut.SurfaceArea);
+        Assert.Equal(3526, sut.SurfaceArea);
     }
 }

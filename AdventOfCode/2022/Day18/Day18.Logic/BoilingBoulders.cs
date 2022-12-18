@@ -93,10 +93,10 @@ public class BoilingBoulders
                 }
             }
 
-            if (blockedAtBack && blockedAtFront && blockedAtTop && blockedAtBottom && blockedAtLeft && blockedAtRight)
+            /*if (blockedAtBack && blockedAtFront && blockedAtTop && blockedAtBottom && blockedAtLeft && blockedAtRight)
             {
                 continue;
-            }
+            }*/
 
             SurfaceArea += cubeSurfaceArea;
         }
