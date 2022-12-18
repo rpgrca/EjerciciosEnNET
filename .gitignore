@@ -364,3 +364,4 @@ FodyWeavers.xsd
 *.swp
 *~
 .vscode
+.editorconfig

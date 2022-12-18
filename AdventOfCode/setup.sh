@@ -17,12 +17,21 @@ dotnet new classlib -o $DAY.Logic
 dotnet new xunit -o $DAY.UnitTests
 cd $DAY.UnitTests
 dotnet add reference ../$DAY.Logic/$DAY.Logic.csproj
+
+# Add using to test file
+sed -i "1s/^/using $DAY.Logic;\nusing static $DAY.UnitTests.Constants;\n\n/" UnitTest1.cs
+
 cd ..
 dotnet new sln
 dotnet sln $DAY.sln add **/*.csproj
 
 # Create editorconfig
 cat <<EOT > .editorconfig
+[*]
+end_of_line = lf
+trim_trailing_whitespace = true
+indent_size = 4
+
 [*.{cs,vb}]
 dotnet_naming_rule.private_members_with_underscore.symbols  = private_fields
 dotnet_naming_rule.private_members_with_underscore.style    = prefix_underscore
