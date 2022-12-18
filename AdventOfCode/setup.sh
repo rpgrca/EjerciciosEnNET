@@ -20,6 +20,21 @@ dotnet add reference ../$DAY.Logic/$DAY.Logic.csproj
 cd ..
 dotnet new sln
 dotnet sln $DAY.sln add **/*.csproj
+
+# Create editorconfig
+cat <<EOT > .editorconfig
+[*.{cs,vb}]
+dotnet_naming_rule.private_members_with_underscore.symbols  = private_fields
+dotnet_naming_rule.private_members_with_underscore.style    = prefix_underscore
+dotnet_naming_rule.private_members_with_underscore.severity = suggestion
+
+dotnet_naming_symbols.private_fields.applicable_kinds           = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+
+dotnet_naming_style.prefix_underscore.capitalization = camel_case
+dotnet_naming_style.prefix_underscore.required_prefix = _
+EOT
+
 cd ..
 dotnet sln AdventOfCode$YEAR.sln add $DAY/**/*.csproj
 cd $DAY
