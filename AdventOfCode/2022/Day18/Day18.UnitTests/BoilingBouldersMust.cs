@@ -29,4 +29,11 @@ public class BoilingBouldersMust
         Assert.True(2125 < sut.SurfaceArea);
         Assert.Equal(3526, sut.SurfaceArea);
     }
+
+    [Fact]
+    public void SolveSecondSample()
+    {
+        var sut = new BoilingBoulders(SAMPLE_INPUT, false);
+        Assert.Equal(58, sut.SurfaceArea);
+    }
 }

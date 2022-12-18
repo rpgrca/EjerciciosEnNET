@@ -8,7 +8,7 @@ public class BoilingBoulders
 
     public int SurfaceArea { get; set; }
 
-    public BoilingBoulders(string input)
+    public BoilingBoulders(string input, bool withAirPockets = true)
     {
         _input = input;
         _lines = input.Split("\n");
@@ -23,6 +23,10 @@ public class BoilingBoulders
         _cubes.Sort();
 
         TraceAway();
+        if (! withAirPockets)
+        {
+            RemoveAirPockets();
+        }
     }
 
     private void TraceAway()
@@ -31,74 +35,91 @@ public class BoilingBoulders
 
         foreach (var cube in _cubes)
         {
-            var blockedAtLeft = false;
-            var blockedAtRight = false;
-            var blockedAtBottom = false;
-            var blockedAtTop = false;
-            var blockedAtFront = false;
-            var blockedAtBack = false;
             var cubeSurfaceArea = 6;
 
-            if (_cubes.Any(c => c.X < cube.X && c.Y == cube.Y && c.Z == cube.Z))
+            if (_cubes.Contains((cube.X - 1, cube.Y, cube.Z)))
             {
-                blockedAtLeft = true;
-                if (_cubes.Contains((cube.X - 1, cube.Y, cube.Z)))
-                {
-                    cubeSurfaceArea -= 1;
-                }
+                cubeSurfaceArea -= 1;
             }
-
-            if (_cubes.Any(c => c.X > cube.X && c.Y == cube.Y && c.Z == cube.Z))
+            if (_cubes.Contains((cube.X + 1, cube.Y, cube.Z)))
             {
-                blockedAtRight = true;
-                if (_cubes.Contains((cube.X + 1, cube.Y, cube.Z)))
-                {
-                    cubeSurfaceArea -= 1;
-                }
+                cubeSurfaceArea -= 1;
             }
-
-            if (_cubes.Any(c => c.Y < cube.Y && c.X == cube.X && c.Z == cube.Z))
+            if (_cubes.Contains((cube.X, cube.Y - 1, cube.Z)))
             {
-                blockedAtBottom = true;
-                if (_cubes.Contains((cube.X, cube.Y - 1, cube.Z)))
-                {
-                    cubeSurfaceArea -= 1;
-                }
+                cubeSurfaceArea -= 1;
             }
-
-            if (_cubes.Any(c => c.Y > cube.Y && c.X == cube.X && c.Z == cube.Z))
+            if (_cubes.Contains((cube.X, cube.Y + 1, cube.Z)))
             {
-                blockedAtTop = true;
-                if (_cubes.Contains((cube.X, cube.Y + 1, cube.Z)))
-                {
-                    cubeSurfaceArea -= 1;
-                }
+                cubeSurfaceArea -= 1;
             }
-
-            if (_cubes.Any(c => c.Z < cube.Z && c.X == cube.X && c.Y == cube.Y))
+            if (_cubes.Contains((cube.X, cube.Y, cube.Z - 1)))
             {
-                blockedAtBack = true;
-                if (_cubes.Contains((cube.X, cube.Y, cube.Z - 1)))
-                {
-                    cubeSurfaceArea -= 1;
-                }
+                cubeSurfaceArea -= 1;
             }
-
-            if (_cubes.Any(c => c.Z > cube.Z && c.X == cube.X && c.Y == cube.Y))
+            if (_cubes.Contains((cube.X, cube.Y, cube.Z + 1)))
             {
-                blockedAtFront = true;
-                if (_cubes.Contains((cube.X, cube.Y, cube.Z + 1)))
-                {
-                    cubeSurfaceArea -= 1;
-                }
+                cubeSurfaceArea -= 1;
             }
-
-            /*if (blockedAtBack && blockedAtFront && blockedAtTop && blockedAtBottom && blockedAtLeft && blockedAtRight)
-            {
-                continue;
-            }*/
 
             SurfaceArea += cubeSurfaceArea;
+        }
+    }
+
+    private void RemoveAirPockets()
+    {
+        for (var z = 0; z < 20; z++)
+        {
+            for (var y = 0; y < 20; y++)
+            {
+                for (var x = 0; x < 20; x++)
+                {
+                    if (! _cubes.Contains((x, y, z)))
+                    {
+                        var blockedAtLeft = false;
+                        var blockedAtRight = false;
+                        var blockedAtBottom = false;
+                        var blockedAtTop = false;
+                        var blockedAtFront = false;
+                        var blockedAtBack = false;
+
+                        if (_cubes.Any(c => c.X < x && c.Y == y && c.Z == z))
+                        {
+                            blockedAtLeft = true;
+                        }
+
+                        if (_cubes.Any(c => c.X > x && c.Y == y && c.Z == z))
+                        {
+                            blockedAtRight = true;
+                        }
+
+                        if (_cubes.Any(c => c.Y < y && c.X == x && c.Z == z))
+                        {
+                            blockedAtBottom = true;
+                        }
+
+                        if (_cubes.Any(c => c.Y > y && c.X == x && c.Z == z))
+                        {
+                            blockedAtTop = true;
+                        }
+
+                        if (_cubes.Any(c => c.Z < z && c.X == x && c.Y == y))
+                        {
+                            blockedAtBack = true;
+                        }
+
+                        if (_cubes.Any(c => c.Z > z && c.X == x && c.Y == y))
+                        {
+                            blockedAtFront = true;
+                        }
+
+                        if (blockedAtBack && blockedAtFront && blockedAtTop && blockedAtBottom && blockedAtLeft && blockedAtRight)
+                        {
+                            SurfaceArea -= 6;
+                        }
+                    }
+                }
+            }
         }
     }
 }
