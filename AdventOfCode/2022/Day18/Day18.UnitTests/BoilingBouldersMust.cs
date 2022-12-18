@@ -36,4 +36,11 @@ public class BoilingBouldersMust
         var sut = new BoilingBoulders(SAMPLE_INPUT, false);
         Assert.Equal(58, sut.SurfaceArea);
     }
+
+    [Fact(Skip = "undue")]
+    public void SolveSecondPuzzle()
+    {
+        var sut = new BoilingBoulders(PUZZLE_INPUT, false);
+        Assert.Equal(-1, sut.SurfaceArea);
+    }
 }

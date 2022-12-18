@@ -29,45 +29,51 @@ public class BoilingBoulders
         }
     }
 
-    private void TraceAway()
-    {
-        SurfaceArea = 0;
+    private void TraceAway() =>
+        SurfaceArea = CalculateSurfaceArea(_cubes);
 
-        foreach (var cube in _cubes)
+    private int CalculateSurfaceArea(List<(int X, int Y, int Z)> cubes)
+    {
+        var surfaceArea = 0;
+        foreach (var cube in cubes)
         {
             var cubeSurfaceArea = 6;
 
-            if (_cubes.Contains((cube.X - 1, cube.Y, cube.Z)))
+            if (cubes.Contains((cube.X - 1, cube.Y, cube.Z)))
             {
                 cubeSurfaceArea -= 1;
             }
-            if (_cubes.Contains((cube.X + 1, cube.Y, cube.Z)))
+            if (cubes.Contains((cube.X + 1, cube.Y, cube.Z)))
             {
                 cubeSurfaceArea -= 1;
             }
-            if (_cubes.Contains((cube.X, cube.Y - 1, cube.Z)))
+            if (cubes.Contains((cube.X, cube.Y - 1, cube.Z)))
             {
                 cubeSurfaceArea -= 1;
             }
-            if (_cubes.Contains((cube.X, cube.Y + 1, cube.Z)))
+            if (cubes.Contains((cube.X, cube.Y + 1, cube.Z)))
             {
                 cubeSurfaceArea -= 1;
             }
-            if (_cubes.Contains((cube.X, cube.Y, cube.Z - 1)))
+            if (cubes.Contains((cube.X, cube.Y, cube.Z - 1)))
             {
                 cubeSurfaceArea -= 1;
             }
-            if (_cubes.Contains((cube.X, cube.Y, cube.Z + 1)))
+            if (cubes.Contains((cube.X, cube.Y, cube.Z + 1)))
             {
                 cubeSurfaceArea -= 1;
             }
 
-            SurfaceArea += cubeSurfaceArea;
+            surfaceArea += cubeSurfaceArea;
         }
+
+        return surfaceArea;
     }
 
     private void RemoveAirPockets()
     {
+        var possibleAirPockets = new List<(int X, int Y, int Z)>();
+
         for (var z = 0; z < 20; z++)
         {
             for (var y = 0; y < 20; y++)
@@ -115,11 +121,72 @@ public class BoilingBoulders
 
                         if (blockedAtBack && blockedAtFront && blockedAtTop && blockedAtBottom && blockedAtLeft && blockedAtRight)
                         {
-                            SurfaceArea -= 6;
+                            possibleAirPockets.Add((x, y, z));
                         }
                     }
                 }
             }
+        }
+
+        possibleAirPockets.Sort();
+        var confirmedAirPocket = new List<(int X, int Y, int Z)>();
+        var airPocket = new List<(int X, int Y, int Z)>();
+
+        foreach (var possibleAirPocket in possibleAirPockets)
+        {
+            if (! confirmedAirPocket.Contains(possibleAirPocket))
+            {
+                var currentAirPocket = new List<(int X, int Y, int Z)>();
+                ExpandAirPocket(possibleAirPocket, possibleAirPockets, currentAirPocket);
+
+                if (!currentAirPocket.Any(p => p.X == 0 || p.Y == 0 || p.Z == 0))
+                {
+                    confirmedAirPocket.AddRange(currentAirPocket);
+                    var area = CalculateSurfaceArea(currentAirPocket);
+                    SurfaceArea -= area;
+                }
+            }
+        }
+    }
+
+    private void ExpandAirPocket((int X, int Y, int Z) possibleAirPocket, List<(int X, int Y, int Z)> possibleAirPockets, List<(int X, int Y, int Z)> currentAirPocket)
+    {
+        currentAirPocket.Add(possibleAirPocket);
+
+        var nextPossibleAirPocket = (possibleAirPocket.X - 1, possibleAirPocket.Y, possibleAirPocket.Z);
+        if (possibleAirPockets.Contains(nextPossibleAirPocket) && !currentAirPocket.Contains(nextPossibleAirPocket))
+        {
+            ExpandAirPocket(nextPossibleAirPocket, possibleAirPockets, currentAirPocket);
+        }
+
+        nextPossibleAirPocket = (possibleAirPocket.X + 1, possibleAirPocket.Y, possibleAirPocket.Z);
+        if (possibleAirPockets.Contains(nextPossibleAirPocket) && !currentAirPocket.Contains(nextPossibleAirPocket))
+        {
+            ExpandAirPocket(nextPossibleAirPocket, possibleAirPockets, currentAirPocket);
+        }
+
+        nextPossibleAirPocket = (possibleAirPocket.X, possibleAirPocket.Y - 1, possibleAirPocket.Z);
+        if (possibleAirPockets.Contains(nextPossibleAirPocket) && !currentAirPocket.Contains(nextPossibleAirPocket))
+        {
+            ExpandAirPocket(nextPossibleAirPocket, possibleAirPockets, currentAirPocket);
+        }
+
+        nextPossibleAirPocket = (possibleAirPocket.X, possibleAirPocket.Y + 1, possibleAirPocket.Z);
+        if (possibleAirPockets.Contains(nextPossibleAirPocket) && !currentAirPocket.Contains(nextPossibleAirPocket))
+        {
+            ExpandAirPocket(nextPossibleAirPocket, possibleAirPockets, currentAirPocket);
+        }
+
+        nextPossibleAirPocket = (possibleAirPocket.X, possibleAirPocket.Y, possibleAirPocket.Z - 1);
+        if (possibleAirPockets.Contains(nextPossibleAirPocket) && !currentAirPocket.Contains(nextPossibleAirPocket))
+        {
+            ExpandAirPocket(nextPossibleAirPocket, possibleAirPockets, currentAirPocket);
+        }
+
+        nextPossibleAirPocket = (possibleAirPocket.X, possibleAirPocket.Y, possibleAirPocket.Z + 1);
+        if (possibleAirPockets.Contains(nextPossibleAirPocket) && !currentAirPocket.Contains(nextPossibleAirPocket))
+        {
+            ExpandAirPocket(nextPossibleAirPocket, possibleAirPockets, currentAirPocket);
         }
     }
 }
