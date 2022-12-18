@@ -74,6 +74,51 @@ public class BoilingBoulders
     {
         var possibleAirPockets = new List<(int X, int Y, int Z)>();
 
+        for (var z = 0; z < 21; z++)
+        {
+            for (var y = 0; y < 21; y++)
+            {
+                for (var x = 0; x < 21; x++)
+                {
+                    if (! _cubes.Contains((x, y, z)))
+                    {
+                        possibleAirPockets.Add((x, y, z));
+                    }
+                }
+            }
+        }
+
+        possibleAirPockets.Sort();
+        var confirmedNotAirPocket = new List<(int X, int Y, int Z)>();
+        var confirmedAirPocket = new List<(int X, int Y, int Z)>();
+        var airPocket = new List<(int X, int Y, int Z)>();
+
+        foreach (var possibleAirPocket in possibleAirPockets)
+        {
+            if (!confirmedAirPocket.Contains(possibleAirPocket) && !confirmedNotAirPocket.Contains(possibleAirPocket))
+            {
+                var currentAirPocket = new List<(int X, int Y, int Z)>();
+                ExpandAirPocket(possibleAirPocket, possibleAirPockets, currentAirPocket);
+
+                if (!currentAirPocket.Any(p => p.X == 0 || p.Y == 0 || p.Z == 0 || p.X == 20 || p.Y == 20 || p.Z == 20))
+                {
+                    confirmedAirPocket.AddRange(currentAirPocket);
+                    var area = CalculateSurfaceArea(currentAirPocket);
+                    SurfaceArea -= area;
+                }
+                else
+                {
+                    confirmedNotAirPocket.AddRange(currentAirPocket);
+                }
+            }
+        }
+    }
+
+/*
+    private void RemoveAirPockets()
+    {
+        var possibleAirPockets = new List<(int X, int Y, int Z)>();
+
         for (var z = 0; z < 20; z++)
         {
             for (var y = 0; y < 20; y++)
@@ -145,9 +190,13 @@ public class BoilingBoulders
                     var area = CalculateSurfaceArea(currentAirPocket);
                     SurfaceArea -= area;
                 }
+                else
+                {
+                    SurfaceArea = SurfaceArea;
+                }
             }
         }
-    }
+    }*/
 
     private void ExpandAirPocket((int X, int Y, int Z) possibleAirPocket, List<(int X, int Y, int Z)> possibleAirPockets, List<(int X, int Y, int Z)> currentAirPocket)
     {

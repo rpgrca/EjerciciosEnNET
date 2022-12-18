@@ -37,10 +37,11 @@ public class BoilingBouldersMust
         Assert.Equal(58, sut.SurfaceArea);
     }
 
-    [Fact(Skip = "undue")]
+    [Fact]
     public void SolveSecondPuzzle()
     {
         var sut = new BoilingBoulders(PUZZLE_INPUT, false);
-        Assert.Equal(-1, sut.SurfaceArea);
+        Assert.True(2078 < sut.SurfaceArea);
+        Assert.Equal(2090, sut.SurfaceArea);
     }
 }
