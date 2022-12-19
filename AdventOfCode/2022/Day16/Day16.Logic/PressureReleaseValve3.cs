@@ -6,6 +6,7 @@ public class PressureReleaseValve3
     private readonly string[] _lines;
     private int _elapsedTime;
     private int _maximumReleasedPressure;
+    private readonly List<List<int>> _routes;
     private readonly Dictionary<string, Valve> _pipeSystem;
     private readonly Dictionary<string, int> _namesToIndex;
     private readonly List<int> _visitedValves;
@@ -64,24 +65,37 @@ public class PressureReleaseValve3
         var currentPath = new List<int>();
         GenerateRoutesRecursively(root, routes, currentPath, 0);
         var longestRoutes = routes.Max(p => p.Length);
-        routes = routes.Where(r => r.Length == longestRoutes).ToList();
+        _routes = routes
+            .Where(r => r.Length == longestRoutes)
+            .Select(r => r.Split(",")
+            .ToList().ConvertAll(r => int.Parse(r)))
+            .ToList();
 
-        var route = new List<int>();
-        //while (true)
-        //{
+        var visitedValves = new List<int>();
+        foreach (var currentRoute in _routes)
+        {
             var name = "AA";
+
             _elephants = new Elephant[scavengerCount];
             for (var index = 0; index < scavengerCount; index++)
             {
-                _elephants[index] = new Elephant(_pipeSystem[name], _pipeSystem, _graph, _indexToNames, route);
+                _elephants[index] = new Elephant(_pipeSystem[name], _pipeSystem, _graph, _indexToNames, currentRoute, _routes);
             }
 
             _elapsedTime = 0;
+
+            visitedValves.Clear();
+            foreach (var valve in _pipeSystem.Values)
+            {
+                valve.Close();
+                valve.Unvisit();
+            }
+
             while (_elapsedTime < 30)
             {
                 for (var index = 0; index < _elephants.Length; index++)
                 {
-                    _elephants[index].Act(_elapsedTime, route);
+                    _elephants[index].Act(_elapsedTime, visitedValves);
                 }
 
                 _elapsedTime++;
@@ -92,7 +106,7 @@ public class PressureReleaseValve3
             {
                 _maximumReleasedPressure = currentPressure;
             }
-        //}
+        }
     }
 
     private void GenerateRoutesRecursively(Valve currentValve, List<string> visited, List<int> currentPath, int distance)
@@ -110,13 +124,17 @@ public class PressureReleaseValve3
                 var valve = _valves[index];
                 if (valve.FlowRate > 0 && !currentPath.Contains(valve.Order))
                 {
+                    var visitedAmount = visited.Count;
                     GenerateRoutesRecursively(valve, visited, currentPath, distance + _graph[currentValve.Order][index] + 1);
-                    currentPath.RemoveAt(currentPath.Count - 1);
+                    if (visitedAmount != visited.Count)
+                    {
+                        currentPath.RemoveAt(currentPath.Count - 1);
+                    }
                 }
             }
         }
 
-        visited.Add(string.Join("", currentPath));
+        visited.Add(string.Join(",", currentPath));
     }
 
     private int BestPathFrom(string name)

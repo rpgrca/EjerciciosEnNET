@@ -83,6 +83,7 @@ Valve DD has flow rate=20; tunnels lead to valves CC, AA";
          * Valves BB, CC and DD are open, releasing 55 pressure
          *
          * Total: 24 * 55 + 2 * 42 + 2 * 20 = 1444
+         * Total: 28 * 20 + 26 * 22 + 24 * 13 = 1444
          */
         var graphParser = new GraphParser(input);
         var sut = new PressureReleaseValve3(input, graphParser.Graph, graphParser.Names, graphParser.Flows, 1);
@@ -151,7 +152,7 @@ Valve DD has flow rate=20; tunnels lead to valves CC, AA";
          * Total: 23 * 35 + 33 * 2 + 20 * 3 = 931
          */
         var graphParser = new GraphParser(input);
-        var sut = new PressureReleaseValve(input, graphParser.Graph, graphParser.Names, graphParser.Flows);
+        var sut = new PressureReleaseValve3(input, graphParser.Graph, graphParser.Names, graphParser.Flows, 1);
         Assert.Equal(931, sut.ReleasedPressure);
     }
 
@@ -159,7 +160,7 @@ Valve DD has flow rate=20; tunnels lead to valves CC, AA";
     public void SolveFirstSample_WhenUsingGraphParser()
     {
         var graphParser = new GraphParser(SAMPLE_INPUT);
-        var sut = new PressureReleaseValve(SAMPLE_INPUT, graphParser.Graph, graphParser.Names, graphParser.Flows);
+        var sut = new PressureReleaseValve3(SAMPLE_INPUT, graphParser.Graph, graphParser.Names, graphParser.Flows, 1);
         Assert.Equal(1651, sut.ReleasedPressure);
     }
 

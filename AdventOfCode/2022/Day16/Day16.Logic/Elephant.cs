@@ -5,7 +5,6 @@ public class Elephant
     public enum ScavengeActions
     {
         Move,
-        Arrive,
         Open,
         Rest
     }
@@ -16,11 +15,13 @@ public class Elephant
     private readonly int[][] _graph;
     private readonly string[] _indexToName;
     private int _when;
+    private int _routeIndex;
     private ScavengeActions _action;
     private List<int> _route;
+    private readonly List<List<int>> _routes;
     private string _currentPlan;
 
-    public Elephant(Valve location, Dictionary<string, Valve> pipeSystem, int[][] graph, string[] indexToName, List<int> route)
+    public Elephant(Valve location, Dictionary<string, Valve> pipeSystem, int[][] graph, string[] indexToName, List<int> route, List<List<int>> routes)
     {
         _location = location;
         _pipeSystem = pipeSystem;
@@ -28,8 +29,10 @@ public class Elephant
         _indexToName = indexToName;
         _action = ScavengeActions.Move;
         _route = route;
+        _routes = routes;
         _currentPlan = string.Empty;
         _when = 0;
+        _routeIndex = 0;
     }
 
     public void Act(int elapsedTime, List<int> visitedValves)
@@ -39,18 +42,9 @@ public class Elephant
             switch (_action)
             {
                 case ScavengeActions.Move:
-                    _action = ScavengeActions.Arrive;
+                    _action = ScavengeActions.Open;
 
-                    int distance;
-                    //if (_route is null)
-                    //{
-                        distance = DistanceToNextValve(visitedValves);
-                    /*}
-                    else
-                    {
-                        distance = DistanceToNextValveConsideringRoute(visitedValves);
-                    }*/
-
+                    var distance = DistanceToNextValve(visitedValves);
                     if (distance == 0)
                     {
                         _action = ScavengeActions.Rest;
@@ -61,13 +55,8 @@ public class Elephant
                     }
                     break;
 
-                case ScavengeActions.Arrive:
-                    _location = _target!;
-                    _action = ScavengeActions.Open;
-                    _when += 1;
-                    break;
-
                 case ScavengeActions.Open:
+                    _location = _target!;
                     _location.Open(_when);
                     _action = ScavengeActions.Move;
                     _when += 1;
@@ -78,12 +67,12 @@ public class Elephant
 
     private int DistanceToNextValve(List<int> visitedValves)
     {
-        for (var index = 0; index < _graph[_location.Order].Length; index++)
+        for (; _routeIndex < _route.Count; _routeIndex++)
         {
-            var distance = _graph[_location.Order][index];
+            var distance = _graph[_location.Order][_route[_routeIndex]];
             if (distance > 0)
             {
-                var valve = _pipeSystem[_indexToName[index]];
+                var valve = _pipeSystem[_indexToName[_route[_routeIndex]]];
                 if (! valve.IsOpen && valve.FlowRate > 0 && !visitedValves.Contains(valve.Order))
                 {
                     visitedValves.Add(valve.Order);
