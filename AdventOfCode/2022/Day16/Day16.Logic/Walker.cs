@@ -85,7 +85,7 @@ public class Walker
             }
         }
 
-        var currentPressure = _pipeSystem.Sum(p => p.Value.GetReleasedPressure());
+        var currentPressure = _pipeSystem.Sum(p => p.Value.GetReleasedPressure(30));
         return currentPressure > maximumPressure ? currentPressure : maximumPressure;
     }
 }

@@ -52,7 +52,7 @@ public record Valve
 
     public void Unvisit() => HasBeenVisited = false;
 
-    public int GetReleasedPressure() => _from > -1? (30 - _from - 1) * FlowRate : 0;
+    public int GetReleasedPressure(int maximumTime) => _from > -1? (maximumTime - _from - 1) * FlowRate : 0;
 
     internal void DoAction()
     {

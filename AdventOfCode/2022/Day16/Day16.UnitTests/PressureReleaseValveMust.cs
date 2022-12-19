@@ -233,6 +233,14 @@ Valve DD has flow rate=20; tunnels lead to valves CC, AA";
         Assert.Equal(1716, sut.ReleasedPressure);
     }
 
+    [Fact]
+    public void SolveSecondSample()
+    {
+        var graphParser = new GraphParser(SAMPLE_INPUT);
+        var sut = new PressureReleaseValve3(SAMPLE_INPUT, graphParser.Graph, graphParser.Names, graphParser.Flows, 2);
+        Assert.Equal(1707, sut.ReleasedPressure);
+    }
+
 //    [Fact]
 //    public void Test1()
 //    {
