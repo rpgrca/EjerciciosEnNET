@@ -61,12 +61,11 @@ public class PressureReleaseValve3
         }
 
         var root = _pipeSystem["AA"];
-        var routes = new List<string>();
+        var routes = new HashSet<string>();
         var currentPath = new List<int>();
         GenerateRoutesRecursively(root, routes, currentPath, 0);
         var longestRoutes = routes.Max(p => p.Length);
         _routes = routes
-            .Where(r => r.Length == longestRoutes)
             .Select(r => r.Split(",")
             .ToList().ConvertAll(r => int.Parse(r)))
             .ToList();
@@ -109,9 +108,9 @@ public class PressureReleaseValve3
         }
     }
 
-    private void GenerateRoutesRecursively(Valve currentValve, List<string> visited, List<int> currentPath, int distance)
+    private void GenerateRoutesRecursively(Valve currentValve, HashSet<string> visited, List<int> currentPath, int distance)
     {
-        if (distance > 30)
+        if (distance >= 30)
         {
             return;
         }
@@ -134,7 +133,11 @@ public class PressureReleaseValve3
             }
         }
 
-        visited.Add(string.Join(",", currentPath));
+        var path = string.Join(",", currentPath);
+        if (!visited.Contains(path))
+        {
+            visited.Add(path);
+        }
     }
 
     private int BestPathFrom(string name)
