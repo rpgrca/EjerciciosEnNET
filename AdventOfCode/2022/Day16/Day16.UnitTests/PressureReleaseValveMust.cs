@@ -23,7 +23,7 @@ public class PressureReleaseValveMust
     public void LoadInputCorrectly(string input, int expectedPressureRelease)
     {
         var graphParser = new GraphParser(input);
-        var sut = new PressureReleaseValve3(input, graphParser.Graph, graphParser.Names, graphParser.Flows, 1);
+        var sut = new PressureReleaseValve3(input, graphParser.Graph, graphParser.Names, graphParser.Flows);
         Assert.Equal(expectedPressureRelease, sut.ReleasedPressure);
     }
 
@@ -86,7 +86,7 @@ Valve DD has flow rate=20; tunnels lead to valves CC, AA";
          * Total: 28 * 20 + 26 * 22 + 24 * 13 = 1444
          */
         var graphParser = new GraphParser(input);
-        var sut = new PressureReleaseValve3(input, graphParser.Graph, graphParser.Names, graphParser.Flows, 1);
+        var sut = new PressureReleaseValve3(input, graphParser.Graph, graphParser.Names, graphParser.Flows);
         Assert.Equal(1444, sut.ReleasedPressure);
     }
 
@@ -152,7 +152,7 @@ Valve DD has flow rate=20; tunnels lead to valves CC, AA";
          * Total: 23 * 35 + 33 * 2 + 20 * 3 = 931
          */
         var graphParser = new GraphParser(input);
-        var sut = new PressureReleaseValve3(input, graphParser.Graph, graphParser.Names, graphParser.Flows, 1);
+        var sut = new PressureReleaseValve3(input, graphParser.Graph, graphParser.Names, graphParser.Flows);
         Assert.Equal(931, sut.ReleasedPressure);
     }
 
@@ -160,7 +160,7 @@ Valve DD has flow rate=20; tunnels lead to valves CC, AA";
     public void SolveFirstSample_WhenUsingGraphParser()
     {
         var graphParser = new GraphParser(SAMPLE_INPUT);
-        var sut = new PressureReleaseValve3(SAMPLE_INPUT, graphParser.Graph, graphParser.Names, graphParser.Flows, 1);
+        var sut = new PressureReleaseValve3(SAMPLE_INPUT, graphParser.Graph, graphParser.Names, graphParser.Flows);
         Assert.Equal(1651, sut.ReleasedPressure);
     }
 
@@ -229,7 +229,7 @@ Valve DD has flow rate=20; tunnels lead to valves CC, AA";
                 new[] { 4, 8, 6, 4, 3, 7, 8, 6, 4, 5, 6, 3, 2, 4, 8, 7, 6, 9, 3, 10, 8, 8, 5, 2, 5, 5, 3, 7, 4, 9, 10, 3, 9, 10, 4, 2, 4, 2, 7, 1, 7, 8, 1, 6, 9, 5, 8, 10, 5, 3, 2, 3, 3, 9, 4, 9, 4, 0, 5 },
                 new[] { 4, 3, 8, 6, 4, 9, 10, 1, 7, 2, 8, 4, 3, 5, 10, 2, 3, 11, 2, 12, 10, 10, 3, 3, 2, 7, 2, 9, 5, 11, 12, 5, 11, 5, 6, 5, 1, 5, 9, 4, 4, 10, 4, 8, 4, 5, 10, 12, 6, 5, 5, 6, 4, 11, 7, 11, 6, 5, 0 } },
                 new[] { "AA", "BF", "BL", "BN", "BT", "BU", "CA", "CP", "CX", "EH", "ES", "EU", "EZ", "FC", "FS", "FU", "GS", "HV", "HX", "IF", "IL", "IR", "JG", "JJ", "JL", "JT", "JU", "KE", "KS", "MA", "MO", "NH", "NL", "NN", "NT", "OJ", "OY", "PA", "PH", "PJ", "PT", "QD", "QG", "RL", "RM", "RN", "SQ", "SV", "TG", "TO", "TX", "UV", "VJ", "XQ", "YB", "YI", "YQ", "YW", "ZH" },
-                new[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 22, 0, 14, 0, 0, 0, 25, 0, 13, 0, 0, 0, 9, 0, 21, 0, 0, 0, 0, 0, 23, 0, 0, 11, 0, 20, 0, 18, 0, 5, 0, 0, 0, 0, 16, 0, 3, 0, 19, 0, 0, 0, 0, 0, 0, 0 }, 1);
+                new[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 22, 0, 14, 0, 0, 0, 25, 0, 13, 0, 0, 0, 9, 0, 21, 0, 0, 0, 0, 0, 23, 0, 0, 11, 0, 20, 0, 18, 0, 5, 0, 0, 0, 0, 16, 0, 3, 0, 19, 0, 0, 0, 0, 0, 0, 0 });
         Assert.Equal(1716, sut.ReleasedPressure);
     }
 
@@ -240,6 +240,17 @@ Valve DD has flow rate=20; tunnels lead to valves CC, AA";
         var sut = new PressureReleaseValve3(SAMPLE_INPUT, graphParser.Graph, graphParser.Names, graphParser.Flows, 2);
         Assert.Equal(1707, sut.ReleasedPressure);
     }
+
+#if !CI_CONTEXT
+    [Fact(Skip = "38 minutes in own machine")]
+    public void SolveSecondPuzzle()
+    {
+        var graphParser = new GraphParser(PUZZLE_INPUT);
+        var sut = new PressureReleaseValve3(PUZZLE_INPUT, graphParser.Graph, graphParser.Names, graphParser.Flows, 2);
+        Assert.True(2124 < sut.ReleasedPressure);
+        Assert.Equal(2504, sut.ReleasedPressure);
+    }
+#endif
 
 //    [Fact]
 //    public void Test1()
