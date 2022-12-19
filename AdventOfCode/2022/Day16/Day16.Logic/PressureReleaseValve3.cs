@@ -1,7 +1,6 @@
 namespace Day16.Logic;
 
-// Solves first puzzle
-public class PressureReleaseValve
+public class PressureReleaseValve3
 {
     private readonly string _input;
     private readonly string[] _lines;
@@ -9,18 +8,21 @@ public class PressureReleaseValve
     private int _maximumReleasedPressure;
     private readonly Dictionary<string, Valve> _pipeSystem;
     private readonly Dictionary<string, int> _namesToIndex;
-
+    private readonly List<int> _visitedValves;
+    private readonly List<Valve> _valves;
     private readonly int[][] _graph;
 
     private readonly int[] _orderedFlow;
     private readonly string[] _indexToNames;
+
+    private readonly Elephant[] _elephants;
 
     public int FlowRate =>
         _pipeSystem.Where(p => p.Value.IsOpen).Sum(p => p.Value.FlowRate);
 
     public int ReleasedPressure => _maximumReleasedPressure;
 
-    public PressureReleaseValve(string input, int[][] graph, string[] orderedNodes, int[] orderedFlow)
+    public PressureReleaseValve3(string input, int[][] graph, string[] orderedNodes, int[] orderedFlow, int scavengerCount)
     {
         _input = input;
         _lines = input.Split("\n");
@@ -30,14 +32,19 @@ public class PressureReleaseValve
         _namesToIndex = orderedNodes.Select((p, i) => new { p, i }).ToDictionary(a => a.p, a => a.i);
         _indexToNames = orderedNodes;
         _orderedFlow = orderedFlow;
+        _visitedValves = new List<int>();
+        _valves = new List<Valve>();
 
         var order = 0;
-        foreach (var line in _lines)
+        foreach (var line in _lines.Order())
         {
             var sections = line.Split(";");
             var valve = new string(line.AsSpan()[6..8]);
             var flowRate = int.Parse(sections[0].Split("=")[1]);
-            _pipeSystem.Add(valve, new Valve(order++, valve, flowRate));
+
+            var createdValve = new Valve(order++, valve, flowRate);
+            _pipeSystem.Add(valve, createdValve);
+            _valves.Add(createdValve);
         }
 
         foreach (var line in _lines)
@@ -52,25 +59,99 @@ public class PressureReleaseValve
             }
         }
 
-        var name = "AA";
-        _elapsedTime = 0;
+        var root = _pipeSystem["AA"];
+        var routes = new List<string>();
+        var currentPath = new List<int>();
+        GenerateRoutesRecursively(root, routes, currentPath, 0);
+        var longestRoutes = routes.Max(p => p.Length);
+        routes = routes.Where(r => r.Length == longestRoutes).ToList();
+
+        var route = new List<int>();
+        //while (true)
+        //{
+            var name = "AA";
+            _elephants = new Elephant[scavengerCount];
+            for (var index = 0; index < scavengerCount; index++)
+            {
+                _elephants[index] = new Elephant(_pipeSystem[name], _pipeSystem, _graph, _indexToNames, route);
+            }
+
+            _elapsedTime = 0;
+            while (_elapsedTime < 30)
+            {
+                for (var index = 0; index < _elephants.Length; index++)
+                {
+                    _elephants[index].Act(_elapsedTime, route);
+                }
+
+                _elapsedTime++;
+            }
+
+            var currentPressure = _pipeSystem.Sum(p => p.Value.GetReleasedPressure());
+            if (currentPressure > _maximumReleasedPressure)
+            {
+                _maximumReleasedPressure = currentPressure;
+            }
+        //}
+    }
+
+    private void GenerateRoutesRecursively(Valve currentValve, List<string> visited, List<int> currentPath, int distance)
+    {
+        if (distance > 30)
+        {
+            return;
+        }
+
+        currentPath.Add(currentValve.Order);
+        for (var index = 0; index < _graph[currentValve.Order].Length; index++)
+        {
+            if (_graph[currentValve.Order][index] > 0)
+            {
+                var valve = _valves[index];
+                if (valve.FlowRate > 0 && !currentPath.Contains(valve.Order))
+                {
+                    GenerateRoutesRecursively(valve, visited, currentPath, distance + _graph[currentValve.Order][index] + 1);
+                    currentPath.RemoveAt(currentPath.Count - 1);
+                }
+            }
+        }
+
+        visited.Add(string.Join("", currentPath));
+    }
+
+    private int BestPathFrom(string name)
+    {
+        var maximumPressure = 0;
+        var currentNode = _namesToIndex[name];
 
         for (var index = 0; index < _graph.Length; index++)
         {
-            var distance = _graph[index][_namesToIndex[name]];
+            var distance = _graph[currentNode][index];
             if (distance > 0)
             {
-                var walker = new Walker(_indexToNames[index], _elapsedTime + distance, _pipeSystem, _graph, _namesToIndex, _indexToNames, _orderedFlow, 30);
-                var pressure = walker.ReleasedPressure;
-                if (pressure > _maximumReleasedPressure)
+                var targetName = _indexToNames[index];
+                if (!_pipeSystem[targetName].IsOpen && _pipeSystem[targetName].FlowRate > 0)
                 {
-                    _maximumReleasedPressure = pressure;
-                }
+                    var oldElapsedTime = _elapsedTime;
+                    _elapsedTime += distance;
 
-                _pipeSystem[_indexToNames[index]].Close();
+                    var walker = new Walker(targetName, _elapsedTime, _pipeSystem, _graph, _namesToIndex, _indexToNames, _orderedFlow, 30);
+                    var pressure = walker.ReleasedPressure;
+                    if (pressure > maximumPressure)
+                    {
+                        maximumPressure = pressure;
+                    }
+
+                    _elapsedTime = oldElapsedTime;
+                    _pipeSystem[targetName].Close();
+                }
             }
         }
+
+        var currentPressure = _pipeSystem.Sum(p => p.Value.GetReleasedPressure());
+        return currentPressure > maximumPressure ? currentPressure : maximumPressure;
     }
+
 }
 
 /*

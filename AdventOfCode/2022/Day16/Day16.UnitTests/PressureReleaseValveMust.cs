@@ -23,7 +23,7 @@ public class PressureReleaseValveMust
     public void LoadInputCorrectly(string input, int expectedPressureRelease)
     {
         var graphParser = new GraphParser(input);
-        var sut = new PressureReleaseValve(input, graphParser.Graph, graphParser.Names, graphParser.Flows);
+        var sut = new PressureReleaseValve3(input, graphParser.Graph, graphParser.Names, graphParser.Flows, 1);
         Assert.Equal(expectedPressureRelease, sut.ReleasedPressure);
     }
 
@@ -85,7 +85,7 @@ Valve DD has flow rate=20; tunnels lead to valves CC, AA";
          * Total: 24 * 55 + 2 * 42 + 2 * 20 = 1444
          */
         var graphParser = new GraphParser(input);
-        var sut = new PressureReleaseValve(input, graphParser.Graph, graphParser.Names, graphParser.Flows);
+        var sut = new PressureReleaseValve3(input, graphParser.Graph, graphParser.Names, graphParser.Flows, 1);
         Assert.Equal(1444, sut.ReleasedPressure);
     }
 
@@ -163,7 +163,7 @@ Valve DD has flow rate=20; tunnels lead to valves CC, AA";
         Assert.Equal(1651, sut.ReleasedPressure);
     }
 
-    [Fact]
+    [Fact(Skip = "9 seconds on own machine")]
     public void SolveFirstPuzzle()
     {
         var sut = new PressureReleaseValve(PUZZLE_INPUT, 

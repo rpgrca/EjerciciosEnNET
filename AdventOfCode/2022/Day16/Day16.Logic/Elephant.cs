@@ -1,5 +1,124 @@
 namespace Day16.Logic;
 
+public class Elephant
+{
+    public enum ScavengeActions
+    {
+        Move,
+        Arrive,
+        Open,
+        Rest
+    }
+
+    private Valve _location;
+    private Valve? _target;
+    private readonly Dictionary<string, Valve> _pipeSystem;
+    private readonly int[][] _graph;
+    private readonly string[] _indexToName;
+    private int _when;
+    private ScavengeActions _action;
+    private List<int> _route;
+    private string _currentPlan;
+
+    public Elephant(Valve location, Dictionary<string, Valve> pipeSystem, int[][] graph, string[] indexToName, List<int> route)
+    {
+        _location = location;
+        _pipeSystem = pipeSystem;
+        _graph = graph;
+        _indexToName = indexToName;
+        _action = ScavengeActions.Move;
+        _route = route;
+        _currentPlan = string.Empty;
+        _when = 0;
+    }
+
+    public void Act(int elapsedTime, List<int> visitedValves)
+    {
+        if (elapsedTime == _when)
+        {
+            switch (_action)
+            {
+                case ScavengeActions.Move:
+                    _action = ScavengeActions.Arrive;
+
+                    int distance;
+                    //if (_route is null)
+                    //{
+                        distance = DistanceToNextValve(visitedValves);
+                    /*}
+                    else
+                    {
+                        distance = DistanceToNextValveConsideringRoute(visitedValves);
+                    }*/
+
+                    if (distance == 0)
+                    {
+                        _action = ScavengeActions.Rest;
+                    }
+                    else
+                    {
+                        _when += distance;
+                    }
+                    break;
+
+                case ScavengeActions.Arrive:
+                    _location = _target!;
+                    _action = ScavengeActions.Open;
+                    _when += 1;
+                    break;
+
+                case ScavengeActions.Open:
+                    _location.Open(_when);
+                    _action = ScavengeActions.Move;
+                    _when += 1;
+                    break;
+            }
+        }
+    }
+
+    private int DistanceToNextValve(List<int> visitedValves)
+    {
+        for (var index = 0; index < _graph[_location.Order].Length; index++)
+        {
+            var distance = _graph[_location.Order][index];
+            if (distance > 0)
+            {
+                var valve = _pipeSystem[_indexToName[index]];
+                if (! valve.IsOpen && valve.FlowRate > 0 && !visitedValves.Contains(valve.Order))
+                {
+                    visitedValves.Add(valve.Order);
+                    _target = valve;
+                    return distance;
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    /*private int DistanceToNextValveConsideringRoute(List<string> visitedValves)
+    {
+        for (var index = 0; index < _graph[_location.Order].Length; index++)
+        {
+            var distance = _graph[_location.Order][index];
+            if (distance > 0)
+            {
+                var valve = _pipeSystem[_indexToName[index]];
+                if (! valve.IsOpen && valve.FlowRate > 0 && !visitedValves.Contains(valve.Order))
+                {
+                    visitedValves.Add(valve.Order);
+                    _target = valve;
+                    return distance;
+                }
+            }
+        }
+
+        return 0;
+    }*/
+
+}
+
+/*
 // Solves first puzzle
 public class PressureReleaseValve
 {
@@ -72,6 +191,10 @@ public class PressureReleaseValve
         }
     }
 }
+*/
+
+
+
 
 /*
 public class PressureReleaseValve2
