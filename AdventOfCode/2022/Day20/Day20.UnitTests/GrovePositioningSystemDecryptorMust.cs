@@ -104,12 +104,12 @@ public class GrovePositioningSystemDecryptorMust
         Assert.True(4475 < sut.SumOfThousands);
         Assert.Equal(8721, sut.SumOfThousands);
     }
-/*
+
     [Fact]
     public void SolveSecondSample()
     {
         var sut = new GrovePositioningSystemDecryptor(SAMPLE_INPUT, 811589153);
         sut.Mix(10);
         Assert.Equal(1623178306, sut.SumOfThousands);
-    }*/
+    }
 }
