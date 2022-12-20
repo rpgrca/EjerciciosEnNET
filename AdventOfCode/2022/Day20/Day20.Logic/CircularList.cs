@@ -11,7 +11,7 @@ public class CircularList : IEnumerable<CircularList.CircularListNode>
         private CircularListNode _next;
         private CircularListNode _previous;
 
-        public int Value { get; }
+        public long Value { get; }
 
         public CircularListNode Next
         {
@@ -25,14 +25,14 @@ public class CircularList : IEnumerable<CircularList.CircularListNode>
             set { _previous = value; }
         }
 
-        public CircularListNode(int value, CircularListNode previous, CircularListNode next)
+        public CircularListNode(long value, CircularListNode previous, CircularListNode next)
         {
             Value = value;
             _previous = previous;
             _next = next;
         }
 
-        public CircularListNode(int value)
+        public CircularListNode(long value)
         {
             Value = value;
             _previous = this;
@@ -96,7 +96,7 @@ public class CircularList : IEnumerable<CircularList.CircularListNode>
         _count = 0;
     }
 
-    public void AddLast(int value)
+    public void AddLast(long value)
     {
         if (Tail is null)
         {
@@ -116,14 +116,6 @@ public class CircularList : IEnumerable<CircularList.CircularListNode>
         }
 
         _count++;
-    }
-
-    public void FinishLoading()
-    {
-    }
-
-    public void Mix(int amount)
-    {
     }
 
     public IEnumerator<CircularListNode> GetEnumerator()
