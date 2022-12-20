@@ -87,14 +87,12 @@ public class CircularList : IEnumerable<CircularList.CircularListNode>
     private CircularListNode _tail;
     public CircularListNode Head => _head;
     public CircularListNode Tail => _tail;
-    private IEnumerable<CircularListNode> _elements;
     private int _count;
 
     public int Count => _count;
 
     public CircularList()
     {
-        _elements = Array.Empty<CircularListNode>();
         _count = 0;
     }
 
@@ -105,7 +103,6 @@ public class CircularList : IEnumerable<CircularList.CircularListNode>
             var newNode = new CircularListNode(value);
             _head = newNode;
             _tail = newNode;
-            _elements = _elements.Append(Head);
         }
         else
         {
@@ -116,8 +113,6 @@ public class CircularList : IEnumerable<CircularList.CircularListNode>
             _tail = newNode;
             newNode.Next = _head;
             _head.Previous = newNode;
-
-            _elements = _elements.Append(newNode);
         }
 
         _count++;
@@ -143,5 +138,19 @@ public class CircularList : IEnumerable<CircularList.CircularListNode>
         var oldHead = _head;
         _head = _head.Next;
         _tail = oldHead;
+    }
+
+    public CircularListNode this[int index]
+    {
+        get
+        {
+            var pointer = _head;
+            while (index-- > 0)
+            {
+                pointer = pointer.Next;
+            }
+
+            return pointer;
+        }
     }
 }

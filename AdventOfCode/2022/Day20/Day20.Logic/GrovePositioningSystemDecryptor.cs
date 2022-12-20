@@ -39,10 +39,10 @@ public class GrovePositioningSystemDecryptor
         {
             var currentNode = _originalValues[index];
 
-            if (currentNode == CircularList.Head)
+            /*if (currentNode == CircularList.Head)
             {
                 CircularList.MoveHeadToNext();
-            }
+            }*/
 
             if (currentNode.Value > 0)
             {
@@ -51,30 +51,27 @@ public class GrovePositioningSystemDecryptor
                 while (counter > 0)
                 {
                     newForwardLocation = newForwardLocation.Next;
-                    counter--;
+                    if (newForwardLocation != currentNode)
+                    {
+                        counter--;
+                    }
                 }
 
-//
-//
-//   1 * 2 * -3 * 3 * -2 * 0 * 4   currentNode.next antes era currentNode.Next ahora es newForwardLocation
-//    \                            currentNode.previous antes era currentNode.previous ahora es currentNode.Next
-//     \                           currentNode.Next.previous antes era currentNode ahora es currentNode.previous
-//      \                          currentNode.Next.next antes era newForwardLocation ahora es currentNode
-//   2 * 1 * -3 * 3 * -2 * 0 * 4   newForwardLocation.previous antes era 2 ahora es currentNode
-//                                 4.next antes era currentNode ahora es 2
+                if (currentNode != newForwardLocation.Next)
+                {
+                    var oldCurrentPrevious = currentNode.Previous;
+                    var oldCurrentNext = currentNode.Next;
+                    var newForwardLocationNext = newForwardLocation.Next;
 
-                var oldCurrentPrevious = currentNode.Previous;
-                var oldCurrentNext = currentNode.Next;
-                var newForwardLocationNext = newForwardLocation.Next;
+                    oldCurrentPrevious.Next = oldCurrentNext;
+                    oldCurrentNext.Previous = oldCurrentPrevious;
 
-                oldCurrentPrevious.Next = oldCurrentNext;
-                oldCurrentNext.Previous = oldCurrentPrevious;
+                    newForwardLocation.Next = currentNode;
+                    newForwardLocationNext.Previous = currentNode;
 
-                newForwardLocation.Next = currentNode;
-                newForwardLocationNext.Previous = currentNode;
-
-                currentNode.Previous = newForwardLocation;
-                currentNode.Next = newForwardLocationNext;
+                    currentNode.Previous = newForwardLocation;
+                    currentNode.Next = newForwardLocationNext;
+                }
             }
             else if (currentNode.Value < 0)
             {
@@ -83,30 +80,27 @@ public class GrovePositioningSystemDecryptor
                 while (counter > 0)
                 {
                     newBackwardLocation = newBackwardLocation.Previous;
-                    counter--;
+                    if (newBackwardLocation != currentNode)
+                    {
+                        counter--;
+                    }
                 }
 
-//
-//
-// 1, 2, -1, -3, 0, 3, 4         currentNode.Previous antes era newBackwardLocation ahora es newBackwardLocation.Previous
-//       /                       currentNode.Next antes era currentNode.Next ahora es newBackwardLocation
-//      /                        newBackwardLocation.Previous antes era newBackwardLocation.Previous ahora es currentNode
-//     /                         newBackwardLocation.Next antes era currentNode ahora es currentNode.Next
-// 1, -1, 2, -3, 0, 3, 4, -2     curretnNode.Next.Previous antes era currentNode ahora es newBackwardLocation
-//                               newBackwardLocation.Previous.Next antes era newBackwardLocation ahora es currentNode
+                if (newBackwardLocation.Previous != currentNode)
+                {
+                    var oldCurrentPrevious = currentNode.Previous;
+                    var oldCurrentNext = currentNode.Next;
 
-                var oldCurrentPrevious = currentNode.Previous;
-                var oldCurrentNext = currentNode.Next;
+                    oldCurrentPrevious.Next = oldCurrentNext;
+                    oldCurrentNext.Previous = oldCurrentPrevious;
 
-                oldCurrentPrevious.Next = oldCurrentNext;
-                oldCurrentNext.Previous = oldCurrentPrevious;
+                    var newBackwardLocationPrevious = newBackwardLocation.Previous;
+                    newBackwardLocation.Previous = currentNode;
+                    newBackwardLocationPrevious.Next = currentNode;
 
-                var newBackwardLocationPrevious = newBackwardLocation.Previous;
-                newBackwardLocation.Previous = currentNode;
-                newBackwardLocationPrevious.Next = currentNode;
-
-                currentNode.Previous = newBackwardLocationPrevious;
-                currentNode.Next = newBackwardLocation;
+                    currentNode.Previous = newBackwardLocationPrevious;
+                    currentNode.Next = newBackwardLocation;
+                }
             }
         }
 
@@ -116,14 +110,26 @@ public class GrovePositioningSystemDecryptor
             pointer = pointer.Next;
         }
 
-        for (var index = 1; index <= 3000; index++)
+        var moves = 1000 % CircularList.Count;
+        for (var index = 0; index < moves; index++)
         {
             pointer = pointer.Next;
-
-            if (index % 1000 == 0)
-            {
-                SumOfThousands += pointer.Value;
-            }
         }
+
+        SumOfThousands += pointer.Value;
+
+        for (var index = 0; index < moves; index++)
+        {
+            pointer = pointer.Next;
+        }
+
+        SumOfThousands += pointer.Value;
+
+        for (var index = 0; index < moves; index++)
+        {
+            pointer = pointer.Next;
+        }
+
+        SumOfThousands += pointer.Value;
     }
 }
