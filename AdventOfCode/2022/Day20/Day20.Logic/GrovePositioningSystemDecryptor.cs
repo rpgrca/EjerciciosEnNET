@@ -1,172 +1,48 @@
-using System.Collections;
-using System.Diagnostics;
-
 namespace Day20.Logic;
 
-[DebuggerDisplay("{Value}")]
-public class CircularListNode
+public class GrovePositioningSystemDecryptor
 {
-    private CircularListNode _next;
-    private CircularListNode _previous;
-    private CircularListNode _updatedNext;
-    private CircularListNode _updatedPrevious;
+    private string _input;
+    private List<int> _values;
 
-    public int Value { get; }
+    private CircularList.CircularListNode[] _originalValues;
+    public CircularList CircularList { get; private set; }
 
-    public CircularListNode Next
+    public GrovePositioningSystemDecryptor(string input)
     {
-        get => _next;
-        set { _next = value; }
-    }
-    public CircularListNode Previous
-    {
-        get => _previous;
-        set { _previous = value; }
-    }
+        _input = input;
+        _values = _input.Split("\n").Select(p => int.Parse(p)).ToList();
 
-    public CircularListNode UpdatedNext
-    {
-        get => _updatedNext;
-        set { _updatedNext = value; }
-    }
-
-    public CircularListNode UpdatedPrevious
-    {
-        get => _updatedPrevious;
-        set { _updatedPrevious = value; }
-    }
-
-    public CircularListNode(int value, CircularListNode previous, CircularListNode next)
-    {
-        Value = value;
-        _previous = _updatedPrevious = previous;
-        _next = _updatedNext = next;
-    }
-
-    public CircularListNode(int value)
-    {
-        Value = value;
-        _previous = _updatedPrevious = this;
-        _next = _updatedNext = this;
-    }
-
-    public void MoveBetween(CircularListNode previous, CircularListNode next)
-    {
-        _updatedPrevious = previous;
-        _updatedNext = next;
-    }
-
-    public void PlaceAfter(CircularListNode previous)
-    {
-        _updatedPrevious = previous;
-        previous.PlaceBefore(this);
-    }
-
-    public void PlaceBefore(CircularListNode next)
-    {
-        _updatedNext = next;
-        next.PlaceAfter(this);
-    }
-
-    public void Update()
-    {
-        _next = UpdatedNext;
-        _previous = UpdatedPrevious;
-    }
-}
-
-
-public class CircularList : IEnumerable<CircularListNode>
-{
-    public class CircularListEnumerator : IEnumerator<CircularListNode>
-    {
-        private readonly CircularList _list;
-        private CircularListNode? _current;
-        private int _currentIndex;
-
-        public CircularListEnumerator(CircularList list)
+        CircularList = new CircularList();
+        foreach (var value in _values)
         {
-            _list = list;
-            _current = _list.Head;
-            _currentIndex = -1;
+            CircularList.AddLast(value);
         }
 
-        public CircularListNode Current => _current;
+        _originalValues = new CircularList.CircularListNode[CircularList.Count];
+        SetOriginalValues();
+    }
 
-        object IEnumerator.Current => _current;
-
-        public void Dispose()
+    private void SetOriginalValues()
+    {
+        var index = 0;
+        foreach (var node in CircularList)
         {
+            _originalValues[index++] = node;
         }
+    }
 
-        public bool MoveNext()
+    public void Mix(int times)
+    {
+        for (var index = 0; index < _originalValues.Length; index++)
         {
-            if (_currentIndex < 0)
+            var currentNode = _originalValues[index];
+
+            if (currentNode == CircularList.Head)
             {
-                _current = _list.Head;
-            }
-            else
-            {
-                _current = _current.Next;
+                CircularList.MoveHeadToNext();
             }
 
-            _currentIndex++;
-            return _currentIndex < _list._count;
-        }
-
-        public void Reset()
-        {
-            _current = null;
-            _currentIndex = -1;
-        }
-    }
-
-    private CircularListNode _head;
-    private CircularListNode _tail;
-    public CircularListNode Head => _head;
-    public CircularListNode Tail => _tail;
-    private IEnumerable<CircularListNode> _elements;
-    private int _count;
-
-    public CircularList()
-    {
-        _elements = Array.Empty<CircularListNode>();
-        _count = 0;
-    }
-
-    public void AddLast(int value)
-    {
-        if (Tail is null)
-        {
-            var newNode = new CircularListNode(value);
-            _head = newNode;
-            _tail = newNode;
-            _elements = _elements.Append(Head);
-        }
-        else
-        {
-            var newNode = new CircularListNode(value);
-            _tail.Next = newNode;
-            newNode.Previous = _tail;
-
-            _tail = newNode;
-            newNode.Next = _head;
-            _head.Previous = newNode;
-
-            _elements = _elements.Append(newNode);
-        }
-
-        _count++;
-    }
-
-    public void FinishLoading()
-    {
-    }
-
-    public void Mix(int amount)
-    {
-        for (var currentNode = Head; currentNode != Tail; currentNode = currentNode.Next)
-        {
             if (currentNode.Value > 0)
             {
                 var newForwardLocation = currentNode;
@@ -177,7 +53,27 @@ public class CircularList : IEnumerable<CircularListNode>
                     counter--;
                 }
 
-                currentNode.PlaceAfter(newForwardLocation);
+//
+//
+//   1 * 2 * -3 * 3 * -2 * 0 * 4   currentNode.next antes era currentNode.Next ahora es newForwardLocation
+//    \                            currentNode.previous antes era currentNode.previous ahora es currentNode.Next
+//     \                           currentNode.Next.previous antes era currentNode ahora es currentNode.previous
+//      \                          currentNode.Next.next antes era newForwardLocation ahora es currentNode
+//   2 * 1 * -3 * 3 * -2 * 0 * 4   newForwardLocation.previous antes era 2 ahora es currentNode
+//                                 4.next antes era currentNode ahora es 2
+
+                var oldCurrentPrevious = currentNode.Previous;
+                var oldCurrentNext = currentNode.Next;
+                var newForwardLocationNext = newForwardLocation.Next;
+
+                oldCurrentPrevious.Next = oldCurrentNext;
+                oldCurrentNext.Previous = oldCurrentPrevious;
+
+                newForwardLocation.Next = currentNode;
+                newForwardLocationNext.Previous = currentNode;
+
+                currentNode.Previous = newForwardLocation;
+                currentNode.Next = newForwardLocationNext;
             }
             else if (currentNode.Value < 0)
             {
@@ -189,49 +85,28 @@ public class CircularList : IEnumerable<CircularListNode>
                     counter--;
                 }
 
-                currentNode.PlaceBefore(newBackwardLocation);
+//
+//
+// 1, 2, -1, -3, 0, 3, 4         currentNode.Previous antes era newBackwardLocation ahora es newBackwardLocation.Previous
+//       /                       currentNode.Next antes era currentNode.Next ahora es newBackwardLocation
+//      /                        newBackwardLocation.Previous antes era newBackwardLocation.Previous ahora es currentNode
+//     /                         newBackwardLocation.Next antes era currentNode ahora es currentNode.Next
+// 1, -1, 2, -3, 0, 3, 4, -2     curretnNode.Next.Previous antes era currentNode ahora es newBackwardLocation
+//                               newBackwardLocation.Previous.Next antes era newBackwardLocation ahora es currentNode
+
+                var oldCurrentPrevious = currentNode.Previous;
+                var oldCurrentNext = currentNode.Next;
+
+                oldCurrentPrevious.Next = oldCurrentNext;
+                oldCurrentNext.Previous = oldCurrentPrevious;
+
+                var newBackwardLocationPrevious = newBackwardLocation.Previous;
+                newBackwardLocation.Previous = currentNode;
+                newBackwardLocationPrevious.Next = currentNode;
+
+                currentNode.Previous = newBackwardLocationPrevious;
+                currentNode.Next = newBackwardLocation;
             }
         }
-
-        foreach (var element in _elements)
-        {
-            element.Update();
-        }
-    }
-
-    public IEnumerator<CircularListNode> GetEnumerator()
-    {
-        return new CircularListEnumerator(this);
-    }
-
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-}
-
-public class GrovePositioningSystemDecryptor
-{
-    private string _input;
-    private List<int> _values;
-
-    private (LinkedListNode<int>, int)[] _nodes;
-
-    public List<int> OriginalValues => _values;
-    public CircularList CircularList { get; private set; }
-
-    public GrovePositioningSystemDecryptor(string input)
-    {
-        _input = input;
-        _values = _input.Split("\n").Select(p => int.Parse(p)).ToList();
-        _nodes = new (LinkedListNode<int>, int)[_values.Count];
-
-        CircularList = new CircularList();
-        foreach (var value in _values)
-        {
-            CircularList.AddLast(value);
-        }
-    }
-
-    public void Mix(int times)
-    {
-        CircularList.Mix(times);
     }
 }
