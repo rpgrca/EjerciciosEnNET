@@ -33,4 +33,12 @@ public class GrovePositioningSystemDecryptorMust
             o6 => Assert.Equal(3, o6.Value),
             o7 => Assert.Equal(-2, o7.Value));
     }
+
+    [Fact]
+    public void SolveFirstSample()
+    {
+        var sut = new GrovePositioningSystemDecryptor(SAMPLE_INPUT);
+        sut.Mix(1);
+        Assert.Equal(3, sut.SumOfThousands);
+    }
 }

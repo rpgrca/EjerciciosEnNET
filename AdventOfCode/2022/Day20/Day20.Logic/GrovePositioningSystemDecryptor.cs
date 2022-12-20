@@ -7,6 +7,7 @@ public class GrovePositioningSystemDecryptor
 
     private CircularList.CircularListNode[] _originalValues;
     public CircularList CircularList { get; private set; }
+    public int SumOfThousands { get; private set; }
 
     public GrovePositioningSystemDecryptor(string input)
     {
@@ -106,6 +107,22 @@ public class GrovePositioningSystemDecryptor
 
                 currentNode.Previous = newBackwardLocationPrevious;
                 currentNode.Next = newBackwardLocation;
+            }
+        }
+
+        var pointer = CircularList.Head;
+        while (pointer.Value != 0)
+        {
+            pointer = pointer.Next;
+        }
+
+        for (var index = 1; index <= 3000; index++)
+        {
+            pointer = pointer.Next;
+
+            if (index % 1000 == 0)
+            {
+                SumOfThousands += pointer.Value;
             }
         }
     }
