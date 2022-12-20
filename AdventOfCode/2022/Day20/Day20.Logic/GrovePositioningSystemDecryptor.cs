@@ -43,49 +43,55 @@ public class GrovePositioningSystemDecryptor
 
                 if (currentNode.Value > 0)
                 {
-                    var newForwardLocation = currentNode;
-                    var oldCurrentPrevious = currentNode.Previous;
-                    var oldCurrentNext = currentNode.Next;
-
-                    oldCurrentPrevious.Next = oldCurrentNext;
-                    oldCurrentNext.Previous = oldCurrentPrevious;
-
-                    var counter = currentNode.Value;
-                    while (counter > 0)
+                    var counter = currentNode.Value % (_originalValues.Length - 1);
+                    if (counter > 0)
                     {
-                        newForwardLocation = newForwardLocation.Next;
-                        counter--;
+                        var newForwardLocation = currentNode;
+                        var oldCurrentPrevious = currentNode.Previous;
+                        var oldCurrentNext = currentNode.Next;
+
+                        oldCurrentPrevious.Next = oldCurrentNext;
+                        oldCurrentNext.Previous = oldCurrentPrevious;
+
+                        while (counter > 0)
+                        {
+                            newForwardLocation = newForwardLocation.Next;
+                            counter--;
+                        }
+
+                        var newForwardLocationNext = newForwardLocation.Next;
+                        newForwardLocation.Next = currentNode;
+                        newForwardLocationNext.Previous = currentNode;
+
+                        currentNode.Previous = newForwardLocation;
+                        currentNode.Next = newForwardLocationNext;
                     }
-
-                    var newForwardLocationNext = newForwardLocation.Next;
-                    newForwardLocation.Next = currentNode;
-                    newForwardLocationNext.Previous = currentNode;
-
-                    currentNode.Previous = newForwardLocation;
-                    currentNode.Next = newForwardLocationNext;
                 }
                 else if (currentNode.Value < 0)
                 {
-                    var newBackwardLocation = currentNode;
-                    var oldCurrentPrevious = currentNode.Previous;
-                    var oldCurrentNext = currentNode.Next;
-
-                    oldCurrentPrevious.Next = oldCurrentNext;
-                    oldCurrentNext.Previous = oldCurrentPrevious;
-
-                    var counter = -currentNode.Value;
-                    while (counter > 0)
+                    var counter = -(currentNode.Value % (_originalValues.Length - 1));
+                    if (counter > 0)
                     {
-                        newBackwardLocation = newBackwardLocation.Previous;
-                        counter--;
+                        var newBackwardLocation = currentNode;
+                        var oldCurrentPrevious = currentNode.Previous;
+                        var oldCurrentNext = currentNode.Next;
+
+                        oldCurrentPrevious.Next = oldCurrentNext;
+                        oldCurrentNext.Previous = oldCurrentPrevious;
+
+                        while (counter > 0)
+                        {
+                            newBackwardLocation = newBackwardLocation.Previous;
+                            counter--;
+                        }
+
+                        var newBackwardLocationPrevious = newBackwardLocation.Previous;
+                        newBackwardLocation.Previous = currentNode;
+                        newBackwardLocationPrevious.Next = currentNode;
+
+                        currentNode.Previous = newBackwardLocationPrevious;
+                        currentNode.Next = newBackwardLocation;
                     }
-
-                    var newBackwardLocationPrevious = newBackwardLocation.Previous;
-                    newBackwardLocation.Previous = currentNode;
-                    newBackwardLocationPrevious.Next = currentNode;
-
-                    currentNode.Previous = newBackwardLocationPrevious;
-                    currentNode.Next = newBackwardLocation;
                 }
             }
         }
