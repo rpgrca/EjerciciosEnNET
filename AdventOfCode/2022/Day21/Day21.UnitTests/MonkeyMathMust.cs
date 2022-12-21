@@ -45,3 +45,13 @@ public class MonkeyMathMust
         Assert.Equal(145167969204648, sut.Root);
     }
 }
+
+public class MonkeyHumanMathMust
+{
+    [Fact]
+    public void Test1()
+    {
+        var sut = new MonkeyHumanMath("root: pppw + humn\npppw: 5\nhumn: 2");
+        Assert.Equal(5, sut.Root);
+    }
+}
