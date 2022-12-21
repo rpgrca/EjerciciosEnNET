@@ -34,35 +34,85 @@ public class MonkeyHumanMath
             }
         }
 
-        var root = _operations["root"];
-        var operand1 = long.MinValue;
-        var operand2 = long.MinValue;
+        Root = SolveEqualityWithHumanIncognite("root");
 
-        try
-        {
-            operand1 = SolveEquation(root.Operand1);
-        }
-        catch
-        {
-        }
-
-        try
-        {
-            operand2 = SolveEquation(root.Operand2);
-        }
-        catch
-        {
-        }
-
-        if (operand1 == long.MinValue)
-        {
-            Root = SolveEquationBackwards(root.Operand1, operand2);
-        }
-        else
-        {
-            Root = SolveEquationBackwards(root.Operand2, operand1);
-        }
     }
+
+    private long SolveEqualityWithHumanIncognite(string monkeyName)
+    {
+        var equation = _operations["root"];
+        long operand1;
+        try
+        {
+            operand1 = SolveEquation(equation.Operand1);
+        }
+        catch
+        {
+            return SolveEquationToGet(equation.Operand1, SolveEquation(equation.Operand2));
+        }
+
+        return SolveEquationToGet(operand1, equation.Operand2);
+    }
+
+    private long SolveEquationToGet(string monkeyName, long expectedResult)
+    {
+        if (monkeyName == "humn")
+        {
+            return expectedResult;
+        }
+
+        var equation = _operations[monkeyName];
+        long operand1;
+        try
+        {
+            operand1 = SolveEquation(equation.Operand1);
+        }
+        catch
+        {
+            return SolveEquationToGet(equation.Operand1, GetConverse(equation.Operator, SolveEquation(equation.Operand2), expectedResult));
+        }
+
+        return SolveEquationToGet(GetConverse(operand1, equation.Operator, expectedResult), equation.Operand2);
+    }
+
+    private long SolveEquationToGet(long expectedResult, string monkeyName)
+    {
+        if (monkeyName == "humn")
+        {
+            return expectedResult;
+        }
+
+        var equation = _operations[monkeyName];
+        long operand1;
+        try
+        {
+            operand1 = SolveEquation(equation.Operand1);
+        }
+        catch
+        {
+            return SolveEquationToGet(equation.Operand1, GetConverse(equation.Operator, SolveEquation(equation.Operand2), expectedResult));
+        }
+
+        return SolveEquationToGet(GetConverse(operand1, equation.Operator, expectedResult), equation.Operand2);
+
+    }
+
+    private long GetConverse(string @operator, long previousResult, long expectedResult) => @operator switch
+    {
+        "+" => expectedResult - previousResult,
+        "-" => expectedResult + previousResult,
+        "*" => expectedResult / previousResult,
+        _ => expectedResult * previousResult,
+    };
+
+    private long GetConverse(long previousResult, string @operator, long expectedResult) => @operator switch
+    {
+        "+" => expectedResult - previousResult,
+        "-" => previousResult - expectedResult,
+        "*" => expectedResult / previousResult,
+        _ => expectedResult / previousResult,
+    };
+
 
     private long SolveEquation(string monkeyName)
     {
@@ -81,40 +131,11 @@ public class MonkeyHumanMath
         };
     }
 
-    private long SolveEquationBackwards(string monkeyName, long expectedValue)
+
+
+/*
+    private long Operate(string operand1, string @operator, long operand2)
     {
-        if (monkeyName == "humn")
-        {
-            return expectedValue;
-        }
-
-        if (_numbers.TryGetValue(monkeyName, out var result))
-        {
-            return result;
-        }
-
-        var (operand1, @operator, operand2) = _operations[monkeyName];
-        if (operand1 == "humn")
-        {
-            return @operator switch
-            {
-                "+" => expectedValue - SolveEquation(operand2),
-                "-" => expectedValue + SolveEquation(operand2),
-                "*" => expectedValue / SolveEquation(operand2),
-                _ => expectedValue * SolveEquation(operand2)
-            };
-        }
-        else if (operand2 == "humn")
-        {
-            return @operator switch
-            {
-                "+" => expectedValue - SolveEquation(operand1),
-                "-" => expectedValue + SolveEquation(operand1),
-                "*" => expectedValue / SolveEquation(operand1),
-                _ => SolveEquation(operand1) / expectedValue
-            };
-        }
-
         return @operator switch
         {
             "+" => SolveEquation(operand1) + SolveEquation(operand2),
@@ -123,4 +144,46 @@ public class MonkeyHumanMath
             _ => SolveEquation(operand1) / SolveEquation(operand2)
         };
     }
+
+    private long SolveEquationWhenIncogniteIsInFirstArgument(string operand, string @operator, long expectedValue)
+    {
+        return @operator switch
+        {
+            "+" => expectedValue - SolveEquation(operand),
+            "-" => expectedValue + SolveEquation(operand),
+            "*" => expectedValue / SolveEquation(operand),
+            _ => expectedValue * SolveEquation(operand)
+        };
+    }
+
+    private long SolveEquationWhenIncogniteIsInSecondArgument(string operand, string @operator, long expectedValue)
+    {
+        return @operator switch
+        {
+            "+" => expectedValue - SolveEquation(operand),
+            "-" => expectedValue + SolveEquation(operand),
+            "*" => expectedValue / SolveEquation(operand),
+            _ => SolveEquation(operand) / expectedValue
+        };
+    }
+
+    private long SolveEquationBackwards(string monkeyName)
+    {
+        if (_numbers.TryGetValue(monkeyName, out var result))
+        {
+            return result;
+        }
+
+        var (operand1AsString, @operator, operand2AsString) = _operations[monkeyName];
+        if (operand1AsString == "humn")
+        {
+            return SolveEquationWhenIncogniteIsInFirstArgument(operand2AsString, @operator, expectedValue);
+        }
+        else if (operand2AsString == "humn")
+        {
+            return SolveEquationWhenIncogniteIsInSecondArgument(operand1AsString, @operator, expectedValue);
+        }
+
+        return SolveEquationWithHumanIncognite(operand1AsString, @operator, operand2AsString);
+    }*/
 }

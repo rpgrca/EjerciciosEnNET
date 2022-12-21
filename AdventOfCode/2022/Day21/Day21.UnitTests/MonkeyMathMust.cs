@@ -48,10 +48,27 @@ public class MonkeyMathMust
 
 public class MonkeyHumanMathMust
 {
-    [Fact]
-    public void Test1()
+    [Theory]
+    [InlineData("root: pppw + humn\npppw: 5\nhumn: 2", 5)]
+    [InlineData("root: pppw + zczc\nzczc: petr - humn\npppw: 5\nhumn: 2\npetr: 12", 7)]
+    [InlineData("root: pppw - zczc\nzczc: petr + humn\npppw: 16\nhumn: 2\npetr: 12", 4)]
+    [InlineData("root: pppw * zczc\nzczc: petr * humn\npppw: 36\nhumn: 3\npetr: 12", 3)]
+    [InlineData("root: pppw / zczc\nzczc: petr / humn\npppw: 48\nhumn: 16\npetr: 48", 1)]
+    [InlineData("root: humn + pppw\npppw: 5\nhumn: 2", 5)]
+    [InlineData("root: pppw + zczc\nzczc: humn - petr\npppw: 5\nhumn: 2\npetr: 12", 17)]
+    [InlineData("root: pppw - zczc\nzczc: humn + petr\npppw: 16\nhumn: 2\npetr: 12", 4)]
+    [InlineData("root: pppw * zczc\nzczc: humn * petr\npppw: 36\nhumn: 3\npetr: 12", 3)]
+    [InlineData("root: pppw / zczc\nzczc: humn / petr\npppw: 48\nhumn: 16\npetr: 48", 2304)]
+    public void Test1(string input, int expectedRoot)
     {
-        var sut = new MonkeyHumanMath("root: pppw + humn\npppw: 5\nhumn: 2");
-        Assert.Equal(5, sut.Root);
+        var sut = new MonkeyHumanMath(input);
+        Assert.Equal(expectedRoot, sut.Root);
+    }
+
+    [Fact]
+    public void SolveSecondSample()
+    {
+        var sut = new MonkeyHumanMath(SAMPLE_INPUT);
+        Assert.Equal(301, sut.Root);
     }
 }
