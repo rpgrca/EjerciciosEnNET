@@ -30,4 +30,11 @@ public class MonkeyMathMust
         var sut = new MonkeyMath("root: pppw + sjmn\npppw: cczh / lfqf\ncczh: 4\nlfqf: 2\nsjmn: 5");
         Assert.Equal(7, sut.Root);
     }
+
+    [Fact]
+    public void Test3()
+    {
+        var sut = new MonkeyMath(SAMPLE_INPUT);
+        Assert.Equal(152, sut.Root);
+    }
 }
