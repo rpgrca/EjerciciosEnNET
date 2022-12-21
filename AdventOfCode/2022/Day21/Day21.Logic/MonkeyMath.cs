@@ -30,24 +30,23 @@ public class MonkeyMath
             }
         }
 
-        var root = _operations["root"];
-        var firstValue = _numbers[root.Operand1];
-        var secondValue = _numbers[root.Operand2];
+        Root = SolveEquation("root");
+    }
 
-        switch (root.Operator)
+    private int SolveEquation(string monkeyName)
+    {
+        if (_numbers.TryGetValue(monkeyName, out var result))
         {
-            case "+":
-                Root = firstValue + secondValue;
-                break;
-            case "*":
-                Root = firstValue * secondValue;
-                break;
-            case "-":
-                Root = firstValue - secondValue;
-                break;
-            case "/":
-                Root = firstValue / secondValue;
-                break;
+            return result;
         }
+
+        var (operand1, @operator, operand2) = _operations[monkeyName];
+        return @operator switch
+        {
+            "+" => SolveEquation(operand1) + SolveEquation(operand2),
+            "-" => SolveEquation(operand1) - SolveEquation(operand2),
+            "*" => SolveEquation(operand1) * SolveEquation(operand2),
+            _ => SolveEquation(operand1) / SolveEquation(operand2)
+        };
     }
 }
