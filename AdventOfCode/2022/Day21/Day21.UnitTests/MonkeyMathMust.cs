@@ -32,9 +32,16 @@ public class MonkeyMathMust
     }
 
     [Fact]
-    public void Test3()
+    public void SolveFirstSample()
     {
         var sut = new MonkeyMath(SAMPLE_INPUT);
         Assert.Equal(152, sut.Root);
+    }
+
+    [Fact]
+    public void SolveFirstPuzzle()
+    {
+        var sut = new MonkeyMath(PUZZLE_INPUT);
+        Assert.Equal(145167969204648, sut.Root);
     }
 }

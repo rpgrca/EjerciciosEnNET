@@ -1,20 +1,21 @@
 namespace Day21.Logic;
+
 public class MonkeyMath
 {
     private readonly string _input;
     private readonly string[] _lines;
     private readonly string[] _fields;
-    private readonly Dictionary<string, int> _numbers;
+    private readonly Dictionary<string, long> _numbers;
     private readonly Dictionary<string, (string Operand1, string Operator, string Operand2)> _operations;
 
-    public int Root { get; set; }
+    public long Root { get; set; }
 
     public MonkeyMath(string input)
     {
         _input = input;
         _lines = _input.Split("\n");
 
-        _numbers = new Dictionary<string, int>();
+        _numbers = new Dictionary<string, long>();
         _operations = new Dictionary<string, (string Operand1, string Operator, string Operand2)>();
         foreach (var line in _lines)
         {
@@ -26,14 +27,14 @@ public class MonkeyMath
             }
             else
             {
-                _numbers.Add(_fields[0], int.Parse(subFields[0]));
+                _numbers.Add(_fields[0], long.Parse(subFields[0]));
             }
         }
 
         Root = SolveEquation("root");
     }
 
-    private int SolveEquation(string monkeyName)
+    private long SolveEquation(string monkeyName)
     {
         if (_numbers.TryGetValue(monkeyName, out var result))
         {
