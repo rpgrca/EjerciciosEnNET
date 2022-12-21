@@ -12,13 +12,22 @@ public class MonkeyMath
         _fields = _input.Split(": ");
 
         var subFields = _fields[1].Split(" ");
-        if (subFields[1] == "+")
+        switch (subFields[1])
         {
-            Root = int.Parse(subFields[0]) + int.Parse(subFields[2]);
-        }
-        else
-        {
-            Root = int.Parse(subFields[0]) * int.Parse(subFields[2]);
+            case "+":
+                Root = int.Parse(subFields[0]) + int.Parse(subFields[2]);
+                break;
+            case "*":
+                Root = int.Parse(subFields[0]) * int.Parse(subFields[2]);
+                break;
+
+            case "-":
+                Root = int.Parse(subFields[0]) - int.Parse(subFields[2]);
+                break;
+
+            case "/":
+                Root = int.Parse(subFields[0]) / int.Parse(subFields[2]);
+                break;
         }
     }
 
