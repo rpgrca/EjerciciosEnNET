@@ -6,10 +6,10 @@ namespace Day21.UnitTests;
 public class MonkeyMathMust
 {
     [Theory]
-    [InlineData("root: 5 + 2", 7)]
-    [InlineData("root: 3 * 5", 15)]
-    [InlineData("root: 3 - 5", -2)]
-    [InlineData("root: 10 / 5", 2)]
+    [InlineData("root: pppw + sjmn\npppw: 5\nsjmn: 2", 7)]
+    [InlineData("root: pppw * sjmn\npppw: 3\nsjmn: 5", 15)]
+    [InlineData("root: pppw - sjmn\npppw: 3\nsjmn: 5", -2)]
+    [InlineData("root: pppw / sjmn\npppw: 10\nsjmn: 2", 5)]
     public void Test1(string input, int expectedRoot)
     {
         var sut = new MonkeyMath(input);
