@@ -5,10 +5,12 @@ namespace Day21.UnitTests;
 
 public class MonkeyMathMust
 {
-    [Fact]
-    public void Test1()
+    [Theory]
+    [InlineData("root: 5 + 2", 7)]
+    [InlineData("root: 3 * 5", 15)]
+    public void Test1(string input, int expectedRoot)
     {
-        var sut = new MonkeyMath("root: 5 + 2");
-        Assert.Equal(7, sut.Root);
+        var sut = new MonkeyMath(input);
+        Assert.Equal(expectedRoot, sut.Root);
     }
 }
