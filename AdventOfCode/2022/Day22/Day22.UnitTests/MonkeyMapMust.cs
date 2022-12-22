@@ -11,6 +11,8 @@ public class MonkeyMapMust
         var sut = new MonkeyMap(SAMPLE_INPUT);
         Assert.Equal(12, sut.Height);
         Assert.Equal(16, sut.Width);
+        Assert.Equal(8, sut.StartingPointX);
+        Assert.Equal(0, sut.StartingPointY);
         Assert.Collection(sut.Steps,
             s1 => Assert.Equal(('F', 10), s1),
             s2 => Assert.Equal(('R', 90), s2),
@@ -26,4 +28,19 @@ public class MonkeyMapMust
             sc => Assert.Equal(('L', 90), sc),
             sd => Assert.Equal(('F', 5), sd));
     }
+
+    [Fact]
+    public void CalculateRightPositionCorrectly_WhenPathIsFreeAndNoWrapIsNeeded()
+    {
+        var sut = new MonkeyMap("....\n....\n....\n....\n\n3");
+        Assert.Equal(1000 * 1 + 4 * 4 + 0, sut.FinalPassword);
+    }
+
+    [Fact(Skip ="skip")]
+    public void CalculateRightPositionCorrectly_WhenPathIsBlocked()
+    {
+        var sut = new MonkeyMap("..#.\n....\n....\n....\n\n3");
+        Assert.Equal(1000 * 1 + 2 + 0, sut.FinalPassword);
+    }
+
 }

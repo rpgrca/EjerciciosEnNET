@@ -2,13 +2,18 @@ namespace Day22.Logic;
 
 public class MonkeyMap
 {
-    private string _input;
-    private string[] _lines;
-    private char[,] _map;
+    private readonly string _input;
+    private readonly string[] _lines;
+    private readonly char[,] _map;
+    private readonly Pointer _pointer;
 
-    public int Height { get; set; }
-    public int Width { get; set; }
+    public int StartingPointX { get; private set; }
+    public int StartingPointY { get; private set; }
+
+    public int Height { get; private set; }
+    public int Width { get; private set; }
     public List<(char Command, int Amount)> Steps { get; set; }
+    public int FinalPassword => _pointer.Decode();
 
     public MonkeyMap(string input)
     {
@@ -40,13 +45,22 @@ public class MonkeyMap
             }
         }
 
+        var originSet = false;
         y = 0;
         foreach (var line in _lines)
         {
             x = 0;
             foreach (var character in line)
             {
-                _map[y,x++] = character;
+                _map[y,x] = character;
+                if (! originSet && character == '.')
+                {
+                    originSet = true;
+                    StartingPointX = x;
+                    StartingPointY = y;
+                }
+
+                x++;
             }
         }
 
@@ -74,6 +88,12 @@ public class MonkeyMap
         if (! string.IsNullOrEmpty(accumulatedNumber))
         {
             Steps.Add(('F', int.Parse(accumulatedNumber)));
+        }
+
+        _pointer = new Pointer(_map);
+        foreach (var command in Steps)
+        {
+            _pointer.Move(command);
         }
     }
 }
