@@ -71,4 +71,11 @@ public class MonkeyHumanMathMust
         var sut = new MonkeyHumanMath(SAMPLE_INPUT);
         Assert.Equal(301, sut.Root);
     }
+
+    [Fact]
+    public void SolveSecondPuzzle()
+    {
+        var sut = new MonkeyHumanMath(PUZZLE_INPUT);
+        Assert.Equal(3330805295850, sut.Root);
+    }
 }
