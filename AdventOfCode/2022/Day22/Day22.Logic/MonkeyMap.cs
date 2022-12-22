@@ -62,8 +62,6 @@ public class MonkeyMap
 
                 x++;
             }
-
-            y++;
         }
 
         Steps = new List<(char Command, int Amount)>();

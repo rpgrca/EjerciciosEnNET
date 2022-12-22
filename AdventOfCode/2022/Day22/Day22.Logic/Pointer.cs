@@ -19,6 +19,7 @@ internal class Pointer
     public Pointer(char[,] map, int startingX, int startingY)
     {
         _map = map;
+        Facing = Direction.Right;
         X = startingX;
         Y = startingY;
     }
@@ -37,6 +38,10 @@ internal class Pointer
                         }
                         break;
                     case Direction.Down:
+                        for (var step = 0; step < command.Amount; step++)
+                        {
+                            Y = GetLocationDownOfMyself();
+                        }
                         break;
                     case Direction.Left:
                         for (var step = 0; step < command.Amount; step++)
@@ -104,6 +109,29 @@ internal class Pointer
         return newX;
     }
 
+    private int GetLocationDownOfMyself()
+    {
+        var newY = Y + 1;
+        if (newY >= _map.GetLength(0))
+        {
+            return WrapDown();
+        }
+        else
+        {
+            if (_map[newY,X] == '#')
+            {
+                return Y;
+            }
+
+            if (_map[newY,X] == ' ')
+            {
+                return WrapDown();
+            }
+        }
+
+        return newY;
+    }
+
     private int WrapRight()
     {
         var x = 0;
@@ -134,6 +162,22 @@ internal class Pointer
         }
 
         return x;
+    }
+
+    private int WrapDown()
+    {
+        var y = 0;
+        while (_map[y, X] == ' ')
+        {
+            y++;
+        }
+
+        if (_map[y, X] == '#')
+        {
+            return Y;
+        }
+
+        return y;
     }
 
     public int Decode() => 1000 * (Y + 1) + 4 * (X + 1) + (int)Facing;
