@@ -93,5 +93,59 @@ public class MonkeyMapMust
         Assert.Equal(1000 * 1 + 5 * 4 + 0, sut.FinalPassword);
     }
 
+    [Fact]
+    public void CalculateLeftPositionCorrectly_WhenPathIsFreeAndNoWrapIsNeeded()
+    {
+        var sut = new MonkeyMap(".....\n.....\n.....\n.....\n.....\n\n4RR3");
+        sut.Run();
+        Assert.Equal(1000 * 1 + 2 * 4 + 2, sut.FinalPassword);
+    }
 
+    [Fact]
+    public void CalculateLeftPositionCorrectly_WhenPathIsBlocked()
+    {
+        var sut = new MonkeyMap("#....\n.....\n.....\n.....\n.....\n\n2RR5");
+        sut.Run();
+        Assert.Equal(1000 * 1 + 2 * 4 + 2, sut.FinalPassword);
+    }
+
+    [Fact]
+    public void CalculateLeftPositionCorrectly_WhenWrappingWithoutBlank()
+    {
+        var sut = new MonkeyMap(".....\n.....\n.....\n.....\n.....\n\nRR2");
+        sut.Run();
+        Assert.Equal(1000 * 1 + 4 * 4 + 2, sut.FinalPassword);
+    }
+
+    [Fact]
+    public void CalculateLeftPositionCorrectly_WhenWrappingAndEmptySpaceIsAtEnd()
+    {
+        var sut = new MonkeyMap(".....    \n.....    \n.....\n.....\n.....\n\nLL7");
+        sut.Run();
+        Assert.Equal(1000 * 1 + 4 * 4 + 2, sut.FinalPassword);
+    }
+
+    [Fact]
+    public void CalculateLeftPositionCorrectly_WhenWrappingAndEmptySpaceIsAtBeginning()
+    {
+        var sut = new MonkeyMap("    .....\n    .....\n.....\n.....\n.....\n\nLRRR2");
+        sut.Run();
+        Assert.Equal(1000 * 1 + 8 * 4 + 2, sut.FinalPassword);
+    }
+
+    [Fact]
+    public void CalculateLeftPositionCorrectly_WhenWrappingAndEmptySpaceAllAround()
+    {
+        var sut = new MonkeyMap("    .....     \n    .....     \n.....\n.....\n.....\n\nRLLL7");
+        sut.Run();
+        Assert.Equal(1000 * 1 + 8 * 4 + 2, sut.FinalPassword);
+    }
+
+    [Fact]
+    public void DoNotWrapPosition_WhenGoingLeftAndIsBlockedOnOtherSide()
+    {
+        var sut = new MonkeyMap("....#\n.....\n.....\n.....\n.....\n\nLL3");
+        sut.Run();
+        Assert.Equal(1000 * 1 + 1 * 4 + 2, sut.FinalPassword);
+    }
 }

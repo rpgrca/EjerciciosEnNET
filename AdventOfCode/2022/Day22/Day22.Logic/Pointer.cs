@@ -39,10 +39,22 @@ internal class Pointer
                     case Direction.Down:
                         break;
                     case Direction.Left:
+                        for (var step = 0; step < command.Amount; step++)
+                        {
+                            X = GetLocationLeftOfMyself();
+                        }
                         break;
                     case Direction.Up:
                         break;
                 }
+                break;
+
+            case 'R':
+                Facing = (Direction)(((int)Facing + 1) % 4);
+                break;
+
+            case 'L':
+                Facing = (Direction)(((int)Facing + 3) % 4);
                 break;
         }
     }
@@ -69,12 +81,51 @@ internal class Pointer
         return X + 1;
     }
 
+    private int GetLocationLeftOfMyself()
+    {
+        var newX = X - 1;
+        if (newX < 0)
+        {
+            return WrapLeft();
+        }
+        else
+        {
+            if (_map[Y,newX] == '#')
+            {
+                return X;
+            }
+
+            if (_map[Y,newX] == ' ')
+            {
+                return WrapLeft();
+            }
+        }
+
+        return newX;
+    }
+
     private int WrapRight()
     {
         var x = 0;
         while (_map[Y, x] == ' ')
         {
             x++;
+        }
+
+        if (_map[Y, x] == '#')
+        {
+            return X;
+        }
+
+        return x;
+    }
+
+    private int WrapLeft()
+    {
+        var x = _map.GetLength(1) - 1;
+        while (_map[Y, x] == ' ')
+        {
+            x--;
         }
 
         if (_map[Y, x] == '#')
