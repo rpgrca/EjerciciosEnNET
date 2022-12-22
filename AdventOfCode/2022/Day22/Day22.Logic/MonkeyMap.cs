@@ -93,17 +93,16 @@ public class MonkeyMap
         {
             Steps.Add(('F', int.Parse(accumulatedNumber)));
         }
+
+        _pointer = new Pointer(_map, StartingPointX, StartingPointY);
     }
 
     public void Run()
     {
-        _pointer = new Pointer(_map, StartingPointX, StartingPointY);
         foreach (var command in Steps)
         {
             _pointer.Move(command);
         }
-
-        Display();
     }
 
     private void Display()
