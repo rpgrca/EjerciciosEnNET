@@ -40,7 +40,7 @@ internal class Pointer
                     case Direction.Down:
                         for (var step = 0; step < command.Amount; step++)
                         {
-                            Y = GetLocationDownOfMyself();
+                            Y = GetLocationBelowMyself();
                         }
                         break;
                     case Direction.Left:
@@ -50,6 +50,10 @@ internal class Pointer
                         }
                         break;
                     case Direction.Up:
+                        for (var step = 0; step < command.Amount; step++)
+                        {
+                            Y = GetLocationAboveMyself();
+                        }
                         break;
                 }
                 break;
@@ -109,12 +113,35 @@ internal class Pointer
         return newX;
     }
 
-    private int GetLocationDownOfMyself()
+    private int GetLocationBelowMyself()
     {
         var newY = Y + 1;
         if (newY >= _map.GetLength(0))
         {
             return WrapDown();
+        }
+        else
+        {
+            if (_map[newY,X] == '#')
+            {
+                return Y;
+            }
+
+            if (_map[newY,X] == ' ')
+            {
+                return WrapDown();
+            }
+        }
+
+        return newY;
+    }
+
+    private int GetLocationAboveMyself()
+    {
+        var newY = Y - 1;
+        if (newY < 0)
+        {
+            return WrapUp();
         }
         else
         {
@@ -170,6 +197,22 @@ internal class Pointer
         while (_map[y, X] == ' ')
         {
             y++;
+        }
+
+        if (_map[y, X] == '#')
+        {
+            return Y;
+        }
+
+        return y;
+    }
+
+    private int WrapUp()
+    {
+        var y = _map.GetLength(0) - 1;
+        while (_map[y, X] == ' ')
+        {
+            y--;
         }
 
         if (_map[y, X] == '#')

@@ -200,4 +200,57 @@ public class MonkeyMapMust
         sut.Run();
         Assert.Equal(1000 * 5 + 2 * 4 + 1, sut.FinalPassword);
     }
+
+    [Fact]
+    public void CalculateUpPositionCorrectly_WhenPathIsFreeAndNoWrapIsNeeded()
+    {
+        var sut = new MonkeyMap(".....\n.....\n.....\n.....\n.....\n\nL3");
+        sut.Run();
+        Assert.Equal(1000 * 3 + 1 * 4 + 3, sut.FinalPassword);
+    }
+
+    [Fact]
+    public void CalculateUpPositionCorrectly_WhenPathIsBlocked()
+    {
+        var sut = new MonkeyMap(".....\n.....\n#....\n.....\n.....\n\n1R3R1R4");
+        sut.Run();
+        Assert.Equal(1000 * 4 + 1 * 4 + 3, sut.FinalPassword);
+    }
+
+    [Fact]
+    public void CalculateUpPositionCorrectly_WhenWrappingWithoutBlank()
+    {
+        var sut = new MonkeyMap(".....\n.....\n.....\n.....\n.....\n\nL7");
+        sut.Run();
+        Assert.Equal(1000 * 4 + 1 * 4 + 3, sut.FinalPassword);
+    }
+
+    [Fact]
+    public void CalculateUpPositionCorrectly_WhenWrappingAndEmptySpaceIsAtEnd()
+    {
+        var sut = new MonkeyMap(".....\n.....\n.....\n     .....\n     .....\n     .....\n     .....\n\nL7");
+        sut.Run();
+        Assert.Equal(1000 * 3 + 1 * 4 + 3, sut.FinalPassword);
+    }
+
+    [Fact]
+    public void CalculateUpPositionCorrectly_WhenWrappingAndEmptySpaceIsAtBeginning()
+    {
+        Assert.False("Impossible case" == "");
+    }
+
+    [Fact]
+    public void CalculateUpPositionCorrectly_WhenWrappingAndEmptySpaceAllAround()
+    {
+        Assert.False("Impossible case" == "");
+    }
+
+    [Fact]
+    public void DoNotWrapPosition_WhenGoingUpAndIsBlockedOnOtherSide()
+    {
+        var sut = new MonkeyMap(".....\n.....\n.....\n.....\n#....\n\nL3");
+        sut.Run();
+        Assert.Equal(1000 * 1 + 1 * 4 + 3, sut.FinalPassword);
+    }
+
 }
