@@ -47,6 +47,18 @@ internal class Pointer
 
     private int GetLocationRightOfMyself()
     {
+        if (X + 1 >= _map.GetLength(0))
+        {
+            for (var x = 0; x < _map.Length; x++)
+            {
+                if (_map[Y, x] == '.')
+                {
+                    X = x;
+                    return X;
+                }
+            }
+        }
+
         if (_map[Y,X + 1] == '#')
         {
             return X;

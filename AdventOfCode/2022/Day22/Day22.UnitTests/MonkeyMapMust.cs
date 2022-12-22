@@ -45,4 +45,12 @@ public class MonkeyMapMust
         Assert.Equal(1000 * 1 + 2 * 4 + 0, sut.FinalPassword);
     }
 
+    [Fact]
+    public void CalculateRightPositionCorrectly_WhenWrapping()
+    {
+        var sut = new MonkeyMap(".....\n.....\n.....\n.....\n.....\n\n7");
+        sut.Run();
+        Assert.Equal(1000 * 1 + 3 * 4 + 0, sut.FinalPassword);
+    }
+
 }
