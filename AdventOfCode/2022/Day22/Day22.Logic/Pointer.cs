@@ -49,8 +49,13 @@ internal class Pointer
     {
         if (X + 1 >= _map.GetLength(0))
         {
-            for (var x = 0; x < _map.Length; x++)
+            for (var x = 0; x < _map.GetLength(0); x++)
             {
+                if (_map[Y, x] == '#')
+                {
+                    return X;
+                }
+
                 if (_map[Y, x] == '.')
                 {
                     X = x;
