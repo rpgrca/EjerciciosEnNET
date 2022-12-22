@@ -15,6 +15,8 @@ internal class Pointer
     public int X { get; private set; }
     public int Y { get; private set; }
     public Direction Facing { get; private set; }
+    public Dictionary<(int X, int Y), char> VisitedTiles { get; }
+    public List<(int X, int Y, char Direction)> Movements { get; }
 
     public Pointer(char[,] map, int startingX, int startingY)
     {
@@ -22,6 +24,8 @@ internal class Pointer
         Facing = Direction.Right;
         X = startingX;
         Y = startingY;
+        VisitedTiles = new Dictionary<(int X, int Y), char>();
+        Movements = new List<(int X, int Y, char Direction)>();
     }
 
     public void Move((char Command, int Amount) command)
@@ -29,166 +33,95 @@ internal class Pointer
         switch (command.Command)
         {
             case 'F':
-                switch (Facing)
+                Action getLocation = Facing switch
                 {
-                    case Direction.Right:
-                        for (var step = 0; step < command.Amount; step++)
-                        {
-                            X = GetLocationRightOfMyself();
-                        }
-                        break;
-                    case Direction.Down:
-                        for (var step = 0; step < command.Amount; step++)
-                        {
-                            Y = GetLocationBelowMyself();
-                        }
-                        break;
-                    case Direction.Left:
-                        for (var step = 0; step < command.Amount; step++)
-                        {
-                            X = GetLocationLeftOfMyself();
-                        }
-                        break;
-                    case Direction.Up:
-                        for (var step = 0; step < command.Amount; step++)
-                        {
-                            Y = GetLocationAboveMyself();
-                        }
-                        break;
+                    Direction.Right => () => X = GetLocationRightOfMyself(),
+                    Direction.Down => () => Y = GetLocationBelowMyself(),
+                    Direction.Left => () => X = GetLocationLeftOfMyself(),
+                    _ => () => Y = GetLocationAboveMyself(),
+                };
+
+                for (var step = 0; step < command.Amount; step++)
+                {
+                    getLocation();
+                    RecordPosition();
                 }
                 break;
 
             case 'R':
                 Facing = (Direction)(((int)Facing + 1) % 4);
+                RecordPosition();
                 break;
 
             case 'L':
                 Facing = (Direction)(((int)Facing + 3) % 4);
+                RecordPosition();
                 break;
+
+            default:
+                throw new ArgumentException();
         }
     }
 
     private int GetLocationRightOfMyself()
     {
-        if (X + 1 >= _map.GetLength(1))
+        var newX = X + 1;
+        if (_map[Y, newX] == ' ')
         {
             return WrapRight();
         }
-        else
-        {
-            if (_map[Y,X + 1] == '#')
-            {
-                return X;
-            }
 
-            if (_map[Y,X + 1] == ' ')
-            {
-                return WrapRight();
-            }
-        }
-
-        return X + 1;
+        return _map[Y, newX] == '#' ? X : newX;
     }
 
     private int GetLocationLeftOfMyself()
     {
         var newX = X - 1;
-        if (newX < 0)
+        if (_map[Y, newX] == ' ')
         {
             return WrapLeft();
         }
-        else
-        {
-            if (_map[Y,newX] == '#')
-            {
-                return X;
-            }
 
-            if (_map[Y,newX] == ' ')
-            {
-                return WrapLeft();
-            }
-        }
-
-        return newX;
+        return _map[Y, newX] == '#' ? X : newX;
     }
 
     private int GetLocationBelowMyself()
     {
         var newY = Y + 1;
-        if (newY >= _map.GetLength(0))
+        if (_map[newY, X] == ' ')
         {
             return WrapDown();
         }
-        else
-        {
-            if (_map[newY,X] == '#')
-            {
-                return Y;
-            }
 
-            if (_map[newY,X] == ' ')
-            {
-                return WrapDown();
-            }
-        }
-
-        return newY;
+        return _map[newY,X] == '#' ? Y : newY;
     }
 
     private int GetLocationAboveMyself()
     {
         var newY = Y - 1;
-        if (newY < 0)
+        if (_map[newY, X] == ' ')
         {
             return WrapUp();
         }
-        else
-        {
-            if (_map[newY,X] == '#')
-            {
-                return Y;
-            }
 
-            if (_map[newY,X] == ' ')
-            {
-                return WrapDown();
-            }
-        }
-
-        return newY;
+        return _map[newY,X] == '#' ? Y : newY;
     }
 
-    private int WrapRight()
+    private int WrapRight() =>
+        WrapHorizontally(() => 1, x => x + 1);
+
+    private int WrapLeft() =>
+        WrapHorizontally(() => _map.GetLength(1) - 2, x => x - 1);
+
+    private int WrapHorizontally(Func<int> initializer, Func<int, int> modifier)
     {
-        var x = 0;
-        while (_map[Y, x] == ' ')
+        var wrappedX = initializer();
+        while (_map[Y, wrappedX] == ' ')
         {
-            x++;
+            wrappedX = modifier(wrappedX);
         }
 
-        if (_map[Y, x] == '#')
-        {
-            return X;
-        }
-
-        return x;
-    }
-
-    private int WrapLeft()
-    {
-        var x = _map.GetLength(1) - 1;
-        while (_map[Y, x] == ' ')
-        {
-            x--;
-        }
-
-        if (_map[Y, x] == '#')
-        {
-            return X;
-        }
-
-        return x;
+        return _map[Y, wrappedX] == '#' ? X : wrappedX;
     }
 
     private int WrapDown()
@@ -199,17 +132,12 @@ internal class Pointer
             y++;
         }
 
-        if (_map[y, X] == '#')
-        {
-            return Y;
-        }
-
-        return y;
+        return _map[y, X] == '#' ? Y : y;
     }
 
     private int WrapUp()
     {
-        var y = _map.GetLength(0) - 1;
+        var y = _map.GetLength(0)- 1;
         while (_map[y, X] == ' ')
         {
             y--;
@@ -223,5 +151,25 @@ internal class Pointer
         return y;
     }
 
-    public int Decode() => 1000 * (Y + 1) + 4 * (X + 1) + (int)Facing;
+    public long Decode() => 1000 * Y + 4 * X + (int)Facing;
+
+    private void RecordPosition()
+    {
+        var direction = Facing switch {
+            Direction.Down => 'v',
+            Direction.Up => '^',
+            Direction.Left => '<',
+            _ => '>'
+        };
+
+        Movements.Add((X, Y, direction));
+        if (VisitedTiles.ContainsKey((X, Y)))
+        {
+            VisitedTiles[(X, Y)] = direction;
+        }
+        else
+        {
+            VisitedTiles.Add((X, Y), direction);
+        }
+    }
 }

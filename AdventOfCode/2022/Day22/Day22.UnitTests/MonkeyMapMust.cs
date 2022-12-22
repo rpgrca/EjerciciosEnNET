@@ -11,8 +11,8 @@ public class MonkeyMapMust
         var sut = new MonkeyMap(SAMPLE_INPUT);
         Assert.Equal(12, sut.Height);
         Assert.Equal(16, sut.Width);
-        Assert.Equal(8, sut.StartingPointX);
-        Assert.Equal(0, sut.StartingPointY);
+        Assert.Equal(9, sut.StartingPointX);
+        Assert.Equal(1, sut.StartingPointY);
         Assert.Collection(sut.Steps,
             s1 => Assert.Equal(('F', 10), s1),
             s2 => Assert.Equal(('R', 90), s2),
@@ -33,8 +33,8 @@ public class MonkeyMapMust
     public void LoadMapCorrectly_WhenStartingPointIsBlocked()
     {
         var sut = new MonkeyMap("#....\n.....\n.....\n.....\n.....\n\n9");
-        Assert.Equal(1, sut.StartingPointX);
-        Assert.Equal(0, sut.StartingPointY);
+        Assert.Equal(2, sut.StartingPointX);
+        Assert.Equal(1, sut.StartingPointY);
     }
 
     [Fact]
@@ -259,5 +259,25 @@ public class MonkeyMapMust
         var sut = new MonkeyMap(SAMPLE_INPUT);
         sut.Run();
         Assert.Equal(6032, sut.FinalPassword);
+    }
+
+    [Fact]
+    public void LoadPuzzleMapCorrectly()
+    {
+        var sut = new MonkeyMap(PUZZLE_INPUT);
+        Assert.Equal(200, sut.Height);
+        Assert.Equal(150, sut.Width);
+        Assert.Equal(51, sut.StartingPointX);
+        Assert.Equal(1, sut.StartingPointY);
+        Assert.Equal(4001, sut.Steps.Count);
+    }
+
+    [Fact]
+    public void SolveFirstPuzzle()
+    {
+        var sut = new MonkeyMap(PUZZLE_INPUT);
+        sut.Run();
+        Assert.True(21386 < sut.FinalPassword);
+        Assert.Equal(123046, sut.FinalPassword);
     }
 }

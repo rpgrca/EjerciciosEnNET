@@ -4,6 +4,8 @@ public class MonkeyMap
 {
     private readonly string _input;
     private readonly string[] _lines;
+    private readonly int _heightWithWrap;
+    private readonly int _widthWithWrap;
     private readonly char[,] _map;
     private Pointer _pointer;
 
@@ -13,7 +15,7 @@ public class MonkeyMap
     public int Height { get; private set; }
     public int Width { get; private set; }
     public List<(char Command, int Amount)> Steps { get; set; }
-    public int FinalPassword => _pointer.Decode();
+    public long FinalPassword => _pointer.Decode();
 
     public MonkeyMap(string input)
     {
@@ -35,22 +37,24 @@ public class MonkeyMap
             Height++;
         }
 
-        _map = new char[Height,Width];
+        _heightWithWrap = Height + 2;
+        _widthWithWrap = Width + 2;
+        _map = new char[_heightWithWrap, _widthWithWrap];
+
         int x, y;
-        for (y = 0; y < Height; y++)
+        for (y = 0; y < _heightWithWrap; y++)
         {
-            for (x = 0; x < Width; x++)
+            for (x = 0; x < _widthWithWrap; x++)
             {
                 _map[y,x] = ' ';
             }
         }
 
         var originSet = false;
-        y = 0;
-        for (y = 0; y < Height; y++)
+        for (y = 1; y <= Height; y++)
         {
-            x = 0;
-            foreach (var character in _lines[y])
+            x = 1;
+            foreach (var character in _lines[y - 1])
             {
                 _map[y,x] = character;
                 if (! originSet && character == '.')
@@ -98,5 +102,34 @@ public class MonkeyMap
         {
             _pointer.Move(command);
         }
+
+        Display();
+    }
+
+    private void Display()
+    {
+        var stringBuilder = new System.Text.StringBuilder();
+        for (var y = 1; y <= Height; y++)
+        {
+            for (var x = 1; x <= Width; x++)
+            {
+                if (_pointer.X == x && _pointer.Y == y)
+                {
+                    stringBuilder.Append('X');
+                }
+                else if (_pointer.VisitedTiles.TryGetValue((x, y), out var direction))
+                {
+                    stringBuilder.Append(direction);
+                }
+                else
+                {
+                    stringBuilder.Append(_map[y,x]);
+                }
+            }
+
+            stringBuilder.Append('\n');
+        }
+
+        Console.WriteLine(stringBuilder.ToString());
     }
 }
