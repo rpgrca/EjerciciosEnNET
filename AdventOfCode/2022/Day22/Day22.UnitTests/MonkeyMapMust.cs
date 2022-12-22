@@ -253,4 +253,11 @@ public class MonkeyMapMust
         Assert.Equal(1000 * 1 + 1 * 4 + 3, sut.FinalPassword);
     }
 
+    [Fact]
+    public void SolveFirstSample()
+    {
+        var sut = new MonkeyMap(SAMPLE_INPUT);
+        sut.Run();
+        Assert.Equal(6032, sut.FinalPassword);
+    }
 }
