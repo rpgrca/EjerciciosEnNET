@@ -16,9 +16,11 @@ internal class Pointer
     public int Y { get; private set; }
     public Direction Facing { get; private set; }
 
-    public Pointer(char[,] map)
+    public Pointer(char[,] map, int startingX, int startingY)
     {
         _map = map;
+        X = startingX;
+        Y = startingY;
     }
 
     public void Move((char Command, int Amount) command)
@@ -47,29 +49,40 @@ internal class Pointer
 
     private int GetLocationRightOfMyself()
     {
-        if (X + 1 >= _map.GetLength(0))
+        if (X + 1 >= _map.GetLength(1))
         {
-            for (var x = 0; x < _map.GetLength(0); x++)
+            return WrapRight();
+        }
+        else
+        {
+            if (_map[Y,X + 1] == '#')
             {
-                if (_map[Y, x] == '#')
-                {
-                    return X;
-                }
+                return X;
+            }
 
-                if (_map[Y, x] == '.')
-                {
-                    X = x;
-                    return X;
-                }
+            if (_map[Y,X + 1] == ' ')
+            {
+                return WrapRight();
             }
         }
 
-        if (_map[Y,X + 1] == '#')
+        return X + 1;
+    }
+
+    private int WrapRight()
+    {
+        var x = 0;
+        while (_map[Y, x] == ' ')
+        {
+            x++;
+        }
+
+        if (_map[Y, x] == '#')
         {
             return X;
         }
 
-        return X + 1;
+        return x;
     }
 
     public int Decode() => 1000 * (Y + 1) + 4 * (X + 1) + (int)Facing;

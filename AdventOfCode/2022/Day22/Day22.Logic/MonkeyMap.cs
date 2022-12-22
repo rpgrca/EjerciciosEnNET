@@ -95,7 +95,7 @@ public class MonkeyMap
 
     public void Run()
     {
-        _pointer = new Pointer(_map);
+        _pointer = new Pointer(_map, StartingPointX, StartingPointY);
         foreach (var command in Steps)
         {
             _pointer.Move(command);

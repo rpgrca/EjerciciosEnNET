@@ -6,7 +6,7 @@ namespace Day22.UnitTests;
 public class MonkeyMapMust
 {
     [Fact]
-    public void LoadMapCorrectly1()
+    public void LoadMapCorrectly()
     {
         var sut = new MonkeyMap(SAMPLE_INPUT);
         Assert.Equal(12, sut.Height);
@@ -30,6 +30,14 @@ public class MonkeyMapMust
     }
 
     [Fact]
+    public void LoadMapCorrectly_WhenStartingPointIsBlocked()
+    {
+        var sut = new MonkeyMap("#....\n.....\n.....\n.....\n.....\n\n9");
+        Assert.Equal(1, sut.StartingPointX);
+        Assert.Equal(0, sut.StartingPointY);
+    }
+
+    [Fact]
     public void CalculateRightPositionCorrectly_WhenPathIsFreeAndNoWrapIsNeeded()
     {
         var sut = new MonkeyMap(".....\n.....\n.....\n.....\n.....\n\n3");
@@ -46,11 +54,35 @@ public class MonkeyMapMust
     }
 
     [Fact]
-    public void CalculateRightPositionCorrectly_WhenWrapping()
+    public void CalculateRightPositionCorrectly_WhenWrappingWithoutBlank()
     {
         var sut = new MonkeyMap(".....\n.....\n.....\n.....\n.....\n\n7");
         sut.Run();
         Assert.Equal(1000 * 1 + 3 * 4 + 0, sut.FinalPassword);
+    }
+
+    [Fact]
+    public void CalculateRightPositionCorrectly_WhenWrappingAndEmptySpaceIsAtEnd()
+    {
+        var sut = new MonkeyMap(".....    \n.....    \n.....\n.....\n.....\n\n7");
+        sut.Run();
+        Assert.Equal(1000 * 1 + 3 * 4 + 0, sut.FinalPassword);
+    }
+
+    [Fact]
+    public void CalculateRightPositionCorrectly_WhenWrappingAndEmptySpaceIsAtBeginning()
+    {
+        var sut = new MonkeyMap("    .....\n    .....\n.....\n.....\n.....\n\n7");
+        sut.Run();
+        Assert.Equal(1000 * 1 + 7 * 4 + 0, sut.FinalPassword);
+    }
+
+    [Fact]
+    public void CalculateRightPositionCorrectly_WhenWrappingAndEmptySpaceAllAround()
+    {
+        var sut = new MonkeyMap("    .....     \n    .....     \n.....\n.....\n.....\n\n7");
+        sut.Run();
+        Assert.Equal(1000 * 1 + 7 * 4 + 0, sut.FinalPassword);
     }
 
     [Fact]
