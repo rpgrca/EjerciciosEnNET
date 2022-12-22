@@ -8,6 +8,7 @@ public class MonkeyMap
 
     public int Height { get; set; }
     public int Width { get; set; }
+    public List<(char Command, int Amount)> Steps { get; set; }
 
     public MonkeyMap(string input)
     {
@@ -47,6 +48,32 @@ public class MonkeyMap
             {
                 _map[y,x++] = character;
             }
+        }
+
+        Steps = new List<(char Command, int Amount)>();
+
+        var accumulatedNumber = string.Empty;
+        foreach (var character in _lines[Height + 1])
+        {
+            if (character == 'R' || character == 'L')
+            {
+                if (! string.IsNullOrEmpty(accumulatedNumber))
+                {
+                    Steps.Add(('F', int.Parse(accumulatedNumber)));
+                    accumulatedNumber = string.Empty;
+                }
+
+                Steps.Add((character, 90));
+            }
+            else
+            {
+                accumulatedNumber += character;
+            }
+        }
+
+        if (! string.IsNullOrEmpty(accumulatedNumber))
+        {
+            Steps.Add(('F', int.Parse(accumulatedNumber)));
         }
     }
 }
