@@ -32,15 +32,17 @@ public class MonkeyMapMust
     [Fact]
     public void CalculateRightPositionCorrectly_WhenPathIsFreeAndNoWrapIsNeeded()
     {
-        var sut = new MonkeyMap("....\n....\n....\n....\n\n3");
+        var sut = new MonkeyMap(".....\n.....\n.....\n.....\n.....\n\n3");
+        sut.Run();
         Assert.Equal(1000 * 1 + 4 * 4 + 0, sut.FinalPassword);
     }
 
-    [Fact(Skip ="skip")]
+    [Fact]
     public void CalculateRightPositionCorrectly_WhenPathIsBlocked()
     {
-        var sut = new MonkeyMap("..#.\n....\n....\n....\n\n3");
-        Assert.Equal(1000 * 1 + 2 + 0, sut.FinalPassword);
+        var sut = new MonkeyMap("..#..\n.....\n.....\n.....\n.....\n\n3");
+        sut.Run();
+        Assert.Equal(1000 * 1 + 2 * 4 + 0, sut.FinalPassword);
     }
 
 }

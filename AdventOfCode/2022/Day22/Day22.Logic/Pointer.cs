@@ -47,6 +47,11 @@ internal class Pointer
 
     private int GetLocationRightOfMyself()
     {
+        if (_map[Y,X + 1] == '#')
+        {
+            return X;
+        }
+
         return X + 1;
     }
 

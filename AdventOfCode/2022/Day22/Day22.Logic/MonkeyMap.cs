@@ -5,7 +5,7 @@ public class MonkeyMap
     private readonly string _input;
     private readonly string[] _lines;
     private readonly char[,] _map;
-    private readonly Pointer _pointer;
+    private Pointer _pointer;
 
     public int StartingPointX { get; private set; }
     public int StartingPointY { get; private set; }
@@ -47,10 +47,10 @@ public class MonkeyMap
 
         var originSet = false;
         y = 0;
-        foreach (var line in _lines)
+        for (y = 0; y < Height; y++)
         {
             x = 0;
-            foreach (var character in line)
+            foreach (var character in _lines[y])
             {
                 _map[y,x] = character;
                 if (! originSet && character == '.')
@@ -62,6 +62,8 @@ public class MonkeyMap
 
                 x++;
             }
+
+            y++;
         }
 
         Steps = new List<(char Command, int Amount)>();
@@ -89,7 +91,10 @@ public class MonkeyMap
         {
             Steps.Add(('F', int.Parse(accumulatedNumber)));
         }
+    }
 
+    public void Run()
+    {
         _pointer = new Pointer(_map);
         foreach (var command in Steps)
         {
