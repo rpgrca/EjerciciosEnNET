@@ -60,8 +60,15 @@ public class UnstableDiffusionMust
     {
         var sut = new UnstableDiffusion(PUZZLE_INPUT, 20);
         sut.Round(10);
-        Console.WriteLine(sut.GetImage());
         Assert.True(3875 < sut.CalculateEmptyGround());
         Assert.Equal(3923, sut.CalculateEmptyGround());
+    }
+
+    [Fact]
+    public void SolveSecondSample()
+    {
+        var sut = new UnstableDiffusion(SAMPLE_INPUT);
+        var round = sut.RoundUntilQuiet();
+        Assert.Equal(20, round);
     }
 }

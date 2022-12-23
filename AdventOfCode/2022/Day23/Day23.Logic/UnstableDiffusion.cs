@@ -15,6 +15,7 @@ public class UnstableDiffusion
     private string _input;
     private string[] _lines;
     private char[][] _map;
+    private int _lastRoundMovements;
 
     public int Height { get; set; }
     public int Width { get; set; }
@@ -119,6 +120,7 @@ public class UnstableDiffusion
         }
 
         _currentDirection = (Direction)(((int)_currentDirection + 1) % 4);
+        _lastRoundMovements = 0;
         foreach (var proposedMove in proposedMoves.GroupBy(p => p.Value).Where(p => p.Count() == 1))
         {
             var proposal = proposedMove.Single();
@@ -127,6 +129,8 @@ public class UnstableDiffusion
 
             Elves.Remove((proposal.Key.X, proposal.Key.Y));
             Elves.Add((proposal.Value.X, proposal.Value.Y));
+
+            _lastRoundMovements += 1;
         }
 
     }
@@ -225,5 +229,17 @@ public class UnstableDiffusion
         }
 
         return stringBuilder.ToString().Trim();
+    }
+
+    public int RoundUntilQuiet()
+    {
+        var rounds = 0;
+        do
+        {
+            Round(1);
+            rounds++;
+        } while (_lastRoundMovements > 0);
+
+        return rounds;
     }
 }
