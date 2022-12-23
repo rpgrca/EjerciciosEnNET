@@ -30,7 +30,7 @@ internal class Pointer3d : Pointer
             var transition = _transitions[_currentPlane][(int)Facing];
             var targetCoordinates = transition.Item3(sourcePlaneX, sourcePlaneY, _maximumX, _maximumY);
             var nextTile2 = _planes[transition.Item1][targetCoordinates.Item2][targetCoordinates.Item1];
-            if (nextTile2 != '#')
+            if (nextTile2 == '.')
             {
                 _currentPlane = transition.Item1;
                 return (targetCoordinates.Item1 + _origins[transition.Item1].TopX, targetCoordinates.Item2 + _origins[transition.Item1].TopY, transition.Item2);
@@ -42,7 +42,7 @@ internal class Pointer3d : Pointer
         }
 
         var nextTile = _planes[_currentPlane][sourcePlaneY][sourcePlaneX + 1];
-        return nextTile == '#' ? (X, Y, Facing) : (X + 1, Y, Facing);
+        return nextTile == '.' ? (X + 1, Y, Facing) : (X, Y, Facing);
     }
 
     protected override (int, int, Direction) GetLocationLeftOfMyself()
@@ -55,7 +55,7 @@ internal class Pointer3d : Pointer
             var transition = _transitions[_currentPlane][(int)Facing];
             var targetCoordinates = transition.Item3(sourcePlaneX, sourcePlaneY, _maximumX, _maximumY);
             var nextTile2 = _planes[transition.Item1][targetCoordinates.Item2][targetCoordinates.Item1];
-            if (nextTile2 != '#')
+            if (nextTile2 == '.')
             {
                 _currentPlane = transition.Item1;
                 return (targetCoordinates.Item1 + _origins[transition.Item1].TopX, targetCoordinates.Item2 + _origins[transition.Item1].TopY, transition.Item2);
@@ -67,7 +67,7 @@ internal class Pointer3d : Pointer
         }
 
         var nextTile = _planes[_currentPlane][sourcePlaneY][sourcePlaneX - 1];
-        return nextTile == '#' ? (X, Y, Facing) : (X - 1, Y, Facing);
+        return nextTile == '.' ? (X - 1, Y, Facing) : (X, Y, Facing);
     }
 
     protected override (int, int, Direction) GetLocationBelowMyself()
@@ -80,7 +80,7 @@ internal class Pointer3d : Pointer
             var transition = _transitions[_currentPlane][(int)Facing];
             var targetCoordinates = transition.Item3(sourcePlaneX, sourcePlaneY, _maximumX, _maximumY);
             var nextTile2 = _planes[transition.Item1][targetCoordinates.Item2][targetCoordinates.Item1];
-            if (nextTile2 != '#')
+            if (nextTile2 == '.')
             {
                 _currentPlane = transition.Item1;
                 return (targetCoordinates.Item1 + _origins[transition.Item1].TopX, targetCoordinates.Item2 + _origins[transition.Item1].TopY, transition.Item2);
@@ -92,7 +92,7 @@ internal class Pointer3d : Pointer
         }
 
         var nextTile = _planes[_currentPlane][sourcePlaneY + 1][sourcePlaneX];
-        return nextTile == '#' ? (X, Y, Facing) : (X, Y + 1, Facing);
+        return nextTile == '.' ? (X, Y + 1, Facing) : (X, Y, Facing);
     }
 
     protected override (int, int, Direction) GetLocationAboveMyself()
@@ -106,7 +106,7 @@ internal class Pointer3d : Pointer
             var targetCoordinates = transition.Item3(sourcePlaneX, sourcePlaneY, _maximumX, _maximumY);
 
             var nextTile2 = _planes[transition.Item1][targetCoordinates.Item2][targetCoordinates.Item1];
-            if (nextTile2 != '#')
+            if (nextTile2 == '.')
             {
                 _currentPlane = transition.Item1;
                 return (targetCoordinates.Item1 + _origins[transition.Item1].TopX, targetCoordinates.Item2 + _origins[transition.Item1].TopY, transition.Item2);
@@ -118,6 +118,6 @@ internal class Pointer3d : Pointer
         }
 
         var nextTile = _planes[_currentPlane][sourcePlaneY - 1][sourcePlaneX];
-        return nextTile == '#' ? (X, Y, Facing) : (X, Y - 1, Facing);
+        return nextTile == '.' ? (X, Y - 1, Facing) : (X, Y, Facing);
     }
 }
