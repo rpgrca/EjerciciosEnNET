@@ -46,4 +46,12 @@ public class UnstableDiffusionMust
         sut.Round(rounds);
         Assert.Equal(expectedImage, sut.GetImage());
     }
+
+    [Fact]
+    public void SolveFirstSample()
+    {
+        var sut = new UnstableDiffusion(SAMPLE_INPUT);
+        sut.Round(10);
+        Assert.Equal(110, sut.CalculateEmptyGround());
+    }
 }
