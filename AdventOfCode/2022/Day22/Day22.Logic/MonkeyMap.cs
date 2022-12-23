@@ -152,7 +152,7 @@ public class MonkeyMap3d
     public List<(char Command, int Amount)> Steps { get; set; }
     public long FinalPassword => _pointer.Decode();
 
-    public MonkeyMap3d(string input, string[][] planes, (int, Direction, Func<int, int, int, int, (int, int)>)[][] transitions, int maximumSize, int startingPlane)
+    public MonkeyMap3d(string input, string[][] planes, (int, Direction, Func<int, int, int, int, (int, int)>)[][] transitions, (int TopX, int TopY)[] origins, int maximumSize, int startingPlane)
     {
         _input = input;
         _maximumSize = maximumSize;
@@ -230,7 +230,7 @@ public class MonkeyMap3d
             Steps.Add(('F', int.Parse(accumulatedNumber)));
         }
 
-        _pointer = new Pointer3d(_map, planes, transitions, StartingPointX, StartingPointY, startingPlane);
+        _pointer = new Pointer3d(_map, planes, transitions, origins, StartingPointX, StartingPointY, startingPlane, maximumSize, maximumSize);
     }
 
     public void Run()

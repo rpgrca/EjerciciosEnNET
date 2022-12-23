@@ -24,69 +24,62 @@ public static class Constants
     {
         new string[]
         {
-            "      ",
-            " ...# ",
-            " .#.. ",
-            " #... ",
-            " .... ",
-            "      "
+            "...#",
+            ".#..",
+            "#...",
+            "....",
         },
         new string[]
         {
-            "      ",
-            " ...# ",
-            " .... ",
-            " ..#. ",
-            " .... ",
-            "      "
+            "...#",
+            "....",
+            "..#.",
+            "....",
         },
         new string[]
         {
-            "      ",
-            " .... ",
-            " .... ",
-            " ...# ",
-            " .... ",
-            "      "
+            "....",
+            "....",
+            "...#",
+            "....",
         },
         new string[]
         {
-            "      ",
-            " ...# ",
-            " #... ",
-            " .... ",
-            " ..#. ",
-            "      "
+            "...#",
+            "#...",
+            "....",
+            "..#.",
         },
         new string[]
         {
-            "      ",
-            " ...# ",
-            " .... ",
-            " .#.. ",
-            " .... ",
-            "      "
+            "...#",
+            "....",
+            ".#..",
+            "....",
         },
         new string[]
         {
-            "      ",
-            " .... ",
-            " .#.. ",
-            " .... ",
-            " ..#. ",
-            "      "
+            "....",
+            ".#..",
+            "....",
+            "..#.",
         }
     };
 
     public static readonly (int, Direction, Func<int, int, int, int, (int, int)>)[][] SAMPLE_TRANSITON =
     {
-        /*                                                                      →                                                    ↓                                                  ←                                                  ↑
-        /* 0 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (5, Direction.Left, (x, y, mx, my) => (mx, my - y)), (3, Direction.Down, (x, y, mx, my) => (x, 0)),       (2, Direction.Down, (x, y, mx, my) => (y, 0)),     (1, Direction.Up, (x, y, mx, my) => (mx, y)) },
-        /* 1 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (2, Direction.Right, (x, y, mx, my) => (0, y)),      (4, Direction.Up, (x, y, mx, my) => (mx, my - y)),   (5, Direction.Up, (x, y, mx, my) => (mx - y, my)), (0, Direction.Down, (x, y, mx, my) => (mx - x, 0)) },
-        /* 2 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (3, Direction.Right, (x, y, mx, my) => (0, y)),      (4, Direction.Right, (x, y, mx, my) => (0, mx - x)), (1, Direction.Left, (x, y, mx, my) => (mx, y)),    (0, Direction.Right, (x, y, mx, my) => (0, x)) },
-        /* 3 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (5, Direction.Down, (x, y, mx, my) => (my - y, 0)),  (4, Direction.Down, (x, y, mx, my) => (x, 0)),       (2, Direction.Left, (x, y, mx, my) => (mx, y)),    (0, Direction.Up, (x, y, mx, my) => (x, my)) },
-        /* 4 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (5, Direction.Left, (x, y, mx, my) => (0, y)),       (1, Direction.Up, (x, y, mx, my) => (mx - x, my)),   (2, Direction.Up, (x, y, mx, my) => (my - y, my)), (3, Direction.Up, (x, y, mx, my) => (x, my)) },
-        /* 5 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (0, Direction.Left, (x, y, mx, my) => (mx, my - y)), (1, Direction.Right, (x, y, mx, my) => (0, mx - x)), (4, Direction.Left, (x, y, mx, my) => (mx, y)),    (3, Direction.Left, (x, y, mx, my) => (mx, mx - x)) }
+        /*                                                                      →                                                        ↓                                                        ←                                                      ↑
+        /* 0 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (5, Direction.Left, (x, y, mx, my) => (mx - 1, my - y - 1)), (3, Direction.Down, (x, y, mx, my) => (x, 0)),             (2, Direction.Down, (x, y, mx, my) => (y, 0)),             (1, Direction.Up, (x, y, mx, my) => (mx - 1, y)) },
+        /* 1 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (2, Direction.Right, (x, y, mx, my) => (0, y)),              (4, Direction.Up, (x, y, mx, my) => (mx - 1, my - y - 1)), (5, Direction.Up, (x, y, mx, my) => (my - y - 1, my - 1)), (0, Direction.Down, (x, y, mx, my) => (mx - x - 1, 0)) },
+        /* 2 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (3, Direction.Right, (x, y, mx, my) => (0, y)),              (4, Direction.Right, (x, y, mx, my) => (0, mx - x - 1)),   (1, Direction.Left, (x, y, mx, my) => (mx - 1, y)),        (0, Direction.Right, (x, y, mx, my) => (0, x)) },
+        /* 3 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (5, Direction.Down, (x, y, mx, my) => (my - y - 1, 0)),      (4, Direction.Down, (x, y, mx, my) => (x, 0)),             (2, Direction.Left, (x, y, mx, my) => (mx - 1, y)),        (0, Direction.Up, (x, y, mx, my) => (x, my - 1)) },
+        /* 4 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (5, Direction.Left, (x, y, mx, my) => (0, y)),               (1, Direction.Up, (x, y, mx, my) => (mx - x - 1, my - 1)), (2, Direction.Up, (x, y, mx, my) => (my - y - 1, my - 1)), (3, Direction.Up, (x, y, mx, my) => (x, my - 1)) },
+        /* 5 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (0, Direction.Left, (x, y, mx, my) => (mx - 1, my - y - 1)), (1, Direction.Right, (x, y, mx, my) => (0, mx - x - 1)),   (4, Direction.Left, (x, y, mx, my) => (mx - 1, y)),        (3, Direction.Left, (x, y, mx, my) => (mx - 1, mx - x - 1)) }
+    };
+
+    public static readonly (int TopX, int TopY)[] SAMPLE_ORIGINS =
+    {
+        (9, 1), (1, 5), (5, 5), (9, 5), (9, 9), (13, 9)
     };
 
     public const string PUZZLE_INPUT = @"                                                  ....#..#..........#........#.#...........#.##.................#................#..#...............#.
