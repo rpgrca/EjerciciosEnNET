@@ -22,29 +22,28 @@ public class UnstableDiffusionMust
         Assert.Equal(3, sut.CalculateEmptyGround());
     }
 
-    [Fact]
-    public void ExecuteOneRoundCorrectly()
+    [Theory]
+    [InlineData(1, "..##.\n.....\n..#..\n...#.\n..#..\n.....")]
+    [InlineData(2, ".....\n..##.\n.#...\n....#\n.....\n..#..")]
+    [InlineData(3, "..#..\n....#\n#....\n....#\n.....\n..#..")]
+    public void ExecuteRoundsCorrectly_WhenUsingSimpleMap(int rounds, string expectedImage)
     {
         var sut = new UnstableDiffusion(SIMPLE_SAMPLE);
-        sut.Round(1);
-        Assert.Equal(@"..##.
-.....
-..#..
-...#.
-..#..
-.....", sut.GetImage());
+        sut.Round(rounds);
+        Assert.Equal(expectedImage, sut.GetImage());
     }
 
-    [Fact]
-    public void ExecuteTwoRoundsCorrectly()
+    [Theory]
+    [InlineData(1, "..............\n.......#......\n.....#...#....\n...#..#.#.....\n.......#..#...\n....#.#.##....\n..#..#.#......\n..#.#.#.##....\n..............\n....#..#......\n..............\n..............")]
+    [InlineData(2, "..............\n.......#......\n....#.....#...\n...#..#.#.....\n.......#...#..\n...#..#.#.....\n.#...#.#.#....\n..............\n..#.#.#.##....\n....#..#......\n..............\n..............")]
+    [InlineData(3, "..............\n.......#......\n.....#....#...\n..#..#...#....\n.......#...#..\n...#..#.#.....\n.#..#.....#...\n.......##.....\n..##.#....#...\n...#..........\n.......#......\n..............")]
+    [InlineData(4, "..............\n.......#......\n......#....#..\n..#...##......\n...#.....#.#..\n.........#....\n.#...###..#...\n..#......#....\n....##....#...\n....#.........\n.......#......\n..............")]
+    [InlineData(5, ".......#......\n..............\n..#..#.....#..\n.........#....\n......##...#..\n.#.#.####.....\n...........#..\n....##..#.....\n..#...........\n..........#...\n....#..#......\n..............")]
+    [InlineData(10, ".......#......\n...........#..\n..#.#..#......\n......#.......\n...#.....#..#.\n.#......##....\n.....##.......\n..#........#..\n....#.#..#....\n..............\n....#..#..#...\n..............")]
+    public void ExecuteRoundsCorrectly_WhenUsingSampleMap(int rounds, string expectedImage)
     {
-        var sut = new UnstableDiffusion(SIMPLE_SAMPLE);
-        sut.Round(2);
-        Assert.Equal(@".....
-..##.
-.#...
-....#
-.....
-..#..", sut.GetImage());
+        var sut = new UnstableDiffusion(SAMPLE_INPUT);
+        sut.Round(rounds);
+        Assert.Equal(expectedImage, sut.GetImage());
     }
 }
