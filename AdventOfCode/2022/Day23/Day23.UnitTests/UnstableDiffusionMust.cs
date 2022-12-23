@@ -23,16 +23,28 @@ public class UnstableDiffusionMust
     }
 
     [Fact]
-    public void Test1()
+    public void ExecuteOneRoundCorrectly()
     {
         var sut = new UnstableDiffusion(SIMPLE_SAMPLE);
-        sut.Round();
+        sut.Round(1);
         Assert.Equal(@"..##.
 .....
 ..#..
 ...#.
 ..#..
+.....", sut.GetImage());
+    }
+
+    [Fact]
+    public void ExecuteTwoRoundsCorrectly()
+    {
+        var sut = new UnstableDiffusion(SIMPLE_SAMPLE);
+        sut.Round(2);
+        Assert.Equal(@".....
+..##.
+.#...
+....#
 .....
-", sut.GetImage());
+..#..", sut.GetImage());
     }
 }

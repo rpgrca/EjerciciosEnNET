@@ -63,7 +63,15 @@ public class UnstableDiffusion
         return counter;
     }
 
-    public void Round()
+    public void Round(int amount)
+    {
+        while (amount-- > 0)
+        {
+            DoOneRound();
+        }
+    }
+
+    private void DoOneRound()
     {
         var proposedMoves = new Dictionary<(int X, int Y), (int X, int Y)>();
         foreach (var elf in Elves)
@@ -90,19 +98,20 @@ public class UnstableDiffusion
                 case Direction.East:
                     _ = ProposeEast(elf, proposedMoves) || ProposeNorth(elf, proposedMoves) || ProposeSouth(elf, proposedMoves) || ProposeWest(elf, proposedMoves);
                     break;
-
             }
         }
 
+        _currentDirection = (Direction)(((int)_currentDirection + 1) % 4);
         foreach (var proposedMove in proposedMoves.GroupBy(p => p.Value).Where(p => p.Count() == 1))
         {
             var proposal = proposedMove.Single();
             _map[proposal.Key.Y][proposal.Key.X] = '.';
             _map[proposal.Value.Y][proposal.Value.X] = '#';
 
-            Elves.Remove((proposal.Key.Y, proposal.Key.X));
+            Elves.Remove((proposal.Key.X, proposal.Key.Y));
             Elves.Add((proposal.Value.X, proposal.Value.Y));
         }
+
     }
 
     private bool ProposeNorth((int X, int Y) elf, Dictionary<(int X, int Y), (int X, int Y)> proposedMoves)
@@ -174,6 +183,6 @@ public class UnstableDiffusion
             stringBuilder.Append('\n');
         }
 
-        return stringBuilder.ToString();
+        return stringBuilder.ToString().Trim();
     }
 }
