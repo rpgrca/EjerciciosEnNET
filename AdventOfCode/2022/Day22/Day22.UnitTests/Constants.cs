@@ -1,8 +1,11 @@
+using Day22.Logic;
+
 namespace Day22.UnitTests;
 
 public static class Constants
 {
-    public const string SAMPLE_INPUT = @"        ...#
+    public const string SAMPLE_INPUT =
+@"        ...#
         .#..
         #...
         ....
@@ -16,6 +19,75 @@ public static class Constants
         ......#.
 
 10R5L5R10L4R5L5";
+
+    public static readonly string[][] SAMPLE_PLANES =
+    {
+        new string[]
+        {
+            "      ",
+            " ...# ",
+            " .#.. ",
+            " #... ",
+            " .... ",
+            "      "
+        },
+        new string[]
+        {
+            "      ",
+            " ...# ",
+            " .... ",
+            " ..#. ",
+            " .... ",
+            "      "
+        },
+        new string[]
+        {
+            "      ",
+            " .... ",
+            " .... ",
+            " ...# ",
+            " .... ",
+            "      "
+        },
+        new string[]
+        {
+            "      ",
+            " ...# ",
+            " #... ",
+            " .... ",
+            " ..#. ",
+            "      "
+        },
+        new string[]
+        {
+            "      ",
+            " ...# ",
+            " .... ",
+            " .#.. ",
+            " .... ",
+            "      "
+        },
+        new string[]
+        {
+            "      ",
+            " .... ",
+            " .#.. ",
+            " .... ",
+            " ..#. ",
+            "      "
+        }
+    };
+
+    public static readonly (int, Direction, Func<int, int, int, int, (int, int)>)[][] SAMPLE_TRANSITON =
+    {
+        /*                                                                      →                                                    ↓                                                  ←                                                  ↑
+        /* 0 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (5, Direction.Left, (x, y, mx, my) => (mx, my - y)), (3, Direction.Down, (x, y, mx, my) => (x, 0)),       (2, Direction.Down, (x, y, mx, my) => (y, 0)),     (1, Direction.Up, (x, y, mx, my) => (mx, y)) },
+        /* 1 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (2, Direction.Right, (x, y, mx, my) => (0, y)),      (4, Direction.Up, (x, y, mx, my) => (mx, my - y)),   (5, Direction.Up, (x, y, mx, my) => (mx - y, my)), (0, Direction.Down, (x, y, mx, my) => (mx - x, 0)) },
+        /* 2 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (3, Direction.Right, (x, y, mx, my) => (0, y)),      (4, Direction.Right, (x, y, mx, my) => (0, mx - x)), (1, Direction.Left, (x, y, mx, my) => (mx, y)),    (0, Direction.Right, (x, y, mx, my) => (0, x)) },
+        /* 3 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (5, Direction.Down, (x, y, mx, my) => (my - y, 0)),  (4, Direction.Down, (x, y, mx, my) => (x, 0)),       (2, Direction.Left, (x, y, mx, my) => (mx, y)),    (0, Direction.Up, (x, y, mx, my) => (x, my)) },
+        /* 4 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (5, Direction.Left, (x, y, mx, my) => (0, y)),       (1, Direction.Up, (x, y, mx, my) => (mx - x, my)),   (2, Direction.Up, (x, y, mx, my) => (my - y, my)), (3, Direction.Up, (x, y, mx, my) => (x, my)) },
+        /* 5 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (0, Direction.Left, (x, y, mx, my) => (mx, my - y)), (1, Direction.Right, (x, y, mx, my) => (0, mx - x)), (4, Direction.Left, (x, y, mx, my) => (mx, y)),    (3, Direction.Left, (x, y, mx, my) => (mx, mx - x)) }
+    };
 
     public const string PUZZLE_INPUT = @"                                                  ....#..#..........#........#.#...........#.##.................#................#..#...............#.
                                                   .##......##......##......#.........#...............#.#.............#.....#.......................#.#

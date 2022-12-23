@@ -10,11 +10,11 @@ public enum Direction
 
 internal class Pointer
 {
-    private readonly char[,] _map;
+    protected readonly char[,] _map;
 
-    public int X { get; private set; }
-    public int Y { get; private set; }
-    public Direction Facing { get; private set; }
+    public int X { get; protected set; }
+    public int Y { get; protected set; }
+    public Direction Facing { get; protected set; }
     public Dictionary<(int X, int Y), char> VisitedTiles { get; }
     public List<(int X, int Y, char Direction)> Movements { get; }
 
@@ -60,7 +60,7 @@ internal class Pointer
         }
     }
 
-    private (int X, int Y) GetLocationRightOfMyself()
+    protected virtual (int X, int Y) GetLocationRightOfMyself()
     {
         var newX = X + 1;
         if (_map[Y, newX] == ' ')
@@ -71,7 +71,7 @@ internal class Pointer
         return (_map[Y, newX] == '#' ? X : newX, Y);
     }
 
-    private (int, int) GetLocationLeftOfMyself()
+    protected virtual (int, int) GetLocationLeftOfMyself()
     {
         var newX = X - 1;
         if (_map[Y, newX] == ' ')
@@ -82,7 +82,7 @@ internal class Pointer
         return (_map[Y, newX] == '#' ? X : newX, Y);
     }
 
-    private (int, int) GetLocationBelowMyself()
+    protected virtual (int, int) GetLocationBelowMyself()
     {
         var newY = Y + 1;
         if (_map[newY, X] == ' ')
@@ -93,7 +93,7 @@ internal class Pointer
         return (X, _map[newY,X] == '#' ? Y : newY);
     }
 
-    private (int, int) GetLocationAboveMyself()
+    protected virtual (int, int) GetLocationAboveMyself()
     {
         var newY = Y - 1;
         if (_map[newY, X] == ' ')
@@ -163,5 +163,26 @@ internal class Pointer
         {
             VisitedTiles.Add((X, Y), direction);
         }
+    }
+}
+
+
+internal class Pointer3d : Pointer
+{
+    private readonly string[][] _planes;
+    private readonly (int, Direction, Func<int, int, int, int, (int, int)>)[][] _transition;
+    private readonly int _startingPlane;
+
+    public Pointer3d(char[,] map, string[][] planes, (int, Direction, Func<int, int, int, int, (int, int)>)[][] transition,  int startingX, int startingY, int startingPlane)
+        : base(map, startingX, startingY)
+    {
+        _planes = planes;
+        _transition = transition;
+        _startingPlane = startingPlane;
+    }
+
+    protected override (int, int) GetLocationAboveMyself()
+    {
+        return base.GetLocationAboveMyself();
     }
 }
