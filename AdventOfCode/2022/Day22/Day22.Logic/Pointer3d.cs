@@ -29,8 +29,16 @@ internal class Pointer3d : Pointer
         {
             var transition = _transitions[_currentPlane][(int)Facing];
             var targetCoordinates = transition.Item3(sourcePlaneX, sourcePlaneY, _maximumX, _maximumY);
-            _currentPlane = transition.Item1;
-            return (targetCoordinates.Item1 + _origins[transition.Item1].TopX, targetCoordinates.Item2 + _origins[transition.Item1].TopY, transition.Item2);
+            var nextTile2 = _planes[transition.Item1][targetCoordinates.Item2][targetCoordinates.Item1];
+            if (nextTile2 != '#')
+            {
+                _currentPlane = transition.Item1;
+                return (targetCoordinates.Item1 + _origins[transition.Item1].TopX, targetCoordinates.Item2 + _origins[transition.Item1].TopY, transition.Item2);
+            }
+            else
+            {
+                return (X, Y, Facing);
+            }
         }
 
         var nextTile = _planes[_currentPlane][sourcePlaneY][sourcePlaneX + 1];
@@ -46,8 +54,16 @@ internal class Pointer3d : Pointer
         {
             var transition = _transitions[_currentPlane][(int)Facing];
             var targetCoordinates = transition.Item3(sourcePlaneX, sourcePlaneY, _maximumX, _maximumY);
-            _currentPlane = transition.Item1;
-            return (targetCoordinates.Item1 + _origins[transition.Item1].TopX, targetCoordinates.Item2 + _origins[transition.Item1].TopY, transition.Item2);
+            var nextTile2 = _planes[transition.Item1][targetCoordinates.Item2][targetCoordinates.Item1];
+            if (nextTile2 != '#')
+            {
+                _currentPlane = transition.Item1;
+                return (targetCoordinates.Item1 + _origins[transition.Item1].TopX, targetCoordinates.Item2 + _origins[transition.Item1].TopY, transition.Item2);
+            }
+            else
+            {
+                return (X, Y, Facing);
+            }
         }
 
         var nextTile = _planes[_currentPlane][sourcePlaneY][sourcePlaneX - 1];
