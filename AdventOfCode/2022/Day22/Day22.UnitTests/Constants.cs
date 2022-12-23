@@ -611,10 +611,10 @@ public static class Constants
         /*                                                                      →                                                            ↓                                                   ←                                                        ↑
         /* 0 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (1, Direction.Right, (x, y, mx, my) => (0, y)),              (2, Direction.Down, (x, y, mx, my) => (x, 0)),      (3, Direction.Right, (x, y, mx, my) => (0, my - y - 1)), (5, Direction.Right, (x, y, mx, my) => (0, x)) },
         /* 1 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (4, Direction.Left, (x, y, mx, my) => (mx - 1, my - y - 1)), (2, Direction.Left, (x, y, mx, my) => (mx - 1, x)), (0, Direction.Left, (x, y, mx, my) => (mx - 1, y)),      (5, Direction.Up, (x, y, mx, my) => (x, my - 1)) },
-        /* 2 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (1, Direction.Up, (x, y, mx, my) => (x, my - 1)),            (4, Direction.Down, (x, y, mx, my) => (x, 0)),      (3, Direction.Down, (x, y, mx, my) => (y, 0)),           (0, Direction.Up, (x, y, mx, my) => (x, my - 1)) },
+        /* 2 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (1, Direction.Up, (x, y, mx, my) => (y, my - 1)),            (4, Direction.Down, (x, y, mx, my) => (x, 0)),      (3, Direction.Down, (x, y, mx, my) => (y, 0)),           (0, Direction.Up, (x, y, mx, my) => (x, my - 1)) },
         /* 3 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (4, Direction.Right, (x, y, mx, my) => (0, y)),              (5, Direction.Down, (x, y, mx, my) => (x, 0)),      (0, Direction.Right, (x, y, mx, my) => (0, my - y - 1)), (2, Direction.Right, (x, y, mx, my) => (0, x)) },
         /* 4 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (1, Direction.Left, (x, y, mx, my) => (mx - 1, my - y - 1)), (5, Direction.Left, (x, y, mx, my) => (mx - 1, x)), (3, Direction.Left, (x, y, mx, my) => (mx - 1, y)),      (2, Direction.Up, (x, y, mx, my) => (x, my - 1)) },
-        /* 5 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (4, Direction.Up, (x, y, mx, my) => (y, my - 1)),            (1, Direction.Down, (x, y, mx, my) => (x, 0)),      (4, Direction.Left, (x, y, mx, my) => (mx - 1, y)),      (3, Direction.Up, (x, y, mx, my) => (x, my - 1)) }
+        /* 5 */ new (int, Direction, Func<int, int, int, int, (int, int)>)[] { (4, Direction.Up, (x, y, mx, my) => (y, my - 1)),            (1, Direction.Down, (x, y, mx, my) => (x, 0)),      (0, Direction.Down, (x, y, mx, my) => (y, 0)),           (3, Direction.Up, (x, y, mx, my) => (x, my - 1)) }
     };
 
     public static readonly (int TopX, int TopY)[] PUZZLE_ORIGINS =
@@ -823,6 +823,6 @@ public static class Constants
 #.#....#................##......#......#..........
 ..#.#..............#.........#...................#
 
-5L10L11R23R7L30L3R4R1L18R3L17L10R2R1L10";
+5L10L11R23R7L30L3R4R1L18R3L17L10R2R1L10R5L3L6R4L1R18R1L20L8R15L2R10L18L9R26R3L8R50L2R29L1R3R18L7R1L20L7R20R20L1";
 
 }
