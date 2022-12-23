@@ -5,18 +5,34 @@ namespace Day23.UnitTests;
 
 public class UnstableDiffusionMust
 {
-    [Fact]
-    public void Test1()
-    {
-        var sut = new UnstableDifusion(@".....
+    private const string SIMPLE_SAMPLE = @".....
 ..##.
 ..#..
 .....
 ..##.
-.....");
+.....";
+
+    [Fact]
+    public void LoadDataCorrectly()
+    {
+        var sut = new UnstableDiffusion(SIMPLE_SAMPLE);
         Assert.Equal(6, sut.Height);
         Assert.Equal(5, sut.Width);
         Assert.Equal(5, sut.Elves.Count);
         Assert.Equal(3, sut.CalculateEmptyGround());
+    }
+
+    [Fact]
+    public void Test1()
+    {
+        var sut = new UnstableDiffusion(SIMPLE_SAMPLE);
+        sut.Round();
+        Assert.Equal(@"..##.
+.....
+..#..
+...#.
+..#..
+.....
+", sut.GetImage());
     }
 }
