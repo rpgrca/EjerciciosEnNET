@@ -13,16 +13,33 @@ public class UnstableDiffusion
 
     private Direction _currentDirection;
     private string _input;
+    private string[] _lines;
     private char[][] _map;
 
     public int Height { get; set; }
     public int Width { get; set; }
     public List<(int X, int Y)> Elves { get; private set; }
 
-    public UnstableDiffusion(string input)
+    public UnstableDiffusion(string input, int overflow = 0)
     {
         _input = input;
-        _map = _input.Split("\n").Select(p => p.ToArray()).ToArray();
+        _lines = _input.Split("\n");
+
+        if (overflow == 0)
+        {
+            _map = _input.Split("\n").Select(p => p.ToArray()).ToArray();
+        }
+        else
+        {
+            var emptyLine = string.Concat(Enumerable.Repeat('.', _lines[0].Length + overflow * 2));
+            var newInput = string.Join("\n", Enumerable.Range(0, overflow).Select(p => emptyLine)) + "\n" +
+                   string.Join("\n", _input.Split("\n")
+                    .Select(p => $"{new string('.', overflow)}{p}{new string('.', overflow)}")) + "\n" +
+                   string.Join("\n", Enumerable.Range(0, overflow).Select(p => emptyLine));
+
+            _map = newInput.Split("\n").Select(p => p.ToArray()).ToArray();
+        }
+
         _currentDirection = Direction.North;
         Height = _map.Length;
         Width = _map[0].Length;
@@ -117,6 +134,12 @@ public class UnstableDiffusion
     private bool ProposeNorth((int X, int Y) elf, Dictionary<(int X, int Y), (int X, int Y)> proposedMoves)
     {
         int proposedY = elf.Y - 1;
+
+        if (proposedY < 0)
+        {
+            return false;
+        }
+
         if (GetMapAt(elf.X - 1, proposedY) == '.' && GetMapAt(elf.X, proposedY) == '.' && GetMapAt(elf.X + 1, proposedY) == '.')
         {
             proposedMoves.Add(elf, (elf.X, proposedY));
@@ -129,6 +152,12 @@ public class UnstableDiffusion
     private bool ProposeSouth((int X, int Y) elf, Dictionary<(int X, int Y), (int X, int Y)> proposedMoves)
     {
         int proposedY = elf.Y + 1;
+
+        if (proposedY >= Height)
+        {
+            return false;
+        }
+
         if (GetMapAt(elf.X - 1, proposedY) == '.' && GetMapAt(elf.X, proposedY) == '.' && GetMapAt(elf.X + 1, proposedY) == '.')
         {
             proposedMoves.Add(elf, (elf.X, proposedY));
@@ -141,6 +170,12 @@ public class UnstableDiffusion
     private bool ProposeWest((int X, int Y) elf, Dictionary<(int X, int Y), (int X, int Y)> proposedMoves)
     {
         int proposedX = elf.X - 1;
+
+        if (proposedX < 0)
+        {
+            return false;
+        }
+
         if (GetMapAt(proposedX, elf.Y - 1) == '.' && GetMapAt(proposedX, elf.Y) == '.' && GetMapAt(proposedX, elf.Y + 1) == '.')
         {
             proposedMoves.Add(elf, (proposedX, elf.Y));
@@ -153,6 +188,12 @@ public class UnstableDiffusion
     private bool ProposeEast((int X, int Y) elf, Dictionary<(int X, int Y), (int X, int Y)> proposedMoves)
     {
         int proposedX = elf.X + 1;
+
+        if (proposedX >= Width)
+        {
+            return false;
+        }
+
         if (GetMapAt(proposedX, elf.Y - 1) == '.' && GetMapAt(proposedX, elf.Y) == '.' && GetMapAt(proposedX, elf.Y + 1) == '.')
         {
             proposedMoves.Add(elf, (proposedX, elf.Y));
