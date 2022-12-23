@@ -58,7 +58,7 @@ public class UnstableDiffusionMust
     [Fact]
     public void SolveFirstPuzzle()
     {
-        var sut = new UnstableDiffusion(PUZZLE_INPUT, 20);
+        var sut = new UnstableDiffusion(PUZZLE_INPUT, 10);
         sut.Round(10);
         Assert.True(3875 < sut.CalculateEmptyGround());
         Assert.Equal(3923, sut.CalculateEmptyGround());
@@ -70,5 +70,13 @@ public class UnstableDiffusionMust
         var sut = new UnstableDiffusion(SAMPLE_INPUT);
         var round = sut.RoundUntilQuiet();
         Assert.Equal(20, round);
+    }
+
+    [Fact]
+    public void SolveSecondPuzzle()
+    {
+        var sut = new UnstableDiffusion(PUZZLE_INPUT, 55);
+        var round = sut.RoundUntilQuiet();
+        Assert.Equal(1019, round);
     }
 }
