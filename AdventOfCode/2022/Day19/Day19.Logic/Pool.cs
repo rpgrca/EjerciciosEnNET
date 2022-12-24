@@ -14,6 +14,11 @@ public struct Pool
         Obsidian -= obsidianCost;
         Clay -= clayCost;
         Ore -= oreCost;
+
+        if (Obsidian < 0 || Clay < 0 || Ore < 0)
+        {
+            System.Diagnostics.Debugger.Break();
+        }
     }
 
     public void Add((int Geode, int Obsidian, int Clay, int Ore) production)
@@ -39,4 +44,23 @@ public struct Pool
         Clay += other.Clay;
         Ore += other.Ore;
     }
+
+    public Pool(Pool other) => Add(other);
+
+    public Pool(int geode, int obsidian, int clay, int ore) => Add(geode, obsidian, clay, ore);
+
+    public Pool((int Geode, int Obsidian, int Clay, int Ore) values) => Add(values);
+
+    internal Pool CalculateAccumulatedPoolInNext(int minutes, Pool originalPool)
+    {
+        var pool = new Pool(originalPool);
+        while (minutes-- > 0)
+        {
+            pool.Add(this);
+        }
+
+        return pool;
+    }
+
+    public (int Geode, int Obsidian, int Clay, int Ore) ToTuple() => (Geode, Obsidian, Clay, Ore);
 }

@@ -1,7 +1,11 @@
+using System.Diagnostics;
+
 namespace Day19.Logic;
 
+[DebuggerDisplay("{_name}")]
 public class RobotFactory
 {
+    private readonly string _name;
     private readonly (int, int, int, int) _generation;
     public int ObsidianCost { get; }
     public int ClayCost { get; }
@@ -10,8 +14,9 @@ public class RobotFactory
 
     public int Priority { get; internal set; }
 
-    public RobotFactory(int obsidianCost, int clayCost, int oreCost, (int, int, int, int) generation, int priority)
+    public RobotFactory(string name, int obsidianCost, int clayCost, int oreCost, (int, int, int, int) generation, int priority)
     {
+        _name = name;
         ObsidianCost = obsidianCost;
         ClayCost = clayCost;
         OreCost = oreCost;
@@ -32,13 +37,18 @@ public class RobotFactory
 
         if (neededOre <= 0 && neededClay <= 0 && neededObsidian <= 0)
         {
-            return 1;
+            return 0;
         }
 
         int[] time = { 1000, 1000, 1000 };
-        if (neededOre >= 0 && robotGeneration.Ore != 0)
+
+        if (neededOre <= 0)
         {
-            time[0] = neededOre / robotGeneration.Ore;
+            time[1] = 0;
+        }
+        else if (neededOre > 0 && robotGeneration.Ore != 0)
+        {
+            time[0] = (int)Math.Ceiling(neededOre / (double)robotGeneration.Ore);
         }
 
         if (neededClay <= 0)
