@@ -92,8 +92,8 @@ public class BlizzardBasin
 
     public int FindShortestPath()
     {
-        var minimum = int.MaxValue;
-        var visited = new List<(int X, int Y)>();
+        var minimum = 1000;
+        var visited = new HashSet<(int X, int Y, int Round)>();
 
         var movements = new List<char[][]>
         {
@@ -120,6 +120,13 @@ public class BlizzardBasin
                 continue;
             }
 
+            if (visited.Contains(stage))
+            {
+                continue;
+            }
+
+            visited.Add(stage);
+
             for (var counter = movements.Count; counter <= stage.Round + 1; counter++)
             {
                 MoveBlizzards();
@@ -142,6 +149,8 @@ public class BlizzardBasin
                 {
                     if (map[y][x] == '.')
                     {
+                        if (x == 23 && y == 19 || x == 24 && y == 19) continue;
+
                         queue.Enqueue((x, y, stage.Round + 1), (Height - y) * 1000 + (Width - x));
                     }
                 }

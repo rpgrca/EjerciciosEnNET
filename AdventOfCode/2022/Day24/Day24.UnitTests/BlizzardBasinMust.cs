@@ -319,4 +319,12 @@ public class BlizzardBasinMust
         var result = sut.FindShortestPath();
         Assert.Equal(18, result);
     }
+
+    [Fact]
+    public void SolveFirstPuzzle()
+    {
+        var sut = new BlizzardBasin(PUZZLE_INPUT);
+        var result = sut.FindShortestPath();
+        Assert.Equal(326, result);
+    }
 }
