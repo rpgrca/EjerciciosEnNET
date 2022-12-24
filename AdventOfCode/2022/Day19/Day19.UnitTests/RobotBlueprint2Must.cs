@@ -1,4 +1,5 @@
 using Day19.Logic;
+using static Day19.UnitTests.Constants;
 
 namespace Day19.UnitTests;
 
@@ -75,5 +76,13 @@ Blueprint 2: Each ore robot costs 2 ore. Each clay robot costs 3 ore. Each obsid
         var sut = new RobotBlueprint2(input);
         sut.Run();
         Assert.Equal(expectedLevel, sut.QualityLevel);
+    }
+
+    [Fact]
+    public void SolveFirstSample()
+    {
+        var sut = new RobotBlueprint2(SAMPLE_INPUT);
+        sut.Run();
+        Assert.Equal(33, sut.QualityLevel);
     }
 }

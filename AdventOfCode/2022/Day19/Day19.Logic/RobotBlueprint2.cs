@@ -44,18 +44,18 @@ public class RobotBlueprint2
 
     public void Run()
     {
-        var queue = new PriorityQueue<(int, int,
-            (int Geode, int Obsidian, int Clay, int Ore),
-            (int Geode, int Obsidian, int Clay, int Ore),
-            RobotFactory), int>();
-        var pool = new Pool();
-        var visited = new HashSet<(int, int, (int Geode, int Obsidian, int Clay, int Ore), (int Geode, int Obsidian, int Clay, int Ore), RobotFactory)>();
-        var robotGeneration = new Pool();
-        var maximumGeode = 0;
-
-        robotGeneration.Add(0, 0, 0, 1);
         foreach (var blueprint in Blueprints)
         {
+            var queue = new PriorityQueue<(int, int,
+                (int Geode, int Obsidian, int Clay, int Ore),
+                (int Geode, int Obsidian, int Clay, int Ore),
+                RobotFactory), int>();
+            var visited = new HashSet<(int, int, (int Geode, int Obsidian, int Clay, int Ore), (int Geode, int Obsidian, int Clay, int Ore), RobotFactory)>();
+            var maximumGeode = 0;
+            var pool = new Pool();
+            var robotGeneration = new Pool();
+            robotGeneration.Add(0, 0, 0, 1);
+
             (int, RobotFactory)[] timeForNextRobot =
             {
                 ( blueprint.OreRobot.UntilNextAvailable(pool, robotGeneration), blueprint.OreRobot ),
