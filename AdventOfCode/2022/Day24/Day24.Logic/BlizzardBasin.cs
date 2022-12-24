@@ -5,7 +5,7 @@ public class BlizzardBasin
     private readonly string _input;
     private readonly string[] _lines;
     private readonly char[][] _map;
-
+    private List<char[][]> _movements;
 
     public int Height { get; }
     public int Width { get; }
@@ -40,6 +40,11 @@ public class BlizzardBasin
                 }
             }
         }
+
+        _movements = new List<char[][]>
+        {
+            _map.Select(v => v.ToArray()).ToArray()
+        };
     }
 
     public string GetImage() =>
@@ -90,23 +95,20 @@ public class BlizzardBasin
         }
     }
 
-    public int FindShortestPath()
+    public int FindShortestPath() => FindShortestPath(Entrance, Exit, 0, (x, y) => (Height - y) * 1000 + (Width - x));
+
+    private int FindShortestPath((int X, int Y) entrance, (int X, int Y) egress, int round, Func<int, int, int> priorityCallback)
     {
         var minimum = 1000;
         var visited = new HashSet<(int X, int Y, int Round)>();
 
-        var movements = new List<char[][]>
-        {
-            _map.Select(v => v.ToArray()).ToArray()
-        };
-
         var queue = new PriorityQueue<(int X, int Y, int Round), int>();
-        queue.Enqueue((1, 0, 0), 1); // TODO: can't handle wait as first movement
+        queue.Enqueue((entrance.X, entrance.Y, round), 1);
 
         while (queue.Count > 0)
         {
             var stage = queue.Dequeue();
-            if (stage.X == Exit.X && stage.Y == Exit.Y)
+            if (stage.X == egress.X && stage.Y == egress.Y)
             {
                 if (minimum > stage.Round) // TODO: +1?
                 {
@@ -127,13 +129,13 @@ public class BlizzardBasin
 
             visited.Add(stage);
 
-            for (var counter = movements.Count; counter <= stage.Round + 1; counter++)
+            for (var counter = _movements.Count; counter <= stage.Round + 1; counter++)
             {
                 MoveBlizzards();
-                movements.Add(_map.Select(v => v.ToArray()).ToArray());
+                _movements.Add(_map.Select(v => v.ToArray()).ToArray());
             }
 
-            var map = movements[stage.Round + 1];
+            var map = _movements[stage.Round + 1];
             (int X, int Y)[] neightbours =
             {
                 (stage.X, stage.Y + 1),
@@ -158,5 +160,15 @@ public class BlizzardBasin
         }
 
         return minimum;
+    }
+
+    public int FindShortestPathAndBack()
+    {
+        var minutes = 0;
+        minutes += FindShortestPath();
+        minutes += FindShortestPath(Exit, Entrance, minutes, (x, y) => y * 1000 + x) - minutes;
+        minutes += FindShortestPath(Entrance, Exit, minutes, (x, y) => (Height - y) * 1000 + (Width - x)) - minutes;
+
+        return minutes;
     }
 }
