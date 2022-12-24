@@ -79,4 +79,70 @@ public class BlizzardBasinMust
 #...v.#
 #####.#", sut.GetImage());
     }
+
+    [Fact]
+    public void WrapFromBottomToTopCorrectly()
+    {
+        var sut = new BlizzardBasin(SIMPLE_SAMPLE);
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        Assert.Equal(@"#.#####
+#...v.#
+#..>..#
+#.....#
+#.....#
+#.....#
+#####.#", sut.GetImage());
+    }
+
+    [Fact]
+    public void ExecuteOverlapCorrectly()
+    {
+        var sut = new BlizzardBasin(SIMPLE_SAMPLE);
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        Assert.Equal(@"#.#####
+#.....#
+#...2.#
+#.....#
+#.....#
+#.....#
+#####.#", sut.GetImage());
+    }
+
+    [Fact]
+    public void ExecuteDeoverlapCorrectly()
+    {
+        var sut = new BlizzardBasin(SIMPLE_SAMPLE);
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        Assert.Equal(@"#.#####
+#.....#
+#....>#
+#...v.#
+#.....#
+#.....#
+#####.#", sut.GetImage());
+    }
+
+    [Fact]
+    public void WrapFromRightToLeftCorrectly()
+    {
+        var sut = new BlizzardBasin(SIMPLE_SAMPLE);
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        Assert.Equal(@"#.#####
+#.....#
+#>....#
+#.....#
+#...v.#
+#.....#
+#####.#", sut.GetImage());
+    }
 }
