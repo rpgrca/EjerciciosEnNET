@@ -335,4 +335,12 @@ public class BlizzardBasinMust
         var result = sut.FindShortestPathAndBack();
         Assert.Equal(54, result);
     }
+
+    [Fact]
+    public void SolveSecondPuzzle()
+    {
+        var sut = new BlizzardBasin(PUZZLE_INPUT);
+        var result = sut.FindShortestPathAndBack();
+        Assert.Equal(976, result);
+    }
 }
