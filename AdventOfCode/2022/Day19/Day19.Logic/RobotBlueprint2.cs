@@ -50,7 +50,6 @@ public class RobotBlueprint2
                 (int Geode, int Obsidian, int Clay, int Ore),
                 (int Geode, int Obsidian, int Clay, int Ore),
                 RobotFactory), int>();
-            var visited = new HashSet<(int, int, (int Geode, int Obsidian, int Clay, int Ore), (int Geode, int Obsidian, int Clay, int Ore), RobotFactory)>();
             var maximumGeode = 0;
             var pool = new Pool();
             var robotGeneration = new Pool();
@@ -64,34 +63,33 @@ public class RobotBlueprint2
                 ( blueprint.GeodeRobot.UntilNextAvailable(pool, robotGeneration), blueprint.GeodeRobot )
             };
 
-            var toQueue1 = (timeForNextRobot[0].Item1, 0, pool.ToTuple(), robotGeneration.ToTuple(), timeForNextRobot[0].Item2);
-            if (timeForNextRobot[0].Item1 != 1000 && toQueue1.Item1 + toQueue1.Item2 < 24 && !visited.Contains(toQueue1))
+            if (timeForNextRobot[0].Item1 != 1000)
             {
+                var toQueue1 = (timeForNextRobot[0].Item1, 0, pool.ToTuple(), robotGeneration.ToTuple(), timeForNextRobot[0].Item2);
                 queue.Enqueue(toQueue1, toQueue1.Item2);
             }
 
-            toQueue1 = (timeForNextRobot[1].Item1, 0, pool.ToTuple(), robotGeneration.ToTuple(), timeForNextRobot[1].Item2);
-            if (timeForNextRobot[1].Item1 != 1000 && toQueue1.Item1 + toQueue1.Item2 < 24 && !visited.Contains(toQueue1))
+            if (timeForNextRobot[1].Item1 != 1000)
             {
+                var toQueue1 = (timeForNextRobot[1].Item1, 0, pool.ToTuple(), robotGeneration.ToTuple(), timeForNextRobot[1].Item2);
                 queue.Enqueue(toQueue1, toQueue1.Item2);
             }
 
-            toQueue1 = (timeForNextRobot[2].Item1, 0, pool.ToTuple(), robotGeneration.ToTuple(), timeForNextRobot[2].Item2);
-            if (timeForNextRobot[2].Item1 != 1000 && toQueue1.Item1 + toQueue1.Item2 < 24 && !visited.Contains(toQueue1))
+            if (timeForNextRobot[2].Item1 != 1000)
             {
+                var toQueue1 = (timeForNextRobot[2].Item1, 0, pool.ToTuple(), robotGeneration.ToTuple(), timeForNextRobot[2].Item2);
                 queue.Enqueue(toQueue1, toQueue1.Item2);
             }
 
-            toQueue1 = (timeForNextRobot[3].Item1, 0, pool.ToTuple(), robotGeneration.ToTuple(), timeForNextRobot[3].Item2);
-            if (timeForNextRobot[3].Item1 != 1000 && toQueue1.Item1 + toQueue1.Item2 < 24 && !visited.Contains(toQueue1))
+            if (timeForNextRobot[3].Item1 != 1000)
             {
+                var toQueue1 = (timeForNextRobot[3].Item1, 0, pool.ToTuple(), robotGeneration.ToTuple(), timeForNextRobot[3].Item2);
                 queue.Enqueue(toQueue1, toQueue1.Item2);
             }
 
             while (queue.Count > 0)
             {
                 var currentCombination = queue.Dequeue();
-                visited.Add(currentCombination);
 
                 var accumulatedPool = new Pool(
                     currentCombination.Item3.Geode + (currentCombination.Item4.Geode * (currentCombination.Item1)),
@@ -119,44 +117,29 @@ public class RobotBlueprint2
                 };
 
                 var toQueue = (timeForNextRobot1[0].Item1, currentCombination.Item1 + 1 + currentCombination.Item2, accumulatedPool.ToTuple(), nextRobotGeneration.ToTuple(), timeForNextRobot1[0].Item2);
-                if (timeForNextRobot1[0].Item1 != 1000 && toQueue.Item1 + toQueue.Item2 < 24 && nextRobotGeneration.Ore <= blueprint.MaximumOreRobots && !visited.Contains(toQueue))
+                if (timeForNextRobot1[0].Item1 != 1000 && toQueue.Item1 + toQueue.Item2 < 24 && nextRobotGeneration.Ore < blueprint.MaximumOreRobots)
                 {
                     queue.Enqueue(toQueue, toQueue.Item2);
                 }
 
                 toQueue = (timeForNextRobot1[1].Item1, currentCombination.Item1 + 1 + currentCombination.Item2, accumulatedPool.ToTuple(), nextRobotGeneration.ToTuple(), timeForNextRobot1[1].Item2);
-                if (timeForNextRobot1[1].Item1 != 1000 && toQueue.Item1 + toQueue.Item2 < 24 && nextRobotGeneration.Clay <= blueprint.MaximumClayRobots && !visited.Contains(toQueue))
+                if (timeForNextRobot1[1].Item1 != 1000 && toQueue.Item1 + toQueue.Item2 < 24 && nextRobotGeneration.Clay < blueprint.MaximumClayRobots)
                 {
                     queue.Enqueue(toQueue, toQueue.Item2);
                 }
 
                 toQueue = (timeForNextRobot1[2].Item1, currentCombination.Item1 + 1 + currentCombination.Item2, accumulatedPool.ToTuple(), nextRobotGeneration.ToTuple(), timeForNextRobot1[2].Item2);
-                if (timeForNextRobot1[2].Item1 != 1000 && toQueue.Item1 + toQueue.Item2 < 24 && nextRobotGeneration.Obsidian <= blueprint.MaximumObsidianRobots && !visited.Contains(toQueue))
+                if (timeForNextRobot1[2].Item1 != 1000 && toQueue.Item1 + toQueue.Item2 < 24)
                 {
                     queue.Enqueue(toQueue, toQueue.Item2);
                 }
 
                 toQueue = (timeForNextRobot1[3].Item1, currentCombination.Item1 + 1 + currentCombination.Item2, accumulatedPool.ToTuple(), nextRobotGeneration.ToTuple(), timeForNextRobot1[3].Item2);
-                if (timeForNextRobot1[3].Item1 != 1000 && toQueue.Item1 + toQueue.Item2 < 24 && !visited.Contains(toQueue))
+                if (timeForNextRobot1[3].Item1 != 1000 && toQueue.Item1 + toQueue.Item2 < 24)
                 {
                     queue.Enqueue(toQueue, toQueue.Item2);
                 }
             }
-
-/*
-                var nextRobot = timeForNextRobot.MinBy(p => p.Item1 * p.Item2.Priority);
-                var repetitions = nextRobot.Item1;
-                while (repetitions > 0)
-                {
-                    minute += 1;
-                    repetitions -= 1;
-                    pool.Add(robotGeneration);
-                }
-
-                minute += 1;
-                pool.Spend(nextRobot.Item2.ObsidianCost, nextRobot.Item2.ClayCost, nextRobot.Item2.OreCost);
-                pool.Add(robotGeneration);
-                robotGeneration.Add(nextRobot.Item2.Create().Generate());*/
 
             QualityLevel += blueprint.Id * maximumGeode;
         }
