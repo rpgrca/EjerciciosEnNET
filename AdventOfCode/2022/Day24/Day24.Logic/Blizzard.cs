@@ -30,13 +30,13 @@ public record Blizzard
         switch (Direction)
         {
             case '^':
-                Y = Y - 1 >= 0 ? Y - 1 : _valleyHeight;
+                Y = Y - 1 >= 1 ? Y - 1 : _valleyHeight;
                 break;
             case 'v':
                 Y = Y + 1 <= _valleyHeight ? Y + 1 : 1;
                 break;
             case '<':
-                X = X - 1 >= 0 ? X - 1 : _valleyWidth;
+                X = X - 1 >= 1 ? X - 1 : _valleyWidth;
                 break;
             case '>':
                 X = X + 1 <= _valleyWidth ? X + 1 : 1;

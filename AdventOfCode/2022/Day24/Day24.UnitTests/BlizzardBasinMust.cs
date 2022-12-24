@@ -145,4 +145,170 @@ public class BlizzardBasinMust
 #.....#
 #####.#", sut.GetImage());
     }
+
+    [Fact]
+    public void Test1()
+    {
+        var sut = new BlizzardBasin(SAMPLE_INPUT);
+        sut.MoveBlizzards();
+        Assert.Equal(@"#.######
+#.>3.<.#
+#<..<<.#
+#>2.22.#
+#>v..^<#
+######.#", sut.GetImage());
+    }
+
+    [Fact]
+    public void Test2()
+    {
+        var sut = new BlizzardBasin(SAMPLE_INPUT);
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        Assert.Equal(@"#.######
+#.2>2..#
+#.^22^<#
+#.>2.^>#
+#.>..<.#
+######.#", sut.GetImage());
+    }
+
+    [Fact]
+    public void Test3()
+    {
+        var sut = new BlizzardBasin(SAMPLE_INPUT);
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        Assert.Equal(@"#.######
+#<^<22.#
+#.2<.2.#
+#><2>..#
+#..><..#
+######.#", sut.GetImage());
+    }
+
+    [Fact]
+    public void Test4()
+    {
+        var sut = new BlizzardBasin(SAMPLE_INPUT);
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        Assert.Equal(@"#.######
+#.<..22#
+#<<.<..#
+#<2.>>.#
+#.^22^.#
+######.#", sut.GetImage());
+    }
+
+    [Fact]
+    public void Test5()
+    {
+        var sut = new BlizzardBasin(SAMPLE_INPUT);
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        Assert.Equal(@"#.######
+#2.v.<>#
+#<.<..<#
+#.^>^22#
+#.2..2.#
+######.#", sut.GetImage());
+    }
+
+    [Fact]
+    public void Test6()
+    {
+        var sut = new BlizzardBasin(SAMPLE_INPUT);
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+
+        Assert.Equal(@"#.######
+#>2.<.<#
+#.2v^2<#
+#>..>2>#
+#<....>#
+######.#", sut.GetImage());
+    }
+
+    [Fact]
+    public void Test7()
+    {
+        var sut = new BlizzardBasin(SAMPLE_INPUT);
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+
+        Assert.Equal(@"#.######
+#.22^2.#
+#<v.<2.#
+#>>v<>.#
+#>....<#
+######.#", sut.GetImage());
+    }
+
+    [Fact]
+    public void Test8()
+    {
+        var sut = new BlizzardBasin(SAMPLE_INPUT);
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+
+        Assert.Equal(@"#.######
+#.<>2^.#
+#..<<.<#
+#.22..>#
+#.2v^2.#
+######.#", sut.GetImage());
+    }
+
+    [Fact]
+    public void Test18()
+    {
+        var sut = new BlizzardBasin(SAMPLE_INPUT);
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+        sut.MoveBlizzards();
+
+        Assert.Equal(@"#.######
+#>2.<.<#
+#.2v^2<#
+#>..>2>#
+#<....>#
+######.#", sut.GetImage());
+    }
 }
