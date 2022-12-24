@@ -2,16 +2,27 @@ namespace Day24.Logic;
 
 public class BlizzardBasin
 {
-    private string _input;
+    private readonly string _input;
+    private readonly string[] _lines;
 
-    public int Height { get; } = 7;
-    public int Width { get; } = 7;
-    public (int X, int Y) Entrance { get; } = (1, 0);
-    public (int X, int Y) Exit { get; } = (5, 6);
+    public int Height { get; }
+    public int Width { get; }
+    public (int X, int Y) Entrance { get; }
+    public (int X, int Y) Exit { get; }
 
     public BlizzardBasin(string input)
     {
         _input = input;
+        _lines = _input.Split("\n");
+
+        Height = _lines.Length;
+        Width = _lines[0].Length;
+
+        // TODO: Calculate based on input
+        Entrance = (1, 0);
+        Exit = (Width - 2, Height - 1);
+
+
     }
 
 }
