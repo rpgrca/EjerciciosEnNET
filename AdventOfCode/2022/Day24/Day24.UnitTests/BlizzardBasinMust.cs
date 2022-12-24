@@ -36,8 +36,18 @@ public class BlizzardBasinMust
     {
         var sut = new BlizzardBasin(SIMPLE_SAMPLE);
         Assert.Collection(sut.Blizzards,
-            b1 => Assert.Equal((1, 2, Direction.Right), b1),
-            b2 => Assert.Equal((4, 4, Direction.Down), b2));
+            b1 =>
+            {
+                Assert.Equal(1, b1.X);
+                Assert.Equal(2, b1.Y);
+                Assert.Equal('>', b1.Direction);
+            },
+            b2 =>
+            {
+                Assert.Equal(4, b2.X);
+                Assert.Equal(4, b2.Y);
+                Assert.Equal('v', b2.Direction);
+            });
     }
 
     [Theory]
@@ -54,5 +64,19 @@ public class BlizzardBasinMust
     {
         var sut = new BlizzardBasin(SAMPLE_INPUT);
         Assert.Equal(SAMPLE_INPUT, sut.GetImage());
+    }
+
+    [Fact]
+    public void ExecuteOneRoundCorrectly_WhenUsingSimpleMap()
+    {
+        var sut = new BlizzardBasin(SIMPLE_SAMPLE);
+        sut.MoveBlizzards();
+        Assert.Equal(@"#.#####
+#.....#
+#.>...#
+#.....#
+#.....#
+#...v.#
+#####.#", sut.GetImage());
     }
 }

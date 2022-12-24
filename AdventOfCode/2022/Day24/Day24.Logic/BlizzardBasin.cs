@@ -1,13 +1,5 @@
 namespace Day24.Logic;
 
-public enum Direction
-{
-    Up,
-    Down,
-    Left,
-    Right
-}
-
 public class BlizzardBasin
 {
     private readonly string _input;
@@ -18,14 +10,14 @@ public class BlizzardBasin
     public int Width { get; }
     public (int X, int Y) Entrance { get; }
     public (int X, int Y) Exit { get; }
-    public List<(int X, int Y, Direction Facing)> Blizzards { get; }
+    public List<Blizzard> Blizzards { get; }
 
     public BlizzardBasin(string input)
     {
         _input = input;
         _lines = _input.Split("\n");
 
-        Blizzards = new List<(int X, int Y, Direction Facing)>();
+        Blizzards = new List<Blizzard>();
         Height = _lines.Length;
         Width = _lines[0].Length;
 
@@ -41,27 +33,56 @@ public class BlizzardBasin
             for (var x = 0; x < Width; x++)
             {
                 _map[y][x] = _lines[y][x];
-                switch (_map[y][x])
+                if (_map[y][x] is '>' or '<' or '^' or 'v')
                 {
-                    case '>': Blizzards.Add((x, y, Direction.Right)); break;
-                    case '<': Blizzards.Add((x, y, Direction.Left)); break;
-                    case '^': Blizzards.Add((x, y, Direction.Up)); break;
-                    case 'v': Blizzards.Add((x, y, Direction.Down)); break;
+                    Blizzards.Add(new(x, y, _map[y][x], Width - 2, Height - 2));
                 }
             }
         }
     }
 
-    public string GetImage()
-    {
-        return string.Join('\n', _map.Select(l => string.Concat(l)));
-    }
+    public string GetImage() =>
+        string.Join('\n', _map.Select(l => string.Concat(l)));
 
     private void ClearMap()
     {
-        foreach (var (x, y, _) in Blizzards)
+        foreach (var blizzard in Blizzards)
         {
-            _map[y][x] = '.';
+            _map[blizzard.Y][blizzard.X] = '.';
+        }
+    }
+
+    public void MoveBlizzards()
+    {
+        ClearMap();
+
+        foreach (var blizzard in Blizzards)
+        {
+            blizzard.Move();
+        }
+
+        DrawBlizzards();
+    }
+
+    private void DrawBlizzards()
+    {
+        foreach (var (x, y, direction) in Blizzards)
+        {
+            if (_map[y][x] == '.')
+            {
+                _map[y][x] = direction;
+            }
+            else
+            {
+                if (_map[y][x] > '0' && _map[y][x] <= '9')
+                {
+                    _map[y][x] = (char)(_map[y][x] + 1);
+                }
+                else
+                {
+                    _map[y][x] = '2';
+                }
+            }
         }
     }
 }
