@@ -30,4 +30,22 @@ public class BlizzardBasinMust
         yield return new object[] { SAMPLE_INPUT, 6, 8, (1, 0), (6, 5) };
         yield return new object[] { PUZZLE_INPUT, 22, 152, (1, 0), (150, 21) };
     }
+
+    [Fact]
+    public void Test1()
+    {
+        var sut = new BlizzardBasin(SIMPLE_SAMPLE);
+        Assert.Collection(sut.Blizzards,
+            b1 => Assert.Equal((1, 2, Direction.Right), b1),
+            b2 => Assert.Equal((4, 4, Direction.Down), b2));
+    }
+
+    [Theory]
+    [InlineData(SAMPLE_INPUT, 19)]
+    [InlineData(PUZZLE_INPUT, 650 + 698 + 681 + 678)]
+    public void Test2(string input, int expectedBlizzards)
+    {
+        var sut = new BlizzardBasin(input);
+        Assert.Equal(expectedBlizzards, sut.Blizzards.Count);
+    }
 }
