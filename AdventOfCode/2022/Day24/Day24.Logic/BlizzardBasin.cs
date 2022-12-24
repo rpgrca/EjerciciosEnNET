@@ -4,7 +4,8 @@ public class BlizzardBasin
 {
     private readonly string _input;
     private readonly string[] _lines;
-    private char[][] _map;
+    private readonly char[][] _map;
+
 
     public int Height { get; }
     public int Width { get; }
@@ -42,7 +43,10 @@ public class BlizzardBasin
     }
 
     public string GetImage() =>
-        string.Join('\n', _map.Select(l => string.Concat(l)));
+        GetImage(_map);
+
+    private string GetImage(char[][] map) =>
+        string.Join('\n', map.Select(l => string.Concat(l)));
 
     private void ClearMap()
     {
@@ -84,5 +88,66 @@ public class BlizzardBasin
                 }
             }
         }
+    }
+
+    public int FindShortestPath()
+    {
+        var minimum = int.MaxValue;
+        var visited = new List<(int X, int Y)>();
+
+        var movements = new List<char[][]>
+        {
+            _map.Select(v => v.ToArray()).ToArray()
+        };
+
+        var queue = new PriorityQueue<(int X, int Y, int Round), int>();
+        queue.Enqueue((1, 0, 0), 1); // TODO: can't handle wait as first movement
+
+        while (queue.Count > 0)
+        {
+            var stage = queue.Dequeue();
+            if (stage.X == Exit.X && stage.Y == Exit.Y)
+            {
+                if (minimum > stage.Round) // TODO: +1?
+                {
+                    minimum = stage.Round;
+                    continue;
+                }
+            }
+
+            if (stage.Round > minimum)
+            {
+                continue;
+            }
+
+            for (var counter = movements.Count; counter <= stage.Round + 1; counter++)
+            {
+                MoveBlizzards();
+                movements.Add(_map.Select(v => v.ToArray()).ToArray());
+            }
+
+            var map = movements[stage.Round + 1];
+            (int X, int Y)[] neightbours =
+            {
+                (stage.X, stage.Y + 1),
+                (stage.X + 1, stage.Y),
+                (stage.X, stage.Y),
+                (stage.X - 1, stage.Y),
+                (stage.X, stage.Y - 1)
+            };
+
+            foreach (var (x, y) in neightbours)
+            {
+                if (x >= 0 && x <= Width - 1 && y >= 0 && y <= Height - 1)
+                {
+                    if (map[y][x] == '.')
+                    {
+                        queue.Enqueue((x, y, stage.Round + 1), (Height - y) * 1000 + (Width - x));
+                    }
+                }
+            }
+        }
+
+        return minimum;
     }
 }

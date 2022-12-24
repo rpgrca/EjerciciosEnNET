@@ -311,4 +311,12 @@ public class BlizzardBasinMust
 #<....>#
 ######.#", sut.GetImage());
     }
+
+    [Fact]
+    public void SolveFirstSample()
+    {
+        var sut = new BlizzardBasin(SAMPLE_INPUT);
+        var result = sut.FindShortestPath();
+        Assert.Equal(18, result);
+    }
 }
