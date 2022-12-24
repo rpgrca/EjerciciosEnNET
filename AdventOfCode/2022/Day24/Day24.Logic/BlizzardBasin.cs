@@ -52,4 +52,16 @@ public class BlizzardBasin
         }
     }
 
+    public string GetImage()
+    {
+        return string.Join('\n', _map.Select(l => string.Concat(l)));
+    }
+
+    private void ClearMap()
+    {
+        foreach (var (x, y, _) in Blizzards)
+        {
+            _map[y][x] = '.';
+        }
+    }
 }

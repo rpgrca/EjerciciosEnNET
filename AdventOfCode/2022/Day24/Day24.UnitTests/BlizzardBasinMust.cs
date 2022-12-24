@@ -32,7 +32,7 @@ public class BlizzardBasinMust
     }
 
     [Fact]
-    public void Test1()
+    public void LoadBlizzardsCorrectly1()
     {
         var sut = new BlizzardBasin(SIMPLE_SAMPLE);
         Assert.Collection(sut.Blizzards,
@@ -43,9 +43,16 @@ public class BlizzardBasinMust
     [Theory]
     [InlineData(SAMPLE_INPUT, 19)]
     [InlineData(PUZZLE_INPUT, 650 + 698 + 681 + 678)]
-    public void Test2(string input, int expectedBlizzards)
+    public void LoadBlizzardsCorrectly2(string input, int expectedBlizzards)
     {
         var sut = new BlizzardBasin(input);
         Assert.Equal(expectedBlizzards, sut.Blizzards.Count);
+    }
+
+    [Fact]
+    public void ReturnMapImageCorrectly()
+    {
+        var sut = new BlizzardBasin(SAMPLE_INPUT);
+        Assert.Equal(SAMPLE_INPUT, sut.GetImage());
     }
 }
