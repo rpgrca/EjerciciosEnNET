@@ -30,16 +30,16 @@ public class RobotBlueprint
             id = int.Parse(sentences[0][10..]);
             var costs = sentences[1].Split(".");
 
-            oreRobot = new RobotFactory("Ore Robot Factory", 0, 0, int.Parse(costs[0].Split(" ")[5]), _oreRobot, 8);
-            clayRobot = new RobotFactory("Clay Robot Factory", 0, 0, int.Parse(costs[1].Split(" ")[5]), _clayRobot, 6);
+            oreRobot = new RobotFactory("Ore Robot Factory", 0, 0, int.Parse(costs[0].Split(" ")[5]), _oreRobot);
+            clayRobot = new RobotFactory("Clay Robot Factory", 0, 0, int.Parse(costs[1].Split(" ")[5]), _clayRobot);
 
             oreCost = int.Parse(costs[2].Split(" ")[5]);
             clayCost = int.Parse(costs[2].Split(" ")[8]);
-            obsidianRobot = new RobotFactory("Obsidian Robot Factory", 0, clayCost, oreCost, _obsidianRobot, 4);
+            obsidianRobot = new RobotFactory("Obsidian Robot Factory", 0, clayCost, oreCost, _obsidianRobot);
 
             oreCost = int.Parse(costs[3].Split(" ")[5]);
             obsidianCost = int.Parse(costs[3].Split(" ")[8]);
-            geodeRobot = new RobotFactory("Geode Robot Factory", obsidianCost, 0, oreCost, _geodeRobot, 2);
+            geodeRobot = new RobotFactory("Geode Robot Factory", obsidianCost, 0, oreCost, _geodeRobot);
 
             Blueprints.Add(new Blueprint(id, oreRobot, clayRobot, obsidianRobot, geodeRobot));
         }

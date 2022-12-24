@@ -1,5 +1,8 @@
+using System.Diagnostics;
+
 namespace Day19.Logic;
 
+[DebuggerDisplay("{Ore}or/{Clay}cl/{Obsidian}ob/{Geode}ge")]
 public struct Pool
 {
     public int Geode { get; private set; }

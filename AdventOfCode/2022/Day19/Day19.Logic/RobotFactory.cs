@@ -14,13 +14,12 @@ public class RobotFactory
 
     public int Priority { get; internal set; }
 
-    public RobotFactory(string name, int obsidianCost, int clayCost, int oreCost, (int, int, int, int) generation, int priority)
+    public RobotFactory(string name, int obsidianCost, int clayCost, int oreCost, (int, int, int, int) generation)
     {
         _name = name;
         ObsidianCost = obsidianCost;
         ClayCost = clayCost;
         OreCost = oreCost;
-        Priority = priority;
         _generation = generation;
     }
 

@@ -124,12 +124,13 @@ Blueprint 2: Each ore robot costs 2 ore. Each clay robot costs 3 ore. Each obsid
         Assert.Equal(expectedAmount, sut.QualityLevel);
     }
 
-/*
     [Fact]
     public void SolveFirstPuzzle()
     {
         var sut = new RobotBlueprint2(PUZZLE_INPUT);
         sut.Run();
+        Assert.Equal(-1, sut.QualityLevel);
         Assert.True(1555 < sut.QualityLevel);
-    }*/
+        Assert.True(1832 > sut.QualityLevel);
+    }
 }
