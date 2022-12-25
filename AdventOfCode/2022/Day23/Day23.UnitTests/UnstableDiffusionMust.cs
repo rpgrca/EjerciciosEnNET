@@ -19,7 +19,7 @@ public class UnstableDiffusionMust
         Assert.Equal(6, sut.Height);
         Assert.Equal(5, sut.Width);
         Assert.Equal(5, sut.Elves.Count);
-        Assert.Equal(3, sut.CalculateEmptyGround());
+        Assert.Equal(3, sut.CalculateEmptyGroundBetweenElves());
     }
 
     [Theory]
@@ -52,7 +52,7 @@ public class UnstableDiffusionMust
     {
         var sut = new UnstableDiffusion(SAMPLE_INPUT);
         sut.Round(10);
-        Assert.Equal(110, sut.CalculateEmptyGround());
+        Assert.Equal(110, sut.CalculateEmptyGroundBetweenElves());
     }
 
     [Fact]
@@ -60,8 +60,8 @@ public class UnstableDiffusionMust
     {
         var sut = new UnstableDiffusion(PUZZLE_INPUT, 10);
         sut.Round(10);
-        Assert.True(3875 < sut.CalculateEmptyGround());
-        Assert.Equal(3923, sut.CalculateEmptyGround());
+        Assert.True(3875 < sut.CalculateEmptyGroundBetweenElves());
+        Assert.Equal(3923, sut.CalculateEmptyGroundBetweenElves());
     }
 
     [Fact]
