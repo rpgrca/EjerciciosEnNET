@@ -3,26 +3,37 @@ namespace Day19.Logic;
 public class RobotBlueprint2
 {
     private readonly string _input;
+    private readonly int _minutes;
     private readonly string[] _lines;
 
     public List<Blueprint> Blueprints { get; private set; }
     public int QualityLevel { get; private set; }
+    public int Result { get; private set; }
 
     private static readonly (int Geode, int Obsidian, int Clay, int Ore) _oreRobot = (0, 0, 0, 1);
     private static readonly (int Geode, int Obsidian, int Clay, int Ore) _clayRobot = (0, 0, 1, 0);
     private static readonly (int Geode, int Obsidian, int Clay, int Ore) _obsidianRobot = (0, 1, 0, 0);
     private static readonly (int Geode, int Obsidian, int Clay, int Ore) _geodeRobot = (1, 0, 0, 0);
 
-    public RobotBlueprint2(string input)
+    public RobotBlueprint2(string input, int minutes = 24)
     {
         _input = input;
+        _minutes = minutes;
         _lines = _input.Split("\n");
+        Result = 1;
         Blueprints = new List<Blueprint>();
 
         int id, obsidianCost, clayCost, oreCost;
         RobotFactory oreRobot, clayRobot, obsidianRobot, geodeRobot;
+
+        var counter = 0;
         foreach (var line in _lines)
         {
+            counter++;
+            if (minutes == 32 && counter > 3)
+            {
+                break;
+            }
             var sentences = line.Split(":");
             id = int.Parse(sentences[0][10..]);
             var costs = sentences[1].Split(".");
@@ -50,10 +61,14 @@ public class RobotBlueprint2
 
         foreach (var blueprint in Blueprints)
         {
-            var queue = new PriorityQueue<(int, int,
-                (int Geode, int Obsidian, int Clay, int Ore),
-                (int Geode, int Obsidian, int Clay, int Ore),
-                RobotFactory), int>();
+            (int TimeToHarvest, int CurrentTime,
+                (int Geode, int Obsidian, int Clay, int Ore) Pool,
+                (int Geode, int Obsidian, int Clay, int Ore) DailyHarvest,
+                RobotFactory Factory) queueItem;
+            var queue = new PriorityQueue<(int TimeToHarvest, int CurrentTime,
+                (int Geode, int Obsidian, int Clay, int Ore) Pool,
+                (int Geode, int Obsidian, int Clay, int Ore) DailyHarvest,
+                RobotFactory Factory), int>();
             var maximumGeode = 0;
             (int, RobotFactory)[] timeForNextRobot =
             {
@@ -92,64 +107,75 @@ public class RobotBlueprint2
                 var currentCombination = queue.Dequeue();
 
                 var accumulatedPool = new Pool(
-                    currentCombination.Item3.Geode + (currentCombination.Item4.Geode * (currentCombination.Item1 + 1)),
-                    currentCombination.Item3.Obsidian + (currentCombination.Item4.Obsidian * (currentCombination.Item1 + 1)),
-                    currentCombination.Item3.Clay + (currentCombination.Item4.Clay * (currentCombination.Item1 + 1)),
-                    currentCombination.Item3.Ore + (currentCombination.Item4.Ore * (currentCombination.Item1 + 1)));
+                    currentCombination.Pool.Geode + (currentCombination.DailyHarvest.Geode * (currentCombination.TimeToHarvest + 1)),
+                    currentCombination.Pool.Obsidian + (currentCombination.DailyHarvest.Obsidian * (currentCombination.TimeToHarvest + 1)),
+                    currentCombination.Pool.Clay + (currentCombination.DailyHarvest.Clay * (currentCombination.TimeToHarvest + 1)),
+                    currentCombination.Pool.Ore + (currentCombination.DailyHarvest.Ore * (currentCombination.TimeToHarvest + 1)));
 
-                accumulatedPool.Spend(currentCombination.Item5.ObsidianCost, currentCombination.Item5.ClayCost, currentCombination.Item5.OreCost);
+                accumulatedPool.Spend(currentCombination.Factory.ObsidianCost, currentCombination.Factory.ClayCost, currentCombination.Factory.OreCost);
 
                 if (accumulatedPool.Geode > maximumGeode)
                 {
                     maximumGeode = accumulatedPool.Geode;
                 }
 
-                var nextRobotGeneration = new Pool(currentCombination.Item4);
-                nextRobotGeneration.Add(currentCombination.Item5.Create().Generate());
+                var nextRobotGeneration = new Pool(currentCombination.DailyHarvest);
+                nextRobotGeneration.Add(currentCombination.Factory.Create().Generate());
 
-                (int, RobotFactory)[] timeForNextRobot1 =
-                {
-                    ( blueprint.OreRobot.UntilNextAvailable(accumulatedPool, nextRobotGeneration), blueprint.OreRobot ),
-                    ( blueprint.ClayRobot.UntilNextAvailable(accumulatedPool, nextRobotGeneration), blueprint.ClayRobot ),
-                    ( blueprint.ObsidianRobot.UntilNextAvailable(accumulatedPool, nextRobotGeneration), blueprint.ObsidianRobot ),
-                    ( blueprint.GeodeRobot.UntilNextAvailable(accumulatedPool, nextRobotGeneration), blueprint.GeodeRobot )
-                };
-
-                var currentTime = currentCombination.Item1 + 1 + currentCombination.Item2;
-                var toQueue = (timeForNextRobot1[0].Item1, currentTime, accumulatedPool.ToTuple(), nextRobotGeneration.ToTuple(), timeForNextRobot1[0].Item2);
+                var currentTime = currentCombination.TimeToHarvest + 1 + currentCombination.CurrentTime;
                 var queued = false;
-                if (timeForNextRobot1[0].Item1 != 1000 && toQueue.Item1 + toQueue.currentTime < 24 && nextRobotGeneration.Ore < blueprint.MaximumOreRobots)
-                {
-                    queue.Enqueue(toQueue, 24 - toQueue.currentTime);
-                    queued = true;
-                }
 
-                toQueue = (timeForNextRobot1[1].Item1, currentTime, accumulatedPool.ToTuple(), nextRobotGeneration.ToTuple(), timeForNextRobot1[1].Item2);
-                if (timeForNextRobot1[1].Item1 != 1000 && toQueue.Item1 + toQueue.currentTime < 24 && nextRobotGeneration.Clay < blueprint.MaximumClayRobots)
+                var timeLeft = _minutes - currentTime;
+                if (timeLeft > 1)
                 {
-                    queue.Enqueue(toQueue, 24 - toQueue.currentTime);
-                    queued = true;
-                }
+                    var possibleGeodes = accumulatedPool.Geode + timeLeft * nextRobotGeneration.Geode + (timeLeft * (timeLeft + 1) / 2);
+                    if (possibleGeodes < maximumGeode)
+                    {
+                        continue;
+                    }
 
-                toQueue = (timeForNextRobot1[2].Item1, currentTime, accumulatedPool.ToTuple(), nextRobotGeneration.ToTuple(), timeForNextRobot1[2].Item2);
-                if (timeForNextRobot1[2].Item1 != 1000 && toQueue.Item1 + toQueue.currentTime < 24)
-                {
-                    queue.Enqueue(toQueue, 24 - toQueue.currentTime);
-                    queued = true;
-                }
+                    (int TimeToHarvest, RobotFactory Factory)[] timeForNextRobot1 =
+                    {
+                        ( blueprint.OreRobot.UntilNextAvailable(accumulatedPool, nextRobotGeneration), blueprint.OreRobot ),
+                        ( blueprint.ClayRobot.UntilNextAvailable(accumulatedPool, nextRobotGeneration), blueprint.ClayRobot ),
+                        ( blueprint.ObsidianRobot.UntilNextAvailable(accumulatedPool, nextRobotGeneration), blueprint.ObsidianRobot ),
+                        ( blueprint.GeodeRobot.UntilNextAvailable(accumulatedPool, nextRobotGeneration), blueprint.GeodeRobot )
+                    };
 
-                toQueue = (timeForNextRobot1[3].Item1, currentTime, accumulatedPool.ToTuple(), nextRobotGeneration.ToTuple(), timeForNextRobot1[3].Item2);
-                if (timeForNextRobot1[3].Item1 != 1000 && toQueue.Item1 + toQueue.currentTime < 24)
-                {
-                    queue.Enqueue(toQueue, 24 - toQueue.currentTime);
-                    queued = true;
+                    queueItem = (timeForNextRobot1[0].TimeToHarvest, currentTime, accumulatedPool.ToTuple(), nextRobotGeneration.ToTuple(), timeForNextRobot1[0].Factory);
+                    if (queueItem.TimeToHarvest + queueItem.CurrentTime < _minutes && nextRobotGeneration.Ore < blueprint.MaximumOreRobots)
+                    {
+                        queue.Enqueue(queueItem, _minutes - queueItem.CurrentTime);
+                        queued = true;
+                    }
+
+                    queueItem = (timeForNextRobot1[1].TimeToHarvest, currentTime, accumulatedPool.ToTuple(), nextRobotGeneration.ToTuple(), timeForNextRobot1[1].Factory);
+                    if (queueItem.TimeToHarvest + queueItem.CurrentTime < _minutes && nextRobotGeneration.Clay < blueprint.MaximumClayRobots)
+                    {
+                        queue.Enqueue(queueItem, _minutes - queueItem.CurrentTime);
+                        queued = true;
+                    }
+
+                    queueItem = (timeForNextRobot1[2].TimeToHarvest, currentTime, accumulatedPool.ToTuple(), nextRobotGeneration.ToTuple(), timeForNextRobot1[2].Factory);
+                    if (queueItem.TimeToHarvest + queueItem.CurrentTime < _minutes)
+                    {
+                        queue.Enqueue(queueItem, _minutes - queueItem.CurrentTime);
+                        queued = true;
+                    }
+
+                    queueItem = (timeForNextRobot1[3].TimeToHarvest, currentTime, accumulatedPool.ToTuple(), nextRobotGeneration.ToTuple(), timeForNextRobot1[3].Factory);
+                    if (queueItem.TimeToHarvest + queueItem.CurrentTime < _minutes)
+                    {
+                        queue.Enqueue(queueItem, _minutes - queueItem.CurrentTime);
+                        queued = true;
+                    }
                 }
 
                 if (! queued)
                 {
-                    if (nextRobotGeneration.Geode > 0 && currentTime < 24)
+                    if (nextRobotGeneration.Geode > 0 && currentTime < _minutes)
                     {
-                        var daysLeft = 24 - currentTime;
+                        var daysLeft = _minutes - currentTime;
                         var geodesToCome = nextRobotGeneration.Geode * daysLeft;
                         var totalGeodes = accumulatedPool.Geode + geodesToCome;
                         if (totalGeodes > maximumGeode)
@@ -161,6 +187,7 @@ public class RobotBlueprint2
             }
 
             QualityLevel += blueprint.Id * maximumGeode;
+            Result *= maximumGeode;
         }
     }
 }

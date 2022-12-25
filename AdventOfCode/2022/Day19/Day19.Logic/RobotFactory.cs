@@ -43,7 +43,7 @@ public class RobotFactory
 
         if (neededOre <= 0)
         {
-            time[1] = 0;
+            time[0] = 0;
         }
         else if (neededOre > 0 && robotGeneration.Ore != 0)
         {
