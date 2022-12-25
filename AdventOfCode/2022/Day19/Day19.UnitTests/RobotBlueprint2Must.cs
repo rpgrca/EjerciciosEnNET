@@ -145,7 +145,7 @@ Blueprint 2: Each ore robot costs 2 ore. Each clay robot costs 3 ore. Each obsid
     }
 
     [Fact]
-    public void CalculateMultiplicationOfGeodesCorrectly()
+    public void SolveSecondPuzzle()
     {
         var sut = new RobotBlueprint2(PUZZLE_INPUT, 32);
         sut.Run();
