@@ -4,9 +4,9 @@ namespace Day17.Logic;
 
 public class InfinitePyroclasticFlow
 {
-    private string _hotGasStream;
+    private readonly string _hotGasStream;
     private int _hotGasStreamIndex;
-    private ulong _amountOfRocks;
+    private readonly ulong _amountOfRocks;
 
     private readonly (int X, int Y)[][] _rockCoordinates = new (int X, int Y)[][]
     {
@@ -69,7 +69,7 @@ public class InfinitePyroclasticFlow
     };
 
     private char[][] _chamber;
-    private int _currentRock;
+    private readonly int _currentRock;
     private List<(int X, int Y)> _currentRockPosition;
 
     public ulong ExpectedLength { get; private set; }
@@ -136,21 +136,8 @@ public class InfinitePyroclasticFlow
         _currentRockPosition.AddRange(_rockCoordinates[_currentRock % _rockCoordinates.Length]);
     }
 
-    private static char[][] Clone(char[][] rock) => rock.Select(p => p.ToArray()).ToArray();
-
-    private int FindTopMostRock()
-    {
-        var index = 0;
-        for (; index < _chamber.Length; index++)
-        {
-            if (_chamber[index].Contains('#'))
-            {
-                break;
-            }
-        }
-
-        return index;
-    }
+    private static char[][] Clone(char[][] rock) =>
+        rock.Select(p => p.ToArray()).ToArray();
 
     private void ExecuteJetGas()
     {
@@ -252,51 +239,4 @@ public class InfinitePyroclasticFlow
 
         return blocked;
     }
-
-
-    public string GetChamber()
-    {
-        var stringBuilder = new StringBuilder();
-
-        foreach (var line in _chamber)
-        {
-            if (line.Contains('#'))
-            {
-                stringBuilder.Append('|');
-                stringBuilder.Append(line);
-                stringBuilder.Append("|\n");
-            }
-        }
-
-        stringBuilder.Append("+-------+");
-        return stringBuilder.ToString();
-    }
-
-/*
-    public void DrawSituation()
-    {
-        var stringBuilder = new StringBuilder();
-        char[][] chamber = new char[_chamber.Length][];
-
-        Array.Copy(_chamber, chamber, _chamber.Length);
-        foreach (var (x, y) in _currentRockPosition)
-        {
-            chamber[y][x] = '@';
-        }
-
-        foreach (var line in chamber)
-        {
-            stringBuilder.Append('|');
-            stringBuilder.Append(line);
-            stringBuilder.Append("|\n");
-        }
-
-        stringBuilder.Append("+-------+\n\n");
-        Console.WriteLine(stringBuilder.ToString());
-
-        foreach (var (x, y) in _currentRockPosition)
-        {
-            chamber[y][x] = '.';
-        }
-    }*/
 }

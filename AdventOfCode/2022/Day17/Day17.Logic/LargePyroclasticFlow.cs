@@ -10,7 +10,7 @@ public class LargePyroclasticFlow
     private ulong _amountOfRocks;
     private int _rightmostPoint;
 
-    private int[] _bitfield;
+    private readonly int[] _bitfield;
 
     private readonly (int X, int Y)[][] _rockCoordinates = new (int X, int Y)[][]
     {
@@ -224,21 +224,8 @@ sample original
         _currentRockPosition.AddRange(_rockCoordinates[_currentRock % _rockCoordinates.Length].Select(p => (X: p.X + _rightmostPoint + 4, p.Y)));
     }
 
-    private static char[][] Clone(char[][] rock) => rock.Select(p => p.ToArray()).ToArray();
-
-    private int FindTopMostRock()
-    {
-        var index = 0;
-        for (; index < _chamber.Length; index++)
-        {
-            if (_chamber[index].Contains('#'))
-            {
-                break;
-            }
-        }
-
-        return index;
-    }
+    private static char[][] Clone(char[][] rock) =>
+        rock.Select(p => p.ToArray()).ToArray();
 
     private void ExecuteJetGas()
     {
@@ -309,24 +296,6 @@ sample original
         _currentRockPosition.Clear();
     }
 
-    public string GetChamber()
-    {
-        var stringBuilder = new StringBuilder();
-
-        foreach (var line in _chamber)
-        {
-            if (line.Contains('#'))
-            {
-                stringBuilder.Append('|');
-                stringBuilder.Append(line);
-                stringBuilder.Append("|\n");
-            }
-        }
-
-        stringBuilder.Append("+-------+");
-        return stringBuilder.ToString();
-    }
-
     public string ToBits()
     {
         var stringBuilder = new StringBuilder();
@@ -354,37 +323,4 @@ sample original
 
         return stringBuilder.ToString();
     }
-/*
-    public void DrawSituation()
-    {
-        var stringBuilder = new StringBuilder();
-        char[][] chamber = new char[_chamber.Length][];
-
-        Array.Copy(_chamber, chamber, _chamber.Length);
-        foreach (var (x, y) in _currentRockPosition)
-        {
-            chamber[y][x] = '@';
-        }
-
-        var line = ".......".ToArray();
-        for (var x = _rightmostPoint + 7; x >= 0; x--)
-        {
-            for (var y = 0; y < chamber.Length; y++)
-            {
-                line[y] = chamber[y][x];
-            }
-
-            stringBuilder.Append('|');
-            stringBuilder.Append(line);
-            stringBuilder.Append("|\n");
-        }
-
-        stringBuilder.Append("+-------+\n\n");
-        Console.WriteLine(stringBuilder.ToString());
-
-        foreach (var (x, y) in _currentRockPosition)
-        {
-            chamber[y][x] = '.';
-        }
-    }*/
 }

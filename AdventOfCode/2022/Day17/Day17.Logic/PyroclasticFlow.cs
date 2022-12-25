@@ -4,10 +4,10 @@ namespace Day17.Logic;
 
 public class PyroclasticFlow
 {
-    private string _hotGasStream;
+    private readonly string _hotGasStream;
     private int _hotGasStreamIndex;
-    private int _amountOfRocks;
-    private int _width;
+    private readonly int _amountOfRocks;
+    private readonly int _width;
 
     private readonly (int X, int Y)[][] _rockCoordinates = new (int X, int Y)[][]
     {
@@ -69,56 +69,8 @@ public class PyroclasticFlow
         }
     };
 
-/*
-    private readonly char[][][] _setupRock = new char[][][]
-    {
-        new char[][]
-        {
-            new char[] { '.', '.', '@', '@', '@', '@', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' }
-        },
-        new char[][]
-        {
-            new char[] { '.', '.', '.', '@', '.', '.', '.' },
-            new char[] { '.', '.', '@', '@', '@', '.', '.' },
-            new char[] { '.', '.', '.', '@', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' }
-        },
-        new char[][]
-        {
-            new char[] { '.', '.', '.', '.', '@', '.', '.' },
-            new char[] { '.', '.', '.', '.', '@', '.', '.' },
-            new char[] { '.', '.', '@', '@', '@', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' }
-        },
-        new char[][]
-        {
-            new char[] { '.', '.', '@', '.', '.', '.', '.' },
-            new char[] { '.', '.', '@', '.', '.', '.', '.' },
-            new char[] { '.', '.', '@', '.', '.', '.', '.' },
-            new char[] { '.', '.', '@', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' }
-        },
-        new char[][]
-        {
-            new char[] { '.', '.', '@', '@', '.', '.', '.' },
-            new char[] { '.', '.', '@', '@', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' },
-            new char[] { '.', '.', '.', '.', '.', '.', '.' }
-        }
-    };
-*/
     private char[][] _chamber;
-    private int _currentRock;
+    private readonly int _currentRock;
     private List<(int X, int Y)> _currentRockPosition;
 
     public PyroclasticFlow(string input, int amountOfRocks)
@@ -174,20 +126,6 @@ public class PyroclasticFlow
     }
 
     private static char[][] Clone(char[][] rock) => rock.Select(p => p.ToArray()).ToArray();
-
-    private int FindTopMostRock()
-    {
-        var index = 0;
-        for (; index < _chamber.Length; index++)
-        {
-            if (_chamber[index].Contains('#'))
-            {
-                break;
-            }
-        }
-
-        return index;
-    }
 
     private void ExecuteJetGas()
     {
@@ -284,32 +222,4 @@ public class PyroclasticFlow
         stringBuilder.Append("+-------+");
         return stringBuilder.ToString();
     }
-
-/*
-    public void DrawSituation()
-    {
-        var stringBuilder = new StringBuilder();
-        char[][] chamber = new char[_chamber.Length][];
-
-        Array.Copy(_chamber, chamber, _chamber.Length);
-        foreach (var (x, y) in _currentRockPosition)
-        {
-            chamber[y][x] = '@';
-        }
-
-        foreach (var line in chamber)
-        {
-            stringBuilder.Append('|');
-            stringBuilder.Append(line);
-            stringBuilder.Append("|\n");
-        }
-
-        stringBuilder.Append("+-------+\n\n");
-        Console.WriteLine(stringBuilder.ToString());
-
-        foreach (var (x, y) in _currentRockPosition)
-        {
-            chamber[y][x] = '.';
-        }
-    }*/
 }
