@@ -81,18 +81,6 @@ public class RobotBlueprint
                 queue.Enqueue(toQueue1, toQueue1.Item2);
             }
 
-            if (timeForNextRobot[2].Item1 != 1000)
-            {
-                var toQueue1 = (timeForNextRobot[2].Item1, 0, emptyPool.ToTuple(), initialRobotGeneration.ToTuple(), timeForNextRobot[2].Item2);
-                queue.Enqueue(toQueue1, toQueue1.Item2);
-            }
-
-            if (timeForNextRobot[3].Item1 != 1000)
-            {
-                var toQueue1 = (timeForNextRobot[3].Item1, 0, emptyPool.ToTuple(), initialRobotGeneration.ToTuple(), timeForNextRobot[3].Item2);
-                queue.Enqueue(toQueue1, toQueue1.Item2);
-            }
-
             while (queue.Count > 0)
             {
                 var currentCombination = queue.Dequeue();

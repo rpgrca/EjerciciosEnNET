@@ -10,8 +10,6 @@ public record Blueprint
 
     public int MaximumOreRobots { get; }
     public int MaximumClayRobots { get; }
-    public int MaximumObsidianRobots { get; }
-    public int MaximumGeodeRobots { get; }
 
     public Blueprint(int id, RobotFactory oreRobot, RobotFactory clayRobot, RobotFactory obsidianRobot, RobotFactory geodeRobot)
     {
@@ -23,14 +21,5 @@ public record Blueprint
 
         MaximumOreRobots = new[] { OreRobot.OreCost, ClayRobot.OreCost, ObsidianRobot.OreCost, GeodeRobot.OreCost }.Max();
         MaximumClayRobots = new[] { OreRobot.ClayCost, ClayRobot.ClayCost, ObsidianRobot.ClayCost, GeodeRobot.ClayCost }.Max();
-        MaximumObsidianRobots = GeodeRobot.ObsidianCost;
     }
-
-    public RobotFactory GetFactoryForRobotOfType(char type) =>
-        type switch {
-            '0' => OreRobot,
-            '1' => ClayRobot,
-            '2' => ObsidianRobot,
-            _ => GeodeRobot
-        };
 }
