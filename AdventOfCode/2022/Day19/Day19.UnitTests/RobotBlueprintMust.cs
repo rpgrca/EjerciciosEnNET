@@ -3,12 +3,12 @@ using static Day19.UnitTests.Constants;
 
 namespace Day19.UnitTests;
 
-public class RobotBlueprint2Must
+public class RobotBlueprintMust
 {
     [Fact]
     public void ParseBlueprintCorrectly_WhenBlueprintHasOneElement()
     {
-        var sut = new RobotBlueprint2("Blueprint 1: Each ore robot costs 4 ore. Each clay robot costs 2 ore. Each obsidian robot costs 3 ore and 14 clay. Each geode robot costs 2 ore and 7 obsidian.");
+        var sut = RobotBlueprint.CreateForFirstPuzzle("Blueprint 1: Each ore robot costs 4 ore. Each clay robot costs 2 ore. Each obsidian robot costs 3 ore and 14 clay. Each geode robot costs 2 ore and 7 obsidian.");
         Assert.Collection(sut.Blueprints,
             b1 =>
             {
@@ -31,7 +31,7 @@ public class RobotBlueprint2Must
     [Fact]
     public void ParseBlueprintCorrectly_WhenBlueprintHasTwoElements()
     {
-        var sut = new RobotBlueprint2(@"Blueprint 1: Each ore robot costs 4 ore. Each clay robot costs 2 ore. Each obsidian robot costs 3 ore and 14 clay. Each geode robot costs 2 ore and 7 obsidian.
+        var sut = RobotBlueprint.CreateForFirstPuzzle(@"Blueprint 1: Each ore robot costs 4 ore. Each clay robot costs 2 ore. Each obsidian robot costs 3 ore and 14 clay. Each geode robot costs 2 ore and 7 obsidian.
 Blueprint 2: Each ore robot costs 2 ore. Each clay robot costs 3 ore. Each obsidian robot costs 3 ore and 8 clay. Each geode robot costs 3 ore and 12 obsidian.");
         Assert.Collection(sut.Blueprints,
             b1 =>
@@ -73,7 +73,7 @@ Blueprint 2: Each ore robot costs 2 ore. Each clay robot costs 3 ore. Each obsid
     [InlineData("Blueprint 1: Each ore robot costs 2 ore. Each clay robot costs 3 ore. Each obsidian robot costs 3 ore and 8 clay. Each geode robot costs 3 ore and 12 obsidian.", 12)]
     public void CalculateQualityLevelCorrectly_WithOneBlueprint(string input, int expectedLevel)
     {
-        var sut = new RobotBlueprint2(input);
+        var sut = RobotBlueprint.CreateForFirstPuzzle(input);
         sut.Run();
         Assert.Equal(expectedLevel, sut.QualityLevel);
     }
@@ -81,11 +81,12 @@ Blueprint 2: Each ore robot costs 2 ore. Each clay robot costs 3 ore. Each obsid
     [Fact]
     public void SolveFirstSample()
     {
-        var sut = new RobotBlueprint2(SAMPLE_INPUT);
+        var sut = RobotBlueprint.CreateForFirstPuzzle(SAMPLE_INPUT);
         sut.Run();
         Assert.Equal(33, sut.QualityLevel);
     }
 
+#if !CI_CONTEXT
     [Theory]
     [InlineData("Blueprint 1: Each ore robot costs 3 ore. Each clay robot costs 3 ore. Each obsidian robot costs 2 ore and 19 clay. Each geode robot costs 2 ore and 12 obsidian.", 1)]
     [InlineData("Blueprint 1: Each ore robot costs 3 ore. Each clay robot costs 3 ore. Each obsidian robot costs 3 ore and 19 clay. Each geode robot costs 2 ore and 9 obsidian.", 2)]
@@ -119,35 +120,38 @@ Blueprint 2: Each ore robot costs 2 ore. Each clay robot costs 3 ore. Each obsid
     [InlineData("Blueprint 1: Each ore robot costs 4 ore. Each clay robot costs 4 ore. Each obsidian robot costs 4 ore and 8 clay. Each geode robot costs 2 ore and 15 obsidian.", 1)]
     public void CalculateGeodeAmountCorrectlyForEveryBlueprintInPuzzle(string blueprint, int expectedAmount)
     {
-        var sut = new RobotBlueprint2(blueprint);
+        var sut = RobotBlueprint.CreateForFirstPuzzle(blueprint);
         sut.Run();
         Assert.Equal(expectedAmount, sut.QualityLevel);
     }
+#endif
 
     [Fact]
     public void SolveFirstPuzzle()
     {
-        var sut = new RobotBlueprint2(PUZZLE_INPUT);
+        var sut = RobotBlueprint.CreateForFirstPuzzle(PUZZLE_INPUT);
         sut.Run();
         Assert.True(1555 < sut.QualityLevel);
         Assert.True(1832 > sut.QualityLevel);
         Assert.Equal(1589, sut.QualityLevel);
     }
 
+#if !CI_CONTEXT
     [Theory]
     [InlineData("Blueprint 1: Each ore robot costs 4 ore. Each clay robot costs 2 ore. Each obsidian robot costs 3 ore and 14 clay. Each geode robot costs 2 ore and 7 obsidian.", 56)]
     [InlineData("Blueprint 1: Each ore robot costs 2 ore. Each clay robot costs 3 ore. Each obsidian robot costs 3 ore and 8 clay. Each geode robot costs 3 ore and 12 obsidian.", 62)]
     public void CalculateAmountOfGeodesOpened_WithOneBlueprint(string input, int expectedGeodes)
     {
-        var sut = new RobotBlueprint2(input, 32);
+        var sut = RobotBlueprint.CreateForSecondPuzzle(input);
         sut.Run();
         Assert.Equal(expectedGeodes, sut.Result);
     }
+#endif
 
     [Fact]
     public void SolveSecondPuzzle()
     {
-        var sut = new RobotBlueprint2(PUZZLE_INPUT, 32);
+        var sut = RobotBlueprint.CreateForSecondPuzzle(PUZZLE_INPUT);
         sut.Run();
         Assert.Equal(29348, sut.Result);
     }

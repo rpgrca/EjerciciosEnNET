@@ -23,7 +23,7 @@ public record Blueprint
 
         MaximumOreRobots = new[] { OreRobot.OreCost, ClayRobot.OreCost, ObsidianRobot.OreCost, GeodeRobot.OreCost }.Max();
         MaximumClayRobots = new[] { OreRobot.ClayCost, ClayRobot.ClayCost, ObsidianRobot.ClayCost, GeodeRobot.ClayCost }.Max();
-        MaximumObsidianRobots = new[] { OreRobot.ObsidianCost, ClayRobot.ObsidianCost, ObsidianRobot.ObsidianCost, GeodeRobot.ObsidianCost }.Max();
+        MaximumObsidianRobots = GeodeRobot.ObsidianCost;
     }
 
     public RobotFactory GetFactoryForRobotOfType(char type) =>
