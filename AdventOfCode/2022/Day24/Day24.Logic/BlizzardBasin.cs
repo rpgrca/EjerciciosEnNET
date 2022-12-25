@@ -2,10 +2,11 @@ namespace Day24.Logic;
 
 public class BlizzardBasin
 {
+    private const int MagicNumberToPreventExtensiveProcessing = 1000;
     private readonly string _input;
     private readonly string[] _lines;
     private readonly char[][] _map;
-    private List<char[][]> _movements;
+    private readonly List<char[][]> _movements;
 
     public int Height { get; }
     public int Width { get; }
@@ -22,9 +23,8 @@ public class BlizzardBasin
         Height = _lines.Length;
         Width = _lines[0].Length;
 
-        // TODO: Calculate based on input
-        Entrance = (1, 0);
-        Exit = (Width - 2, Height - 1);
+        Entrance = (_lines[0].IndexOf('.'), 0);
+        Exit = (_lines[^1].IndexOf('.'), Height - 1);
 
         _map = new char[Height][];
         for (var y = 0; y < Height; y++)
@@ -48,10 +48,7 @@ public class BlizzardBasin
     }
 
     public string GetImage() =>
-        GetImage(_map);
-
-    private string GetImage(char[][] map) =>
-        string.Join('\n', map.Select(l => string.Concat(l)));
+        string.Join('\n', _map.Select(l => string.Concat(l)));
 
     private void ClearMap()
     {
@@ -77,52 +74,35 @@ public class BlizzardBasin
     {
         foreach (var (x, y, direction) in Blizzards)
         {
-            if (_map[y][x] == '.')
-            {
-                _map[y][x] = direction;
-            }
-            else
-            {
-                if (_map[y][x] > '0' && _map[y][x] <= '9')
-                {
-                    _map[y][x] = (char)(_map[y][x] + 1);
-                }
-                else
-                {
-                    _map[y][x] = '2';
-                }
-            }
+            _map[y][x] = _map[y][x] == '.'
+                ? direction
+                : char.IsDigit(_map[y][x]) ? (char)(_map[y][x] + 1) : '2';
         }
     }
 
-    public int FindShortestPath() => FindShortestPath(Entrance, Exit, 0, (x, y) => (Height - y) * 1000 + (Width - x));
+    public int FindShortestPath() =>
+        FindShortestPath(Entrance, Exit, 0);
 
-    private int FindShortestPath((int X, int Y) entrance, (int X, int Y) egress, int round, Func<int, int, int> priorityCallback)
+    private int FindShortestPath((int X, int Y) entrance, (int X, int Y) egress, int round)
     {
-        var minimum = 1000;
+        var minimum = MagicNumberToPreventExtensiveProcessing;
         var visited = new HashSet<(int X, int Y, int Round)>();
-
         var queue = new PriorityQueue<(int X, int Y, int Round), int>();
-        queue.Enqueue((entrance.X, entrance.Y, round), 1);
 
+        queue.Enqueue((entrance.X, entrance.Y, round), 1);
         while (queue.Count > 0)
         {
             var stage = queue.Dequeue();
             if (stage.X == egress.X && stage.Y == egress.Y)
             {
-                if (minimum > stage.Round) // TODO: +1?
+                if (minimum > stage.Round)
                 {
                     minimum = stage.Round;
                     continue;
                 }
             }
 
-            if (stage.Round > minimum)
-            {
-                continue;
-            }
-
-            if (visited.Contains(stage))
+            if (stage.Round > minimum || visited.Contains(stage))
             {
                 continue;
             }
@@ -151,8 +131,6 @@ public class BlizzardBasin
                 {
                     if (map[y][x] == '.')
                     {
-                        if (x == 23 && y == 19 || x == 24 && y == 19) continue;
-
                         queue.Enqueue((x, y, stage.Round + 1), (Height - y) * 1000 + (Width - x));
                     }
                 }
@@ -166,8 +144,8 @@ public class BlizzardBasin
     {
         var minutes = 0;
         minutes += FindShortestPath();
-        minutes += FindShortestPath(Exit, Entrance, minutes, (x, y) => y * 1000 + x) - minutes;
-        minutes += FindShortestPath(Entrance, Exit, minutes, (x, y) => (Height - y) * 1000 + (Width - x)) - minutes;
+        minutes += FindShortestPath(Exit, Entrance, minutes) - minutes;
+        minutes += FindShortestPath(Entrance, Exit, minutes) - minutes;
 
         return minutes;
     }
