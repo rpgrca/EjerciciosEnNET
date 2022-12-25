@@ -188,11 +188,6 @@ public class PressureReleaseValve3
                     _maximumReleasedPressure = currentPressure;
                 }
             }
-
-            if (firstElephant % 100 == 0)
-            {
-                Console.WriteLine($"{firstElephant} - {_maximumReleasedPressure}");
-            }
         }
     }
 

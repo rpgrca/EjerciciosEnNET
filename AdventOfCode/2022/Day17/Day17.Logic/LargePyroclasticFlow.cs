@@ -354,7 +354,7 @@ sample original
 
         return stringBuilder.ToString();
     }
-
+/*
     public void DrawSituation()
     {
         var stringBuilder = new StringBuilder();
@@ -386,5 +386,5 @@ sample original
         {
             chamber[y][x] = '.';
         }
-    }
+    }*/
 }

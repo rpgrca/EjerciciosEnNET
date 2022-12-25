@@ -104,33 +104,6 @@ public class MonkeyMap
             _pointer.Move(command);
         }
     }
-
-    private void Display()
-    {
-        var stringBuilder = new System.Text.StringBuilder();
-        for (var y = 1; y <= Height; y++)
-        {
-            for (var x = 1; x <= Width; x++)
-            {
-                if (_pointer.X == x && _pointer.Y == y)
-                {
-                    stringBuilder.Append('X');
-                }
-                else if (_pointer.VisitedTiles.TryGetValue((x, y), out var direction))
-                {
-                    stringBuilder.Append(direction);
-                }
-                else
-                {
-                    stringBuilder.Append(_map[y,x]);
-                }
-            }
-
-            stringBuilder.Append('\n');
-        }
-
-        Console.WriteLine(stringBuilder.ToString());
-    }
 }
 
 
@@ -239,34 +212,5 @@ public class MonkeyMap3d
         {
             _pointer.Move(command);
         }
-
-        Display();
-    }
-
-    private void Display()
-    {
-        var stringBuilder = new System.Text.StringBuilder();
-        for (var y = 1; y <= Height; y++)
-        {
-            for (var x = 1; x <= Width; x++)
-            {
-                if (_pointer.X == x && _pointer.Y == y)
-                {
-                    stringBuilder.Append('X');
-                }
-                else if (_pointer.VisitedTiles.TryGetValue((x, y), out var direction))
-                {
-                    stringBuilder.Append(direction);
-                }
-                else
-                {
-                    stringBuilder.Append(_map[y,x]);
-                }
-            }
-
-            stringBuilder.Append('\n');
-        }
-
-        Console.WriteLine(stringBuilder.ToString());
     }
 }

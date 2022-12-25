@@ -104,11 +104,6 @@ public class InfinitePyroclasticFlow
                 ExpectedLength += (ulong)(height - GetHeight());
             }
 
-            if (rockNumber % 1_000_000 == 0)
-            {
-                Console.WriteLine(rockNumber);
-            }
-
             _currentRock += 1;
             rockNumber += 1;
         }
@@ -277,6 +272,7 @@ public class InfinitePyroclasticFlow
         return stringBuilder.ToString();
     }
 
+/*
     public void DrawSituation()
     {
         var stringBuilder = new StringBuilder();
@@ -302,5 +298,5 @@ public class InfinitePyroclasticFlow
         {
             chamber[y][x] = '.';
         }
-    }
+    }*/
 }

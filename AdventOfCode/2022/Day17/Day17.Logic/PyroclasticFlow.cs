@@ -285,6 +285,7 @@ public class PyroclasticFlow
         return stringBuilder.ToString();
     }
 
+/*
     public void DrawSituation()
     {
         var stringBuilder = new StringBuilder();
@@ -310,5 +311,5 @@ public class PyroclasticFlow
         {
             chamber[y][x] = '.';
         }
-    }
+    }*/
 }
