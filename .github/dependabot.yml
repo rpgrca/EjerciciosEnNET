@@ -16,16 +16,6 @@ updates:
       interval: "weekly"
 
   - package-ecosystem: "nuget"
-    directory: "/AdventOfCode/2020"
-    schedule:
-      interval: "weekly"
-
-  - package-ecosystem: "nuget"
-    directory: "/AdventOfCode/2021"
-    schedule:
-      interval: "weekly"
-
-  - package-ecosystem: "nuget"
     directory: "/SistemaDeAparcamiento"
     schedule:
       interval: "weekly"
