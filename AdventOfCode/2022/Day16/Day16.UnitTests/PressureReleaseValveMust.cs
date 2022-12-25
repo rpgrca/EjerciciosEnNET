@@ -23,7 +23,7 @@ public class PressureReleaseValveMust
     public void LoadInputCorrectly(string input, int expectedPressureRelease)
     {
         var graphParser = new GraphParser(input);
-        var sut = new PressureReleaseValve3(input, graphParser.Graph, graphParser.Names, graphParser.Flows);
+        var sut = new PressureReleaseValve(input, graphParser.Graph, graphParser.Names, graphParser.Flows);
         Assert.Equal(expectedPressureRelease, sut.ReleasedPressure);
     }
 
@@ -86,7 +86,7 @@ Valve DD has flow rate=20; tunnels lead to valves CC, AA";
          * Total: 28 * 20 + 26 * 22 + 24 * 13 = 1444
          */
         var graphParser = new GraphParser(input);
-        var sut = new PressureReleaseValve3(input, graphParser.Graph, graphParser.Names, graphParser.Flows);
+        var sut = new PressureReleaseValve(input, graphParser.Graph, graphParser.Names, graphParser.Flows);
         Assert.Equal(1444, sut.ReleasedPressure);
     }
 
@@ -152,7 +152,7 @@ Valve DD has flow rate=20; tunnels lead to valves CC, AA";
          * Total: 23 * 35 + 33 * 2 + 20 * 3 = 931
          */
         var graphParser = new GraphParser(input);
-        var sut = new PressureReleaseValve3(input, graphParser.Graph, graphParser.Names, graphParser.Flows);
+        var sut = new PressureReleaseValve(input, graphParser.Graph, graphParser.Names, graphParser.Flows);
         Assert.Equal(931, sut.ReleasedPressure);
     }
 
@@ -160,14 +160,14 @@ Valve DD has flow rate=20; tunnels lead to valves CC, AA";
     public void SolveFirstSample_WhenUsingGraphParser()
     {
         var graphParser = new GraphParser(SAMPLE_INPUT);
-        var sut = new PressureReleaseValve3(SAMPLE_INPUT, graphParser.Graph, graphParser.Names, graphParser.Flows);
+        var sut = new PressureReleaseValve(SAMPLE_INPUT, graphParser.Graph, graphParser.Names, graphParser.Flows);
         Assert.Equal(1651, sut.ReleasedPressure);
     }
 
     [Fact]
     public void SolveFirstPuzzle()
     {
-        var sut = new PressureReleaseValve3(PUZZLE_INPUT, 
+        var sut = new PressureReleaseValve(PUZZLE_INPUT, 
             new int[][] {
                 new[] { 0, 7, 5, 3, 3, 6, 7, 5, 4, 4, 5, 3, 2, 4, 7, 6, 5, 8, 3, 9, 7, 7, 1, 4, 2, 4, 4, 6, 1, 8, 9, 1, 8, 9, 3, 4, 3, 2, 6, 3, 6, 7, 3, 5, 8, 1, 7, 9, 5, 2, 3, 3, 1, 8, 4, 8, 2, 4, 4 },
                 new[] { 7, 0, 11, 9, 7, 12, 13, 2, 10, 5, 11, 7, 6, 8, 13, 1, 6, 14, 5, 15, 13, 13, 6, 6, 5, 10, 5, 12, 8, 14, 15, 8, 14, 2, 9, 8, 4, 8, 12, 7, 7, 13, 7, 11, 1, 8, 13, 15, 9, 8, 8, 9, 7, 14, 10, 14, 9, 8, 3 },
@@ -237,7 +237,7 @@ Valve DD has flow rate=20; tunnels lead to valves CC, AA";
     public void SolveSecondSample()
     {
         var graphParser = new GraphParser(SAMPLE_INPUT);
-        var sut = new PressureReleaseValve3(SAMPLE_INPUT, graphParser.Graph, graphParser.Names, graphParser.Flows, 2);
+        var sut = new PressureReleaseValve(SAMPLE_INPUT, graphParser.Graph, graphParser.Names, graphParser.Flows, 2);
         Assert.Equal(1707, sut.ReleasedPressure);
     }
 
@@ -246,7 +246,7 @@ Valve DD has flow rate=20; tunnels lead to valves CC, AA";
     public void SolveSecondPuzzle()
     {
         var graphParser = new GraphParser(PUZZLE_INPUT);
-        var sut = new PressureReleaseValve3(PUZZLE_INPUT, graphParser.Graph, graphParser.Names, graphParser.Flows, 2);
+        var sut = new PressureReleaseValve(PUZZLE_INPUT, graphParser.Graph, graphParser.Names, graphParser.Flows, 2);
         Assert.True(2124 < sut.ReleasedPressure);
         Assert.Equal(2504, sut.ReleasedPressure);
     }
