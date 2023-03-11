@@ -51,7 +51,7 @@ jobs:
            for t in `ls -d1 ./Codewars/[0-9]kyu`; do
                n=$(basename $t)
                for s in `find ./Codewars/$n -maxdepth 1 -type d -printf "%f\n" | grep -v "kyu"`; do
-                   coverlet Codewars/$n/$s/$s.UnitTests/bin/Debug/net7/$s.UnitTests.dll --target "dotnet" --targetargs "test Codewars/$n/$s/$s.UnitTests/$s.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output $s.coverage.xml
+                   coverlet Codewars/$n/$s/$s.UnitTests/bin/Debug/net7.0/$s.UnitTests.dll --target "dotnet" --targetargs "test Codewars/$n/$s/$s.UnitTests/$s.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output $s.coverage.xml
                done
            done
 
