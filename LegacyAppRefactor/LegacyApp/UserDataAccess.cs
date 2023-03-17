@@ -1,3 +1,7 @@
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+
 namespace LegacyApp
 {
 	public static class UserDataAccess
@@ -21,7 +25,7 @@ namespace LegacyApp
 			    command.Parameters.Add(surnameParameter);
 			    var dateOfBirthParameter = new SqlParameter("@DateOfBirth", SqlDbType.DateTime) { Value = user.DateOfBirth };
 			    command.Parameters.Add(dateOfBirthParameter);
-			    var emailAddressParameter = new SqlParamter("@EmailAddress", SqlDbType.VarChar, 50) { Value = user.EmailAddress };
+			    var emailAddressParameter = new SqlParameter("@EmailAddress", SqlDbType.VarChar, 50) { Value = user.EmailAddress };
 			    command.Parameters.Add(emailAddressParameter);
 			    var hasCreditLimitParameter = new SqlParameter("@HasCreditLimit", SqlDbType.Bit) { Value = user.HasCreditLimit };
 			    command.Parameters.Add(hasCreditLimitParameter);

@@ -16,8 +16,7 @@ namespace LegacyApp
 
 			var now = DateTime.Now;
 			int age = now.Year - dateOfBirth.Year;
-			if (now.Month < dateOfBirth.Month || (now.Month == dateOfBirth.Month && now.Day < dateOfBirth.Da)) age--;
-
+			if (now.Month < dateOfBirth.Month || (now.Month == dateOfBirth.Month && now.Day < dateOfBirth.Day)) age--;
 
 			if (age < 21)
 			{
@@ -57,7 +56,7 @@ namespace LegacyApp
 				user.HasCreditLimit = true;
 				using (var userCreditService = new UserCreditServiceClient())
 				{
-					var creditLimit = userCreditService.GetCreditLimit(user.Firstname, user.Suername, user.DateOfBirth);
+					var creditLimit = userCreditService.GetCreditLimit(user.Firstname, user.Surname, user.DateOfBirth);
 					user.CreditLimit = creditLimit;
 				}
 			}
