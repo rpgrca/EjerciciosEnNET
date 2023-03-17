@@ -22,7 +22,7 @@ jobs:
     - name: Restore packages
       run: |
            dotnet restore
-           for s in SistemaDeAparcamiento Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum Codewars SatelliteMessages MarsRover ArrayReordering; do
+           for s in SistemaDeAparcamiento Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum Codewars SatelliteMessages MarsRover ArrayReordering LegacyAppRefactor; do
                dotnet restore $s/$s.sln
            done
 
@@ -32,7 +32,7 @@ jobs:
     - name: Build solutions
       run: |
            dotnet build --configuration Debug --no-restore /p:DefineConstants="CI_CONTEXT"
-           for s in SistemaDeAparcamiento Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum Codewars SatelliteMessages MarsRover ArrayReordering; do
+           for s in SistemaDeAparcamiento Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum Codewars SatelliteMessages MarsRover ArrayReordering LegacyAppRefactor; do
                dotnet build --configuration Debug --no-restore $s/$s.sln /p:DefineConstants="CI_CONTEXT"
            done
 
