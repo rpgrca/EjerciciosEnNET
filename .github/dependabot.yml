@@ -20,8 +20,13 @@ updates:
     schedule:
       interval: "weekly"
 
-
   - package-ecosystem: "nuget"
     directory: "/Codewars"
     schedule:
       interval: "weekly"
+
+  - package-ecosystem: "nuget"
+    directory: "/LegacyAppRefactor"
+    schedule:
+      interval: "weekly"
+
