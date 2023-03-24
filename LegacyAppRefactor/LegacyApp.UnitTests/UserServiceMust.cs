@@ -10,6 +10,7 @@ public class UserServiceMust
     private const string ANY_SURNAME = "Smith";
     private const string ANY_FULLNAME = $"{ANY_FIRSTNAME} {ANY_SURNAME}";
     private const string ANY_VERY_IMPORTANT_CLIENT = "VeryImportantClient";
+    private const string ANY_IMPORTANT_CLIENT = "ImportantClient";
     private const string ANY_VALID_EMAIL = "john@smith.com";
     private const string INVALID_MAIL_WITHOUT_DOT = "john@smithcom";
     private const string INVALID_MAIL_WITHOUT_AT = "johnsmith.com";
@@ -168,5 +169,37 @@ public class UserServiceMust
 
         sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, anyInvalidEmail, ANY_ADULT_DATE_OF_BIRTH, ANY_CLIENT_ID);
         Assert.Null(userDataAccessSpy.AddedUser);
+    }
+
+    [Fact]
+    public void ReturnTrue_WhenUserHasTwiceCreditLimit()
+    {
+        var userValidator = new UserValidator(new ClockStub(CURRENT_DATE_TIME));
+        var userDataAccessSpy = new UserDataAccessSpy();
+        var clientRepositoryStub = new ClientRepositoryStub(CreateClient(ANY_IMPORTANT_CLIENT));
+        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, userValidator, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
+
+        var result = sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, ANY_VALID_EMAIL, ANY_ADULT_DATE_OF_BIRTH, ANY_CLIENT_ID);
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void AddUser_WhenUserHasTwiceCreditLimit()
+    {
+        var clientStub = CreateClient(ANY_IMPORTANT_CLIENT);
+        var userValidator = new UserValidator(new ClockStub(CURRENT_DATE_TIME));
+        var userDataAccessSpy = new UserDataAccessSpy();
+        var clientRepositoryStub = new ClientRepositoryStub(clientStub);
+        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, userValidator, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
+
+        var result = sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, ANY_VALID_EMAIL, ANY_ADULT_DATE_OF_BIRTH, ANY_CLIENT_ID);
+        Assert.Same(clientStub, userDataAccessSpy.AddedUser!.Client);
+        Assert.Equal(ANY_CREDIT_ABOVE_MINIMUM * 2, userDataAccessSpy.AddedUser.CreditLimit);
+        Assert.Equal(ANY_FIRSTNAME, userDataAccessSpy.AddedUser.Firstname);
+        Assert.Equal(ANY_SURNAME, userDataAccessSpy.AddedUser.Surname);
+        Assert.Equal(ANY_ADULT_DATE_OF_BIRTH, userDataAccessSpy.AddedUser.DateOfBirth);
+        Assert.Equal(ANY_VALID_EMAIL, userDataAccessSpy.AddedUser.EmailAddress);
+        Assert.Equal(ANY_CLIENT_ID, userDataAccessSpy.AddedUser.Id);
+        Assert.True(userDataAccessSpy.AddedUser.HasCreditLimit);
     }
 }
