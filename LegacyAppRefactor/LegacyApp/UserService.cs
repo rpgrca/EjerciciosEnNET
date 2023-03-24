@@ -12,7 +12,7 @@ public class UserService : IUserService
 			_userDataAccess = new UserDataAccess();
         _clientRepository = new ClientRepository();
 			_userCreditServiceCreator = () => new UserCreditServiceClient();
-        _userValidator = new UserValidator(new StandardClock());
+        _userValidator = new UserDataValidator(new StandardClock());
 		}
 
 		public UserService(IUserDataAccess userDataAccess, IClientRepository clientRepository, IUserDataValidator userValidator, Func<IUserCreditService> userCreditServiceCreator)

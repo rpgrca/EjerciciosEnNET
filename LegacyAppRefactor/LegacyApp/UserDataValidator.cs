@@ -1,10 +1,10 @@
 namespace LegacyApp
 {
-    public class UserValidator : IUserDataValidator
+    public class UserDataValidator : IUserDataValidator
     {
         private readonly IClock _clock;
 
-        public UserValidator(IClock clock) => _clock = clock;
+        public UserDataValidator(IClock clock) => _clock = clock;
 
         public bool Validate(string firname, string surname, string email, DateTime dateOfBirth)
         {
