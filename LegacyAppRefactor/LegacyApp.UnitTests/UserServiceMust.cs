@@ -20,6 +20,13 @@ public class UserServiceMust
     private static readonly DateTime CURRENT_DATE_TIME = new(2023, 3, 24);
 
     [Fact]
+    public void BeCreatedCorrectly_WhenUsingDefaultConstructor()
+    {
+        var sut = new UserService();
+        Assert.NotNull(sut);
+    }
+
+    [Fact]
     public void ReturnTrue_WhenAllChecksHavePassed()
     {
         var userValidator = new UserValidator(new ClockStub(CURRENT_DATE_TIME));
