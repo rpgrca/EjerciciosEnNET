@@ -1,7 +1,6 @@
-namespace LegacyApp
+namespace LegacyApp;
+
+public class StandardClock : IClock
 {
-    public class StandardClock : IClock
-    {
-        public DateTime Now => DateTime.Now;
-    }
+    public DateTime Now => DateTime.Now;
 }

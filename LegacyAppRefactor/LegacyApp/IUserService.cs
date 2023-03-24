@@ -1,7 +1,6 @@
-namespace LegacyApp
+namespace LegacyApp;
+
+public interface IUserService
 {
-    public interface IUserService
-    {
-        bool AddUser(string firname, string surname, string email, DateTime dateOfBirth, int clientId);
-    }
+    bool AddUser(string firname, string surname, string email, DateTime dateOfBirth, int clientId);
 }

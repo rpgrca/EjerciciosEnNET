@@ -1,7 +1,6 @@
-namespace LegacyApp
+namespace LegacyApp;
+
+public interface IUserDataAccess
 {
-    public interface IUserDataAccess
-    {
-        void AddUser(User user);
-    }
+    void AddUser(User user);
 }

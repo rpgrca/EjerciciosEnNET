@@ -1,4 +1,4 @@
-using LegacyApp;
+namespace LegacyApp.UnitTests;
 
 public class UserDataAccessSpy : IUserDataAccess
 {

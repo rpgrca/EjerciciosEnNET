@@ -1,9 +1,8 @@
-namespace LegacyApp
+namespace LegacyApp;
+
+public enum ClientStatus
 {
-    public enum ClientStatus
-    {
-        Gold = 1,
-        Platinum = 2,
-        Titanium = 3
-    }
+    Gold = 1,
+    Platinum = 2,
+    Titanium = 3
 }

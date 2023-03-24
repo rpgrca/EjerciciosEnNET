@@ -1,7 +1,6 @@
-namespace LegacyApp
+namespace LegacyApp;
+
+public interface IClientRepository
 {
-    public interface IClientRepository
-    {
-        Client GetById(int id);
-    }
+    Client GetById(int id);
 }

@@ -1,7 +1,6 @@
-namespace LegacyApp
+namespace LegacyApp;
+
+public interface IUserDataValidator
 {
-    public interface IUserDataValidator
-    {
-        bool Validate(string firname, string surname, string email, DateTime dateOfBirth);
-    }
+    bool Validate(string firname, string surname, string email, DateTime dateOfBirth);
 }

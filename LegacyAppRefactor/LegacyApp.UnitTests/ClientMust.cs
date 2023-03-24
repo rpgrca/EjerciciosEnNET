@@ -1,43 +1,42 @@
-namespace LegacyApp.UnitTests
+namespace LegacyApp.UnitTests;
+
+public class ClientMust
 {
-    public class ClientMust
+    [Fact]
+    public void SetIdCorrectly()
     {
-        [Fact]
-        public void SetIdCorrectly()
+        const int anyId = 1;
+        var sut = new Client
         {
-            const int anyId = 1;
-            var sut = new Client
-            {
-                Id = anyId
-            };
+            Id = anyId
+        };
 
-            Assert.Equal(anyId, sut.Id);
-        }
+        Assert.Equal(anyId, sut.Id);
+    }
 
-        [Fact]
-        public void SetNameCorrectly()
+    [Fact]
+    public void SetNameCorrectly()
+    {
+        const string anyName = "John Smith";
+        var sut = new Client
         {
-            const string anyName = "John Smith";
-            var sut = new Client
-            {
-                Name = anyName
-            };
+            Name = anyName
+        };
 
-            Assert.Equal(anyName, sut.Name);
-        }
+        Assert.Equal(anyName, sut.Name);
+    }
 
-        [Theory]
-        [InlineData(ClientStatus.Gold)]
-        [InlineData(ClientStatus.Platinum)]
-        [InlineData(ClientStatus.Titanium)]
-        public void SetStatusCorrectly(ClientStatus anyStatus)
+    [Theory]
+    [InlineData(ClientStatus.Gold)]
+    [InlineData(ClientStatus.Platinum)]
+    [InlineData(ClientStatus.Titanium)]
+    public void SetStatusCorrectly(ClientStatus anyStatus)
+    {
+        var sut = new Client
         {
-            var sut = new Client
-            {
-                ClientStatus = anyStatus
-            };
+            ClientStatus = anyStatus
+        };
 
-            Assert.Equal(anyStatus, sut.ClientStatus);
-        }
+        Assert.Equal(anyStatus, sut.ClientStatus);
     }
 }

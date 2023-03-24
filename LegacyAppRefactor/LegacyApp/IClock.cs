@@ -1,7 +1,6 @@
-namespace LegacyApp
+namespace LegacyApp;
+
+public interface IClock
 {
-    public interface IClock
-    {
-        DateTime Now { get; }
-    }
+    DateTime Now { get; }
 }
