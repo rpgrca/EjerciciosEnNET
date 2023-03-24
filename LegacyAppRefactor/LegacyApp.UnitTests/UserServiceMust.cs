@@ -13,6 +13,7 @@ public class UserServiceMust
     private const string ANY_VALID_EMAIL = "john@smith.com";
     private const string INVALID_MAIL_WITHOUT_DOT = "john@smithcom";
     private const string INVALID_MAIL_WITHOUT_AT = "johnsmith.com";
+    private const string INVALID_EMPTY_MAIL = "";
     private static readonly DateTime ANY_ADULT_DATE_OF_BIRTH = new(2000, 3, 12);
     private static readonly DateTime ANY_CHILD_DATE_OF_BIRTH = new(2018, 5, 16);
     private static readonly DateTime CURRENT_DATE_TIME = new(2023, 3, 24);
@@ -139,4 +140,33 @@ public class UserServiceMust
         Assert.Null(userDataAccessSpy.AddedUser);
     }
 
+    [Theory]
+    [InlineData(INVALID_MAIL_WITHOUT_AT)]
+    [InlineData(INVALID_MAIL_WITHOUT_DOT)]
+    [InlineData(INVALID_EMPTY_MAIL)]
+    public void ReturnFalse_WhenUserMailIsInvalid(string anyInvalidEmail)
+    {
+        var clockStub = new ClockStub(CURRENT_DATE_TIME);
+        var userDataAccessSpy = new UserDataAccessSpy();
+        var clientRepositoryStub = new ClientRepositoryStub(CreateClient(ANY_FULLNAME));
+        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, clockStub, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
+
+        var result = sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, anyInvalidEmail, ANY_ADULT_DATE_OF_BIRTH, ANY_CLIENT_ID);
+        Assert.False(result);
+    }
+
+    [Theory]
+    [InlineData(INVALID_MAIL_WITHOUT_AT)]
+    [InlineData(INVALID_MAIL_WITHOUT_DOT)]
+    [InlineData(INVALID_EMPTY_MAIL)]
+    public void DoNotAddUser_WhenEmailIsInvalid(string anyInvalidEmail)
+    {
+        var clockStub = new ClockStub(CURRENT_DATE_TIME);
+        var userDataAccessSpy = new UserDataAccessSpy();
+        var clientRepositoryStub = new ClientRepositoryStub(CreateClient(ANY_FULLNAME));
+        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, clockStub, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
+
+        sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, anyInvalidEmail, ANY_ADULT_DATE_OF_BIRTH, ANY_CLIENT_ID);
+        Assert.Null(userDataAccessSpy.AddedUser);
+    }
 }
