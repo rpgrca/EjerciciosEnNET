@@ -4,10 +4,10 @@ using System.Data.SqlClient;
 
 namespace LegacyApp
 {
-    public class ClientRepository
+    public class ClientRepository : IClientRepository
     {
         public Client GetById(int id)
-        {    
+        {
             Client client = null;
             var connectionString = ConfigurationManager.ConnectionStrings["appDatabase"].ConnectionString;
 
