@@ -5,19 +5,22 @@ namespace LegacyApp
 		private readonly IUserDataAccess _userDataAccess;
 		private readonly IClientRepository _clientRepository;
 		private readonly Func<IUserCreditService> _userCreditServiceCreator;
+        private readonly IClock _clock;
 
         public UserService()
 		{
 			_userDataAccess = new UserDataAccess();
             _clientRepository = new ClientRepository();
+            _clock = new StandardClock();
 			_userCreditServiceCreator = () => new UserCreditServiceClient();
 		}
 
-		public UserService(IUserDataAccess userDataAccess, IClientRepository clientRepository, Func<IUserCreditService> userCreditServiceCreator)
+		public UserService(IUserDataAccess userDataAccess, IClientRepository clientRepository, IClock clock, Func<IUserCreditService> userCreditServiceCreator)
 		{
 			_userDataAccess = userDataAccess;
 			_clientRepository = clientRepository;
 			_userCreditServiceCreator = userCreditServiceCreator;
+            _clock = clock;
 		}
 
         public bool AddUser(string firname, string surname, string email, DateTime dateOfBirth, int clientId)
@@ -32,7 +35,7 @@ namespace LegacyApp
                 return false;
             }
 
-            var now = DateTime.Now;
+            var now = _clock.Now;
             int age = now.Year - dateOfBirth.Year;
             if (now.Month < dateOfBirth.Month || (now.Month == dateOfBirth.Month && now.Day < dateOfBirth.Day)) age--;
 

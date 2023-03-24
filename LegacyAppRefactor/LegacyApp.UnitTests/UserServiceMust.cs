@@ -19,9 +19,10 @@ public class UserServiceMust
     [Fact]
     public void ReturnTrue_WhenAllChecksHavePassed()
     {
+        var clockStub = new ClockStub(CURRENT_DATE_TIME);
         var userDataAccessSpy = new UserDataAccessSpy();
         var clientRepositoryStub = new ClientRepositoryStub(CreateClient());
-        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
+        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, clockStub, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
 
         var result = sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, ANY_VALID_EMAIL, ANY_ADULT_DATE_OF_BIRTH, ANY_CLIENT_ID);
         Assert.True(result);
@@ -31,9 +32,10 @@ public class UserServiceMust
     public void AddUser_WhenAllChecksHavePassed()
     {
         var clientStub = CreateClient();
+        var clockStub = new ClockStub(CURRENT_DATE_TIME);
         var userDataAccessSpy = new UserDataAccessSpy();
         var clientRepositoryStub = new ClientRepositoryStub(clientStub);
-        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
+        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, clockStub, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
 
         var result = sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, ANY_VALID_EMAIL, ANY_ADULT_DATE_OF_BIRTH, ANY_CLIENT_ID);
         Assert.Same(clientStub, userDataAccessSpy.AddedUser.Client);
@@ -59,5 +61,12 @@ public class UserServiceMust
     [Fact]
     public void ReturnFalse_WhenUserCreditIsLessThan500()
     {
+        var clockStub = new ClockStub(CURRENT_DATE_TIME);
+        var userDataAccessSpy = new UserDataAccessSpy();
+        var clientRepositoryStub = new ClientRepositoryStub(CreateClient());
+        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, clockStub, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
+
+        var result = sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, ANY_VALID_EMAIL, ANY_ADULT_DATE_OF_BIRTH, ANY_CLIENT_ID);
+        Assert.True(result);
     }
 }
