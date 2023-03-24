@@ -1,45 +1,32 @@
 namespace LegacyApp
 {
+
     public class UserService : IUserService
     {
 		private readonly IUserDataAccess _userDataAccess;
 		private readonly IClientRepository _clientRepository;
+        private readonly IUserDataValidator _userValidator;
 		private readonly Func<IUserCreditService> _userCreditServiceCreator;
-        private readonly IClock _clock;
 
         public UserService()
 		{
 			_userDataAccess = new UserDataAccess();
             _clientRepository = new ClientRepository();
-            _clock = new StandardClock();
 			_userCreditServiceCreator = () => new UserCreditServiceClient();
+            _userValidator = new UserValidator(new StandardClock());
 		}
 
-		public UserService(IUserDataAccess userDataAccess, IClientRepository clientRepository, IClock clock, Func<IUserCreditService> userCreditServiceCreator)
+		public UserService(IUserDataAccess userDataAccess, IClientRepository clientRepository, IUserDataValidator userValidator, Func<IUserCreditService> userCreditServiceCreator)
 		{
 			_userDataAccess = userDataAccess;
 			_clientRepository = clientRepository;
 			_userCreditServiceCreator = userCreditServiceCreator;
-            _clock = clock;
+            _userValidator = userValidator;
 		}
 
         public bool AddUser(string firname, string surname, string email, DateTime dateOfBirth, int clientId)
         {
-            if (string.IsNullOrEmpty(firname) || string.IsNullOrEmpty(surname))
-            {
-                return false;
-            }
-
-            if (!email.Contains('@') || !email.Contains('.'))
-            {
-                return false;
-            }
-
-            var now = _clock.Now;
-            int age = now.Year - dateOfBirth.Year;
-            if (now.Month < dateOfBirth.Month || (now.Month == dateOfBirth.Month && now.Day < dateOfBirth.Day)) age--;
-
-            if (age < 21)
+            if (! _userValidator.Validate(firname, surname, email, dateOfBirth))
             {
                 return false;
             }

@@ -21,10 +21,10 @@ public class UserServiceMust
     [Fact]
     public void ReturnTrue_WhenAllChecksHavePassed()
     {
-        var clockStub = new ClockStub(CURRENT_DATE_TIME);
+        var userValidator = new UserValidator(new ClockStub(CURRENT_DATE_TIME));
         var userDataAccessSpy = new UserDataAccessSpy();
         var clientRepositoryStub = new ClientRepositoryStub(CreateClient(ANY_FULLNAME));
-        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, clockStub, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
+        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, userValidator, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
 
         var result = sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, ANY_VALID_EMAIL, ANY_ADULT_DATE_OF_BIRTH, ANY_CLIENT_ID);
         Assert.True(result);
@@ -34,10 +34,10 @@ public class UserServiceMust
     public void AddUser_WhenAllChecksHavePassed()
     {
         var clientStub = CreateClient(ANY_FULLNAME);
-        var clockStub = new ClockStub(CURRENT_DATE_TIME);
+        var userValidator = new UserValidator(new ClockStub(CURRENT_DATE_TIME));
         var userDataAccessSpy = new UserDataAccessSpy();
         var clientRepositoryStub = new ClientRepositoryStub(clientStub);
-        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, clockStub, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
+        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, userValidator, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
 
         var result = sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, ANY_VALID_EMAIL, ANY_ADULT_DATE_OF_BIRTH, ANY_CLIENT_ID);
         Assert.Same(clientStub, userDataAccessSpy.AddedUser!.Client);
@@ -63,10 +63,10 @@ public class UserServiceMust
     [Fact]
     public void ReturnFalse_WhenUserCreditIsLessThan500()
     {
-        var clockStub = new ClockStub(CURRENT_DATE_TIME);
+        var userValidator = new UserValidator(new ClockStub(CURRENT_DATE_TIME));
         var userDataAccessSpy = new UserDataAccessSpy();
         var clientRepositoryStub = new ClientRepositoryStub(CreateClient(ANY_FULLNAME));
-        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, clockStub, () => new UserCreditServiceCreatorStub(ANY_CREDIT_BELOW_MINIMUM));
+        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, userValidator, () => new UserCreditServiceCreatorStub(ANY_CREDIT_BELOW_MINIMUM));
 
         var result = sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, ANY_VALID_EMAIL, ANY_ADULT_DATE_OF_BIRTH, ANY_CLIENT_ID);
         Assert.False(result);
@@ -75,10 +75,10 @@ public class UserServiceMust
     [Fact]
     public void DoNotAddUser_WhenUserCreditIsLessThan500()
     {
-        var clockStub = new ClockStub(CURRENT_DATE_TIME);
+        var userValidator = new UserValidator(new ClockStub(CURRENT_DATE_TIME));
         var userDataAccessSpy = new UserDataAccessSpy();
         var clientRepositoryStub = new ClientRepositoryStub(CreateClient(ANY_FULLNAME));
-        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, clockStub, () => new UserCreditServiceCreatorStub(ANY_CREDIT_BELOW_MINIMUM));
+        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, userValidator, () => new UserCreditServiceCreatorStub(ANY_CREDIT_BELOW_MINIMUM));
 
         sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, ANY_VALID_EMAIL, ANY_ADULT_DATE_OF_BIRTH, ANY_CLIENT_ID);
         Assert.Null(userDataAccessSpy.AddedUser);
@@ -87,10 +87,10 @@ public class UserServiceMust
     [Fact]
     public void ReturnTrue_WhenUserHasNoCreditLimit()
     {
-        var clockStub = new ClockStub(CURRENT_DATE_TIME);
+        var userValidator = new UserValidator(new ClockStub(CURRENT_DATE_TIME));
         var userDataAccessSpy = new UserDataAccessSpy();
         var clientRepositoryStub = new ClientRepositoryStub(CreateClient(ANY_VERY_IMPORTANT_CLIENT));
-        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, clockStub, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
+        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, userValidator, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
 
         var result = sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, ANY_VALID_EMAIL, ANY_ADULT_DATE_OF_BIRTH, ANY_CLIENT_ID);
         Assert.True(result);
@@ -100,10 +100,10 @@ public class UserServiceMust
     public void AddUser_WhenUserHasNoCreditLimit()
     {
         var clientStub = CreateClient(ANY_VERY_IMPORTANT_CLIENT);
-        var clockStub = new ClockStub(CURRENT_DATE_TIME);
+        var userValidator = new UserValidator(new ClockStub(CURRENT_DATE_TIME));
         var userDataAccessSpy = new UserDataAccessSpy();
         var clientRepositoryStub = new ClientRepositoryStub(clientStub);
-        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, clockStub, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
+        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, userValidator, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
 
         var result = sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, ANY_VALID_EMAIL, ANY_ADULT_DATE_OF_BIRTH, ANY_CLIENT_ID);
         Assert.Same(clientStub, userDataAccessSpy.AddedUser!.Client);
@@ -119,10 +119,10 @@ public class UserServiceMust
     [Fact]
     public void ReturnFalse_WhenUserIsMinor()
     {
-        var clockStub = new ClockStub(CURRENT_DATE_TIME);
+        var userValidator = new UserValidator(new ClockStub(CURRENT_DATE_TIME));
         var userDataAccessSpy = new UserDataAccessSpy();
         var clientRepositoryStub = new ClientRepositoryStub(CreateClient(ANY_FULLNAME));
-        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, clockStub, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
+        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, userValidator, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
 
         var result = sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, ANY_VALID_EMAIL, ANY_CHILD_DATE_OF_BIRTH, ANY_CLIENT_ID);
         Assert.False(result);
@@ -131,10 +131,10 @@ public class UserServiceMust
     [Fact]
     public void DoNotAddUser_WhenUserIsMinor()
     {
-        var clockStub = new ClockStub(CURRENT_DATE_TIME);
+        var userValidator = new UserValidator(new ClockStub(CURRENT_DATE_TIME));
         var userDataAccessSpy = new UserDataAccessSpy();
         var clientRepositoryStub = new ClientRepositoryStub(CreateClient(ANY_FULLNAME));
-        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, clockStub, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
+        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, userValidator, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
 
         sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, ANY_VALID_EMAIL, ANY_CHILD_DATE_OF_BIRTH, ANY_CLIENT_ID);
         Assert.Null(userDataAccessSpy.AddedUser);
@@ -146,10 +146,10 @@ public class UserServiceMust
     [InlineData(INVALID_EMPTY_MAIL)]
     public void ReturnFalse_WhenUserMailIsInvalid(string anyInvalidEmail)
     {
-        var clockStub = new ClockStub(CURRENT_DATE_TIME);
+        var userValidator = new UserValidator(new ClockStub(CURRENT_DATE_TIME));
         var userDataAccessSpy = new UserDataAccessSpy();
         var clientRepositoryStub = new ClientRepositoryStub(CreateClient(ANY_FULLNAME));
-        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, clockStub, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
+        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, userValidator, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
 
         var result = sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, anyInvalidEmail, ANY_ADULT_DATE_OF_BIRTH, ANY_CLIENT_ID);
         Assert.False(result);
@@ -161,10 +161,10 @@ public class UserServiceMust
     [InlineData(INVALID_EMPTY_MAIL)]
     public void DoNotAddUser_WhenEmailIsInvalid(string anyInvalidEmail)
     {
-        var clockStub = new ClockStub(CURRENT_DATE_TIME);
+        var userValidator = new UserValidator(new ClockStub(CURRENT_DATE_TIME));
         var userDataAccessSpy = new UserDataAccessSpy();
         var clientRepositoryStub = new ClientRepositoryStub(CreateClient(ANY_FULLNAME));
-        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, clockStub, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
+        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, userValidator, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
 
         sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, anyInvalidEmail, ANY_ADULT_DATE_OF_BIRTH, ANY_CLIENT_ID);
         Assert.Null(userDataAccessSpy.AddedUser);
