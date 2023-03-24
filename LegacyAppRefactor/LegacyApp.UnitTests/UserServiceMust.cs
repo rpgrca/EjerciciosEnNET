@@ -115,5 +115,28 @@ public class UserServiceMust
         Assert.False(userDataAccessSpy.AddedUser.HasCreditLimit);
     }
 
+    [Fact]
+    public void ReturnFalse_WhenUserIsMinor()
+    {
+        var clockStub = new ClockStub(CURRENT_DATE_TIME);
+        var userDataAccessSpy = new UserDataAccessSpy();
+        var clientRepositoryStub = new ClientRepositoryStub(CreateClient(ANY_FULLNAME));
+        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, clockStub, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
+
+        var result = sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, ANY_VALID_EMAIL, ANY_CHILD_DATE_OF_BIRTH, ANY_CLIENT_ID);
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void DoNotAddUser_WhenUserIsMinor()
+    {
+        var clockStub = new ClockStub(CURRENT_DATE_TIME);
+        var userDataAccessSpy = new UserDataAccessSpy();
+        var clientRepositoryStub = new ClientRepositoryStub(CreateClient(ANY_FULLNAME));
+        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, clockStub, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
+
+        sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, ANY_VALID_EMAIL, ANY_CHILD_DATE_OF_BIRTH, ANY_CLIENT_ID);
+        Assert.Null(userDataAccessSpy.AddedUser);
+    }
 
 }
