@@ -2,26 +2,26 @@ namespace LegacyApp;
 
 public class UserService : IUserService
 {
-		private readonly IUserDataAccess _userDataAccess;
-		private readonly IClientRepository _clientRepository;
+    private readonly IUserDataAccess _userDataAccess;
+    private readonly IClientRepository _clientRepository;
     private readonly IUserDataValidator _userValidator;
-		private readonly Func<IUserCreditService> _userCreditServiceCreator;
+    private readonly Func<IUserCreditService> _userCreditServiceCreator;
 
     public UserService()
-		{
-			_userDataAccess = new UserDataAccess();
+    {
+        _userDataAccess = new UserDataAccess();
         _clientRepository = new ClientRepository();
-			_userCreditServiceCreator = () => new UserCreditServiceClient();
+        _userCreditServiceCreator = () => new UserCreditServiceClient();
         _userValidator = new UserDataValidator(new StandardClock());
-		}
+    }
 
-		public UserService(IUserDataAccess userDataAccess, IClientRepository clientRepository, IUserDataValidator userValidator, Func<IUserCreditService> userCreditServiceCreator)
-		{
-			_userDataAccess = userDataAccess;
-			_clientRepository = clientRepository;
-			_userCreditServiceCreator = userCreditServiceCreator;
+    public UserService(IUserDataAccess userDataAccess, IClientRepository clientRepository, IUserDataValidator userValidator, Func<IUserCreditService> userCreditServiceCreator)
+    {
+        _userDataAccess = userDataAccess;
+        _clientRepository = clientRepository;
+        _userCreditServiceCreator = userCreditServiceCreator;
         _userValidator = userValidator;
-		}
+    }
 
     public bool AddUser(string firname, string surname, string email, DateTime dateOfBirth, int clientId)
     {
