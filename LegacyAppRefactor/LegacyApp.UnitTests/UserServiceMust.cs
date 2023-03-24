@@ -64,9 +64,21 @@ public class UserServiceMust
         var clockStub = new ClockStub(CURRENT_DATE_TIME);
         var userDataAccessSpy = new UserDataAccessSpy();
         var clientRepositoryStub = new ClientRepositoryStub(CreateClient());
-        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, clockStub, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
+        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, clockStub, () => new UserCreditServiceCreatorStub(ANY_CREDIT_BELOW_MINIMUM));
 
         var result = sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, ANY_VALID_EMAIL, ANY_ADULT_DATE_OF_BIRTH, ANY_CLIENT_ID);
-        Assert.True(result);
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void DoNotAddUser_WhenUserCreditIsLessThan500()
+    {
+        var clockStub = new ClockStub(CURRENT_DATE_TIME);
+        var userDataAccessSpy = new UserDataAccessSpy();
+        var clientRepositoryStub = new ClientRepositoryStub(CreateClient());
+        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, clockStub, () => new UserCreditServiceCreatorStub(ANY_CREDIT_BELOW_MINIMUM));
+
+        sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, ANY_VALID_EMAIL, ANY_ADULT_DATE_OF_BIRTH, ANY_CLIENT_ID);
+        Assert.Null(userDataAccessSpy.AddedUser);
     }
 }
