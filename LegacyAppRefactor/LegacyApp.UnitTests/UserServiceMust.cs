@@ -17,6 +17,7 @@ public class UserServiceMust
     private const string INVALID_EMPTY_MAIL = "";
     private static readonly DateTime ANY_ADULT_DATE_OF_BIRTH = new(2000, 3, 12);
     private static readonly DateTime ANY_CHILD_DATE_OF_BIRTH = new(2018, 5, 16);
+    private static readonly DateTime ANY_CHILD_DATE_BORN_SAME_MONTH = new(2018, 3, 11);
     private static readonly DateTime CURRENT_DATE_TIME = new(2023, 3, 24);
 
     [Fact]
@@ -124,28 +125,36 @@ public class UserServiceMust
         Assert.False(userDataAccessSpy.AddedUser.HasCreditLimit);
     }
 
-    [Fact]
-    public void ReturnFalse_WhenUserIsMinor()
+    [Theory]
+    [MemberData(nameof(AnyInvalidDateOfBirthFeeder))]
+    public void ReturnFalse_WhenUserIsMinor(DateTime anyInvalidDateOfBirth)
     {
         var userValidator = new UserDataValidator(new ClockStub(CURRENT_DATE_TIME));
         var userDataAccessSpy = new UserDataAccessSpy();
         var clientRepositoryStub = new ClientRepositoryStub(CreateClient(ANY_FULLNAME));
         var sut = new UserService(userDataAccessSpy, clientRepositoryStub, userValidator, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
 
-        var result = sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, ANY_VALID_EMAIL, ANY_CHILD_DATE_OF_BIRTH, ANY_CLIENT_ID);
+        var result = sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, ANY_VALID_EMAIL, anyInvalidDateOfBirth, ANY_CLIENT_ID);
         Assert.False(result);
     }
 
-    [Fact]
-    public void DoNotAddUser_WhenUserIsMinor()
+    [Theory]
+    [MemberData(nameof(AnyInvalidDateOfBirthFeeder))]
+    public void DoNotAddUser_WhenUserIsMinor(DateTime anyInvalidDateOfBirth)
     {
         var userValidator = new UserDataValidator(new ClockStub(CURRENT_DATE_TIME));
         var userDataAccessSpy = new UserDataAccessSpy();
         var clientRepositoryStub = new ClientRepositoryStub(CreateClient(ANY_FULLNAME));
         var sut = new UserService(userDataAccessSpy, clientRepositoryStub, userValidator, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
 
-        sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, ANY_VALID_EMAIL, ANY_CHILD_DATE_OF_BIRTH, ANY_CLIENT_ID);
+        sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, ANY_VALID_EMAIL, anyInvalidDateOfBirth, ANY_CLIENT_ID);
         Assert.Null(userDataAccessSpy.AddedUser);
+    }
+
+    public static IEnumerable<object[]> AnyInvalidDateOfBirthFeeder()
+    {
+        yield return new object[] { ANY_CHILD_DATE_OF_BIRTH };
+        yield return new object[] { ANY_CHILD_DATE_BORN_SAME_MONTH };
     }
 
     [Theory]
