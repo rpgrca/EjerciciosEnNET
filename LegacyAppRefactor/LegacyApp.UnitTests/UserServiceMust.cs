@@ -206,7 +206,33 @@ public class UserServiceMust
         Assert.Null(userDataAccessSpy.AddedUser);
     }
 
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
+    public void ReturnFalse_WhenSurnameIsInvalid(string anyInvalidSurname)
+    {
+        var userValidator = new UserDataValidator(new ClockStub(CURRENT_DATE_TIME));
+        var userDataAccessSpy = new UserDataAccessSpy();
+        var clientRepositoryStub = new ClientRepositoryStub(CreateClient(ANY_FULLNAME));
+        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, userValidator, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
 
+        var result = sut.AddUser(ANY_FIRSTNAME, anyInvalidSurname, ANY_VALID_EMAIL, ANY_ADULT_DATE_OF_BIRTH, ANY_CLIENT_ID);
+        Assert.False(result);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
+    public void DoNotAddUser_WhenSurnameIsInvalid(string anyInvalidSurname)
+    {
+        var userValidator = new UserDataValidator(new ClockStub(CURRENT_DATE_TIME));
+        var userDataAccessSpy = new UserDataAccessSpy();
+        var clientRepositoryStub = new ClientRepositoryStub(CreateClient(ANY_FULLNAME));
+        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, userValidator, () => new UserCreditServiceCreatorStub(ANY_CREDIT_ABOVE_MINIMUM));
+
+        sut.AddUser(ANY_FIRSTNAME, anyInvalidSurname, ANY_VALID_EMAIL, ANY_ADULT_DATE_OF_BIRTH, ANY_CLIENT_ID);
+        Assert.Null(userDataAccessSpy.AddedUser);
+    }
 
     [Fact]
     public void ReturnTrue_WhenUserHasTwiceCreditLimit()
