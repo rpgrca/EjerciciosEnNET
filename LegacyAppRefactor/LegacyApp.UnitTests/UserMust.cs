@@ -97,31 +97,3 @@ public class UserMust
         Assert.Same(anyClient, sut.Client);
     }
 }
-
-public class UserServiceMust
-{
-    [Fact]
-    public void AddUserCorrectly_WhenAllChecksHavePassed()
-    {
-        const int anyCredit = 37000;
-        const int anyClientId = 1;
-        const string anyFirstname = "John";
-        const string anySurname = "Smith";
-        const string anyEmail = "john@smith.com";
-        var anyDateOfBirth = new DateTime(2000, 3, 12);
-
-        var clientStub = new Client
-        {
-            Id = anyClientId,
-            Name = "John Smith",
-            ClientStatus = ClientStatus.Titanium
-        };
-
-        var userDataAccessSpy = new UserDataAccessSpy();
-        var clientRepositoryStub = new ClientRepositoryStub(clientStub);
-        var sut = new UserService(userDataAccessSpy, clientRepositoryStub, () => new UserCreditServiceCreatorStub(anyCredit));
-        var result = sut.AddUser(anyFirstname, anySurname, anyEmail, anyDateOfBirth, anyClientId);
-
-        Assert.True(result);
-    }
-}

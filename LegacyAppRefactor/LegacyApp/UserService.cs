@@ -45,6 +45,7 @@ namespace LegacyApp
             var user = new User
             {
                 Client = client,
+                Id = clientId,
                 DateOfBirth = dateOfBirth,
                 EmailAddress = email,
                 Firstname = firname,
