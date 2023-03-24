@@ -36,13 +36,10 @@ jobs:
                dotnet build --configuration Debug --no-restore $s/$s.sln /p:DefineConstants="CI_CONTEXT"
            done
 
-    - name: Testing Standalone Programs
+    - name: Testing NET Standalone Programs
       run: |
            coverlet SistemaDeAparcamiento/SistemaDeAparcamiento.Tests/bin/Debug/net7/SistemaDeAparcamiento.Tests.dll --target "dotnet" --targetargs "test SistemaDeAparcamiento/SistemaDeAparcamiento.Tests/SistemaDeAparcamiento.Tests.csproj --no-build --verbosity quiet" --format OpenCover --output sistemadeaparcamiento.coverage.xml
            coverlet LegacyAppRefactor/LegacyApp.UnitTests/bin/Debug/net7.0/LegacyApp.UnitTests.dll --target "dotnet" --targetargs "test LegacyAppRefactor/LegacyApp.UnitTests/LegacyApp.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output legacyapprefactor.coverage.xml
-
-    - name: Testing NET Standalone Programs
-      run: |
            for s in Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum SatelliteMessages MarsRover ArrayReordering; do
                coverlet $s/$s.UnitTests/bin/Debug/net7/$s.UnitTests.dll --target "dotnet" --targetargs "test $s/$s.UnitTests/$s.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output $s.coverage.xml
            done
