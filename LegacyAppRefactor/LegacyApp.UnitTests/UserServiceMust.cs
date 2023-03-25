@@ -19,6 +19,7 @@ public class UserServiceMust
     private static readonly DateTime ANY_CHILD_DATE_OF_BIRTH = new(2018, 5, 16);
     private static readonly DateTime ANY_CHILD_DATE_BORN_PREVIOUS_MONTH = new(2018,1,16);
     private static readonly DateTime ANY_CHILD_DATE_BORN_SAME_MONTH = new(2018, 3, 11);
+    private static readonly DateTime ANY_CHILD_DATE_BORN_LATER_THIS_MONTH = new(2018, 3, 25);
     private static readonly DateTime CURRENT_DATE_TIME = new(2023, 3, 24);
 
     [Fact]
@@ -157,6 +158,7 @@ public class UserServiceMust
         yield return new object[] { ANY_CHILD_DATE_OF_BIRTH };
         yield return new object[] { ANY_CHILD_DATE_BORN_SAME_MONTH };
         yield return new object[] { ANY_CHILD_DATE_BORN_PREVIOUS_MONTH };
+        yield return new object[] { ANY_CHILD_DATE_BORN_LATER_THIS_MONTH };
     }
 
     [Theory]
