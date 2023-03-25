@@ -6,21 +6,21 @@ namespace LegacyApp
 
         public UserDataValidator(IClock clock) => _clock = clock;
 
-        public bool Validate(string firname, string surname, string email, DateTime dateOfBirth)
+        public bool Validate(User user)
         {
-            if (string.IsNullOrEmpty(firname) || string.IsNullOrEmpty(surname))
+            if (string.IsNullOrEmpty(user.Firstname) || string.IsNullOrEmpty(user.Surname))
             {
                 return false;
             }
 
-            if (!email.Contains('@') || !email.Contains('.'))
+            if (!user.EmailAddress.Contains('@') || !user.EmailAddress.Contains('.'))
             {
                 return false;
             }
 
             var now = _clock.Now;
-            int age = now.Year - dateOfBirth.Year;
-            if (now.Month < dateOfBirth.Month || (now.Month == dateOfBirth.Month && now.Day < dateOfBirth.Day)) age--;
+            int age = now.Year - user.DateOfBirth.Year;
+            if (now.Month < user.DateOfBirth.Month || (now.Month == user.DateOfBirth.Month && now.Day < user.DateOfBirth.Day)) age--;
 
             if (age < 21)
             {

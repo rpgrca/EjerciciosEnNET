@@ -25,21 +25,22 @@ public class UserService : IUserService
 
     public bool AddUser(string firname, string surname, string email, DateTime dateOfBirth, int clientId)
     {
-        if (! _userValidator.Validate(firname, surname, email, dateOfBirth))
-        {
-            return false;
-        }
-
-        var client = _clientRepository.GetById(clientId);
         var user = new User
         {
-            Client = client,
             Id = clientId,
             DateOfBirth = dateOfBirth,
             EmailAddress = email,
             Firstname = firname,
             Surname = surname
         };
+
+        if (! _userValidator.Validate(user))
+        {
+            return false;
+        }
+
+        var client = _clientRepository.GetById(clientId);
+        user.Client = client;
 
         if (client.Name == "VeryImportantClient")
         {
