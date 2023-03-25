@@ -27,7 +27,6 @@ public class UserService : IUserService
     {
         var user = new User
         {
-            Id = clientId,
             DateOfBirth = dateOfBirth,
             EmailAddress = email,
             Firstname = firname,

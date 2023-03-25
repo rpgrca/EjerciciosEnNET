@@ -57,7 +57,6 @@ public class UserServiceMust
         Assert.Equal(ANY_SURNAME, userDataAccessSpy.AddedUser.Surname);
         Assert.Equal(ANY_ADULT_DATE_OF_BIRTH, userDataAccessSpy.AddedUser.DateOfBirth);
         Assert.Equal(ANY_VALID_EMAIL, userDataAccessSpy.AddedUser.EmailAddress);
-        Assert.Equal(ANY_CLIENT_ID, userDataAccessSpy.AddedUser.Id);
         Assert.True(userDataAccessSpy.AddedUser.HasCreditLimit);
     }
 
@@ -123,7 +122,6 @@ public class UserServiceMust
         Assert.Equal(ANY_SURNAME, userDataAccessSpy.AddedUser.Surname);
         Assert.Equal(ANY_ADULT_DATE_OF_BIRTH, userDataAccessSpy.AddedUser.DateOfBirth);
         Assert.Equal(ANY_VALID_EMAIL, userDataAccessSpy.AddedUser.EmailAddress);
-        Assert.Equal(ANY_CLIENT_ID, userDataAccessSpy.AddedUser.Id);
         Assert.False(userDataAccessSpy.AddedUser.HasCreditLimit);
     }
 
@@ -278,7 +276,6 @@ public class UserServiceMust
         Assert.Equal(ANY_SURNAME, userDataAccessSpy.AddedUser.Surname);
         Assert.Equal(ANY_ADULT_DATE_OF_BIRTH, userDataAccessSpy.AddedUser.DateOfBirth);
         Assert.Equal(ANY_VALID_EMAIL, userDataAccessSpy.AddedUser.EmailAddress);
-        Assert.Equal(ANY_CLIENT_ID, userDataAccessSpy.AddedUser.Id);
         Assert.True(userDataAccessSpy.AddedUser.HasCreditLimit);
     }
 }
