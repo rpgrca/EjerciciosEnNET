@@ -1,9 +1,11 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics.CodeAnalysis;
 
 namespace LegacyApp
 {
+    [ExcludeFromCodeCoverage]
     public class UserDataAccess : IUserDataAccess
     {
         public void AddUser(User user)
