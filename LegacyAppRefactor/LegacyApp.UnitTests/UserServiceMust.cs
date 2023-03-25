@@ -160,9 +160,7 @@ public class UserServiceMust
     }
 
     [Theory]
-    [InlineData(INVALID_MAIL_WITHOUT_AT)]
-    [InlineData(INVALID_MAIL_WITHOUT_DOT)]
-    [InlineData(INVALID_EMPTY_MAIL)]
+    [MemberData(nameof(AnyInvalidEmailFeeder))]
     public void ReturnFalse_WhenUserMailIsInvalid(string anyInvalidEmail)
     {
         var userValidator = new UserDataValidator(new ClockStub(CURRENT_DATE_TIME));
@@ -175,9 +173,7 @@ public class UserServiceMust
     }
 
     [Theory]
-    [InlineData(INVALID_MAIL_WITHOUT_AT)]
-    [InlineData(INVALID_MAIL_WITHOUT_DOT)]
-    [InlineData(INVALID_EMPTY_MAIL)]
+    [MemberData(nameof(AnyInvalidEmailFeeder))]
     public void DoNotAddUser_WhenEmailIsInvalid(string anyInvalidEmail)
     {
         var userValidator = new UserDataValidator(new ClockStub(CURRENT_DATE_TIME));
@@ -187,6 +183,13 @@ public class UserServiceMust
 
         sut.AddUser(ANY_FIRSTNAME, ANY_SURNAME, anyInvalidEmail, ANY_ADULT_DATE_OF_BIRTH, ANY_CLIENT_ID);
         Assert.Null(userDataAccessSpy.AddedUser);
+    }
+
+    public static IEnumerable<object[]> AnyInvalidEmailFeeder()
+    {
+        yield return new object[] { INVALID_MAIL_WITHOUT_AT };
+        yield return new object[] { INVALID_MAIL_WITHOUT_DOT };
+        yield return new object[] { INVALID_EMPTY_MAIL };
     }
 
     [Theory]
