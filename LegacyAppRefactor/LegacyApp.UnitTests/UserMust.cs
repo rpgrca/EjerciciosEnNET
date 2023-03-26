@@ -3,6 +3,18 @@ namespace LegacyApp.UnitTests;
 public class UserMust
 {
     [Fact]
+    public void SetIdCorrectly()
+    {
+        const int anyId = 1;
+        var sut = new User
+        {
+            Id = anyId
+        };
+
+        Assert.Equal(anyId, sut.Id);
+    }
+
+    [Fact]
     public void SetFirstNameCorrectly()
     {
         const string anyFirstname = "John";
