@@ -18,7 +18,7 @@ namespace PrimeNumber.Logic
 
         private void Calculate()
         {
-            for (int i = 4; i <= _top; i++)
+            for (var i = 4; i <= _top; i++)
             {
                 if (!IsPrime(i))
                 {
@@ -27,18 +27,22 @@ namespace PrimeNumber.Logic
             }
         }
     
-    static bool IsPrime(int n)
-    {
-        if (n < 2)
-            return false;
-            
-        for (int i = 2; i <= Math.Sqrt(n); i++)
+        private static bool IsPrime(int n)
         {
-            if (n % i == 0)
+            if (n < 2)
+            {
                 return false;
+            }
+            
+            for (int i = 2; i <= Math.Sqrt(n); i++)
+            {
+                if (n % i == 0)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
-        
-        return true;
-    }
     }
 }

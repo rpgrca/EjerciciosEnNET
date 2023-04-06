@@ -3,7 +3,6 @@ namespace PrimeNumber.Logic
     public class Number
     {
         protected readonly int _value;
-        public bool IsCorrect { get; protected set; }
 
         public Number(int value) =>
             _value = value;

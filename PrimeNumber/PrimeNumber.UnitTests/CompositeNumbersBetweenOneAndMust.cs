@@ -6,6 +6,13 @@ namespace PrimeNumber.UnitTests
     public class CompositeNumbersBetweenOneAndMust
     {
         [Fact]
+        public void CalculateNumbersUntil1()
+        {
+            var sut = new CompositeNumbersBetweenOneAnd(1);
+            Assert.Empty(sut.CompositeNumbers);
+        }
+
+        [Fact]
         public void CalculateNumbersUntil5()
         {
             var sut = new CompositeNumbersBetweenOneAnd(5);
