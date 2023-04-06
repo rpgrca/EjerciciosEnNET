@@ -7,35 +7,38 @@ namespace PrimeNumber.Logic
     public class CompositeNumbersBetweenOneAnd
     {
         private readonly int _top;
-        private readonly List<int> _discardedValues;
-        public List<int> CompositeNumbers { get; }
+        public List<int> CompositeNumbers { get; private set; }
 
         public CompositeNumbersBetweenOneAnd(int top)
         {
             _top = top;
-            _discardedValues = new();
             CompositeNumbers = new();
             Calculate();
         }
 
         private void Calculate()
         {
-            for (var index = 3; index <= _top - 1; index += 2)
+            for (int i = 4; i <= _top; i++)
             {
-               foreach (var possibleDivisor in _discardedValues)
+                if (!IsPrime(i))
                 {
-                    if (index % possibleDivisor == 0)
-                    {
-                        CompositeNumbers.Add(index);
-                        goto outer;
-                    }
+                    CompositeNumbers.Add(i);
                 }
-
-                _discardedValues.Add(index);
-
-            outer:;
-                CompositeNumbers.Add(index + 1);
             }
         }
+    
+    static bool IsPrime(int n)
+    {
+        if (n < 2)
+            return false;
+            
+        for (int i = 2; i <= Math.Sqrt(n); i++)
+        {
+            if (n % i == 0)
+                return false;
+        }
+        
+        return true;
+    }
     }
 }

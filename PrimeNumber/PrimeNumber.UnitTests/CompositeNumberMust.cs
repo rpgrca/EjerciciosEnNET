@@ -34,7 +34,6 @@ namespace PrimeNumber.UnitTests
         public void ReturnTrue_WhenAskingIfACompositeNumberIsComposite(int compositeNumber) =>
             Assert.True(new Number(compositeNumber).CanBeClassifiedAs(A.CompositeNumber));
 
-/*
         [Fact]
         public void CalculateCompositeNumbersIn1To1000000()
         {
@@ -42,6 +41,7 @@ namespace PrimeNumber.UnitTests
                 .Range(1, 1000000)
                 .Where(p => new Number(p).CanBeClassifiedAs(A.CompositeNumber))
                 .ToList();
-        }*/
+            Assert.Equal(921501, compositeNumbers.Count);
+        }
     }
 }
