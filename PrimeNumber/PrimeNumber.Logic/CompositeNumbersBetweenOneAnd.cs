@@ -18,25 +18,22 @@ namespace PrimeNumber.Logic
 
         private void Calculate()
         {
-            for (var i = 4; i <= _top; i++)
+            for (var value = 3; value < _top; value += 2)
             {
-                if (!IsPrime(i))
+                if (! IsPrime(value))
                 {
-                    CompositeNumbers.Add(i);
+                    CompositeNumbers.Add(value);
                 }
+
+                CompositeNumbers.Add(value + 1);
             }
         }
     
         private static bool IsPrime(int n)
         {
-            if (n < 2)
+            for (var divisor = 3; divisor <= (int)Math.Sqrt(n); divisor += 2)
             {
-                return false;
-            }
-            
-            for (int i = 2; i <= Math.Sqrt(n); i++)
-            {
-                if (n % i == 0)
+                if (n % divisor == 0)
                 {
                     return false;
                 }

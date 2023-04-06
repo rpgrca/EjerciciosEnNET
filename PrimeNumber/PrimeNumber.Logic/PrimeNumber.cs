@@ -9,11 +9,12 @@ namespace PrimeNumber.Logic
         public bool IsClassificationOf(int value)
         {
             if (value <= 0) return false;
-            if (value < 2) return true;
-            
-            for (int i = 2; i <= Math.Sqrt(value); i++)
+            if (value <= 2) return true;
+            if (value % 2 == 0) return false;
+
+            for (var divisor = 3; divisor <= (int)Math.Sqrt(value); divisor += 2)
             {
-                if (value % i == 0)
+                if (value % divisor == 0)
                 {
                     return false;
                 }
