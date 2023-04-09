@@ -4,6 +4,8 @@ Implement the function _FindRoots_ to find the roots of the quadratic equation: 
 
 The roots of the quadratic equation can be found with the following formula:
 
+![image](https://user-images.githubusercontent.com/15602473/230751747-8baa866d-af68-4328-bf1e-c7e012a6f39e.png)
+
 For example, _FindRoots(2, 10, 8)_ should return _(-1, -4)_ or _(-4, -1)_ as the roots of the equation 2x^2^ + 10x + 8 = 0 are -1 and -4.
 
 [Try it yourself!](https://www.testdome.com/questions/c-sharp/quadratic-equation/96024)
