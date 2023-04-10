@@ -1,19 +1,17 @@
-using System;
+namespace Account;
 
 public class Account
 {
     [Flags]
     public enum Access
     {
-        Delete,
-        Publish,
-        Submit,
-        Comment,
-        Modify
-    }
-
-    public static void Main(string[] args)
-    {       
-        //Console.WriteLine(Access.Writer.HasFlag(Access.Delete)); //Should print: "False"
+        Delete = 1,
+        Publish = 2,
+        Submit = 4,
+        Comment = 8,
+        Modify = 16,
+        Writer = Submit | Modify,
+        Editor = Delete | Publish | Comment,
+        Owner = Writer | Editor
     }
 }
