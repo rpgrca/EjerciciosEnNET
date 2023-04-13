@@ -2,10 +2,13 @@ using System;
 using System.IO;
 using System.Text;
 
+namespace DecoratorStream;
+
 public class DecoratorStream : Stream
 {
-	private Stream stream;
-	private string prefix;
+	private Stream _stream;
+	private string _prefix;
+	private bool _firstTime;
 
 	public override bool CanSeek { get { return false; } }
 
@@ -19,35 +22,46 @@ public class DecoratorStream : Stream
 
 	public DecoratorStream(Stream stream, string prefix) : base()
 	{
-		this.stream = stream;
-		this.prefix = prefix;
+		_stream = stream;
+		_prefix = prefix;
+		_firstTime = true;
 	}
 
 	public override void SetLength(long length)
 	{
-		throw new NotSupportedException();
+		_stream.SetLength(length + _prefix.Length);
 	}
 
 	public override void Write(byte[] bytes, int offset, int count)
 	{
-        throw new NotImplementedException();
+		if (_firstTime)
+		{
+			byte[] firstLine = System.Text.ASCIIEncoding.UTF8.GetBytes(_prefix);
+			_stream.Write(firstLine, offset, firstLine.Length);
+        	_stream.Write(bytes, 0, count);
+			_firstTime = false;
+		}
+		else
+		{
+			_stream.Write(bytes, offset, count);
+		}
 	}
 
 	public override int Read(byte[] bytes, int offset, int count)
 	{
-		throw new NotSupportedException();
+		return _stream.Read(bytes, offset, count);
 	}
 
 	public override long Seek(long offset, SeekOrigin origin)
 	{
-		throw new NotSupportedException();
+		return _stream.Seek(offset, origin);
 	}
 
 	public override void Flush()
 	{
-		stream.Flush();
+		_stream.Flush();
 	}
-
+/*
     public static void Main(string[] args)
     {
         byte[] message = new byte[]{0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x2c, 0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21};
@@ -60,5 +74,5 @@ public class DecoratorStream : Stream
                 Console.WriteLine(new StreamReader(stream).ReadLine());  //should print "First line: Hello, world!"
             }
         }
-    }
+    }*/
 }
