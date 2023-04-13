@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using System.Text;
 
 namespace DecoratorStream;
@@ -33,7 +31,7 @@ public class DecoratorStream : Stream
 	{
 		if (_firstTime)
 		{
-			byte[] firstLine = System.Text.ASCIIEncoding.UTF8.GetBytes(_prefix);
+			byte[] firstLine = Encoding.UTF8.GetBytes(_prefix);
 			_stream.Write(firstLine, 0, firstLine.Length);
         	_stream.Write(bytes, offset, count);
 			_firstTime = false;
