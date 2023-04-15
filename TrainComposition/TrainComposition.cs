@@ -5,26 +5,37 @@ namespace TrainComposition;
 
 public class TrainComposition
 {
-    private readonly List<int> _wagons;
+    private const int CAPACITY = 1000001;
 
-    public TrainComposition() => _wagons = new List<int>();
+    private readonly int[] _wagons;
+    private int _head;
+    private int _tail;
 
-    public void AttachWagonFromLeft(int wagonId) => _wagons.Insert(0, wagonId);
+    public TrainComposition()
+    {
+        _wagons = new int[CAPACITY];
+        _head = CAPACITY / 2;
+        _tail = _head + 1;
+    }
 
-    public void AttachWagonFromRight(int wagonId) => _wagons.Add(wagonId);
+    public void AttachWagonFromLeft(int wagonId)
+    {
+        _wagons[_head--] = wagonId;
+    }
+
+    public void AttachWagonFromRight(int wagonId)
+    {
+        _wagons[_tail++] = wagonId;
+    }
 
     public int DetachWagonFromLeft()
     {
-        var wagon = _wagons[0];
-        _wagons.RemoveAt(0);
-        return wagon;
+        return _wagons[++_head];
     }
 
     public int DetachWagonFromRight()
     {
-        var wagon = _wagons[^1];
-        _wagons.RemoveAt(_wagons.Count - 1);
-        return wagon;
+        return _wagons[--_tail];
     }
 /*
     public static void Main(string[] args)
