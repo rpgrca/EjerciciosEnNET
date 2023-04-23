@@ -1,8 +1,15 @@
 using System;
 
+namespace AlertService.Logic;
+
 public class AlertService	
 {
-    private readonly AlertDAO storage = new AlertDAO();
+    private readonly IAlertDAO storage = new AlertDAO();
+
+    public AlertService(IAlertDAO storage)
+    {
+        this.storage = storage;
+    }
 
     public Guid RaiseAlert()
     {

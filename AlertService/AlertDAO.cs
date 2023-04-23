@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System;
 
-public class AlertDAO
+namespace AlertService.Logic;
+
+public class AlertDAO : IAlertDAO
 {
     private readonly Dictionary<Guid, DateTime> alerts = new Dictionary<Guid, DateTime>();
 
