@@ -12,9 +12,9 @@ public class SortedSearch
         int previousBottom;
         int middle;
 
-        if (top < 100)
+        if (sortedArray.Last() < lessThan)
         {
-            return sortedArray.TakeWhile(p => p < lessThan).Count();
+            return top + 1;
         }
 
         do
