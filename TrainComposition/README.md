@@ -6,4 +6,6 @@ For example, if we start by attaching wagon 7 from the left followed by attachin
 
 Implement a _TrainComposition_ that models this problem.
 
+![image](https://user-images.githubusercontent.com/15602473/233814480-baeb2a06-a4ad-4894-a19d-12ff64a21562.png)
+
 [Try it yourself!](https://www.testdome.com/questions/c-sharp/train-composition/96017)
