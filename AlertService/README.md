@@ -7,4 +7,6 @@ Refactor the AlertService and AlertDAO classes:
 - _AlertService_ should have a public constructor that accepts _IAlertDAO_.
 - The _RaiseAlert_ and _GetAlertTime_ methods should use the object passed through the constructor.
 
+![image](https://user-images.githubusercontent.com/15602473/233814280-87cd889d-ed33-402e-b985-553eedd3373e.png)
+
 [Try it yourself!](https://www.testdome.com/questions/c-sharp/alert-service/96005)
