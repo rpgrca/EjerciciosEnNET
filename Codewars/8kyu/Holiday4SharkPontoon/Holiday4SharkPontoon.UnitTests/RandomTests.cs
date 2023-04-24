@@ -25,6 +25,7 @@ public class RandomTests
             int ys = rand.Next(1, 4);
             int ss = rand.Next(1, 20);
             bool d = rand.Next(0, 1) == 1;
+
             Assert.AreEqual(sol(pd, sd, ys, ss, d), Kata.Shark(pd, sd, ys, ss, d), $"Shark({pd}, {sd}, {ys}, {ss}, {d})");
         }
     }
