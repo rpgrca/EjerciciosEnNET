@@ -1,17 +1,11 @@
 using System;
 
-public class TextInput {}
-
-public class NumericInput {}
-
-public class UserInput
+public class TextInput
 {
-    public static void Main(string[] args)
-    {
-        //TextInput input = new NumericInput();
-        //input.Add('1');
-        //input.Add('a');
-        //input.Add('0');
-        //Console.WriteLine(input.GetValue());
-    }
+    private string _value = string.Empty;
+
+    public virtual void Add(char c) => _value += c;
+
+
+    public string GetValue() => _value;
 }
