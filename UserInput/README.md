@@ -23,3 +23,5 @@ Console.WriteLine(input.GetValue());
 ```
 
 [Try it yourself!](https://www.testdome.com/questions/c-sharp/user-input/96008)
+
+![image](https://user-images.githubusercontent.com/15602473/235379016-20e9d7a6-1299-41de-bace-87ad52c07dcd.png)
