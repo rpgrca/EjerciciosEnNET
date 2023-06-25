@@ -4,29 +4,34 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "saturday"
 
   - package-ecosystem: "nuget"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "saturday"
 
   - package-ecosystem: "nuget"
     directory: "/ABM"
     schedule:
       interval: "weekly"
+      day: "saturday"
 
   - package-ecosystem: "nuget"
     directory: "/SistemaDeAparcamiento"
     schedule:
       interval: "weekly"
+      day: "saturday"
 
   - package-ecosystem: "nuget"
     directory: "/Codewars"
     schedule:
       interval: "weekly"
+      day: "saturday"
 
   - package-ecosystem: "nuget"
     directory: "/LegacyAppRefactor"
     schedule:
       interval: "weekly"
-
+      day: "saturday"
