@@ -1,3 +1,4 @@
+using AreTheyOpposite.Logic;
 using NUnit.Framework;
 using System;
 
