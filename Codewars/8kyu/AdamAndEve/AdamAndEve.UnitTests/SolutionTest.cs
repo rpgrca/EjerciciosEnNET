@@ -1,5 +1,6 @@
 namespace AdamAndEve.UnitTests;
 
+using AdamAndEve.Logic;
 using NUnit.Framework;
 using System;
 
