@@ -27,4 +27,40 @@ public class KataTests
     Assert.AreEqual(true,  Kata.PeriodIsLate(new DateTime(2022, 01, 01), new DateTime(2022, 02, 01), 30));
     Assert.AreEqual(false, Kata.PeriodIsLate(new DateTime(2022, 01, 01), new DateTime(2022, 02, 01), 40));
   }
+
+    private static readonly Random Rand = new();
+
+  [Test]
+  public void RandomTest()
+  {
+    for (var i = 0; i < 100; i++)
+    {
+      var last = RandomDate();
+      var today = last.AddDays(Rand.Next(20, 41));
+      var cycleLength = Rand.Next(20, 41);
+
+      var expected = Solution(last, today, cycleLength);
+      var actual = Kata.PeriodIsLate(last, today, cycleLength);
+      var message = FailureMessage(last, today, cycleLength, expected);
+
+      Assert.AreEqual(expected, actual, message);
+    }
+  }
+
+  private static bool Solution(DateTime last, DateTime today, int cycleLength)
+  {
+    return (today - last).TotalDays > cycleLength;
+  }
+
+  private static DateTime RandomDate()
+  {
+    var start = new DateTime(2023, 1, 1);
+    var range = (DateTime.Today - start).Days;
+    return start.AddDays(Rand.Next(range));
+  }
+
+  private static string FailureMessage(DateTime last, DateTime today, int cycleLength, bool expected)
+  {
+    return $"Should return {expected} with last={last:yyyy-MM-dd}, today={today:yyyy-MM-dd}, cycleLength={cycleLength}";
+  }
 }
