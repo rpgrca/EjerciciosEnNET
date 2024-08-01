@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collinearity.Logic", "Collinearity.Logic\Collinearity.Logic.csproj", "{D077F710-1A09-440A-A409-AA807162C037}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collinearity.UnitTests", "Collinearity.UnitTests\Collinearity.UnitTests.csproj", "{242BFB72-7C77-498B-BBE3-07C64EA1DBBC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D077F710-1A09-440A-A409-AA807162C037}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D077F710-1A09-440A-A409-AA807162C037}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D077F710-1A09-440A-A409-AA807162C037}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D077F710-1A09-440A-A409-AA807162C037}.Release|Any CPU.Build.0 = Release|Any CPU
+		{242BFB72-7C77-498B-BBE3-07C64EA1DBBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{242BFB72-7C77-498B-BBE3-07C64EA1DBBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{242BFB72-7C77-498B-BBE3-07C64EA1DBBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{242BFB72-7C77-498B-BBE3-07C64EA1DBBC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
