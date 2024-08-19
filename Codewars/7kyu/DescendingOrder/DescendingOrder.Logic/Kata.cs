@@ -6,7 +6,7 @@ public static class Kata
 {
   public static int DescendingOrder(int num)
   {
-    // Bust a move right here
-    return 0;
+    var value = int.Parse(string.Join("", num.ToString().OrderByDescending(p => p)));
+    return value;
   }
 }
