@@ -6,12 +6,14 @@ public class MinMax
 {
     public static int[] minMax(int[] lst) 
     {
-        if (lst.Length == 1)
-        {
-            return new[] { lst[0], lst[0] };
+        var min = lst[0];
+        var max = lst[0];
+
+        foreach (var value in lst) {
+            if (value < min) min = value;
+            if (value > max) max = value;
         }
 
-        var sorted = lst.OrderBy(p => p).ToList();
-        return new[] { sorted[0], sorted[^1] };
+        return new[] { min, max };
     }
 }
