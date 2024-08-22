@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheHighestProfitWins.Logic", "TheHighestProfitWins.Logic\TheHighestProfitWins.Logic.csproj", "{DF425B4C-4478-48B4-BE2B-BBFF981E9286}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheHighestProfitWins.UnitTests", "TheHighestProfitWins.UnitTests\TheHighestProfitWins.UnitTests.csproj", "{86EA8F09-6CBB-4A95-99CC-98B01C2B51BC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DF425B4C-4478-48B4-BE2B-BBFF981E9286}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF425B4C-4478-48B4-BE2B-BBFF981E9286}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF425B4C-4478-48B4-BE2B-BBFF981E9286}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF425B4C-4478-48B4-BE2B-BBFF981E9286}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86EA8F09-6CBB-4A95-99CC-98B01C2B51BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86EA8F09-6CBB-4A95-99CC-98B01C2B51BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86EA8F09-6CBB-4A95-99CC-98B01C2B51BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86EA8F09-6CBB-4A95-99CC-98B01C2B51BC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
