@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SumOfGroups.Logic", "SumOfGroups.Logic\SumOfGroups.Logic.csproj", "{D29D1AD9-7A2C-4D31-9D9D-FAA1AA8FC24B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SumOfGroups.UnitTests", "SumOfGroups.UnitTests\SumOfGroups.UnitTests.csproj", "{39EA5BF2-4BDD-4822-B16B-E8D2E95D782A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D29D1AD9-7A2C-4D31-9D9D-FAA1AA8FC24B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D29D1AD9-7A2C-4D31-9D9D-FAA1AA8FC24B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D29D1AD9-7A2C-4D31-9D9D-FAA1AA8FC24B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D29D1AD9-7A2C-4D31-9D9D-FAA1AA8FC24B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39EA5BF2-4BDD-4822-B16B-E8D2E95D782A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39EA5BF2-4BDD-4822-B16B-E8D2E95D782A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39EA5BF2-4BDD-4822-B16B-E8D2E95D782A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39EA5BF2-4BDD-4822-B16B-E8D2E95D782A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
