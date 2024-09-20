@@ -8,10 +8,9 @@ public class Kata
         var divisors = Enumerable
             .Range(2, n / 2 - 1)
             .Where(p => n % p == 0)
-            .Select(p => p)
             .ToArray();
 
-        return divisors.Length == 0 ? null : divisors;
+        return divisors.Any() ? divisors : null;
 /*
         var divisors = new List<int>();
         var maximum = n / 2;
