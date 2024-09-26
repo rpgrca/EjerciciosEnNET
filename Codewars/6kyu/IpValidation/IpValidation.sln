@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IpValidation.Logic", "IpValidation.Logic\IpValidation.Logic.csproj", "{978A1220-48CB-4167-9550-35A753E63BA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IpValidation.UnitTests", "IpValidation.UnitTests\IpValidation.UnitTests.csproj", "{DD4DA341-90D2-4C77-BA32-B3B21A78FC6E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{978A1220-48CB-4167-9550-35A753E63BA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{978A1220-48CB-4167-9550-35A753E63BA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{978A1220-48CB-4167-9550-35A753E63BA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{978A1220-48CB-4167-9550-35A753E63BA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD4DA341-90D2-4C77-BA32-B3B21A78FC6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD4DA341-90D2-4C77-BA32-B3B21A78FC6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD4DA341-90D2-4C77-BA32-B3B21A78FC6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD4DA341-90D2-4C77-BA32-B3B21A78FC6E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
