@@ -29,4 +29,41 @@ public class SolutionTest
         Assert.AreEqual(false, Kata.IsValidIp("12.34.56.-1"));
         Assert.AreEqual(false, Kata.IsValidIp("123.045.067.089"));
     }
+
+    [Test]
+    public void RandomTests()
+    {
+        string letters = "abcdefghijklm";
+        Random rnd = new Random();
+
+        for (int test = 0; test < 300; ++test) {
+
+            List<string> parts = new List<string>();
+            for (int i = 0; i < 4; ++i)
+                parts.Add(rnd.Next(256).ToString());
+
+            int pos = rnd.Next(4);
+            string someLetters = letters.Substring(rnd.Next(4), rnd.Next(2) + 1);
+            bool valid = false;
+            int route = rnd.Next(12);
+            switch (route)
+            {
+                case 0: valid = true; break;
+                case 1: parts[pos] = ""; break;
+                case 2: parts[pos] = someLetters; break;
+                case 3: parts[pos] = rnd.Next(256, 300).ToString(); break;
+                case 4: parts.RemoveAt(pos); break;
+                case 5: parts.Add(rnd.Next(256).ToString()); break;
+                case 6: parts[0] += someLetters; break;
+                case 7: parts[3] += someLetters; break;
+                case 8: parts[rnd.Next(1, 3)] += " "; break;
+                case 9: parts[pos] = "-" + parts[pos]; break;
+                case 10: parts[pos] = "0" + rnd.Next(0, 100); break;
+                case 11: parts[pos] = "00"; break;
+            }
+
+            string ip = string.Join(".", parts);
+            Assert.AreEqual(valid, Kata.IsValidIp(ip), "IP address: {0}", ip);
+        }
+    }
 }
