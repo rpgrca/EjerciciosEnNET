@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindNearestSquareNumber.Logic", "FindNearestSquareNumber.Logic\FindNearestSquareNumber.Logic.csproj", "{E211D91B-8C1E-40DE-B900-3A7476DA4E89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindNearestSquareNumber.UnitTests", "FindNearestSquareNumber.UnitTests\FindNearestSquareNumber.UnitTests.csproj", "{02DCB6DD-D86D-4B95-A4C9-B7642DB6644F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E211D91B-8C1E-40DE-B900-3A7476DA4E89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E211D91B-8C1E-40DE-B900-3A7476DA4E89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E211D91B-8C1E-40DE-B900-3A7476DA4E89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E211D91B-8C1E-40DE-B900-3A7476DA4E89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02DCB6DD-D86D-4B95-A4C9-B7642DB6644F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02DCB6DD-D86D-4B95-A4C9-B7642DB6644F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02DCB6DD-D86D-4B95-A4C9-B7642DB6644F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02DCB6DD-D86D-4B95-A4C9-B7642DB6644F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
