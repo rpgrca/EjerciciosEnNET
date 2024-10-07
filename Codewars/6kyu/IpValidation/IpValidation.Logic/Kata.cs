@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace IpValidation.Logic;
+﻿namespace IpValidation.Logic;
 
 public class Kata
 {
