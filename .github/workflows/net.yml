@@ -38,10 +38,10 @@ jobs:
 
     - name: Testing NET Standalone Programs
       run: |
-           coverlet SistemaDeAparcamiento/SistemaDeAparcamiento.Tests/bin/Debug/net7/SistemaDeAparcamiento.Tests.dll --target "dotnet" --targetargs "test SistemaDeAparcamiento/SistemaDeAparcamiento.Tests/SistemaDeAparcamiento.Tests.csproj --no-build --verbosity quiet" --format OpenCover --output sistemadeaparcamiento.coverage.xml
-           coverlet LegacyAppRefactor/LegacyApp.UnitTests/bin/Debug/net7.0/LegacyApp.UnitTests.dll --target "dotnet" --targetargs "test LegacyAppRefactor/LegacyApp.UnitTests/LegacyApp.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output legacyapprefactor.coverage.xml
+           coverlet SistemaDeAparcamiento/SistemaDeAparcamiento.Tests/bin/Debug/net9/SistemaDeAparcamiento.Tests.dll --target "dotnet" --targetargs "test SistemaDeAparcamiento/SistemaDeAparcamiento.Tests/SistemaDeAparcamiento.Tests.csproj --no-build --verbosity quiet" --format OpenCover --output sistemadeaparcamiento.coverage.xml
+           coverlet LegacyAppRefactor/LegacyApp.UnitTests/bin/Debug/net9/LegacyApp.UnitTests.dll --target "dotnet" --targetargs "test LegacyAppRefactor/LegacyApp.UnitTests/LegacyApp.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output legacyapprefactor.coverage.xml
            for s in Anaconda Palindromo MostRepeatedLetter PrimeNumber DivisorsAndSum SatelliteMessages MarsRover ArrayReordering; do
-               coverlet $s/$s.UnitTests/bin/Debug/net7/$s.UnitTests.dll --target "dotnet" --targetargs "test $s/$s.UnitTests/$s.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output $s.coverage.xml
+               coverlet $s/$s.UnitTests/bin/Debug/net9/$s.UnitTests.dll --target "dotnet" --targetargs "test $s/$s.UnitTests/$s.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output $s.coverage.xml
            done
 
     - name: Testing Codewars
@@ -49,7 +49,7 @@ jobs:
            for t in `ls -d1 ./Codewars/[0-9]kyu`; do
                n=$(basename $t)
                for s in `find ./Codewars/$n -maxdepth 1 -type d -printf "%f\n" | grep -v "kyu"`; do
-                   coverlet Codewars/$n/$s/$s.UnitTests/bin/Debug/net7.0/$s.UnitTests.dll --target "dotnet" --targetargs "test Codewars/$n/$s/$s.UnitTests/$s.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output $s.coverage.xml
+                   coverlet Codewars/$n/$s/$s.UnitTests/bin/Debug/net9/$s.UnitTests.dll --target "dotnet" --targetargs "test Codewars/$n/$s/$s.UnitTests/$s.UnitTests.csproj --no-build --verbosity quiet" --format OpenCover --output $s.coverage.xml
                done
            done
 
